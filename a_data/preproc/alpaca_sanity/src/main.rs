@@ -1,3 +1,18 @@
+/*
+use:
+
+# compact output, blank-output rows dropped
+cargo run --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml -- \
+  a_data/alpaca/alpaca_52k_clean.jsonl \
+  a_data/alpaca/alpaca_52k_clean_proc.jsonl
+
+# pretty-printed output and KEEP the 28 rows whose `output` is empty
+cargo run --release --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml -- \
+  a_data/alpaca/alpaca_52k_clean.jsonl \
+  a_data/alpaca/alpaca_52k_clean_proc_pretty.jsonl \
+  --pretty --keep-empty-output
+*/
+
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -12,6 +27,8 @@ use uuid::Uuid;
 struct Prompt {
     #[serde(default)]
     prompt_id: Option<String>,
+    #[serde(default)]
+    prompt_count: Option<u64>, // added sequential id
     instruction: String,
     #[serde(default)]
     input: String,
@@ -20,40 +37,73 @@ struct Prompt {
 }
 
 fn main() -> Result<()> {
-    let in_path = std::env::args()
-        .nth(1)
-        .expect("pass path to JSONL as first argument");
+    // CLI
+    let mut args = std::env::args().skip(1);
+    let in_path = args
+        .next()
+        .ok_or_else(|| anyhow::anyhow!("pass path to JSONL as first argument"))?;
+    let out_path = args
+        .next()
+        .ok_or_else(|| anyhow::anyhow!("pass output path as second argument"))?;
+    let mut pretty = false;
+    let mut allow_empty_output = false;
+    for flag in args {
+        match flag.as_str() {
+            "--pretty" => pretty = true,
+            "--keep-empty-output" => allow_empty_output = true,
+            _ => {}
+        }
+    }
+
+    // read
     let reader = BufReader::new(File::open(&in_path)?);
 
     let mut seen_pair: HashSet<(String, String)> = HashSet::new();
     let mut empty_counts: HashMap<&'static str, usize> = HashMap::new();
+    let mut field_non_empty: HashMap<&'static str, usize> = HashMap::new();
+    let mut len_stats: HashMap<&'static str, (usize, usize)> = HashMap::new(); // (sum, max)
     let mut duplicates = 0usize;
+    let mut dropped_empty_output = 0usize;  // the counter!
     let mut rows: Vec<Prompt> = Vec::new();
 
-    for line in reader.lines() {
+    for (idx, line) in reader.lines().enumerate() {
         let mut row: Prompt = serde_json::from_str(&line?)?;
 
-        // add ID if missing
+        // ensure ids
         if row.prompt_id.is_none() {
             row.prompt_id = Some(Uuid::new_v4().to_string());
         }
+        row.prompt_count = Some(idx as u64 + 1);
 
-        // detect duplicate on (instruction, input)
-        let key = (row.instruction.clone(), row.input.clone());
+        // duplicate detection (case & space agnostic)
+        let norm = |s: &str| s.split_whitespace().collect::<String>().to_lowercase();
+        let key = (norm(&row.instruction), norm(&row.input));
         if !seen_pair.insert(key) {
             duplicates += 1;
             continue;
         }
 
-        // count empties
-        if row.instruction.trim().is_empty() {
-            *empty_counts.entry("instruction").or_default() += 1;
+        // optionally drop rows whose output is empty
+        if row.output.trim().is_empty() && !allow_empty_output {
+            dropped_empty_output += 1;
+            continue;
         }
-        if row.input.trim().is_empty() {
-            *empty_counts.entry("input").or_default() += 1;
-        }
-        if row.output.trim().is_empty() {
-            *empty_counts.entry("output").or_default() += 1;
+
+        // empty / non-empty counts & length stats
+        for (name, val) in [
+            ("instruction", &row.instruction),
+            ("input", &row.input),
+            ("output", &row.output),
+        ] {
+            if val.trim().is_empty() {
+                *empty_counts.entry(name).or_default() += 1;
+            } else {
+                *field_non_empty.entry(name).or_default() += 1;
+                let stats = len_stats.entry(name).or_insert((0, 0));
+                let len = val.split_whitespace().count();
+                stats.0 += len;              // sum
+                stats.1 = stats.1.max(len);  // max
+            }
         }
 
         rows.push(row);
@@ -61,29 +111,49 @@ fn main() -> Result<()> {
 
     // summary
     println!("=== Alpaca sanity-check ===");
-    println!("Total unique rows  : {}", rows.len());
-    println!("Duplicates skipped : {}", duplicates);
-    println!("Empty-field counts :");
-    for (k, v) in &empty_counts {
-        println!("  {:<11} {}", k, v);
+    println!("Unique rows           : {}", rows.len());
+    println!("Duplicates skipped    : {duplicates}");
+    println!("Dropped empty output  : {dropped_empty_output}");
+    println!("–– field empties –––––––––––––––––––");
+    for k in ["instruction", "input", "output"] {
+        println!(
+            "  {:<11} {:>6} empty / {:>6} non-empty",
+            k,
+            empty_counts.get(k).unwrap_or(&0),
+            field_non_empty.get(k).unwrap_or(&0)
+        );
+    }
+    println!("–– token length (non-empty rows) ––");
+    for k in ["instruction", "input", "output"] {
+        if let Some((sum, max)) = len_stats.get(k) {
+            let count = field_non_empty.get(k).copied().unwrap_or(0);
+            let mean = if count > 0 { *sum as f64 / count as f64 } else { 0.0 };
+            println!("  {:<11} min 1 | mean {:>5.1} | max {max}", k, mean);
+        }
     }
 
     // write cleaned copy
-    let out_path = out_file_name(&in_path);
     let mut out = File::create(&out_path)?;
     for row in rows {
-        writeln!(out, "{}", serde_json::to_string(&row)?)?;
+        if pretty {
+            writeln!(out, "{}", serde_json::to_string_pretty(&row)?)?;
+        } else {
+            writeln!(out, "{}", serde_json::to_string(&row)?)?;
+        }
     }
     println!("Cleaned JSONL written → {}", out_path);
     Ok(())
 }
 
-fn out_file_name(original: &str) -> String {
+#[allow(dead_code)]
+fn out_file_name(original: &str, pretty: bool) -> String {
     let mut p = PathBuf::from(original);
     let stem = p
         .file_stem()
         .and_then(|s| s.to_str())
         .unwrap_or("alpaca_clean");
-    p.set_file_name(format!("{stem}_dedup.jsonl"));
+    let suffix = if pretty { "_dedup_pretty.jsonl" } else { "_dedup.jsonl" };
+    p.set_file_name(format!("{stem}{suffix}"));
     p.to_string_lossy().to_string()
 }
+
