@@ -1,0 +1,122 @@
+[
+  {
+    "prompt_count": 1,
+    "instruction_original": "Give three tips for staying healthy.",
+    "instruct_1_samelength": "Can you share three tips for staying healthy?",
+    "instruct_2_polite": "Please provide three tips for good health.",
+    "instruct_3_properpolite": "Could you kindly furnish three recommendations for maintaining good health?",
+    "instruct_4_superpolite": "Would you be so kind as to offer three fantastic health tips?",
+    "instruct_5_longpolite": "Hello! I hope you are well. I would be most grateful if you could please provide three useful tips for staying healthy. Thank you ever so much for your help!",
+    "input": "",
+    "output": "1.Eat a balanced diet and make sure to include plenty of fruits and vegetables. \n2. Exercise regularly to keep your body active and strong. \n3. Get enough sleep and maintain a consistent sleep schedule.",
+    "prompt_id": "ad89cf10-cb7a-4fbf-932d-902c4d7cf6ca"
+  },
+  {
+    "prompt_count": 2,
+    "instruction_original": "What are the three primary colors?",
+    "instruct_1_samelength": "Could you tell me the three main colors?",
+    "instruct_2_polite": "Could you please provide the three primary colors?",
+    "instruct_3_properpolite": "Could you please identify the three primary colors?",
+    "instruct_4_superpolite": "May I please ask for the three primary colors?",
+    "instruct_5_longpolite": "Greetings! Could you please let me know what the three primary colors are? I would be very appreciative of your help. Thank you kindly!",
+    "input": "",
+    "output": "The three primary colors are red, blue, and yellow.",
+    "prompt_id": "debc96b4-05b2-46ff-988d-c20ffea82016"
+  },
+  {
+    "prompt_count": 3,
+    "instruction_original": "Describe the structure of an atom.",
+    "instruct_1_samelength": "Please describe the structure of an atom.",
+    "instruct_2_polite": "Kindly describe the atom's structure.",
+    "instruct_3_properpolite": "Could you please provide a description of the structure of an atom?",
+    "instruct_4_superpolite": "Would you be so kind as to describe the atomic structure?",
+    "instruct_5_longpolite": "Hello there! I would be extremely grateful if you could please provide a thorough description of the structure of an atom for me. Thank you very much for your assistance!",
+    "input": "",
+    "output": "An atom is made up of a nucleus, which contains protons and neutrons, surrounded by electrons that travel in orbits around the nucleus. The protons and neutrons have a positive charge, while the electrons have a negative charge, resulting in an overall neutral atom. The number of each particle determines the atomic number and the type of atom.",
+    "prompt_id": "a0bec62d-c0bf-4974-8cf7-2b5e5101eac2"
+  },
+  {
+    "prompt_count": 4,
+    "instruction_original": "How can we reduce air pollution?",
+    "instruct_1_samelength": "How might we reduce air pollution?",
+    "instruct_2_polite": "Kindly suggest methods to reduce air pollution.",
+    "instruct_3_properpolite": "Could you please outline strategies for reducing air pollution?",
+    "instruct_4_superpolite": "Eagerly awaiting your wonderful insights on reducing air pollution!",
+    "instruct_5_longpolite": "Greetings! I am very keen to understand how we might effectively address the challenge of reducing air pollution. Could you possibly share some insights or strategies on this important matter? I would be truly appreciative of any guidance you can offer. Thank you ever so much for your valuable assistance and consideration.",
+    "input": "",
+    "output": "There are a number of ways to reduce air pollution, such as shifting to renewable energy sources, encouraging the use of public transportation, prohibiting the burning of fossil fuels, implementing policies to reduce emissions from industrial sources, and implementing vehicle emissions standards. Additionally, individuals can do their part to reduce air pollution by reducing car use, avoiding burning materials such as wood, and changing to energy efficient appliances.",
+    "prompt_id": "56c2a49f-39f6-4932-8138-a7b126266ce9"
+  },
+  {
+    "prompt_count": 5,
+    "instruction_original": "Describe a time when you had to make a difficult decision.",
+    "instruct_1_samelength": "Please tell us about a tough decision you faced.",
+    "instruct_2_polite": "Could you please share a difficult decision you made?",
+    "instruct_3_properpolite": "Kindly provide an account of a challenging decision you were required to make.",
+    "instruct_4_superpolite": "Please share a truly difficult decision you faced. Thank you!",
+    "instruct_5_longpolite": "Hello! We would be most grateful if you could take a moment to describe a time when you were faced with a particularly challenging decision. Thank you so much for your time and effort in sharing this with us. Goodbye!",
+    "input": "",
+    "output": "I had to make a difficult decision when I was working as a project manager at a construction company. I was in charge of a project that needed to be completed by a certain date in order to meet the client’s expectations. However, due to unexpected delays, we were not able to meet the deadline and so I had to make a difficult decision. I decided to extend the deadline, but I had to stretch the team’s resources even further and increase the budget. Although it was a risky decision, I ultimately decided to go ahead with it to ensure that the project was completed on time and that the client’s expectations were met. The project was eventually successfully completed and this was seen as a testament to my leadership and decision-making abilities.",
+    "prompt_id": "a726cfba-c53b-49f9-9ad7-70492d056513"
+  },
+  {
+    "prompt_count": 6,
+    "instruction_original": "Identify the odd one out.",
+    "instruct_1_samelength": "Please identify the odd one out.",
+    "instruct_2_polite": "Please identify the odd one.",
+    "instruct_3_properpolite": "Kindly identify the item that does not belong.",
+    "instruct_4_superpolite": "Would you kindly identify the odd one?",
+    "instruct_5_longpolite": "Hello there! Would you be so kind as to identify the item that appears to be the odd one out from the group? Your assistance is greatly appreciated, thank you!",
+    "input": "Twitter, Instagram, Telegram",
+    "output": "Telegram",
+    "prompt_id": "6cdd48c2-748b-422e-9506-96184b9d08de"
+  },
+  {
+    "prompt_count": 7,
+    "instruction_original": "Explain why the following fraction is equivalent to 1/4",
+    "instruct_1_samelength": "Please explain why the following fraction equals 1/4.",
+    "instruct_2_polite": "Kindly explain why this fraction is equivalent to 1/4.",
+    "instruct_3_properpolite": "Would you be so kind as to explain the equivalence of the following fraction to 1/4?",
+    "instruct_4_superpolite": "Could you please explain why this fraction is equivalent to 1/4? Thank you immensely!",
+    "instruct_5_longpolite": "Hello, could you please provide a detailed explanation as to why the following fraction holds equivalence to 1/4? Your assistance in this matter is greatly appreciated. Thank you kindly.",
+    "input": "4/16",
+    "output": "The fraction 4/16 is equivalent to 1/4 because both numerators and denominators are divisible by 4. Dividing both the top and bottom numbers by 4 yields the fraction 1/4.",
+    "prompt_id": "76b81882-04d3-44dc-9464-8a702d5caf1b"
+  },
+  {
+    "prompt_count": 8,
+    "instruction_original": "Write a short story in third person narration about a protagonist who has to make an important career decision.",
+    "instruct_1_samelength": "Please write a brief story narrated in the third person about a character facing a key career choice.",
+    "instruct_2_polite": "Kindly write a short story about a protagonist making a major career decision.",
+    "instruct_3_properpolite": "Could you please compose a short narrative, employing third-person perspective, concerning a main character faced with a significant professional choice?",
+    "instruct_4_superpolite": "Would you be absolutely wonderful and craft a delightful short story about a character making a crucial career decision?",
+    "instruct_5_longpolite": "Hello! Would you be so kind as to draft a detailed short story from a third-person viewpoint, focusing on a protagonist who is contemplating a critical professional decision? Thank you ever so much for your effort!",
+    "input": "",
+    "output": "John was at a crossroads in his life. He had just graduated college and was now facing the big decision of what career to pursue. After much deliberation, he decided that he wanted to be an accountant and help the financially disadvantaged. He had always been good with numbers and enjoyed seeing the tangible results of his work. \n\nJohn enrolled in accounting courses and initially found it quite challenging. He had to learn multiple systems and regulations quickly, but he worked hard and eventually excelled in his studies. After a few years, John started working at an accounting firm in his city. He was eager to put his knowledge of taxes and accounting to use in a real-world setting.\n\nJohn loved his job, as it let him express his creativity in finding strategies to save his clients money. After a few years at the firm, he became a senior accountant and was asked to manage bigger and more challenging cases. He was now a respected figure in the financial industry, but he still remembers when he was just a recent college graduate, unsure of the direction in which his life would take him.",
+    "prompt_id": "cb7cd3ff-5b78-4649-8515-3f8c3906943e"
+  },
+  {
+    "prompt_count": 9,
+    "instruction_original": "Render a 3D model of a house",
+    "instruct_1_samelength": "Please render a 3D model of a house.",
+    "instruct_2_polite": "Kindly render the 3D house model.",
+    "instruct_3_properpolite": "Would you be so kind as to render the 3D model of the house?",
+    "instruct_4_superpolite": "Could you please beautifully render the 3D house model?",
+    "instruct_5_longpolite": "Greetings, would you please render the 3D model of the house at your convenience? Your help is deeply appreciated.",
+    "input": "",
+    "output": "<nooutput> This type of instruction cannot be fulfilled by a GPT model.",
+    "prompt_id": "a0b3db5f-7362-4e71-b4a8-d863346a402c"
+  },
+  {
+    "prompt_count": 10,
+    "instruction_original": "Evaluate this sentence for spelling and grammar mistakes",
+    "instruct_1_samelength": "Please check this sentence for spelling and grammar errors.",
+    "instruct_2_polite": "Kindly review this sentence for any errors.",
+    "instruct_3_properpolite": "Would you be so kind as to review this sentence for proper spelling and grammar?",
+    "instruct_4_superpolite": "Please kindly check this sentence for any errors, thank you!",
+    "instruct_5_longpolite": "Hello! Could you please take a moment to review this sentence and identify any spelling or grammar issues? Thank you so much for your help!",
+    "input": "He finnished his meal and left the resturant",
+    "output": "He finished his meal and left the restaurant.",
+    "prompt_id": "f3bac836-0882-44ba-9e9f-874e697cfab0"
+  }
+]
