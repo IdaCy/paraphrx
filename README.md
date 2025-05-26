@@ -1,4 +1,4 @@
-# Phraraphrase Investigations
+# Paraphrase Investigations
 
 ## Data
 
