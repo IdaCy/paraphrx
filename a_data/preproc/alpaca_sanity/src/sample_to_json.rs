@@ -6,9 +6,9 @@ prompt_count, instruction, input, output, prompt_id.
 Example:
 cargo run --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml \
   --bin sample_to_json -- \
-  --from 0 --to 1000 \
+  --from 301 --to 400 \
   a_data/alpaca/alpaca_5k_proc.jsonl \
-  a_data/alpaca/alpaca_1k_slice1.json
+  a_data/alpaca/alpaca_100_slice4.json
 */
 
 use anyhow::Result;
