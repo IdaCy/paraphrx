@@ -2,7 +2,7 @@
 Download and clean the Alpaca-52 k dataset.
 
 Usage:
-python download_alpaca.py --out data/alpaca_52k_clean.jsonl
+python a_data/preproc/download_alpaca.py --out a_data/alpaca/alpaca_52k_clean.jsonl
 """
 
 import argparse
