@@ -1,3 +1,6 @@
 *.json*
 *target
 *.lock
+notes
+zz_archive
+!b_tests/data/*
