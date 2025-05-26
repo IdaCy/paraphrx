@@ -4,11 +4,27 @@
 
 Initial data from: https://huggingface.co/datasets/tatsu-lab/alpaca  
 
-### Versions 
+## Versions 
 
-too much - moved over to categories.md
+Too much content - moved over to categories.md!  
 
-### Evaluating each paraphrase answer with Gemini-2.5 using the *grading schema*:
+Generating different versions with gemini-2.5  
+
+Test file: politeness, with 5 levels
+
+## Inference Checks
+
+Generating the output with for every type of instructions:
+```
+python c_assess_inf/src/run_inference.py \
+       b_tests/data/alpaca_10_politeness.json \
+       c_assess_inf/output/results_test.json \
+       --model google/gemma-2b-it \
+       --temperature 0 \
+       --max_tokens 256
+```
+
+## Evaluating each paraphrase answer with Gemini-2.5 using schema:
 
   ```
   {
@@ -18,5 +34,5 @@ too much - moved over to categories.md
   }
   ```
 
-* **Produces one JSON object per record** whose keys follow the pattern
+-> Produces one JSON object per record whose keys follow the pattern
   `<PARAPHRASE_KEY>_eval`.
