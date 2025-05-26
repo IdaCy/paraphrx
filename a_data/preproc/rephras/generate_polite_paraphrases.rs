@@ -15,7 +15,7 @@ use serde_json::json;
 use std::{env, fs, path::PathBuf};
 use tokio::time::{sleep, Duration};
 
-/// Pydantic‑style verification struct (serde handles validation)
+// Pydantic‑style verification struct (serde handles validation)
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 struct Verification {
@@ -26,7 +26,7 @@ struct Verification {
     instruct_5_longpolite: String,
 }
 
-/// Alpaca‑style record (we only care about a few keys).
+// Alpaca‑style record (only care about a few keys)
 #[derive(Debug, Serialize, Deserialize)]
 struct Record {
     prompt_count: u32,
@@ -50,11 +50,11 @@ struct Record {
 #[derive(Parser, Debug)]
 #[command(version, author, about = "Generate graded‑polite paraphrases using Gemini & Rust")]
 struct Cli {
-    /// Input Alpaca JSON file
+    // Input Alpaca JSON file
     input: PathBuf,
-    /// Output JSON file
+    // Output JSON file
     output: PathBuf,
-    /// Maximum attempts per prompt if validation fails
+    // Maximum attempts per prompt if validation fails
     #[arg(long, default_value_t = 3)]
     max_attempts: u8,
 }
@@ -126,15 +126,12 @@ fn build_client() -> Result<reqwest::Client> {
 
     let client = reqwest::Client::builder()
         .default_headers(headers)
-        // .brotli(true) 
-        // .gzip(true)   
-        // .deflate(true)
         .build()?;
 
     Ok(client)
 }
 
-/// Build the generation prompt identical to the Python version.
+// Build the generation prompt
 fn build_prompt(original: &str) -> String {
     format!(
         "You are an expert paraphraser specialising in graded politeness.\n\n\
@@ -144,7 +141,7 @@ Guidelines\n==========\n1. instruct_1_samelength  – Keep almost the same lengt
     )
 }
 
-/// JSON Schema that constrains Gemini's output.
+// JSON Schema that constrains Gemini's output
 fn schema_json() -> serde_json::Value {
     json!({
         "type": "object",
@@ -162,7 +159,6 @@ fn schema_json() -> serde_json::Value {
             "instruct_4_superpolite",
             "instruct_5_longpolite"
         ]
-        // "additionalProperties": false
     })
 }
 
