@@ -1,15 +1,16 @@
 /*
 use:
 
-# compact output, blank-output rows dropped
+# compact output, blank-output rows dropped, keep first 5 000 rows
 cargo run --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml -- \
-  a_data/alpaca/alpaca_52k_clean.jsonl \
-  a_data/alpaca/alpaca_52k_clean_proc.jsonl
+  a_data/alpaca/alpaca_52k.jsonl \
+  a_data/alpaca/alpaca_5k_proc.jsonl \
+  --limit 5000
 
-# pretty-printed output and KEEP the 28 rows whose `output` is empty
+# pretty-printed output and KEEP the 28 rows whose output is empty
 cargo run --release --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml -- \
   a_data/alpaca/alpaca_52k_clean.jsonl \
-  a_data/alpaca/alpaca_52k_clean_proc_pretty.jsonl \
+  a_data/alpaca/alpaca_52k_clean_pretty.jsonl \
   --pretty --keep-empty-output
 */
 
@@ -28,7 +29,7 @@ struct Prompt {
     #[serde(default)]
     prompt_id: Option<String>,
     #[serde(default)]
-    prompt_count: Option<u64>, // added sequential id
+    prompt_count: Option<u64>, // adding sequential id
     instruction: String,
     #[serde(default)]
     input: String,
@@ -47,10 +48,17 @@ fn main() -> Result<()> {
         .ok_or_else(|| anyhow::anyhow!("pass output path as second argument"))?;
     let mut pretty = false;
     let mut allow_empty_output = false;
-    for flag in args {
+    let mut limit_rows: Option<usize> = None;
+    while let Some(flag) = args.next() {
         match flag.as_str() {
             "--pretty" => pretty = true,
             "--keep-empty-output" => allow_empty_output = true,
+            "--limit" => {
+                let n = args
+                    .next()
+                    .ok_or_else(|| anyhow::anyhow!("--limit requires a number"))?;
+                limit_rows = Some(n.parse()?);
+            }
             _ => {}
         }
     }
@@ -107,6 +115,9 @@ fn main() -> Result<()> {
         }
 
         rows.push(row);
+        if limit_rows.map_or(false, |n| rows.len() >= n) {
+            break;
+        }
     }
 
     // summary
@@ -156,4 +167,3 @@ fn out_file_name(original: &str, pretty: bool) -> String {
     p.set_file_name(format!("{stem}{suffix}"));
     p.to_string_lossy().to_string()
 }
-
