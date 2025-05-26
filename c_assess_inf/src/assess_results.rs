@@ -24,7 +24,6 @@ use tokio::time::{sleep, Duration};
 
 // paraphrase key-sets
 static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf_map! {
-    // STYLE / TONE
     "politeness" => &[
         "instruction_original",
         "instruct_1_samelength",
@@ -41,27 +40,25 @@ struct Record {
     prompt_count: u32,
     #[serde(alias = "instruction", alias = "instruction_original")]
     instruction_original: String,
-    output: String,                    // the canonical / gold answer
+
+    #[serde(default)]
+    output: Option<String>,
+
     #[serde(flatten)]
-    extra: JsonMap<String, Value>,     // paraphrases + answers + evals
+    extra: JsonMap<String, Value>,
 }
 
-// command-line args-
+// command-line args
 #[derive(Parser, Debug)]
 #[command(version, author, about = "Assess paraphrase answers with Gemini")]
 struct Cli {
-    /// Gold file that still contains the authoritative `output`
-    gold: PathBuf,
-    /// File that already contains the paraphrase answers
+    gold:    PathBuf,
     answers: PathBuf,
-    /// File to write evaluation to
-    output: PathBuf,
+    output:  PathBuf,
 
-    /// Which key-set to evaluate (style | length | obstruction | ...)
     #[arg(long, default_value = "style")]
     version_set: String,
 
-    /// Gemini call retries
     #[arg(long, default_value_t = 3)]
     max_attempts: u8,
 }
@@ -69,12 +66,12 @@ struct Cli {
 const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 
-//-- main------
+// main
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    // gold --
+    // gold
     let gold_raw = fs::read_to_string(&cli.gold)
         .with_context(|| format!("failed to read {}", cli.gold.display()))?;
     let gold_map: HashMap<String, Record> = serde_json::from_str::<Vec<Record>>(&gold_raw)?
@@ -82,12 +79,12 @@ async fn main() -> Result<()> {
         .map(|r| (r.prompt_count.to_string(), r))
         .collect();
 
-    //-------------------------- answers file --
+    // answers
     let ans_raw = fs::read_to_string(&cli.answers)
         .with_context(|| format!("failed to read {}", cli.answers.display()))?;
     let mut records: Vec<Record> = serde_json::from_str(&ans_raw)?;
 
-    // misc --
+    // misc
     let keys = VERSION_SETS
         .get(cli.version_set.as_str())
         .ok_or_else(|| anyhow!("unknown version set {}", cli.version_set))?;
@@ -96,7 +93,7 @@ async fn main() -> Result<()> {
     let api_key = env::var("GOOGLE_API_KEY").context("GOOGLE_API_KEY not set")?;
     let client = build_client()?;
 
-    // prog bar --
+    // progress bar
     let bar = ProgressBar::new(records.len() as u64);
     bar.set_style(
         ProgressStyle::with_template(
@@ -106,32 +103,39 @@ async fn main() -> Result<()> {
         .unwrap(),
     );
 
-    // loop --
+    // loop
     for rec in &mut records {
         let gold = gold_map
             .get(&rec.prompt_count.to_string())
             .ok_or_else(|| anyhow!("gold missing id {}", rec.prompt_count))?
             .clone();
 
+        let gold_output = gold
+            .output
+            .as_deref()
+            .ok_or_else(|| anyhow!("gold missing output for id {}", rec.prompt_count))?;
+
         for &key in *keys {
-            // The inference step should have produced e.g. `instruct_rude_answer`
-            let answer_key = format!("{key}_answer");
-            let Some(Value::String(answer)) = rec.extra.get(&answer_key) else {
-                return Err(anyhow!(
-                    "record {} missing candidate answer for {answer_key}",
-                    rec.prompt_count
-                ));
+            let answer: &str = if key == "instruction_original" {
+                &rec.instruction_original
+            } else {
+                rec.extra
+                    .get(key)
+                    .and_then(Value::as_str)
+                    .ok_or_else(|| anyhow!(
+                        "record {} missing candidate answer for {}",
+                        rec.prompt_count, key
+                    ))?
             };
 
-            // Skip if we already evaluated
             let eval_key = format!("{key}_eval");
             if rec.extra.contains_key(&eval_key) {
                 continue;
             }
 
             let prompt = build_eval_prompt(
-                &rec.instruction_original,
-                &gold.output,
+                &gold.instruction_original,
+                gold_output,
                 answer,
             );
 
@@ -139,8 +143,7 @@ async fn main() -> Result<()> {
             for attempt in 1..=cli.max_attempts {
                 match query_gemini(&client, &api_key, &schema, prompt.clone()).await {
                     Ok(eval_obj) => {
-                        rec.extra
-                            .insert(eval_key.clone(), Value::Object(eval_obj));
+                        rec.extra.insert(eval_key.clone(), Value::Object(eval_obj));
                         success = true;
                         break;
                     }
@@ -166,20 +169,19 @@ async fn main() -> Result<()> {
     }
     bar.finish_with_message("done");
 
-    / write out --
+    // write out
     fs::write(&cli.output, serde_json::to_string_pretty(&records)?)?;
     println!("evaluation written to {}", cli.output.display());
     Ok(())
 }
 
-/// ------------------------- helpers & utilities
+// helpers
 fn build_client() -> Result<reqwest::Client> {
     let mut headers = HeaderMap::new();
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
     Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
 
-/// Prompt for grading a *single* candidate answer
 fn build_eval_prompt(
     instruction: &str,
     gold_answer: &str,
@@ -207,7 +209,6 @@ No other keys, no prose."#
     )
 }
 
-/// Fixed JSON schema for the evaluation object
 fn schema_for() -> Value {
     json!({
         "type": "object",
@@ -220,7 +221,6 @@ fn schema_for() -> Value {
     })
 }
 
-/// Send the grading request to Gemini
 async fn query_gemini(
     client: &reqwest::Client,
     key: &str,
