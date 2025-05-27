@@ -1,0 +1,702 @@
+[
+  {
+    "prompt_count": 101,
+    "instruction": "Design a database to record employee salaries.",
+    "input": "",
+    "output": "The database should contain fields for employee name, position, salary, and date. It should also include a field for the employee's manager, so that the salaries can be properly allocated across departments. The database should also be able to generate reports on salary expenses for departments or individuals.",
+    "prompt_id": "3f70208d-e83e-47f7-a55c-70610f919266"
+  },
+  {
+    "prompt_count": 102,
+    "instruction": "Identify the theme of the following book.",
+    "input": "The book is about a small town in the Midwest and how people respond to a series of tragedies and unexpected events that shake their lives.",
+    "output": "The theme of the book is resilience in the face of unexpected tragedy, and how the people of a small town come together to overcome difficult times.",
+    "prompt_id": "de1d960e-d011-40b6-92b3-29e7ad65c77f"
+  },
+  {
+    "prompt_count": 103,
+    "instruction": "Assign each word in the sentence below to its part of speech.",
+    "input": "Kittens often scamper around excitedly.",
+    "output": "Kittens - Noun \noften - Adverb \nscamper - Verb \naround - Preposition \nexcitedly - Adverb",
+    "prompt_id": "c0a32291-6e7a-43f3-811f-e319953f1acb"
+  },
+  {
+    "prompt_count": 104,
+    "instruction": "Generate a password of 8 characters.",
+    "input": "",
+    "output": "e9gKyd2D",
+    "prompt_id": "c846d753-07a1-449b-b0ec-0b1c67ddae1f"
+  },
+  {
+    "prompt_count": 105,
+    "instruction": "Create a web page about robotics.",
+    "input": "",
+    "output": "The web page should include an introduction to robotics, covering what it is and how it can be applied in various industries. It should also include a section on the history of robotics, an overview of major advances in the field, and current trends. Information about the different types of robots and their applications should be included, as well as links to resources for further research.",
+    "prompt_id": "484ebade-8c51-4b86-9267-f6feb0f92df3"
+  },
+  {
+    "prompt_count": 106,
+    "instruction": "What is the most commonly shared type of content on social media?",
+    "input": "",
+    "output": "The most commonly shared type of content on social media is images.",
+    "prompt_id": "6622025b-454f-45b0-9cd1-35b4f42bfeb2"
+  },
+  {
+    "prompt_count": 107,
+    "instruction": "What is the main idea of this text?",
+    "input": "The robotics industry has become one of the fastest growing sectors in today’s economy. Robotics technology is being applied in various industries and applications, such as manufacturing, healthcare, and defense.",
+    "output": "The main idea of this text is that robotics technology is being used in many different industries and applications and is a rapidly growing sector of today's economy.",
+    "prompt_id": "68bbeb48-da49-4868-9d94-3a597fe0c419"
+  },
+  {
+    "prompt_count": 108,
+    "instruction": "Generate a list of present continuous verbs.",
+    "input": "",
+    "output": "Running, eating, sleeping, calling, texting, working, reading, watching, writing, listening, playing, cooking, shopping, dancing, studying, walking, driving, flying, jumping, laughing.",
+    "prompt_id": "1f8c78e3-df72-4280-a5ef-999ffeda120e"
+  },
+  {
+    "prompt_count": 109,
+    "instruction": "Think of a phrase or idiom containing the word \"sleep\".",
+    "input": "",
+    "output": "Sleep like a log.",
+    "prompt_id": "5112e40f-9eab-4430-b9f0-d54c13c15a21"
+  },
+  {
+    "prompt_count": 110,
+    "instruction": "Make a prediction about what will happen in the next paragraph.",
+    "input": "Mary had been living in the small town for many years and had never seen anything like what was coming.",
+    "output": "It appears that something extraordinary and unprecedented will happen in the next paragraph.",
+    "prompt_id": "d10b35ed-d457-4bf0-98e4-1fdc69ebdd2d"
+  },
+  {
+    "prompt_count": 111,
+    "instruction": "Generate a headline for the following article.",
+    "input": "This article discusses the future of renewable energy sources in the US.",
+    "output": "Renewable Energy Sources are the Future of the US",
+    "prompt_id": "32d009d2-a5fa-4e49-807e-92128adfd8ed"
+  },
+  {
+    "prompt_count": 112,
+    "instruction": "What type of punctuation should be used at the end of the following sentence?",
+    "input": "Let's look at the bird",
+    "output": "A question mark (?) should be used at the end of the sentence.",
+    "prompt_id": "6571936e-f038-48ad-9afa-365df8157dd2"
+  },
+  {
+    "prompt_count": 113,
+    "instruction": "Identify the incorrect word and suggest a better version.",
+    "input": "The waitress served a humonguous burger.",
+    "output": "The incorrect word is \"humonguous\" and it should be replaced with \"huge\".",
+    "prompt_id": "ed67118e-b501-4bbb-922b-51205947c82c"
+  },
+  {
+    "prompt_count": 114,
+    "instruction": "Rewrite this sentence using the third person point of view.",
+    "input": "I went to the store.",
+    "output": "He/She went to the store.",
+    "prompt_id": "ba5258a8-73f7-48a9-9101-7d09b1b24e4e"
+  },
+  {
+    "prompt_count": 115,
+    "instruction": "Change this sentence into the future tense.",
+    "input": "She walks to school.",
+    "output": "She will walk to school.",
+    "prompt_id": "2045cdd0-8ae0-4500-b762-596ad3f8c190"
+  },
+  {
+    "prompt_count": 116,
+    "instruction": "Summarize the following article in your own words.",
+    "input": "The internet has become a critical part of modern life and it has revolutionized the way we communicate and conduct business. It has enabled the spread of ideas and experiences quickly, globally, and cheaply.",
+    "output": "The internet has drastically changed our lives by allowing us to easily and quickly communicate and conduct business across the globe. It has enabled the rapid spread of ideas and experiences worldwide.",
+    "prompt_id": "271ee8a9-32bf-4b74-8011-e15d70a9bc22"
+  },
+  {
+    "prompt_count": 117,
+    "instruction": "What is the meaning of the following idiom?",
+    "input": "It’s raining cats and dogs",
+    "output": "The idiom \"it’s raining cats and dogs\" means that it is raining heavily.",
+    "prompt_id": "5e80f773-f77e-4da9-8783-9d9f561bc49d"
+  },
+  {
+    "prompt_count": 118,
+    "instruction": "Generate a sentence using the following words in the correct order.",
+    "input": "house on fire",
+    "output": "The house was on fire.",
+    "prompt_id": "2887adab-dd2b-4b5c-a4a3-8e1213ff363c"
+  },
+  {
+    "prompt_count": 119,
+    "instruction": "Is the sentence grammatically correct?",
+    "input": "The boy was playing with her toys.",
+    "output": "Yes, the sentence is grammatically correct.",
+    "prompt_id": "9eb8dbfd-66c4-40df-9b68-e32511f88866"
+  },
+  {
+    "prompt_count": 120,
+    "instruction": "Classify the relationship between John and Mary.",
+    "input": "John and Mary are siblings.",
+    "output": "John and Mary are brother and sister.",
+    "prompt_id": "d135acf0-75b5-4e34-b610-d39e14a060f4"
+  },
+  {
+    "prompt_count": 121,
+    "instruction": "Identify the language used in the given sentence.",
+    "input": "Il est incroyable.",
+    "output": "The sentence is in French.",
+    "prompt_id": "14ffc40d-8c53-476c-b548-2e8c36f3be49"
+  },
+  {
+    "prompt_count": 122,
+    "instruction": "Generate a summary of the given article.",
+    "input": "Between 1989 and 2019, the size of the U.S. economy, measured in terms of the gross domestic product (GDP), more than doubled. The growth was faster than in the prior two decades, driven in part by the dramatic expansion of the information technology sector in the 1990s and early 2000s, gains in worker productivity and strong consumer demand, and government investments in research and development.",
+    "output": "The U.S. economy more than doubled in size between 1989 and 2019, largely due to the rise of the information technology sector, improvements in worker productivity and consumer demand, and government investments. This growth was faster than in the prior two decades.",
+    "prompt_id": "cdce9b22-015e-4aef-842c-d6f609e739e3"
+  },
+  {
+    "prompt_count": 123,
+    "instruction": "Conver the temperature from Fahrenheit to Celsius.",
+    "input": "94F",
+    "output": "34.4C",
+    "prompt_id": "c5db44a4-66be-459d-9ee5-1eaae0e0fe35"
+  },
+  {
+    "prompt_count": 124,
+    "instruction": "Construct a phrase using the given words",
+    "input": "Pandemic, challenge, action",
+    "output": "Our action in the face of the pandemic is the ultimate challenge.",
+    "prompt_id": "fc507f3a-d42f-4988-8f8d-2882fa7540ad"
+  },
+  {
+    "prompt_count": 125,
+    "instruction": "Find the synonyms of the following word: 'Tenacious'.",
+    "input": "",
+    "output": "Persistent, dogged, determined, resolute, steadfast, unwavering, unyielding, persistent, persistent.",
+    "prompt_id": "b1893f26-9dd9-43b2-a32a-b325257db21f"
+  },
+  {
+    "prompt_count": 126,
+    "instruction": "Suggest a good restaurant.",
+    "input": "Los Angeles, CA",
+    "output": "In Los Angeles, CA, I suggest Rossoblu Italian restaurant.",
+    "prompt_id": "25a0e495-249d-4ddb-99b2-04287d7ebd26"
+  },
+  {
+    "prompt_count": 127,
+    "instruction": "Calculate the area of the triangle.",
+    "input": "Base: 5cm; Height: 6cm",
+    "output": "The area of the triangle is 15 cm².",
+    "prompt_id": "80bf074e-38e6-455c-a1e2-47badc414212"
+  },
+  {
+    "prompt_count": 128,
+    "instruction": "Rewrite the sentence with more descriptive words.",
+    "input": "The game is fun.",
+    "output": "The game is exhilarating and enjoyable.",
+    "prompt_id": "699674b4-89a6-40e7-9ee5-21e5f30e28b2"
+  },
+  {
+    "prompt_count": 129,
+    "instruction": "Generate a creative birthday wish for a friend.",
+    "input": "",
+    "output": "Happy birthday! May this special day bring you joy, laughter, and all the blessings you deserve. Have a wonderful year ahead!",
+    "prompt_id": "4de95e07-8abe-4a05-b679-c4e368dcc870"
+  },
+  {
+    "prompt_count": 130,
+    "instruction": "Make the second sentence shorter.",
+    "input": "Winter is usually the coldest season of the year. Snow is a common element during winter.",
+    "output": "Winter is the coldest season, often accompanied by snow.",
+    "prompt_id": "62095d5d-05b1-450f-8123-6a9b7b0a62c3"
+  },
+  {
+    "prompt_count": 131,
+    "instruction": "Find the solution to the quadratic equation.",
+    "input": "3x² + 7x - 4 = 0",
+    "output": "The solution of the quadratic equation is x = -4 and x = 1/3.",
+    "prompt_id": "04172e5e-ea74-446c-a264-9ebf98f35ca0"
+  },
+  {
+    "prompt_count": 132,
+    "instruction": "Find the average of these three numbers.",
+    "input": "2, 5, 10",
+    "output": "The average of 2, 5, 10 is 5.67.",
+    "prompt_id": "544486b5-9e2d-4db8-ba18-88da6c6b6a83"
+  },
+  {
+    "prompt_count": 133,
+    "instruction": "Rewrite the sentence in a different tense.",
+    "input": "He asked her to join him for lunch.",
+    "output": "He had asked her to join him for lunch.",
+    "prompt_id": "80bf7c3b-2d13-4c7d-937b-e7c43ca9613b"
+  },
+  {
+    "prompt_count": 134,
+    "instruction": "Classify the following data with three labels.",
+    "input": "fjsklfjdsklfjsklfjsklfjs",
+    "output": "Label1: Character data\nLabel2: Alphabetical data\nLabel3: Non-alphabetical data",
+    "prompt_id": "dc4dd621-cb84-4998-bb6c-01af0207724d"
+  },
+  {
+    "prompt_count": 135,
+    "instruction": "Compose a five word sentence describing your day.",
+    "input": "",
+    "output": "Today was an amazing day.",
+    "prompt_id": "28434bfa-8a43-42df-b0ff-3a2f4c391772"
+  },
+  {
+    "prompt_count": 136,
+    "instruction": "Describe the following painting in one sentence.",
+    "input": "Attached Painting",
+    "output": "The painting depicts a sprawling landscape on a beautiful day with rolling hills and a river winding its way through the terrain.",
+    "prompt_id": "3c639095-ffa7-4940-9c55-f7a8edc3b711"
+  },
+  {
+    "prompt_count": 137,
+    "instruction": "Search the web and find the title of the longest novel.",
+    "input": "",
+    "output": "The title of the longest novel is \"Gordale\", written by Carolyn Redfearn.",
+    "prompt_id": "b9afc7b6-9194-4c91-9c2d-e9293fb8bccc"
+  },
+  {
+    "prompt_count": 138,
+    "instruction": "Change the following sentence from the singular form to the plural form.",
+    "input": "The cat is drinking.",
+    "output": "The cats are drinking.",
+    "prompt_id": "db455a9e-f616-44f1-a9ab-8e9d9f3f47d4"
+  },
+  {
+    "prompt_count": 139,
+    "instruction": "Compile a list of 5 US states located in the Mid West.",
+    "input": "",
+    "output": "The 5 US states located in the Midwest are Illinois, Indiana, Michigan, Ohio, and Wisconsin.",
+    "prompt_id": "d4b59483-e62a-4292-a7df-f61d921da374"
+  },
+  {
+    "prompt_count": 140,
+    "instruction": "Analyze the following sentence and find the direct object.",
+    "input": "She wrote a book.",
+    "output": "The direct object of the sentence is \"book\".",
+    "prompt_id": "f483b72d-1835-45b8-9077-f6c9915385e6"
+  },
+  {
+    "prompt_count": 141,
+    "instruction": "During the last member meeting, create a list of 5 ideas to improve the club.",
+    "input": "",
+    "output": "At the last member meeting, the following 5 ideas to improve the club were suggested:  1. Increase the frequency of meetings,  2. Create a mentorship program,  3. Develop a website to advertise the club,  4. Create a budget to finance activities,  5. Offer incentives to encourage participation.",
+    "prompt_id": "38fda55b-df24-4610-902d-b927c2ead1f8"
+  },
+  {
+    "prompt_count": 142,
+    "instruction": "Edit the following sentence to correct the grammar and syntax errors",
+    "input": "You was late to the party",
+    "output": "You were late to the party.",
+    "prompt_id": "fbf3a18d-f602-45e0-92d2-13e8b7b67219"
+  },
+  {
+    "prompt_count": 143,
+    "instruction": "Create a questions that can be answered using the following sentence.",
+    "input": "\"It was a beautiful day\"",
+    "output": "What type of day was it?",
+    "prompt_id": "96cb0b31-b24a-42e4-9adb-29167b8f05a9"
+  },
+  {
+    "prompt_count": 144,
+    "instruction": "Write a simple definition of the word \"economics\".",
+    "input": "",
+    "output": "Economics is the study of how society uses its limited resources to produce and distribute goods and services.",
+    "prompt_id": "fddaea42-ad83-4df3-b6e8-7248670e47ee"
+  },
+  {
+    "prompt_count": 145,
+    "instruction": "Find the cutoff score for successful completion of the exam",
+    "input": "The exam had 100 multiple-choice questions with 4 options each",
+    "output": "The cutoff score for successful completion of the exam is 75.",
+    "prompt_id": "a56280bd-2811-4d99-8f34-7057bcae28ab"
+  },
+  {
+    "prompt_count": 146,
+    "instruction": "Generate a topic sentence to introduce the following text.",
+    "input": "Amidst increasing violence in the region, many civilians are fleeing their homes in search of safety.",
+    "output": "Due to the escalating tensions and violence, countless civilians are being forced from their homes in fear for their lives.",
+    "prompt_id": "1332e0fd-dfdc-4fef-8755-32a661b26e78"
+  },
+  {
+    "prompt_count": 147,
+    "instruction": "Write a function to calculate the factorial of a given number.",
+    "input": "",
+    "output": "def factorial(n):\n    if n == 0:\n        return 1\n    return n * factorial(n-1)",
+    "prompt_id": "94da1af0-aaac-453a-8c8b-9e1e08aebe45"
+  },
+  {
+    "prompt_count": 148,
+    "instruction": "Write a function to convert a given string to uppercase.",
+    "input": "",
+    "output": "def toUpperCase(str):\n    return str.upper()",
+    "prompt_id": "dcc13f27-ec39-4aef-bb17-dc6b9646c997"
+  },
+  {
+    "prompt_count": 149,
+    "instruction": "Extract the positive integers from an array?",
+    "input": "arr = [5,-2,8,-7,3,-1,0,5]",
+    "output": "[5, 8, 3, 5]",
+    "prompt_id": "6f89c63f-8e43-4273-8db1-4c3fbe5f81a8"
+  },
+  {
+    "prompt_count": 150,
+    "instruction": "Calculate the square root of a given number.",
+    "input": "",
+    "output": "def sqrt(n):\n    low = 0\n    high = n\n    \n    while low <= high:\n        mid = (low + high) // 2\n        if mid * mid == n:\n            return mid\n        elif mid * mid < n:\n            low = mid + 1\n        else:\n            high = mid - 1\n            \n    return low - 1",
+    "prompt_id": "10fc49c1-b2af-4390-8116-f577a435f744"
+  },
+  {
+    "prompt_count": 151,
+    "instruction": "Reverse a linked list.",
+    "input": "",
+    "output": "def reverse(head): \n    prev = None\n    cur = head \n\n    while cur:\n        next = cur.next\n        cur.next = prev \n        prev = cur \n        cur = next\n    head = prev\n    \n    return head",
+    "prompt_id": "57a6ca1d-ea11-4554-a610-f7c183b69d58"
+  },
+  {
+    "prompt_count": 152,
+    "instruction": "Compute the longest increasing subsequence of a given array?",
+    "input": "arr = [7, 10, 8, 11, 9, 5]",
+    "output": "[7, 8, 9, 11]",
+    "prompt_id": "3b349e90-b7b9-4f9f-8fce-026e6a683b00"
+  },
+  {
+    "prompt_count": 153,
+    "instruction": "Design an algorithm to find the maximum profit of a stock buy and sell?",
+    "input": "",
+    "output": "def maxProfit(prices):\n    min_price = float('inf')\n    max_profit = 0\n\n    for price in prices:\n        min_price = min(min_price, price) \n        profit = price - min_price\n        max_profit = max(max_profit, profit)\n\n    return max_profit",
+    "prompt_id": "5e599a12-640b-4ba9-8989-133666f4ad72"
+  },
+  {
+    "prompt_count": 154,
+    "instruction": "Given two strings, check whether one string is a rotation of another?",
+    "input": "s1 = ‘waterbottle’\ns2 = ‘erbottlewat’",
+    "output": "def isRotation(s1, s2):\n    if len(s1) != len(s2):\n        return False\n\n    s3 = s1 + s1 \n    return s3.find(s2) != -1",
+    "prompt_id": "4cbd4921-ee7f-4e3c-a28c-b63781a9f177"
+  },
+  {
+    "prompt_count": 155,
+    "instruction": "Given an array of integers, return the first repeating element.",
+    "input": "arr = [3, 6, 7, 1, 4, 6, 7]",
+    "output": "6",
+    "prompt_id": "27e84694-cf43-4147-872f-0cd1c8a163be"
+  },
+  {
+    "prompt_count": 156,
+    "instruction": "Find the two non-repeating elements in an array of repeating elements?",
+    "input": "arr = [2, 3, 7, 9, 11, 2, 3, 11]",
+    "output": "7, 9",
+    "prompt_id": "e0e0f521-ec77-4cde-8520-f8603f117ab9"
+  },
+  {
+    "prompt_count": 157,
+    "instruction": "Given a binary tree, check if it is a binary search tree?",
+    "input": "",
+    "output": "def isBST(root):\nif root is None : \n\treturn True\n\nif root.left is not None and root.left.val > root.val: \n\treturn False\n\nif root.right is not None and root.right.val < root.val: \n\treturn False\n\nreturn isBST(root.left) and isBST(root.right)",
+    "prompt_id": "b6c8ed49-4a72-44b4-ad9d-ad383fae2eb2"
+  },
+  {
+    "prompt_count": 158,
+    "instruction": "Find the maximum profit that can be earned from a given sequence of transactions?",
+    "input": "arr = [100, 180, 260, 310, 40, 535, 695]",
+    "output": "865",
+    "prompt_id": "d44bc95d-2d55-45e0-b917-c45f445e6f9c"
+  },
+  {
+    "prompt_count": 159,
+    "instruction": "Calculate the amount of money in a bank account with an initial $100 deposit and an interest rate of 6%, compounded annually",
+    "input": "",
+    "output": "At the end of year 1, the amount in the bank account would be $106. In year 2, the amount would be $112.36 and at the end of the 10th year, the amount would be $160.54. This illustrates the power of compound interest.",
+    "prompt_id": "70f596f5-9e6b-45f0-9b30-17f19a347af4"
+  },
+  {
+    "prompt_count": 160,
+    "instruction": "Give me a detailed overview of the framework of a web service.",
+    "input": "",
+    "output": "A web service should be composed of several components: a client application, a set of API (application programming interface) to interact with the client, a database to store data, a server to run the service, and a client-side application to process requests. The API should be designed with RESTful architecture and the server should be built with a language like Python or Ruby. The database should be tailored to the data that needs to be stored, and the client-side application should handle the response from the API. Additionally, for security purposes, certain requests should be encrypted or secured using authentication mechanisms.",
+    "prompt_id": "1c9774b0-c088-460d-a175-b3e470c8d444"
+  },
+  {
+    "prompt_count": 161,
+    "instruction": "Create a timeline describing the history of the internet",
+    "input": "",
+    "output": "1968: ARPANET, the first internet network, is created.\n 1973: TCP/IP is created, allowing computers to communicate with each other.\n 1983: DNS is created to simplify the communication process. \n 1989: The World Wide Web is created, giving birth to the public internet.\n 1995: JavaScript is developed, introducing dynamic content to the web.\n 2001: Wikipedia is launched, providing an online encyclopedia.\n 2004: Facebook is launched, growing quickly to 1 billion users.\n 2007: Apple introduces the iPhone, making mobile devices commonplace.\n 2009: Cloud computing begins to revolutionize data storage. \n 2011: HTML5 is released, encouraging richer web experiences.\n 2013: The Internet of Things (IoT) emerges, connecting dozens of durable devices. \n 2015: \"Voice first\" technology, such as Amazon's Alexa, launches.\n 2018: 5G networks begin rolling out, allowing for faster connection speeds.\n 2020: AI begins to be used to power home assistants like Alexa.",
+    "prompt_id": "88e66dcd-b86f-4d8b-9f5d-9d550aca4394"
+  },
+  {
+    "prompt_count": 162,
+    "instruction": "Paraphrase the following sentence",
+    "input": "The scientists conducted a rigorous experiment",
+    "output": "The scientists ran a thorough experiment.",
+    "prompt_id": "3f554471-694d-47f6-8285-9177510c743e"
+  },
+  {
+    "prompt_count": 163,
+    "instruction": "Develop a web-based application that does the following",
+    "input": "Sorts images according to category",
+    "output": "This web-based application should use a database to store the images and associated categorization information. The application should allow users to upload images and assign tags to them. Additionally, there should be an interface which provides the ability to search and filter the images by tags. Lastly, the application should use computer vision techniques, like object detection and image classification, to sort the images into categories.",
+    "prompt_id": "ef5fd344-14fc-4ef7-b9f7-2c1550a110b6"
+  },
+  {
+    "prompt_count": 164,
+    "instruction": "Describe the pros and cons of the following policy",
+    "input": "Providing free college education",
+    "output": "The pros of providing free college education include making education more accessible to individuals of all backgrounds, enhancing access to skilled professionals, providing equal opportunity for all, and boosting the economy. On the other hand, the drawbacks could include an increase in taxation and a greater burden on the government, an excessive influx of graduates in certain professions, a decrease in the quality of education, and an increased risk of overcrowding in certain universities.",
+    "prompt_id": "fc77c2ac-707e-4abf-a129-ae8ab01c7351"
+  },
+  {
+    "prompt_count": 165,
+    "instruction": "Design a post for a social media account to promote the following product",
+    "input": "Fresh fruit smoothie",
+    "output": "Introducing our new and extra refreshing fruit smoothie! Made from only the freshest fruits, this smoothie is a delicious way to stay energized and get your daily dose of nutrients. Get yours today! #smoothie #fruitsmoothie #refreshing",
+    "prompt_id": "6706eae4-a5db-4325-a97a-2211d0ed999d"
+  },
+  {
+    "prompt_count": 166,
+    "instruction": "Summarize the following article",
+    "input": "https://www.nytimes.com/2010/07/05/business/global/05phone.html",
+    "output": "This article discusses mobile phones and their unprecedented influence on different aspects of the global economy. After analyzing data from several countries, the article found that mobile phones have enabled economic growth, improved access to financial services, and created a platform for innovation. Mobile phones have also helped reduce poverty and corruption, and have opened the door for new business models.",
+    "prompt_id": "125488e1-34a3-4973-aff9-4fa365a9b86e"
+  },
+  {
+    "prompt_count": 167,
+    "instruction": "Create a job description for the following role",
+    "input": "Data Analytics Consultant",
+    "output": "We are looking for a data analytics consultant to support our operations. The consultant will develop strategies to understand, interpret, and act on data insights. The consultant should have experience in data visualization and dashboard development, machine learning, and communication of data insights to internal and external stakeholders. The ideal candidate will have excellent problem-solving skills, be detail-oriented, and be able to work confidently with stakeholders of varying levels.",
+    "prompt_id": "753da1ff-3881-4f70-a869-60bf23d2bc28"
+  },
+  {
+    "prompt_count": 168,
+    "instruction": "Identify the correct order for the following commands",
+    "input": "pack, prepare, travel",
+    "output": "The correct order is: prepare, pack, travel.",
+    "prompt_id": "de0e5434-69af-4818-9b6c-bc18a18c2452"
+  },
+  {
+    "prompt_count": 169,
+    "instruction": "Create a survey question to measure customer satisfaction",
+    "input": "",
+    "output": "On a scale of 1-5, how satisfied are you with our services?",
+    "prompt_id": "d557fb1b-1098-4e26-9a36-8bc7b02457f8"
+  },
+  {
+    "prompt_count": 170,
+    "instruction": "Create a list of 10 different animals",
+    "input": "",
+    "output": "1. Tiger\n2. Elephant\n3. Chimpanzee\n4. Gorilla\n5. Wolf \n6. Fox\n7. Kangaroo\n8. Hedgehog\n9. Porcupine\n10. Beave.",
+    "prompt_id": "c40dcb86-09d4-48c2-a7df-880cc6cd64bf"
+  },
+  {
+    "prompt_count": 171,
+    "instruction": "Suggest a good idea for a family photoshoot.",
+    "input": "",
+    "output": "How about a photoshoot in a park or garden with a picnic theme? Have the family dress up in fun and whimsical clothes and poses, and use props like vintage furniture, outdoor accessories, and decorations. Another idea could be a photoshoot in a game hall or arcade with the family playing games dressed up in matching costumes.",
+    "prompt_id": "cbe68a08-4907-487d-ac97-3e390f6174fd"
+  },
+  {
+    "prompt_count": 172,
+    "instruction": "Create a response for a customer's email about a refund issue.",
+    "input": "Dear [Company],\n\nI recently purchased a product from your store and I'm disappointed with the quality. I would like to request a refund.",
+    "output": "Dear [Customer],\n\nThank you for bringing this to our attention. We apologize for the issue with the product. We will process your refund request as soon as possible. Please let us know if we can help with anything else. Thank you for your understanding.  Kind regards, [Company]",
+    "prompt_id": "ccea8d26-53fc-42ff-bdf5-ce5dd9fb8b7d"
+  },
+  {
+    "prompt_count": 173,
+    "instruction": "Summarize the given news article in one sentence.",
+    "input": "In the latest budget announcement, the Chancellor has promised to introduce a new employment allowance to help employees of small businesses.",
+    "output": "The government has announced an employment allowance to help employees of small businesses in their most recent budget announcement.",
+    "prompt_id": "83aec92a-dd32-4a7e-b86c-03ae0a5a2bf2"
+  },
+  {
+    "prompt_count": 174,
+    "instruction": "Provide five adjectives that describe a particular animal.",
+    "input": "Lion",
+    "output": "Regal, mighty, majestic, brave, intelligent.",
+    "prompt_id": "90a30d9c-73a4-4d65-8a20-8ab22a520db6"
+  },
+  {
+    "prompt_count": 175,
+    "instruction": "Rearrange the words to create a complete sentence.",
+    "input": "Underwater creatures are fascinating",
+    "output": "Fascinating are underwater creatures.",
+    "prompt_id": "480055f8-4b8d-4e1f-8e69-675f36aaa105"
+  },
+  {
+    "prompt_count": 176,
+    "instruction": "Write a story that begins with the following sentence.",
+    "input": "She opened the door to find a tall figure cloaked in shadows.",
+    "output": "She opened the door with a trembling hand, expecting to find her friend. Instead, a tall figure cloaked in shadows stood in the doorway. Startled by the unexpected presence, she stepped back and her heart pounded. The figure made no sound and stood still, seemingly lost in thought. She wanted to speak, but before she could utter a word, the figure stepped forward, revealing a single rose in its hand. Taking the rose, she felt an overwhelming sense of something unknown, something of which she could not explain.",
+    "prompt_id": "2cab0e35-5a4a-488b-a53c-c5fb2abd3da6"
+  },
+  {
+    "prompt_count": 177,
+    "instruction": "Convert the given sentence into active voice.",
+    "input": "One hundred and fifty books were sold.",
+    "output": "Someone sold one hundred and fifty books.",
+    "prompt_id": "bf13a07b-0775-4d06-bbc9-3225776617c9"
+  },
+  {
+    "prompt_count": 178,
+    "instruction": "Explain why a given topic is important.",
+    "input": "Environmental protection",
+    "output": "Environmental protection is essential for maintaining the health of our planet for future generations. Human activities such as emissions, farming, and deforestation are contributing to climate change, air and water pollution, reduction in biodiversity, and other environmental threats. By placing a priority on environmental protection, we can limit the speed of environmental damage and conserve natural resources for our own and future generations' use.",
+    "prompt_id": "31a4761c-6a4d-433e-a8d4-2abe4240b04d"
+  },
+  {
+    "prompt_count": 179,
+    "instruction": "Describe the sound of the given object.",
+    "input": "Wind chime",
+    "output": "A wind chime produces a peaceful and melodic sound, with a mix of high-pitched and low-pitched tones. The sound of the chime is like a gentle breeze, reflecting the calming atmosphere of a light summer day.",
+    "prompt_id": "196bd4dc-5f87-4f80-8661-d89ea88ea90c"
+  },
+  {
+    "prompt_count": 180,
+    "instruction": "Rewrite the given sentence using a different but similar word.",
+    "input": "She partook in the event.",
+    "output": "She participated in the event.",
+    "prompt_id": "085681ff-ec58-4916-89a1-f127edc89f38"
+  },
+  {
+    "prompt_count": 181,
+    "instruction": "Classify the given input as either a poem, story, or song.",
+    "input": "Once upon a midnight dreary, while I pondered, weak and weary.",
+    "output": "Poem",
+    "prompt_id": "728c56c8-b23b-4957-bd4b-5c74a4832c45"
+  },
+  {
+    "prompt_count": 182,
+    "instruction": "Create a title for the following description.",
+    "input": "A story about a journey of self-discovery by a young girl.",
+    "output": "The Road to Finding Myself",
+    "prompt_id": "72a5fd6c-a3ab-4662-bb06-cc8132d1db75"
+  },
+  {
+    "prompt_count": 183,
+    "instruction": "Rewrite the given sentence in a more formal tone.",
+    "input": "I had to go to the store real quick.",
+    "output": "I had to make a quick trip to the store.",
+    "prompt_id": "f3a919c9-5699-43f5-af32-9c014eead03e"
+  },
+  {
+    "prompt_count": 184,
+    "instruction": "Write a few sentences about a given historical figure.",
+    "input": "Amelia Earhart",
+    "output": "Amelia Earhart was an American aviation pioneer and a renowned aviation figure. She was the first female aviator to fly solo across the Atlantic Ocean. Despite tragic circumstances, she is remembered as an inspiring role model and a symbol of courage, adventure, and determination. Her groundbreaking achievements pushed the boundaries of gender roles and inspired many.",
+    "prompt_id": "c928918b-dc7f-4b21-8f16-db568664d5f5"
+  },
+  {
+    "prompt_count": 185,
+    "instruction": "Generate a list of questions related to a given topic.",
+    "input": "Innovation",
+    "output": "1. What are the most current trends in the field of innovation? \n2. What aspects of innovation offer the most potential for success? \n3. What challenges have businesses recently faced related to innovation? \n4. What strategies can businesses use to drive innovation? \n5. How have technological advances helped shape new models of innovation? \n6. What unique approaches to innovation have proven successful? \n7. What principles guide successful innovation projects? \n8. What opportunities for innovation exist in emerging markets?\n9. In what ways does collaboration foster innovation? \n10. How can ideas be leveraged to promote innovation?",
+    "prompt_id": "9799432e-cb6c-4880-b7d5-9d91ea56e836"
+  },
+  {
+    "prompt_count": 186,
+    "instruction": "Create a slogan for a given product.",
+    "input": "Healthy snack",
+    "output": "A bite of goodness - Healthy snacks for your whole family!",
+    "prompt_id": "358c93b6-aa7b-4876-a9c5-e27e2e0d3d4d"
+  },
+  {
+    "prompt_count": 187,
+    "instruction": "Categorize the following text into one of the two sentiment classes: positive or negative.",
+    "input": "I didn't like the product very much because it was too slow and not user friendly.",
+    "output": "Negative.",
+    "prompt_id": "53886fae-4380-46c1-b167-c2b05c29d895"
+  },
+  {
+    "prompt_count": 188,
+    "instruction": "Summarize the paragraph into a sentence.",
+    "input": "When buying furniture, it's important to take into account the overall look and feel of the space. That means that you should ask yourself if the pieces you are selecting are a good match for the existing furnishings as well as what you imagine the overall style to be.",
+    "output": "Think about the existing furnishings and desired style when selecting furniture.",
+    "prompt_id": "78f0e1c9-4f20-489e-a1bf-436604fad9f8"
+  },
+  {
+    "prompt_count": 189,
+    "instruction": "Make the following sentence more concise.",
+    "input": "I have a really bad cold and it is making me feeling really miserable.",
+    "output": "I have a bad cold and feeling miserable.",
+    "prompt_id": "5d332bb6-1ed2-4c5d-b314-98076ac3af99"
+  },
+  {
+    "prompt_count": 190,
+    "instruction": "Transform the following sentence into a yes/no question.",
+    "input": "It is going to rain tomorrow.",
+    "output": "Is it going to rain tomorrow?",
+    "prompt_id": "f9520ec3-4540-4ebb-a7b4-611e25d9a592"
+  },
+  {
+    "prompt_count": 191,
+    "instruction": "Compose a tweet that addresses the issue of environmental degradation.",
+    "input": "",
+    "output": "We can't keep wasting resources and ignoring #EnvironmentalDegradation. Let's make our planet greener and healthier for future generations. #savetheenvironment #EnvironmentalProtection",
+    "prompt_id": "1d41e7b9-1e0f-49b4-b41d-994dd2bea5a6"
+  },
+  {
+    "prompt_count": 192,
+    "instruction": "Replace the underlined words with appropriate synonyms.",
+    "input": "The robbers snitched on their partners.",
+    "output": "The robbers divulged on their partners.",
+    "prompt_id": "590cc7e7-be99-4544-9923-22cd57bb3375"
+  },
+  {
+    "prompt_count": 193,
+    "instruction": "Correct the grammatical errors in the sentence.",
+    "input": "She come to the store for supplies.",
+    "output": "She came to the store for supplies.",
+    "prompt_id": "ff0dc6b2-2fdc-4a40-a854-19da6ab246ab"
+  },
+  {
+    "prompt_count": 194,
+    "instruction": "Identify the type of the relationship between the two words in the sentence.",
+    "input": "The car passed the truck.",
+    "output": "The relationship between the two words in the sentence is comparison.",
+    "prompt_id": "38c4f62e-3775-417c-8547-8a2921b211a7"
+  },
+  {
+    "prompt_count": 195,
+    "instruction": "Compose an informative sentence explaining the given term.",
+    "input": "Green bonds",
+    "output": "Green bonds are debt instruments issued to finance projects aimed at mitigating climate change and promoting sustainable development.",
+    "prompt_id": "374a2572-c7e1-4884-96b6-faef72b115cf"
+  },
+  {
+    "prompt_count": 196,
+    "instruction": "Rewrite the following sentence without changing the meaning.",
+    "input": "The sales report was not accurate.",
+    "output": "The sales report was inaccurate.",
+    "prompt_id": "a4aee109-563b-4467-919c-bee5b5fcc97c"
+  },
+  {
+    "prompt_count": 197,
+    "instruction": "What's the output of this code?",
+    "input": "x = [1, 2, 3, 4]\ny = [i**2 for i in x]",
+    "output": "y = [1, 4, 9, 16]",
+    "prompt_id": "96a34b55-11aa-4df6-9368-ae74cf98fdae"
+  },
+  {
+    "prompt_count": 198,
+    "instruction": "Write a short review for the novel \"The Catcher in the Rye\".",
+    "input": "",
+    "output": "I recently read “The Catcher in the Rye” and was impressed by J.D. Salinger's ability to capture the struggles of teenage life. This coming of age tale tells the story of Holden Caulfield's journey to adulthood, as he navigates the issues of identity, alienation, and despair. The novel manages to shed light on difficult topics through its humorous and vivid writing, making it an enjoyable and thought-provoking read.",
+    "prompt_id": "5d4237c8-6824-42f4-abcc-053be56403dd"
+  },
+  {
+    "prompt_count": 199,
+    "instruction": "Identify the following animal.",
+    "input": "It has thick fur, a long tail, and pointed ears.",
+    "output": "The animal is a fox.",
+    "prompt_id": "51f50f9f-1fc1-4474-bdd1-32c2148c47ac"
+  },
+  {
+    "prompt_count": 200,
+    "instruction": "Describe the impact of the coronavirus on the economy.",
+    "input": "",
+    "output": "The coronavirus has had a major impact on the economy, causing disruptions in industries such as tourism, travel, hospitality, retail, and more. These industries have seen sharp decreases in activity, resulting in surging unemployment levels, a weakened stock market, and decreased consumer spending. Business closures have been rampant, and some companies have even been forced to permanently close their doors. As a result, fiscal and monetary policies have been embraced by governments to help stem the economic downturn.",
+    "prompt_id": "dfe0d6aa-3b50-43aa-b147-91caaeaf763d"
+  }
+]
