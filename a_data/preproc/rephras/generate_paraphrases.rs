@@ -2,9 +2,9 @@
 cargo run \
     --manifest-path a_data/preproc/rephras/Cargo.toml \
     --release -- \
-    --version-set obstruction \
-    b_tests/data/alpaca_10_test.json \
-    b_tests/data/alpaca_10_obstruction.json
+    --version-set style \
+    a_data/alpaca/slice_100/alpaca_slice1.json \
+    a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json
 */
 
 use anyhow::{anyhow, Context, Result};
