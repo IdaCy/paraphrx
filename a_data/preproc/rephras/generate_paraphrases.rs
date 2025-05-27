@@ -43,189 +43,189 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
 
     // LENGTH / VERBOSITY─
     "length" => &[
-        "one_word",
-        "sentence_fragment",
-        "single_sentence",
-        "two_sentence",
-        "short_paragraph",
-        "multi_paragraph",
-        "bulleted_outline",
-        "numbered_steps",
-        "research_paper",
-        "stream_of_consciousness",
-        "tldr_summary",
-        "redundant_waffle",
-        "nested_parentheticals",
-        "recursive_self_reference",
+        "instruct_one_word",
+        "instruct_sentence_fragment",
+        "instruct_single_sentence",
+        "instruct_two_sentence",
+        "instruct_short_paragraph",
+        "instruct_multi_paragraph",
+        "instruct_bulleted_outline",
+        "instruct_numbered_steps",
+        "instruct_research_paper",
+        "instruct_stream_of_consciousness",
+        "instruct_tldr_summary",
+        "instruct_redundant_waffle",
+        "instruct_nested_parentheticals",
+        "instruct_recursive_self_reference",
     ],
 
     // OBSTRUCTIONS / NOISE (typos, case, weird chars...)
     "obstruction" => &[
         // Typos
-        "typo_swap", "typo_transpose", "typo_adjacent",
-        "typo_missing_vowels", "typo_repeated_letters",
-        "typo_homophone", "sms_abbrev", "leet_speak",
+        "instruct_typo_swap", "instruct_typo_transpose", "instruct_typo_adjacent",
+        "instruct_typo_missing_vowels", "instruct_typo_repeated_letters",
+        "instruct_typo_homophone", "instruct_sms_abbrev", "instruct_leet_speak",
 
         // Case / punctuation
-        "all_caps", "no_caps", "random_caps",
-        "no_punct", "extra_punct",
-        "oxford_comma", "misplaced_commas",
-        "em_dash_break", "parenthetical_aside",
-        "interrobang", "missing_bracket", "missing_quote",
+        "instruct_all_caps", "instruct_no_caps", "instruct_random_caps",
+        "instruct_no_punct", "instruct_extra_punct",
+        "instruct_oxford_comma", "instruct_misplaced_commas",
+        "instruct_em_dash_break", "instruct_parenthetical_aside",
+        "instruct_interrobang", "instruct_missing_bracket", "instruct_missing_quote",
 
         // Special chars
-        "emoji", "emoticon", "kaomoji",
-        "confusable_unicode", "zero_width",
-        "html_tags", "markdown_bold", "code_fence",
-        "spoiler_bars", "zalgo", "gzip_b64_blob",
-        "qr_ascii", "random_bytes",
+        "instruct_emoji", "instruct_emoticon", "instruct_kaomoji",
+        "instruct_confusable_unicode", "instruct_zero_width",
+        "instruct_html_tags", "instruct_markdown_bold", "instruct_code_fence",
+        "instruct_spoiler_bars", "instruct_zalgo", "instruct_gzip_b64_blob",
+        "instruct_qr_ascii", "instruct_random_bytes",
 
         // Structure
-        "random_linebreaks", "no_spaces", "reversed_text",
-        "rot13", "base64", "html_comment",
+        "instruct_random_linebreaks", "instruct_no_spaces", "instruct_reversed_text",
+        "instruct_rot13", "instruct_base64", "instruct_html_comment",
 
         // Noise insertion
-        "inline_ad", "inline_url", "hashtags", "key_smash",
+        "instruct_inline_ad", "instruct_inline_url", "instruct_hashtags", "instruct_key_smash",
     ],
 
     // LANGUAGE / DIALECT
     "language" => &[
-        "british_english", "american_english", "australian_english",
-        "singlish", "aave", "scots", "cockney",
-        "hinglish", "spanglish",
-        "spanish", "french", "german", "chinese_simplified",
-        "klingon", "esperanto",
-        "emoji_only", "morse_code",
+        "instruct_british_english", "instruct_american_english", "instruct_australian_english",
+        "instruct_singlish", "instruct_aave", "instruct_scots", "instruct_cockney",
+        "instruct_hinglish", "instruct_spanglish",
+        "instruct_spanish", "instruct_french", "instruct_german", "instruct_chinese_simplified",
+        "instruct_klingon", "instruct_esperanto",
+        "instruct_emoji_only", "instruct_morse_code",
     ],
 
     // CONTEXTUAL FRAMING
     "context" => &[
-        "study_setup", "casual_chat", "exam_prompt",
-        "formal_memo", "tech_support_ticket",
-        "therapy_session", "journalist_interview",
-        "roleplay_knight", "emergency_alert",
-        "indirect_relay", "meta_question",
+        "instruct_study_setup", "instruct_casual_chat", "instruct_exam_prompt",
+        "instruct_formal_memo", "instruct_tech_support_ticket",
+        "instruct_therapy_session", "instruct_journalist_interview",
+        "instruct_roleplay_knight", "instruct_emergency_alert",
+        "instruct_indirect_relay", "instruct_meta_question",
     ],
     // Register & Formality
     "register" => &[
-        "very_formal", "neutral", "casual",
-        "slang_heavy", "gamer_slang",
-        "vulgar", "euphemistic",
-        "legalese", "bureaucratic", "marketing_speak",
+        "instruct_very_formal", "instruct_neutral", "instruct_casual",
+        "instruct_slang_heavy", "instruct_gamer_slang",
+        "instruct_vulgar", "instruct_euphemistic",
+        "instruct_legalese", "instruct_bureaucratic", "instruct_marketing_speak",
     ],
 
     // Perspective & Voice
     "voice" => &[
-        "first_singular", "first_plural", "second_person", "third_person",
-        "passive_voice", "impersonal_one_should",
-        "past_tense", "future_tense",
+        "instruct_first_singular", "instruct_first_plural", "instruct_second_person", "instruct_third_person",
+        "instruct_passive_voice", "instruct_impersonal_one_should",
+        "instruct_past_tense", "instruct_future_tense",
     ],
 
     // Speech-Act
     "speech_act" => &[
-        "direct_question", "indirect_question",
-        "command", "polite_request", "suggestion",
-        "statement", "exclamation", "apology", "greeting",
+        "instruct_direct_question", "instruct_indirect_question",
+        "instruct_command", "instruct_polite_request", "instruct_suggestion",
+        "instruct_statement", "instruct_exclamation", "instruct_apology", "instruct_greeting",
     ],
 
     // Question-Type
     "question_type" => &[
-        "yes_no", "wh_question", "choice_question",
-        "tag_question", "rhetorical_question", "nested_question",
+        "instruct_yes_no", "instruct_wh_question", "instruct_choice_question",
+        "instruct_tag_question", "instruct_rhetorical_question", "instruct_nested_question",
     ],
 
     // Syntax Tweaks
     "syntax" => &[
-        "cleft_it_is", "pseudo_cleft", "topicalization",
-        "inversion", "nominalization", "coord_to_subord",
+        "instruct_cleft_it_is", "instruct_pseudo_cleft", "instruct_topicalization",
+        "instruct_inversion", "instruct_nominalization", "instruct_coord_to_subord",
     ],
 
     // Polarity & Modality
     "polarity" => &[
-        "positive", "negated", "double_negative", "litotes",
-        "modal_must", "modal_should", "modal_may",
-        "hypothetical_if", "paradox",
+        "instruct_positive", "instruct_negated", "instruct_double_negative", "instruct_litotes",
+        "instruct_modal_must", "instruct_modal_should", "instruct_modal_may",
+        "instruct_hypothetical_if", "instruct_paradox",
     ],
 
     // Genre / Format
     "genre" => &[
-        "tweet", "sms", "email", "memo",
-        "news_headline", "haiku", "rap_verse",
-        "advertisement", "error_message",
-        "json_format", "sql_snippet", "yaml_block", "csv_row",
-        "markdown_doc", "regex_pattern",
+        "instruct_tweet", "instruct_sms", "instruct_email", "instruct_memo",
+        "instruct_news_headline", "instruct_haiku", "instruct_rap_verse",
+        "instruct_advertisement", "instruct_error_message",
+        "instruct_json_format", "instruct_sql_snippet", "instruct_yaml_block", "instruct_csv_row",
+        "instruct_markdown_doc", "instruct_regex_pattern",
     ],
 
     // Visual Layout
     "layout" => &[
-        "bullet_list", "numbered_list", "table_layout",
-        "checklist", "markdown_quote", "csv_line",
+        "instruct_bullet_list", "instruct_numbered_list", "instruct_table_layout",
+        "instruct_checklist", "instruct_markdown_quote", "instruct_csv_line",
     ],
 
     // Tone & Emotion
     "tone" => &[
-        "enthusiastic", "urgent", "skeptical", "confident",
-        "sarcastic", "cynical", "hopeful",
-        "dramatic", "melancholy",
+        "instruct_enthusiastic", "instruct_urgent", "instruct_skeptical", "instruct_confident",
+        "instruct_sarcastic", "instruct_cynical", "instruct_hopeful",
+        "instruct_dramatic", "instruct_melancholy",
     ],
 
     // Domain Jargon
     "domain" => &[
-        "medical_jargon", "legal_jargon", "finance_jargon",
-        "software_jargon", "physics_jargon", "gaming_jargon",
-        "sports_jargon", "culinary_jargon", "fashion_jargon",
+        "instruct_medical_jargon", "instruct_legal_jargon", "instruct_finance_jargon",
+        "instruct_software_jargon", "instruct_physics_jargon", "instruct_gaming_jargon",
+        "instruct_sports_jargon", "instruct_culinary_jargon", "instruct_fashion_jargon",
     ],
 
     // Cultural Reference
     "culture" => &[
-        "pop_culture_meme", "historical_analogy",
-        "sports_metaphor", "proverb_or_idiom",
+        "instruct_pop_culture_meme", "instruct_historical_analogy",
+        "instruct_sports_metaphor", "instruct_proverb_or_idiom",
     ],
 
     // Number / Symbol Swap
     "numbers" => &[
-        "exact_numbers", "fuzzy_numbers", "roman_numeral",
-        "scientific_notation",
+        "instruct_exact_numbers", "instruct_fuzzy_numbers", "instruct_roman_numeral",
+        "instruct_scientific_notation",
     ],
 
     // Compression vs. Redundancy
     "compression" => &[
-        "contractions", "no_contractions",
-        "acronyms_spelled_out", "footnotes", "ellipsis_style",
+        "instruct_contractions", "instruct_no_contractions",
+        "instruct_acronyms_spelled_out", "instruct_footnotes", "instruct_ellipsis_style",
     ],
 
     // Dialogue Frames
     "dialogue" => &[
-        "qa_script", "timestamped_chat",
-        "forum_quote", "debate_turns",
+        "instruct_qa_script", "instruct_timestamped_chat",
+        "instruct_forum_quote", "instruct_debate_turns",
     ],
 
     // Self-Reflection / Edits
     "self_reflect" => &[
-        "might_be_wrong", "edit_typo", "sic_marker",
+        "instruct_might_be_wrong", "instruct_edit_typo", "instruct_sic_marker",
     ],
 
     // Encoding & Ciphers
     "encoding" => &[
-        "morse_code", "binary_code", "hex_code",
-        "url_encoded", "caesar_cipher", "pig_latin",
-        "emoji_cipher",
+        "instruct_morse_code", "instruct_binary_code", "instruct_hex_code",
+        "instruct_url_encoded", "instruct_caesar_cipher", "instruct_pig_latin",
+        "instruct_emoji_cipher",
     ],
 
     // Mixed Modality
     "modality" => &[
-        "see_attached_diagram", "musical_notation", "chemical_smiles",
+        "instruct_see_attached_diagram", "instruct_musical_notation", "instruct_chemical_smiles",
     ],
 
     // Boundary Cases
     "boundary" => &[
-        "empty_input", "contradictory_ask", "paradox_statement",
+        "instruct_empty_input", "instruct_contradictory_ask", "instruct_paradox_statement",
     ],
 
     // Mis-direction
     "misdirection" => &[
-        "garden_path", "pun_based", "malapropism",
-        "ambiguous_scope",
+        "instruct_garden_path", "instruct_pun_based", "instruct_malapropism",
+        "instruct_ambiguous_scope",
     ],
 };
 
