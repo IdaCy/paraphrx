@@ -27,7 +27,7 @@ def dump_config(cfg: str, output_dir: str, splits: List[str], indent: Optional[i
         try:
             ds = load_dataset(DATASET_NAME, name=cfg, split=split)
         except Exception:
-            # Some configurations may miss a split – skip it gracefully.
+            # Some configurations may miss a split – skip it gracefully
             continue
 
         for ex in ds:
