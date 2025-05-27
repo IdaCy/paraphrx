@@ -19,12 +19,11 @@ Running:
 and then:
 
 python c_assess_inf/src/run_inference.py \
-       b_tests/data/alpaca_10_politeness.json \
-       c_assess_inf/output/results_2.json \
+       a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json \
+       c_assess_inf/output/alpaca_prx_style1_slice1.json \
        --model google/gemma-2b-it \
        --temperature 0 \
-       --max_tokens 256 \
-       --n_samples 2
+       --max_tokens 256
 """
 from __future__ import annotations
 
@@ -39,7 +38,7 @@ from huggingface_hub import login as hf_login, HfApi
 from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 from tqdm import tqdm
 
-# Helpers                                                                      #
+# Helpers
 
 def ensure_hf_auth(token: Optional[str]) -> None:
     """Authenticate with the Hub *once* for the current process."""
