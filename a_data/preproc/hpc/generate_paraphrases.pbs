@@ -12,20 +12,20 @@ cd "$PBS_O_WORKDIR"
 echo "$(date "+%Y-%m-%d %H:%M:%S") - slice1_generate_paraphrases started" >> "$HOME/times.log"
 
 export GOOGLE_API_KEY="AIzaSyD8JwTOvg_7aajlfn61eGh00gj_Ob73Xi8"
-export SLICE="slice1"
+#export SLICE="slice1"
 
 # Path to the Rust workspace
 MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
 #IN_JSON="b_tests/data/alpaca_${SLICE}.json"
 IN_JSON="a_data/alpaca/slice_100/alpaca_${SLICE}.json"
 #OUT_JSON="b_tests/data/alpaca_${SLICE}_prxed.json"
-OUT_JSON="a_data/alpaca/slice_100/alpaca_prx_extra2_${SLICE}.json"
+OUT_JSON="a_data/alpaca/slice_100/alpaca_prx_special_chars2_${SLICE}.json"
 
 # Run the Rust program
 cargo run \
     --manifest-path "$MANIFEST_PATH" \
     --release -- \
-    --version-set extra \
+    --version-set special_chars \
     "$IN_JSON" \
     "$OUT_JSON"
 
