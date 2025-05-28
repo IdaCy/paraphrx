@@ -1,5 +1,13 @@
 # Paraphrase Investigations
 
+The Limit of LLMs with paraphrased style difference
+
+## Sub Project 1: How do you want to talk to an LLM to have the best outcome - PRODUCT
+
+- big comparison dashboard
+- flagging style
+- people insert something -> ranked how good result -> translate from their style to best style!!
+
 ## Data
 
 Initial data from: https://huggingface.co/datasets/tatsu-lab/alpaca  
