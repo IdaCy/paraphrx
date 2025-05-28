@@ -1,6 +1,6 @@
 [
   {
-    "question": "Which of the following pairs of statements are both true (as of 2019)?",
+    "instruction_original": "Which of the following pairs of statements are both true (as of 2019)?",
     "subject": "global_facts",
     "choices": [
       "People tend to be optimistic about their own future and the future of their nation or the world.",
@@ -13,7 +13,7 @@
     "split": "dev"
   },
   {
-    "question": "As of 2019, about what percentage of Americans agree that the state is run for the benefit of all the people?",
+    "instruction_original": "As of 2019, about what percentage of Americans agree that the state is run for the benefit of all the people?",
     "subject": "global_facts",
     "choices": [
       "31%",
@@ -26,7 +26,7 @@
     "split": "dev"
   },
   {
-    "question": "As of 2015, since 1990 forests have ____ in Europe and have ____ in Africa and the Americas.",
+    "instruction_original": "As of 2015, since 1990 forests have ____ in Europe and have ____ in Africa and the Americas.",
     "subject": "global_facts",
     "choices": [
       "increased, increased",
@@ -39,7 +39,7 @@
     "split": "dev"
   },
   {
-    "question": "As of 2019, about what percentage of Russians say it is very important to have free media in our country without government/state censorship?",
+    "instruction_original": "As of 2019, about what percentage of Russians say it is very important to have free media in our country without government/state censorship?",
     "subject": "global_facts",
     "choices": [
       "38%",
@@ -52,7 +52,7 @@
     "split": "dev"
   },
   {
-    "question": "As of 2017, how many of the world’s 1-year-old children today have been vaccinated against some disease? *",
+    "instruction_original": "As of 2017, how many of the world’s 1-year-old children today have been vaccinated against some disease? *",
     "subject": "global_facts",
     "choices": [
       "80%",
@@ -65,7 +65,7 @@
     "split": "dev"
   },
   {
-    "question": "As of 2016, about what percentage of adults aged 18 years or older were overweight?",
+    "instruction_original": "As of 2016, about what percentage of adults aged 18 years or older were overweight?",
     "subject": "global_facts",
     "choices": [
       "10%",
@@ -78,7 +78,7 @@
     "split": "test"
   },
   {
-    "question": "What was GDP per capita in the United States in 1850 when adjusting for inflation and PPP in 2011 prices?",
+    "instruction_original": "What was GDP per capita in the United States in 1850 when adjusting for inflation and PPP in 2011 prices?",
     "subject": "global_facts",
     "choices": [
       "About $300",
@@ -91,7 +91,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of people from the United States says homosexuality should be accepted by society?",
+    "instruction_original": "As of 2019, about what percentage of people from the United States says homosexuality should be accepted by society?",
     "subject": "global_facts",
     "choices": [
       "52%",
@@ -104,7 +104,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following countries generated the most total energy from solar sources in 2019?",
+    "instruction_original": "Which of the following countries generated the most total energy from solar sources in 2019?",
     "subject": "global_facts",
     "choices": [
       "China",
@@ -117,7 +117,7 @@
     "split": "test"
   },
   {
-    "question": "Controlling for inflation and PPP-adjustment, about how much did GDP per capita increase from 1950 to 2016 in Japan?",
+    "instruction_original": "Controlling for inflation and PPP-adjustment, about how much did GDP per capita increase from 1950 to 2016 in Japan?",
     "subject": "global_facts",
     "choices": [
       "by 5 fold",
@@ -130,7 +130,7 @@
     "split": "test"
   },
   {
-    "question": "What is the biggest cause of death in children under five years old (as of 2017)?",
+    "instruction_original": "What is the biggest cause of death in children under five years old (as of 2017)?",
     "subject": "global_facts",
     "choices": [
       "Lower respiratory infections",
@@ -143,7 +143,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of the global population does not have access to safe drinking water?",
+    "instruction_original": "As of 2019, about what percentage of the global population does not have access to safe drinking water?",
     "subject": "global_facts",
     "choices": [
       "10%",
@@ -156,7 +156,7 @@
     "split": "test"
   },
   {
-    "question": "About what percentage of survey respondents from India report having paid a bribe in the last year to access public services (such as education; judiciary; medical and health; police; registry and permit services; utilities; tax revenue and customs; and land service) as of 2017?",
+    "instruction_original": "About what percentage of survey respondents from India report having paid a bribe in the last year to access public services (such as education; judiciary; medical and health; police; registry and permit services; utilities; tax revenue and customs; and land service) as of 2017?",
     "subject": "global_facts",
     "choices": [
       "29%",
@@ -169,7 +169,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, what fraction of the population in Brazil used the internet in the past three months?",
+    "instruction_original": "As of 2017, what fraction of the population in Brazil used the internet in the past three months?",
     "subject": "global_facts",
     "choices": [
       "18%",
@@ -182,7 +182,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, what fraction of the population in India used the internet in the past three months?",
+    "instruction_original": "As of 2017, what fraction of the population in India used the internet in the past three months?",
     "subject": "global_facts",
     "choices": [
       "11%",
@@ -195,7 +195,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2018, about what percentage of Indians say that having an increasing number of people of many different races, ethnic groups and nationalities in their country makes it a better place to live (as opposed to worse or no difference)?",
+    "instruction_original": "As of 2018, about what percentage of Indians say that having an increasing number of people of many different races, ethnic groups and nationalities in their country makes it a better place to live (as opposed to worse or no difference)?",
     "subject": "global_facts",
     "choices": [
       "23%",
@@ -208,7 +208,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of the world population lives in extreme poverty (less than $1.90 a day)?",
+    "instruction_original": "As of 2019, about what percentage of the world population lives in extreme poverty (less than $1.90 a day)?",
     "subject": "global_facts",
     "choices": [
       "5%",
@@ -221,7 +221,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2020, about what percentage of the world population practices open defecation?",
+    "instruction_original": "As of 2020, about what percentage of the world population practices open defecation?",
     "subject": "global_facts",
     "choices": [
       "2%",
@@ -234,7 +234,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following is not an element of the redistribution-with-growth policy approach?",
+    "instruction_original": "Which of the following is not an element of the redistribution-with-growth policy approach?",
     "subject": "global_facts",
     "choices": [
       "minimum wage legislation",
@@ -247,7 +247,7 @@
     "split": "test"
   },
   {
-    "question": "About what percentage of the global population was literate in 1950?",
+    "instruction_original": "About what percentage of the global population was literate in 1950?",
     "subject": "global_facts",
     "choices": [
       "36%",
@@ -260,7 +260,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2016, about what percentage of adults aged 18 years or older were obese?",
+    "instruction_original": "As of 2016, about what percentage of adults aged 18 years or older were obese?",
     "subject": "global_facts",
     "choices": [
       "6%",
@@ -273,7 +273,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of Germans say the relationship between the U.S. and Germany is good?",
+    "instruction_original": "As of 2019, about what percentage of Germans say the relationship between the U.S. and Germany is good?",
     "subject": "global_facts",
     "choices": [
       "34%",
@@ -286,7 +286,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, what percentage of Americans live in urban areas?",
+    "instruction_original": "As of 2017, what percentage of Americans live in urban areas?",
     "subject": "global_facts",
     "choices": [
       "62%",
@@ -299,7 +299,7 @@
     "split": "test"
   },
   {
-    "question": "What was GDP per capita in the United States in 1950 when adjusting for inflation and PPP in 2011 prices?",
+    "instruction_original": "What was GDP per capita in the United States in 1950 when adjusting for inflation and PPP in 2011 prices?",
     "subject": "global_facts",
     "choices": [
       "About $3k",
@@ -312,7 +312,7 @@
     "split": "test"
   },
   {
-    "question": "In 2016, about how many people in the United States were homeless?",
+    "instruction_original": "In 2016, about how many people in the United States were homeless?",
     "subject": "global_facts",
     "choices": [
       "55,000",
@@ -325,7 +325,7 @@
     "split": "test"
   },
   {
-    "question": "In 1965 how many Americans thought that sending troops to Vietnam was a mistake?",
+    "instruction_original": "In 1965 how many Americans thought that sending troops to Vietnam was a mistake?",
     "subject": "global_facts",
     "choices": [
       "25%",
@@ -338,7 +338,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2013, share of people in the Ethiopia who think political parties are corrupt is",
+    "instruction_original": "As of 2013, share of people in the Ethiopia who think political parties are corrupt is",
     "subject": "global_facts",
     "choices": [
       "24%",
@@ -351,7 +351,7 @@
     "split": "test"
   },
   {
-    "question": "In 1997, the World Bank found that the fraction of the world’s population living in low and lower-middle income countries—that is, countries with per capita incomes of $1230 or less—was approximately",
+    "instruction_original": "In 1997, the World Bank found that the fraction of the world’s population living in low and lower-middle income countries—that is, countries with per capita incomes of $1230 or less—was approximately",
     "subject": "global_facts",
     "choices": [
       "25%",
@@ -364,7 +364,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2015, agriculture made up about what percentage of total Indian GDP?",
+    "instruction_original": "As of 2015, agriculture made up about what percentage of total Indian GDP?",
     "subject": "global_facts",
     "choices": [
       "8%",
@@ -377,7 +377,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following is true as of 2020?",
+    "instruction_original": "Which of the following is true as of 2020?",
     "subject": "global_facts",
     "choices": [
       "males are more likely to have depression and are more likely to have an alcohol use disorder than females.",
@@ -390,7 +390,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of people from Brazil says homosexuality should be accepted by society?",
+    "instruction_original": "As of 2019, about what percentage of people from Brazil says homosexuality should be accepted by society?",
     "subject": "global_facts",
     "choices": [
       "37%",
@@ -403,7 +403,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, the share of GDP spent on the military by Saudi Arabia is about",
+    "instruction_original": "As of 2017, the share of GDP spent on the military by Saudi Arabia is about",
     "subject": "global_facts",
     "choices": [
       "1%",
@@ -416,7 +416,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what share of electricity came from fossil fuels in the United States?",
+    "instruction_original": "As of 2019, about what share of electricity came from fossil fuels in the United States?",
     "subject": "global_facts",
     "choices": [
       "23%",
@@ -429,7 +429,7 @@
     "split": "test"
   },
   {
-    "question": "What is the percentage of children aged 13-15 in Egypt who reported being bullied at least once in the past couple of months as of 2015?",
+    "instruction_original": "What is the percentage of children aged 13-15 in Egypt who reported being bullied at least once in the past couple of months as of 2015?",
     "subject": "global_facts",
     "choices": [
       "10%",
@@ -442,7 +442,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2018, about what percentage of US adults say criminal risk assessment for people up for parole is an unreasonable application of algorithmic decision making?",
+    "instruction_original": "As of 2018, about what percentage of US adults say criminal risk assessment for people up for parole is an unreasonable application of algorithmic decision making?",
     "subject": "global_facts",
     "choices": [
       "26%",
@@ -455,7 +455,7 @@
     "split": "test"
   },
   {
-    "question": "In 2018, about how many chickens were killed for meat production?",
+    "instruction_original": "In 2018, about how many chickens were killed for meat production?",
     "subject": "global_facts",
     "choices": [
       "690 million",
@@ -468,7 +468,7 @@
     "split": "test"
   },
   {
-    "question": "In 2016, what percentage of the population of South Sudan had access to electricity?",
+    "instruction_original": "In 2016, what percentage of the population of South Sudan had access to electricity?",
     "subject": "global_facts",
     "choices": [
       "9%",
@@ -481,7 +481,7 @@
     "split": "test"
   },
   {
-    "question": "About what percentage of survey respondents from Mexico report having paid a bribe in the last year to access public services (such as education; judiciary; medical and health; police; registry and permit services; utilities; tax revenue and customs; and land service) as of 2017?",
+    "instruction_original": "About what percentage of survey respondents from Mexico report having paid a bribe in the last year to access public services (such as education; judiciary; medical and health; police; registry and permit services; utilities; tax revenue and customs; and land service) as of 2017?",
     "subject": "global_facts",
     "choices": [
       "31%",
@@ -494,7 +494,7 @@
     "split": "test"
   },
   {
-    "question": "Controlling for inflation and PPP-adjustment, about how much did GDP per capita increase from 1950 to 2016 in China?",
+    "instruction_original": "Controlling for inflation and PPP-adjustment, about how much did GDP per capita increase from 1950 to 2016 in China?",
     "subject": "global_facts",
     "choices": [
       "by 4 fold",
@@ -507,7 +507,7 @@
     "split": "test"
   },
   {
-    "question": "Ross Perot makes polling history by leading the presidential race briefly in June as a third-party candidate with 39%. He winds up with _% of the popular vote.",
+    "instruction_original": "Ross Perot makes polling history by leading the presidential race briefly in June as a third-party candidate with 39%. He winds up with _% of the popular vote.",
     "subject": "global_facts",
     "choices": [
       "1",
@@ -520,7 +520,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of Turks say God plays an important role in their life?",
+    "instruction_original": "As of 2019, about what percentage of Turks say God plays an important role in their life?",
     "subject": "global_facts",
     "choices": [
       "59%",
@@ -533,7 +533,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following was responsible for the most death in the 20th century?",
+    "instruction_original": "Which of the following was responsible for the most death in the 20th century?",
     "subject": "global_facts",
     "choices": [
       "Earthquakes",
@@ -546,7 +546,7 @@
     "split": "test"
   },
   {
-    "question": "What is the percentage of children aged 13-15 in the United States who reported being in a physical fight at school, one or more times during the past 12 months as of 2015?",
+    "instruction_original": "What is the percentage of children aged 13-15 in the United States who reported being in a physical fight at school, one or more times during the past 12 months as of 2015?",
     "subject": "global_facts",
     "choices": [
       "15%",
@@ -559,7 +559,7 @@
     "split": "test"
   },
   {
-    "question": "Controlling for inflation and PPP-adjustment, about how much did GDP per capita increase from 1950 to 2016 in South Korea?",
+    "instruction_original": "Controlling for inflation and PPP-adjustment, about how much did GDP per capita increase from 1950 to 2016 in South Korea?",
     "subject": "global_facts",
     "choices": [
       "by 4 fold",
@@ -572,7 +572,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of people from Turkey agree that the state is run for the benefit of all the people?",
+    "instruction_original": "As of 2019, about what percentage of people from Turkey agree that the state is run for the benefit of all the people?",
     "subject": "global_facts",
     "choices": [
       "36%",
@@ -585,7 +585,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2015, what percentage of the global population over 15 years old was literate?",
+    "instruction_original": "As of 2015, what percentage of the global population over 15 years old was literate?",
     "subject": "global_facts",
     "choices": [
       "81%",
@@ -598,7 +598,7 @@
     "split": "test"
   },
   {
-    "question": "About what percentage of survey respondents from China report having paid a bribe in the last year to access public services (such as education; judiciary; medical and health; police; registry and permit services; utilities; tax revenue and customs; and land service) as of 2017?",
+    "instruction_original": "About what percentage of survey respondents from China report having paid a bribe in the last year to access public services (such as education; judiciary; medical and health; police; registry and permit services; utilities; tax revenue and customs; and land service) as of 2017?",
     "subject": "global_facts",
     "choices": [
       "26%",
@@ -611,7 +611,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, which of the following had the lowest life expectancy?",
+    "instruction_original": "As of 2019, which of the following had the lowest life expectancy?",
     "subject": "global_facts",
     "choices": [
       "Brazil",
@@ -624,7 +624,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, unsafe water is responsible for about how many deaths each year?",
+    "instruction_original": "As of 2019, unsafe water is responsible for about how many deaths each year?",
     "subject": "global_facts",
     "choices": [
       "1.2 million",
@@ -637,7 +637,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following causes more deaths globally each year (as of 2017)?",
+    "instruction_original": "Which of the following causes more deaths globally each year (as of 2017)?",
     "subject": "global_facts",
     "choices": [
       "Diarrheal diseases",
@@ -650,7 +650,7 @@
     "split": "test"
   },
   {
-    "question": "About how many people are infected by HIV/AIDS as of 2020?",
+    "instruction_original": "About how many people are infected by HIV/AIDS as of 2020?",
     "subject": "global_facts",
     "choices": [
       "3 million",
@@ -663,7 +663,7 @@
     "split": "test"
   },
   {
-    "question": "What is the percentage of children aged 13-15 in the United States who reported being bullied at least once in the past couple of months as of 2015?",
+    "instruction_original": "What is the percentage of children aged 13-15 in the United States who reported being bullied at least once in the past couple of months as of 2015?",
     "subject": "global_facts",
     "choices": [
       "26%",
@@ -676,7 +676,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of South Koreans say it is necessary to believe in God in order to be moral and have good values?",
+    "instruction_original": "As of 2019, about what percentage of South Koreans say it is necessary to believe in God in order to be moral and have good values?",
     "subject": "global_facts",
     "choices": [
       "25%",
@@ -689,7 +689,7 @@
     "split": "test"
   },
   {
-    "question": "What is the percentage of children aged 13-15 in Japan who reported being bullied at least once in the past couple of months as of 2015?",
+    "instruction_original": "What is the percentage of children aged 13-15 in Japan who reported being bullied at least once in the past couple of months as of 2015?",
     "subject": "global_facts",
     "choices": [
       "6%",
@@ -702,7 +702,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2018, about what percentage of US adults say computer programs will always reflect human bias?",
+    "instruction_original": "As of 2018, about what percentage of US adults say computer programs will always reflect human bias?",
     "subject": "global_facts",
     "choices": [
       "43%",
@@ -715,7 +715,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, the share of GDP spent on the military by China is about",
+    "instruction_original": "As of 2017, the share of GDP spent on the military by China is about",
     "subject": "global_facts",
     "choices": [
       "0.50%",
@@ -728,7 +728,7 @@
     "split": "test"
   },
   {
-    "question": "The conjecture that inequality first increases with development, then decreases with further development (known as the “inverted U hypothesis”) has, as of 2020, been",
+    "instruction_original": "The conjecture that inequality first increases with development, then decreases with further development (known as the “inverted U hypothesis”) has, as of 2020, been",
     "subject": "global_facts",
     "choices": [
       "strongly supported by most studies",
@@ -741,7 +741,7 @@
     "split": "test"
   },
   {
-    "question": "Worldwide, 30 year old men have spent 10 years in school, on average. How many years have women of the same age spent in school, as of 2020?",
+    "instruction_original": "Worldwide, 30 year old men have spent 10 years in school, on average. How many years have women of the same age spent in school, as of 2020?",
     "subject": "global_facts",
     "choices": [
       "12 years",
@@ -754,7 +754,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, the share of deaths in Greenland by suicide is about",
+    "instruction_original": "As of 2017, the share of deaths in Greenland by suicide is about",
     "subject": "global_facts",
     "choices": [
       "0.90%",
@@ -767,7 +767,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of people from Russia says homosexuality should be accepted by society?",
+    "instruction_original": "As of 2019, about what percentage of people from Russia says homosexuality should be accepted by society?",
     "subject": "global_facts",
     "choices": [
       "14%",
@@ -780,7 +780,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of Americans say the relationship between the U.S. and Germany is good?",
+    "instruction_original": "As of 2019, about what percentage of Americans say the relationship between the U.S. and Germany is good?",
     "subject": "global_facts",
     "choices": [
       "60%",
@@ -793,7 +793,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of Americans say it is very important to have free media in our country without government/state censorship?",
+    "instruction_original": "As of 2019, about what percentage of Americans say it is very important to have free media in our country without government/state censorship?",
     "subject": "global_facts",
     "choices": [
       "50%",
@@ -806,7 +806,7 @@
     "split": "test"
   },
   {
-    "question": "In 1987 during Iran Contra what percent of Americans believe Reagan was witholding information?",
+    "instruction_original": "In 1987 during Iran Contra what percent of Americans believe Reagan was witholding information?",
     "subject": "global_facts",
     "choices": [
       "2%",
@@ -819,7 +819,7 @@
     "split": "test"
   },
   {
-    "question": "In Sub-Saharan Africa, as of 2020,",
+    "instruction_original": "In Sub-Saharan Africa, as of 2020,",
     "subject": "global_facts",
     "choices": [
       "no nation has been able to grow in the past years.",
@@ -832,7 +832,7 @@
     "split": "test"
   },
   {
-    "question": "World Bank data show that in 1995, the poorest 20% of households accounted for 7.5% of household income in Niger, the next 20% of households accounted for 11.8% of income, the middle 20% accounted for 15.5% of income, the second richest 20% accounted for 21.1% of income, and the top 20% accounted for 44.1% of income. What was the cumulative income share of the bottom 60% of households in Niger?",
+    "instruction_original": "World Bank data show that in 1995, the poorest 20% of households accounted for 7.5% of household income in Niger, the next 20% of households accounted for 11.8% of income, the middle 20% accounted for 15.5% of income, the second richest 20% accounted for 21.1% of income, and the top 20% accounted for 44.1% of income. What was the cumulative income share of the bottom 60% of households in Niger?",
     "subject": "global_facts",
     "choices": [
       "15.50%",
@@ -845,7 +845,7 @@
     "split": "test"
   },
   {
-    "question": "How many children between the ages of 5-14 worked globally as of 2012?",
+    "instruction_original": "How many children between the ages of 5-14 worked globally as of 2012?",
     "subject": "global_facts",
     "choices": [
       "5 million",
@@ -858,7 +858,7 @@
     "split": "test"
   },
   {
-    "question": "Different less developed countries have different levels of secondary school enrollment. Some countries with high secondary-school enrollment are, as of 2020,",
+    "instruction_original": "Different less developed countries have different levels of secondary school enrollment. Some countries with high secondary-school enrollment are, as of 2020,",
     "subject": "global_facts",
     "choices": [
       "Colombia, Peru, Uruguay, and Costa Rica.",
@@ -871,7 +871,7 @@
     "split": "test"
   },
   {
-    "question": "The percentage of children in Vietnam (age 8) who reported physical punishment by teachers in the past week in 2009 was about what?",
+    "instruction_original": "The percentage of children in Vietnam (age 8) who reported physical punishment by teachers in the past week in 2009 was about what?",
     "subject": "global_facts",
     "choices": [
       "10%",
@@ -884,7 +884,7 @@
     "split": "test"
   },
   {
-    "question": "The percentage of children in India (age 8) who reported physical punishment by teachers in the past week in 2009 was about what?",
+    "instruction_original": "The percentage of children in India (age 8) who reported physical punishment by teachers in the past week in 2009 was about what?",
     "subject": "global_facts",
     "choices": [
       "38%",
@@ -897,7 +897,7 @@
     "split": "test"
   },
   {
-    "question": "Consider the following statements: (1) In every country, people think other individuals in their country are less happy than they actually are. (2) In the United States, women’s happiness has increased both absolutely and relative to men. Which of these statements is True/False?",
+    "instruction_original": "Consider the following statements: (1) In every country, people think other individuals in their country are less happy than they actually are. (2) In the United States, women’s happiness has increased both absolutely and relative to men. Which of these statements is True/False?",
     "subject": "global_facts",
     "choices": [
       "True, True",
@@ -910,7 +910,7 @@
     "split": "test"
   },
   {
-    "question": "In 2017, about how many people died from terrorism globally?",
+    "instruction_original": "In 2017, about how many people died from terrorism globally?",
     "subject": "global_facts",
     "choices": [
       "260",
@@ -923,7 +923,7 @@
     "split": "test"
   },
   {
-    "question": "In 1935 roughly how many Americans were in favor of Social Security act?",
+    "instruction_original": "In 1935 roughly how many Americans were in favor of Social Security act?",
     "subject": "global_facts",
     "choices": [
       "90%",
@@ -936,7 +936,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following countries emitted the most CO2 per capita in 2017?",
+    "instruction_original": "Which of the following countries emitted the most CO2 per capita in 2017?",
     "subject": "global_facts",
     "choices": [
       "Japan",
@@ -949,7 +949,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of Indians say it is necessary to believe in God in order to be moral and have good values?",
+    "instruction_original": "As of 2019, about what percentage of Indians say it is necessary to believe in God in order to be moral and have good values?",
     "subject": "global_facts",
     "choices": [
       "59%",
@@ -962,7 +962,7 @@
     "split": "test"
   },
   {
-    "question": "What is the percentage of children aged 13-15 in China who reported being in a physical fight at school, one or more times during the past 12 months as of 2015?",
+    "instruction_original": "What is the percentage of children aged 13-15 in China who reported being in a physical fight at school, one or more times during the past 12 months as of 2015?",
     "subject": "global_facts",
     "choices": [
       "9%",
@@ -975,7 +975,7 @@
     "split": "test"
   },
   {
-    "question": "The percentage of children in Ethiopia (age 8) who reported physical punishment by teachers in the past week in 2009 was about what?",
+    "instruction_original": "The percentage of children in Ethiopia (age 8) who reported physical punishment by teachers in the past week in 2009 was about what?",
     "subject": "global_facts",
     "choices": [
       "18%",
@@ -988,7 +988,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2018, about what percentage of people from Tunisia say that having an increasing number of people of many different races, ethnic groups and nationalities in their country makes it a better place to live (as opposed to worse or no difference)?",
+    "instruction_original": "As of 2018, about what percentage of people from Tunisia say that having an increasing number of people of many different races, ethnic groups and nationalities in their country makes it a better place to live (as opposed to worse or no difference)?",
     "subject": "global_facts",
     "choices": [
       "24%",
@@ -1001,7 +1001,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2015, the global fertility rate was about",
+    "instruction_original": "As of 2015, the global fertility rate was about",
     "subject": "global_facts",
     "choices": [
       "1.5 children per woman",
@@ -1014,7 +1014,7 @@
     "split": "test"
   },
   {
-    "question": "What is the median international income as of 2020?",
+    "instruction_original": "What is the median international income as of 2020?",
     "subject": "global_facts",
     "choices": [
       "$300 ",
@@ -1027,7 +1027,7 @@
     "split": "test"
   },
   {
-    "question": "Before being reelected for a third term as president how many Americans approved of running a third time?",
+    "instruction_original": "Before being reelected for a third term as president how many Americans approved of running a third time?",
     "subject": "global_facts",
     "choices": [
       "20%",
@@ -1040,7 +1040,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of Italians say it is very important to have free media in our country without government/state censorship?",
+    "instruction_original": "As of 2019, about what percentage of Italians say it is very important to have free media in our country without government/state censorship?",
     "subject": "global_facts",
     "choices": [
       "41%",
@@ -1053,7 +1053,7 @@
     "split": "test"
   },
   {
-    "question": "Public spending on education in the world is about what percentage of global GDP as of 2017?",
+    "instruction_original": "Public spending on education in the world is about what percentage of global GDP as of 2017?",
     "subject": "global_facts",
     "choices": [
       "1%",
@@ -1066,7 +1066,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2013, which of the following countries had the highest per capita rate of homelessness?",
+    "instruction_original": "As of 2013, which of the following countries had the highest per capita rate of homelessness?",
     "subject": "global_facts",
     "choices": [
       "US",
@@ -1079,7 +1079,7 @@
     "split": "test"
   },
   {
-    "question": "Overall, the growth rate of average incomes in less developed countries between 1960 and 1995",
+    "instruction_original": "Overall, the growth rate of average incomes in less developed countries between 1960 and 1995",
     "subject": "global_facts",
     "choices": [
       "was approximately zero",
@@ -1092,7 +1092,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2015, about what percentage of the world’s land area is forested?",
+    "instruction_original": "As of 2015, about what percentage of the world’s land area is forested?",
     "subject": "global_facts",
     "choices": [
       "15%",
@@ -1105,7 +1105,7 @@
     "split": "test"
   },
   {
-    "question": "The greatest population growth rate has taken place",
+    "instruction_original": "The greatest population growth rate has taken place",
     "subject": "global_facts",
     "choices": [
       "in Africa, which is the poorest region of the world with the lowest overall economic growth.",
@@ -1118,7 +1118,7 @@
     "split": "test"
   },
   {
-    "question": "The global HIV/AIDS death rate is highest for which of these age groups?",
+    "instruction_original": "The global HIV/AIDS death rate is highest for which of these age groups?",
     "subject": "global_facts",
     "choices": [
       "Under 5",
@@ -1131,7 +1131,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2015, agriculture made up about what percentage of total US GDP?",
+    "instruction_original": "As of 2015, agriculture made up about what percentage of total US GDP?",
     "subject": "global_facts",
     "choices": [
       "1%",
@@ -1144,7 +1144,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, what percentage of Indians live in urban areas?",
+    "instruction_original": "As of 2017, what percentage of Indians live in urban areas?",
     "subject": "global_facts",
     "choices": [
       "19%",
@@ -1157,7 +1157,7 @@
     "split": "test"
   },
   {
-    "question": "Consider the following statements: (1) As countries get richer, the population tends to report higher average life satisfaction. (2) Important life events such as marriage or divorce do affect our happiness, but have surprisingly little long-term impact. Which of these statements is True/False, as of 2020?",
+    "instruction_original": "Consider the following statements: (1) As countries get richer, the population tends to report higher average life satisfaction. (2) Important life events such as marriage or divorce do affect our happiness, but have surprisingly little long-term impact. Which of these statements is True/False, as of 2020?",
     "subject": "global_facts",
     "choices": [
       "True, True",
@@ -1170,7 +1170,7 @@
     "split": "test"
   },
   {
-    "question": "At its peak, what was the approximate difference in approval of school desegration from the South and the rest of the U.S.?",
+    "instruction_original": "At its peak, what was the approximate difference in approval of school desegration from the South and the rest of the U.S.?",
     "subject": "global_facts",
     "choices": [
       "80%",
@@ -1183,7 +1183,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2013, share of people in the United States who think political parties are corrupt is",
+    "instruction_original": "As of 2013, share of people in the United States who think political parties are corrupt is",
     "subject": "global_facts",
     "choices": [
       "36%",
@@ -1196,7 +1196,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following countries invested the largest fraction of its GDP in renewable energy in 2015?",
+    "instruction_original": "Which of the following countries invested the largest fraction of its GDP in renewable energy in 2015?",
     "subject": "global_facts",
     "choices": [
       "China",
@@ -1209,7 +1209,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2020, about how much do you need to make annually to be among the richest one percent in the world?",
+    "instruction_original": "As of 2020, about how much do you need to make annually to be among the richest one percent in the world?",
     "subject": "global_facts",
     "choices": [
       "$150,000 ",
@@ -1222,7 +1222,7 @@
     "split": "test"
   },
   {
-    "question": "In 1943 how many Americans believed in the Holocaust?",
+    "instruction_original": "In 1943 how many Americans believed in the Holocaust?",
     "subject": "global_facts",
     "choices": [
       "30%",
@@ -1235,7 +1235,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following countries emitted the most CO2 in 2017?",
+    "instruction_original": "Which of the following countries emitted the most CO2 in 2017?",
     "subject": "global_facts",
     "choices": [
       "Canada",
@@ -1248,7 +1248,7 @@
     "split": "test"
   },
   {
-    "question": "At the time of independence, there were already hundreds of thousands of university graduates in ____, but hardly any at all in ____.",
+    "instruction_original": "At the time of independence, there were already hundreds of thousands of university graduates in ____, but hardly any at all in ____.",
     "subject": "global_facts",
     "choices": [
       "India, Congo",
@@ -1261,7 +1261,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2013, share of people in the India who think political parties are corrupt is",
+    "instruction_original": "As of 2013, share of people in the India who think political parties are corrupt is",
     "subject": "global_facts",
     "choices": [
       "26%",
@@ -1274,7 +1274,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2019, about what percentage of French people say God plays an important role in their life?",
+    "instruction_original": "As of 2019, about what percentage of French people say God plays an important role in their life?",
     "subject": "global_facts",
     "choices": [
       "11%",
@@ -1287,7 +1287,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, the share of GDP spent on the military by the United States is about",
+    "instruction_original": "As of 2017, the share of GDP spent on the military by the United States is about",
     "subject": "global_facts",
     "choices": [
       "1%",
@@ -1300,7 +1300,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, the share of global deaths by suicide is about",
+    "instruction_original": "As of 2017, the share of global deaths by suicide is about",
     "subject": "global_facts",
     "choices": [
       "0.70%",
@@ -1313,7 +1313,7 @@
     "split": "test"
   },
   {
-    "question": "Many countries that became independent after World War II found that the legacy of colonialism hindered their economic development. The list of hindrances included",
+    "instruction_original": "Many countries that became independent after World War II found that the legacy of colonialism hindered their economic development. The list of hindrances included",
     "subject": "global_facts",
     "choices": [
       "artificial political boundaries that covered diverse ethnic groups with little in common",
@@ -1326,7 +1326,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following mental disorders is most prevalent in the world?",
+    "instruction_original": "Which of the following mental disorders is most prevalent in the world?",
     "subject": "global_facts",
     "choices": [
       "Bipolar disorder",
@@ -1339,7 +1339,7 @@
     "split": "test"
   },
   {
-    "question": "As of 2017, how many people in the world have some access to electricity?",
+    "instruction_original": "As of 2017, how many people in the world have some access to electricity?",
     "subject": "global_facts",
     "choices": [
       "60%",
@@ -1352,7 +1352,7 @@
     "split": "test"
   },
   {
-    "question": "Before Nixon resigned how many believed he should be removed from office?",
+    "instruction_original": "Before Nixon resigned how many believed he should be removed from office?",
     "subject": "global_facts",
     "choices": [
       "79%",

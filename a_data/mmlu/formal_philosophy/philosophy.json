@@ -1,6 +1,6 @@
 [
   {
-    "question": "Psychological egoism is:",
+    "instruction_original": "Psychological egoism is:",
     "subject": "philosophy",
     "choices": [
       "an ethical theory about how we ought to behave.",
@@ -13,7 +13,7 @@
     "split": "dev"
   },
   {
-    "question": "According to Moore’s “ideal utilitarianism,” the right action is the one that brings about the greatest amount of:",
+    "instruction_original": "According to Moore’s “ideal utilitarianism,” the right action is the one that brings about the greatest amount of:",
     "subject": "philosophy",
     "choices": [
       "pleasure.",
@@ -26,7 +26,7 @@
     "split": "dev"
   },
   {
-    "question": "According to d'Holbach, people always act according to _____.",
+    "instruction_original": "According to d'Holbach, people always act according to _____.",
     "subject": "philosophy",
     "choices": [
       "free choices",
@@ -39,7 +39,7 @@
     "split": "dev"
   },
   {
-    "question": "Before Tolstoy's Christian conversion, what was his perspective on the meaning of life?",
+    "instruction_original": "Before Tolstoy's Christian conversion, what was his perspective on the meaning of life?",
     "subject": "philosophy",
     "choices": [
       "optimist",
@@ -52,7 +52,7 @@
     "split": "dev"
   },
   {
-    "question": "The study of reality in the broadest sense, an inquiry into the elemental nature of the universe and the things in it, is known as _____.",
+    "instruction_original": "The study of reality in the broadest sense, an inquiry into the elemental nature of the universe and the things in it, is known as _____.",
     "subject": "philosophy",
     "choices": [
       "metaphysics",
@@ -65,7 +65,7 @@
     "split": "dev"
   },
   {
-    "question": "Aesthetics deals with objects that are_____.",
+    "instruction_original": "Aesthetics deals with objects that are_____.",
     "subject": "philosophy",
     "choices": [
       "essential to our existence",
@@ -78,7 +78,7 @@
     "split": "test"
   },
   {
-    "question": "For Socrates, an unexamined life is a tragedy because it results in grievous harm to _____.",
+    "instruction_original": "For Socrates, an unexamined life is a tragedy because it results in grievous harm to _____.",
     "subject": "philosophy",
     "choices": [
       "the state",
@@ -91,7 +91,7 @@
     "split": "test"
   },
   {
-    "question": "According to Kant, nothing can be called “good” without qualification except _____.",
+    "instruction_original": "According to Kant, nothing can be called “good” without qualification except _____.",
     "subject": "philosophy",
     "choices": [
       "right action",
@@ -104,7 +104,7 @@
     "split": "test"
   },
   {
-    "question": "Plato's view is that true beauty is _____.",
+    "instruction_original": "Plato's view is that true beauty is _____.",
     "subject": "philosophy",
     "choices": [
       "found in everyday objects",
@@ -117,7 +117,7 @@
     "split": "test"
   },
   {
-    "question": "In Aristotle’s terminology, incontinence is when:",
+    "instruction_original": "In Aristotle’s terminology, incontinence is when:",
     "subject": "philosophy",
     "choices": [
       "one does not know that one’s actions are wrong.",
@@ -130,7 +130,7 @@
     "split": "test"
   },
   {
-    "question": "Nagel claims that most skeptical arguments:",
+    "instruction_original": "Nagel claims that most skeptical arguments:",
     "subject": "philosophy",
     "choices": [
       "are the result of applying arbitrarily stringent standards.",
@@ -143,7 +143,7 @@
     "split": "test"
   },
   {
-    "question": "Rawls conceives of the original contract as one to:",
+    "instruction_original": "Rawls conceives of the original contract as one to:",
     "subject": "philosophy",
     "choices": [
       "enter a particular society.",
@@ -156,7 +156,7 @@
     "split": "test"
   },
   {
-    "question": "According to Singer, compliance with his principle requires:",
+    "instruction_original": "According to Singer, compliance with his principle requires:",
     "subject": "philosophy",
     "choices": [
       "modest changes to our personal habits, but not to our society as a whole.",
@@ -169,7 +169,7 @@
     "split": "test"
   },
   {
-    "question": "For Socrates, the soul is harmed by lack of _____.",
+    "instruction_original": "For Socrates, the soul is harmed by lack of _____.",
     "subject": "philosophy",
     "choices": [
       "knowledge",
@@ -182,7 +182,7 @@
     "split": "test"
   },
   {
-    "question": "According to Kant, morality requires us to:",
+    "instruction_original": "According to Kant, morality requires us to:",
     "subject": "philosophy",
     "choices": [
       "perform the action that leads to the greatest total happiness.",
@@ -195,7 +195,7 @@
     "split": "test"
   },
   {
-    "question": "According to Gauthier, the basis of morality is:",
+    "instruction_original": "According to Gauthier, the basis of morality is:",
     "subject": "philosophy",
     "choices": [
       "maximizing the utility of all sentient beings.",
@@ -208,7 +208,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe claims that it is not profitable to do moral philosophy until we have an adequate philosophy of:",
+    "instruction_original": "Anscombe claims that it is not profitable to do moral philosophy until we have an adequate philosophy of:",
     "subject": "philosophy",
     "choices": [
       "religion.",
@@ -221,7 +221,7 @@
     "split": "test"
   },
   {
-    "question": "Mill claims that one of the strongest objections to utilitarianism is drawn from the idea of:",
+    "instruction_original": "Mill claims that one of the strongest objections to utilitarianism is drawn from the idea of:",
     "subject": "philosophy",
     "choices": [
       "duty.",
@@ -234,7 +234,7 @@
     "split": "test"
   },
   {
-    "question": "Berkeley asserts that existing and perceiving are _____.",
+    "instruction_original": "Berkeley asserts that existing and perceiving are _____.",
     "subject": "philosophy",
     "choices": [
       "one and the same thing",
@@ -247,7 +247,7 @@
     "split": "test"
   },
   {
-    "question": "According to Rawls, the term “justice as fairness” conveys the idea that the principles of justice are agreed to in an initial position that is _____.",
+    "instruction_original": "According to Rawls, the term “justice as fairness” conveys the idea that the principles of justice are agreed to in an initial position that is _____.",
     "subject": "philosophy",
     "choices": [
       "rational",
@@ -260,7 +260,7 @@
     "split": "test"
   },
   {
-    "question": "Berkeley believes that sensible things cannot exist except in _____.",
+    "instruction_original": "Berkeley believes that sensible things cannot exist except in _____.",
     "subject": "philosophy",
     "choices": [
       "a mind",
@@ -273,7 +273,7 @@
     "split": "test"
   },
   {
-    "question": "Singer claims that his argument upsets the traditional distinction between:",
+    "instruction_original": "Singer claims that his argument upsets the traditional distinction between:",
     "subject": "philosophy",
     "choices": [
       "duty and charity.",
@@ -286,7 +286,7 @@
     "split": "test"
   },
   {
-    "question": " In his discussion of the Divided Line, Plato says that, in contrast to mere belief or opinion, knowledge is a belief for which we give reasons or justifications by appealing:",
+    "instruction_original": " In his discussion of the Divided Line, Plato says that, in contrast to mere belief or opinion, knowledge is a belief for which we give reasons or justifications by appealing:",
     "subject": "philosophy",
     "choices": [
       "to what our senses reveal to us about how things appear to us, not how they  really are.",
@@ -299,7 +299,7 @@
     "split": "test"
   },
   {
-    "question": "What was Clarence Darrow's belief about life's meaning?",
+    "instruction_original": "What was Clarence Darrow's belief about life's meaning?",
     "subject": "philosophy",
     "choices": [
       "Life was not worthwhile.",
@@ -312,7 +312,7 @@
     "split": "test"
   },
   {
-    "question": "Stevenson’s primary aim in this paper is to:",
+    "instruction_original": "Stevenson’s primary aim in this paper is to:",
     "subject": "philosophy",
     "choices": [
       "provide an account of what makes right actions right.",
@@ -325,7 +325,7 @@
     "split": "test"
   },
   {
-    "question": "According to Moore, we are thinking about good whenever we think about:",
+    "instruction_original": "According to Moore, we are thinking about good whenever we think about:",
     "subject": "philosophy",
     "choices": [
       "pleasure.",
@@ -338,7 +338,7 @@
     "split": "test"
   },
   {
-    "question": "Baier argues that genuine moral rules:",
+    "instruction_original": "Baier argues that genuine moral rules:",
     "subject": "philosophy",
     "choices": [
       "must be for the good of human beings.",
@@ -351,7 +351,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that to many current ethical theorists, turning to an ethical approach based on the virtues is connected with a turn toward:",
+    "instruction_original": "Nussbaum claims that to many current ethical theorists, turning to an ethical approach based on the virtues is connected with a turn toward:",
     "subject": "philosophy",
     "choices": [
       "rationalism.",
@@ -364,7 +364,7 @@
     "split": "test"
   },
   {
-    "question": "Philosophy is concerned primarily with identifying beliefs about human existence and evaluating arguments that support those beliefs.  These activities can be summarized in two questions that drive philosophical investigations:",
+    "instruction_original": "Philosophy is concerned primarily with identifying beliefs about human existence and evaluating arguments that support those beliefs.  These activities can be summarized in two questions that drive philosophical investigations:",
     "subject": "philosophy",
     "choices": [
       "why should we bother? and what are the consequences of our believing one thing over another?",
@@ -377,7 +377,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus claims that things within our power are __________ and things not in our power are __________.",
+    "instruction_original": "Epictetus claims that things within our power are __________ and things not in our power are __________.",
     "subject": "philosophy",
     "choices": [
       "free and unhindered; free and unhindered",
@@ -390,7 +390,7 @@
     "split": "test"
   },
   {
-    "question": "Hume divides our perceptions into two categories:",
+    "instruction_original": "Hume divides our perceptions into two categories:",
     "subject": "philosophy",
     "choices": [
       "sensations and emotions.",
@@ -403,7 +403,7 @@
     "split": "test"
   },
   {
-    "question": "Aristotle says  that what makes things be what they are--their essence--does not exist apart from individ-uals that exist in the world.  So if all the members of a species were destroyed, then their essence or form:",
+    "instruction_original": "Aristotle says  that what makes things be what they are--their essence--does not exist apart from individ-uals that exist in the world.  So if all the members of a species were destroyed, then their essence or form:",
     "subject": "philosophy",
     "choices": [
       "would likewise be destroyed.",
@@ -416,7 +416,7 @@
     "split": "test"
   },
   {
-    "question": "According to Socrates, an unexamined life is not worth living; and it certainly could not be a virtuous life.  Why not?",
+    "instruction_original": "According to Socrates, an unexamined life is not worth living; and it certainly could not be a virtuous life.  Why not?",
     "subject": "philosophy",
     "choices": [
       "Because if someone did not know how to act virtuously, he or she would still be considered virtuous by others who also did not know the principles for good living.",
@@ -429,7 +429,7 @@
     "split": "test"
   },
   {
-    "question": "\"There is no rationale for myth because it is through myth that reason itself is defined.\"  This means that:",
+    "instruction_original": "\"There is no rationale for myth because it is through myth that reason itself is defined.\"  This means that:",
     "subject": "philosophy",
     "choices": [
       "mythos is ultimately based on logos, just as myth is ultimately based on reasoning or thinking.",
@@ -442,7 +442,7 @@
     "split": "test"
   },
   {
-    "question": "According to Epicurus, a law is unjust when:",
+    "instruction_original": "According to Epicurus, a law is unjust when:",
     "subject": "philosophy",
     "choices": [
       "it is not in accordance with natural law.",
@@ -455,7 +455,7 @@
     "split": "test"
   },
   {
-    "question": "Leo Tolstoy says that art is _____.",
+    "instruction_original": "Leo Tolstoy says that art is _____.",
     "subject": "philosophy",
     "choices": [
       "expression",
@@ -468,7 +468,7 @@
     "split": "test"
   },
   {
-    "question": "Aquinas holds that the last end of man is:",
+    "instruction_original": "Aquinas holds that the last end of man is:",
     "subject": "philosophy",
     "choices": [
       "pleasure.",
@@ -481,7 +481,7 @@
     "split": "test"
   },
   {
-    "question": "According to Kant, the supreme principle of morality is:",
+    "instruction_original": "According to Kant, the supreme principle of morality is:",
     "subject": "philosophy",
     "choices": [
       "analytic and a priori.",
@@ -494,7 +494,7 @@
     "split": "test"
   },
   {
-    "question": "Epicurus claims that all other virtues spring from:",
+    "instruction_original": "Epicurus claims that all other virtues spring from:",
     "subject": "philosophy",
     "choices": [
       "prudence.",
@@ -507,7 +507,7 @@
     "split": "test"
   },
   {
-    "question": "According to Butler, it is impossible to:",
+    "instruction_original": "According to Butler, it is impossible to:",
     "subject": "philosophy",
     "choices": [
       "approve of the actions of others without imitating them.",
@@ -520,7 +520,7 @@
     "split": "test"
   },
   {
-    "question": "The systematic use of critical reasoning to try to find answers to fundamental questions about reality, morality, and knowledge is called _____.",
+    "instruction_original": "The systematic use of critical reasoning to try to find answers to fundamental questions about reality, morality, and knowledge is called _____.",
     "subject": "philosophy",
     "choices": [
       "the argumentative method",
@@ -533,7 +533,7 @@
     "split": "test"
   },
   {
-    "question": "According to Mill, to determine whether one pleasure is more valuable than another, we must _____.",
+    "instruction_original": "According to Mill, to determine whether one pleasure is more valuable than another, we must _____.",
     "subject": "philosophy",
     "choices": [
       "determine which one is objectively most pleasurable",
@@ -546,7 +546,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hobbes, the definition of injustice is _____.",
+    "instruction_original": "According to Hobbes, the definition of injustice is _____.",
     "subject": "philosophy",
     "choices": [
       "disobedience to a sovereign",
@@ -559,7 +559,7 @@
     "split": "test"
   },
   {
-    "question": "Kant claims that the natural purpose of reason is to:",
+    "instruction_original": "Kant claims that the natural purpose of reason is to:",
     "subject": "philosophy",
     "choices": [
       "produce happiness.",
@@ -572,7 +572,7 @@
     "split": "test"
   },
   {
-    "question": "Hare claims that the two essential features of the logic of moral judgments are:",
+    "instruction_original": "Hare claims that the two essential features of the logic of moral judgments are:",
     "subject": "philosophy",
     "choices": [
       "consequentialism and hedonism.",
@@ -585,7 +585,7 @@
     "split": "test"
   },
   {
-    "question": "Mill defines “utility” as:",
+    "instruction_original": "Mill defines “utility” as:",
     "subject": "philosophy",
     "choices": [
       "usefulness for some craft.",
@@ -598,7 +598,7 @@
     "split": "test"
   },
   {
-    "question": "To Kant, making a lying promise would be wrong because _____.",
+    "instruction_original": "To Kant, making a lying promise would be wrong because _____.",
     "subject": "philosophy",
     "choices": [
       "lying to people can cause them harm",
@@ -611,7 +611,7 @@
     "split": "test"
   },
   {
-    "question": "How does Stevenson respond to the objection that his theory does not account for the kind of goodness that is objective and is known a priori?",
+    "instruction_original": "How does Stevenson respond to the objection that his theory does not account for the kind of goodness that is objective and is known a priori?",
     "subject": "philosophy",
     "choices": [
       "He claims to have proven that such a property does not exist.",
@@ -624,7 +624,7 @@
     "split": "test"
   },
   {
-    "question": "Wolf claims that interpreting Kant’s ethics so that it consists of a finite set of constraints:",
+    "instruction_original": "Wolf claims that interpreting Kant’s ethics so that it consists of a finite set of constraints:",
     "subject": "philosophy",
     "choices": [
       "yields an unattractive picture of moral sainthood.",
@@ -637,7 +637,7 @@
     "split": "test"
   },
   {
-    "question": "The famous statement “An unexamined life is not worth living” is attributed to _____.",
+    "instruction_original": "The famous statement “An unexamined life is not worth living” is attributed to _____.",
     "subject": "philosophy",
     "choices": [
       "Aristotle",
@@ -650,7 +650,7 @@
     "split": "test"
   },
   {
-    "question": "Paley maintains that the key difference between the “contrivance” of a watch and that of nature is that the latter is _____.",
+    "instruction_original": "Paley maintains that the key difference between the “contrivance” of a watch and that of nature is that the latter is _____.",
     "subject": "philosophy",
     "choices": [
       "simpler",
@@ -663,7 +663,7 @@
     "split": "test"
   },
   {
-    "question": "Concerning the relationship between morality and theology, Bentham claims that:",
+    "instruction_original": "Concerning the relationship between morality and theology, Bentham claims that:",
     "subject": "philosophy",
     "choices": [
       "we must first know whether something is right before we can know whether it conforms to God’s will.",
@@ -676,7 +676,7 @@
     "split": "test"
   },
   {
-    "question": "For the soft determinist, to say that you could have done otherwise is to say that you would have done otherwise if _____.",
+    "instruction_original": "For the soft determinist, to say that you could have done otherwise is to say that you would have done otherwise if _____.",
     "subject": "philosophy",
     "choices": [
       "your desires were always the same",
@@ -689,7 +689,7 @@
     "split": "test"
   },
   {
-    "question": "According to Ross, our prima facie duties:",
+    "instruction_original": "According to Ross, our prima facie duties:",
     "subject": "philosophy",
     "choices": [
       "can be proven.",
@@ -702,7 +702,7 @@
     "split": "test"
   },
   {
-    "question": "According to Rawls, behind the veil of ignorance, the principles of justice are _____.",
+    "instruction_original": "According to Rawls, behind the veil of ignorance, the principles of justice are _____.",
     "subject": "philosophy",
     "choices": [
       "the result of coercion",
@@ -715,7 +715,7 @@
     "split": "test"
   },
   {
-    "question": "In Aquinas’s view, man’s ultimate happiness consists in:",
+    "instruction_original": "In Aquinas’s view, man’s ultimate happiness consists in:",
     "subject": "philosophy",
     "choices": [
       "pleasure",
@@ -728,7 +728,7 @@
     "split": "test"
   },
   {
-    "question": "Taurek claims that if faced with the choice between saving the life of X or the arm of Y:",
+    "instruction_original": "Taurek claims that if faced with the choice between saving the life of X or the arm of Y:",
     "subject": "philosophy",
     "choices": [
       "Y is obligated to choose saving the life of X.",
@@ -741,7 +741,7 @@
     "split": "test"
   },
   {
-    "question": "Wolf argues that the unattractiveness of the moral saint:",
+    "instruction_original": "Wolf argues that the unattractiveness of the moral saint:",
     "subject": "philosophy",
     "choices": [
       "gives us reason to abandon utilitarianism.",
@@ -754,7 +754,7 @@
     "split": "test"
   },
   {
-    "question": "Plato's suggestion that knowledge is innate or remembered as a result of being triggered by experience is in response to a paradox he sets up for himself.  The paradox, now referred to as Meno's Paradox, has to do with the question of:",
+    "instruction_original": "Plato's suggestion that knowledge is innate or remembered as a result of being triggered by experience is in response to a paradox he sets up for himself.  The paradox, now referred to as Meno's Paradox, has to do with the question of:",
     "subject": "philosophy",
     "choices": [
       "how a person can remember anything about the realm of the Forms after the shock of being born into this world.",
@@ -767,7 +767,7 @@
     "split": "test"
   },
   {
-    "question": "Gauthier claims that there is nothing for practical rationality to be besides:",
+    "instruction_original": "Gauthier claims that there is nothing for practical rationality to be besides:",
     "subject": "philosophy",
     "choices": [
       "moral justification.",
@@ -780,7 +780,7 @@
     "split": "test"
   },
   {
-    "question": "Socrates' claim that \"the unexamined life is not worth living\" is often cited as a central theme in the activities of people.  By it, Socrates is typically understood to mean that:",
+    "instruction_original": "Socrates' claim that \"the unexamined life is not worth living\" is often cited as a central theme in the activities of people.  By it, Socrates is typically understood to mean that:",
     "subject": "philosophy",
     "choices": [
       "it is sometimes simply not worth all the effort of examining life and its problems in great detail; sometimes it is better simply to \"go with the flow.\"",
@@ -793,7 +793,7 @@
     "split": "test"
   },
   {
-    "question": "Nagel claims that the problem of moral luck is closely connected to the problem of:",
+    "instruction_original": "Nagel claims that the problem of moral luck is closely connected to the problem of:",
     "subject": "philosophy",
     "choices": [
       "the existence of God.",
@@ -806,7 +806,7 @@
     "split": "test"
   },
   {
-    "question": "\"Is there anything you would be willing to die for?\" is a philosophical question insofar as:",
+    "instruction_original": "\"Is there anything you would be willing to die for?\" is a philosophical question insofar as:",
     "subject": "philosophy",
     "choices": [
       "it does not have any right or wrong answer because it is a meaningless question.",
@@ -819,7 +819,7 @@
     "split": "test"
   },
   {
-    "question": "Hume defines virtue as:",
+    "instruction_original": "Hume defines virtue as:",
     "subject": "philosophy",
     "choices": [
       "a tendency to maximize happiness.",
@@ -832,7 +832,7 @@
     "split": "test"
   },
   {
-    "question": "Parfit claims that:",
+    "instruction_original": "Parfit claims that:",
     "subject": "philosophy",
     "choices": [
       "it is possible for an outcome to be worse for a particular person than some alternative.",
@@ -845,7 +845,7 @@
     "split": "test"
   },
   {
-    "question": "According to Baier’s theory, the second step in assessing whether an action is morally permissible is to find out:",
+    "instruction_original": "According to Baier’s theory, the second step in assessing whether an action is morally permissible is to find out:",
     "subject": "philosophy",
     "choices": [
       "whether it is forbidden by a moral rule of one’s group.",
@@ -858,7 +858,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hume, morality is ultimately based on:",
+    "instruction_original": "According to Hume, morality is ultimately based on:",
     "subject": "philosophy",
     "choices": [
       "reason.",
@@ -871,7 +871,7 @@
     "split": "test"
   },
   {
-    "question": "According to Kant, moral laws are:",
+    "instruction_original": "According to Kant, moral laws are:",
     "subject": "philosophy",
     "choices": [
       "necessary and apply to all rational beings.",
@@ -884,7 +884,7 @@
     "split": "test"
   },
   {
-    "question": "Wolf claims that ultimately, normative questions must be assessed from:",
+    "instruction_original": "Wolf claims that ultimately, normative questions must be assessed from:",
     "subject": "philosophy",
     "choices": [
       "the moral point of view.",
@@ -897,7 +897,7 @@
     "split": "test"
   },
   {
-    "question": "Baier claims that for a rule to belong the morality of a group, the rule must be:",
+    "instruction_original": "Baier claims that for a rule to belong the morality of a group, the rule must be:",
     "subject": "philosophy",
     "choices": [
       "part of the mores of the group.",
@@ -910,7 +910,7 @@
     "split": "test"
   },
   {
-    "question": "According to Sartre, if God does not exist, _____.",
+    "instruction_original": "According to Sartre, if God does not exist, _____.",
     "subject": "philosophy",
     "choices": [
       "anything is permissible",
@@ -923,7 +923,7 @@
     "split": "test"
   },
   {
-    "question": "Baggini accuses pessimists of mixing up the two senses of _____.",
+    "instruction_original": "Baggini accuses pessimists of mixing up the two senses of _____.",
     "subject": "philosophy",
     "choices": [
       "philosophy",
@@ -936,7 +936,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following is an example of deception in business research?",
+    "instruction_original": "Which of the following is an example of deception in business research?",
     "subject": "philosophy",
     "choices": [
       "The obtaining of company material without permission.",
@@ -949,7 +949,7 @@
     "split": "test"
   },
   {
-    "question": "Feinberg claims that most arguments for psychological egoism:",
+    "instruction_original": "Feinberg claims that most arguments for psychological egoism:",
     "subject": "philosophy",
     "choices": [
       "make reference to neuroscience.",
@@ -962,7 +962,7 @@
     "split": "test"
   },
   {
-    "question": "Descartes had been disillusioned by his discovery that many of the alleged truths learned in his youth were _____.",
+    "instruction_original": "Descartes had been disillusioned by his discovery that many of the alleged truths learned in his youth were _____.",
     "subject": "philosophy",
     "choices": [
       "contrary to his religion",
@@ -975,7 +975,7 @@
     "split": "test"
   },
   {
-    "question": "Critics of the divine command theory have argued that the theory implies that God's commands are _____.",
+    "instruction_original": "Critics of the divine command theory have argued that the theory implies that God's commands are _____.",
     "subject": "philosophy",
     "choices": [
       "well supported",
@@ -988,7 +988,7 @@
     "split": "test"
   },
   {
-    "question": "Aquinas argues that the end of every action is:",
+    "instruction_original": "Aquinas argues that the end of every action is:",
     "subject": "philosophy",
     "choices": [
       "some desire.",
@@ -1001,7 +1001,7 @@
     "split": "test"
   },
   {
-    "question": "Epicurus holds that philosophy is:",
+    "instruction_original": "Epicurus holds that philosophy is:",
     "subject": "philosophy",
     "choices": [
       "not suitable for the young.",
@@ -1014,7 +1014,7 @@
     "split": "test"
   },
   {
-    "question": "According to Parfit, both Taurek and Lewis assume that for there to be a “sum of pain,” it must be:",
+    "instruction_original": "According to Parfit, both Taurek and Lewis assume that for there to be a “sum of pain,” it must be:",
     "subject": "philosophy",
     "choices": [
       "all felt at a single time.",
@@ -1027,7 +1027,7 @@
     "split": "test"
   },
   {
-    "question": "Mill claims that in deciding how to act:",
+    "instruction_original": "Mill claims that in deciding how to act:",
     "subject": "philosophy",
     "choices": [
       "we should always calculate the expected consequences of our action.",
@@ -1040,7 +1040,7 @@
     "split": "test"
   },
   {
-    "question": "An important formal characteristic of art is_____.",
+    "instruction_original": "An important formal characteristic of art is_____.",
     "subject": "philosophy",
     "choices": [
       "social meaning",
@@ -1053,7 +1053,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hobbes, in the condition of man in which there is a state of war of everyone against everyone, every man has a right to _____.",
+    "instruction_original": "According to Hobbes, in the condition of man in which there is a state of war of everyone against everyone, every man has a right to _____.",
     "subject": "philosophy",
     "choices": [
       "some things",
@@ -1066,7 +1066,7 @@
     "split": "test"
   },
   {
-    "question": "In the case of the debtors, the moral argument against imprisoning A relies on:",
+    "instruction_original": "In the case of the debtors, the moral argument against imprisoning A relies on:",
     "subject": "philosophy",
     "choices": [
       "fear.",
@@ -1079,7 +1079,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hume, justice:",
+    "instruction_original": "According to Hume, justice:",
     "subject": "philosophy",
     "choices": [
       "has no value.",
@@ -1092,7 +1092,7 @@
     "split": "test"
   },
   {
-    "question": "Why is it important that personal data about research participants are kept within secure, confidential records?",
+    "instruction_original": "Why is it important that personal data about research participants are kept within secure, confidential records?",
     "subject": "philosophy",
     "choices": [
       "So that the participants cannot find out what has been written about them.",
@@ -1105,7 +1105,7 @@
     "split": "test"
   },
   {
-    "question": "Berkeley insists that heat and cold are _____.",
+    "instruction_original": "Berkeley insists that heat and cold are _____.",
     "subject": "philosophy",
     "choices": [
       "illusions",
@@ -1118,7 +1118,7 @@
     "split": "test"
   },
   {
-    "question": "According to Moore, the most fundamental question in all of ethics is:",
+    "instruction_original": "According to Moore, the most fundamental question in all of ethics is:",
     "subject": "philosophy",
     "choices": [
       "whether life is worth living.",
@@ -1131,7 +1131,7 @@
     "split": "test"
   },
   {
-    "question": "Bentham claims that actions are right or wrong in virtue of:",
+    "instruction_original": "Bentham claims that actions are right or wrong in virtue of:",
     "subject": "philosophy",
     "choices": [
       "the motives behind them.",
@@ -1144,7 +1144,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following concepts can be defined, according to Moore?",
+    "instruction_original": "Which of the following concepts can be defined, according to Moore?",
     "subject": "philosophy",
     "choices": [
       "good",
@@ -1157,7 +1157,7 @@
     "split": "test"
   },
   {
-    "question": "Cicero argues that we will never go morally astray if we:",
+    "instruction_original": "Cicero argues that we will never go morally astray if we:",
     "subject": "philosophy",
     "choices": [
       "follow our conscience.",
@@ -1170,7 +1170,7 @@
     "split": "test"
   },
   {
-    "question": "According to Kant, the moral worth of an action depends on:",
+    "instruction_original": "According to Kant, the moral worth of an action depends on:",
     "subject": "philosophy",
     "choices": [
       "the moral character of the agent who performs it.",
@@ -1183,7 +1183,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus recommends that we refrain from:",
+    "instruction_original": "Epictetus recommends that we refrain from:",
     "subject": "philosophy",
     "choices": [
       "laughing without restraint.",
@@ -1196,7 +1196,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that our modern debates about homosexuality:",
+    "instruction_original": "Nussbaum claims that our modern debates about homosexuality:",
     "subject": "philosophy",
     "choices": [
       "are continuations of the very same debate about sexual activity that went on in the Greek world.",
@@ -1209,7 +1209,7 @@
     "split": "test"
   },
   {
-    "question": "To say that \"philosophy\" (like \"love\" or \"art\") is not a closed concept means that we cannot state the necessary and sufficient conditions by which it is defined.  Rather, philosophic issues are identifiable as having \"family resemblances\" with one another.  In other words:",
+    "instruction_original": "To say that \"philosophy\" (like \"love\" or \"art\") is not a closed concept means that we cannot state the necessary and sufficient conditions by which it is defined.  Rather, philosophic issues are identifiable as having \"family resemblances\" with one another.  In other words:",
     "subject": "philosophy",
     "choices": [
       "there is no one distinguishing feature that identifies an issue as philosophic, only an overlapping of issues roughly associated with one another.",
@@ -1222,7 +1222,7 @@
     "split": "test"
   },
   {
-    "question": "According to Ross, we should construct a moral theory by:",
+    "instruction_original": "According to Ross, we should construct a moral theory by:",
     "subject": "philosophy",
     "choices": [
       "constructing logical proofs for moral principles.",
@@ -1235,7 +1235,7 @@
     "split": "test"
   },
   {
-    "question": "A prima facie duty is a characteristic of an act in virtue of which the act:",
+    "instruction_original": "A prima facie duty is a characteristic of an act in virtue of which the act:",
     "subject": "philosophy",
     "choices": [
       "seems to be right, although this might be illusory.",
@@ -1248,7 +1248,7 @@
     "split": "test"
   },
   {
-    "question": " According to Socrates, the task of the wise and virtuous person is not simply to learn various examples of just or virtuous actions but to learn the essence of justice or virtue, because:",
+    "instruction_original": " According to Socrates, the task of the wise and virtuous person is not simply to learn various examples of just or virtuous actions but to learn the essence of justice or virtue, because:",
     "subject": "philosophy",
     "choices": [
       "by knowing enough examples of justice or virtue, we will live a worthwhile life even if we do not know what makes them examples of justice or virtue.",
@@ -1261,7 +1261,7 @@
     "split": "test"
   },
   {
-    "question": "Baier claims that ethical skepticism is often due to:",
+    "instruction_original": "Baier claims that ethical skepticism is often due to:",
     "subject": "philosophy",
     "choices": [
       "confused metaphysical theories.",
@@ -1274,7 +1274,7 @@
     "split": "test"
   },
   {
-    "question": "Aquinas claim that all human operations appear to serve:",
+    "instruction_original": "Aquinas claim that all human operations appear to serve:",
     "subject": "philosophy",
     "choices": [
       "those in power.",
@@ -1287,7 +1287,7 @@
     "split": "test"
   },
   {
-    "question": "According to Stevenson, moral disagreements involve:",
+    "instruction_original": "According to Stevenson, moral disagreements involve:",
     "subject": "philosophy",
     "choices": [
       "disagreement in interest.",
@@ -1300,7 +1300,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hobbes, whenever and wherever men live without a common power to keep them all in awe, there is _____.",
+    "instruction_original": "According to Hobbes, whenever and wherever men live without a common power to keep them all in awe, there is _____.",
     "subject": "philosophy",
     "choices": [
       "negotiation",
@@ -1313,7 +1313,7 @@
     "split": "test"
   },
   {
-    "question": "Hare claims that all moral arguments are:",
+    "instruction_original": "Hare claims that all moral arguments are:",
     "subject": "philosophy",
     "choices": [
       "useless.",
@@ -1326,7 +1326,7 @@
     "split": "test"
   },
   {
-    "question": "Apart from the fact that it is \"not a nice thing to do\", what is an important ethical disadvantage of deceiving participants?",
+    "instruction_original": "Apart from the fact that it is \"not a nice thing to do\", what is an important ethical disadvantage of deceiving participants?",
     "subject": "philosophy",
     "choices": [
       "It can damage the professional reputation of the researcher and their discipline.",
@@ -1339,7 +1339,7 @@
     "split": "test"
   },
   {
-    "question": "Stevenson claims that the primary use of ethical judgments is to:",
+    "instruction_original": "Stevenson claims that the primary use of ethical judgments is to:",
     "subject": "philosophy",
     "choices": [
       "state facts.",
@@ -1352,7 +1352,7 @@
     "split": "test"
   },
   {
-    "question": "Butler claims that, strictly speaking, the only thing that anyone has a right to is:",
+    "instruction_original": "Butler claims that, strictly speaking, the only thing that anyone has a right to is:",
     "subject": "philosophy",
     "choices": [
       "life.",
@@ -1365,7 +1365,7 @@
     "split": "test"
   },
   {
-    "question": "Augustine holds that we can never err:",
+    "instruction_original": "Augustine holds that we can never err:",
     "subject": "philosophy",
     "choices": [
       "in any circumstances whatsoever.",
@@ -1378,7 +1378,7 @@
     "split": "test"
   },
   {
-    "question": "According to Brandt’s theory, an ideal moral rule is one that would:",
+    "instruction_original": "According to Brandt’s theory, an ideal moral rule is one that would:",
     "subject": "philosophy",
     "choices": [
       "maximize positive utility, ignoring negative utility.",
@@ -1391,7 +1391,7 @@
     "split": "test"
   },
   {
-    "question": "Hare asserts that ethics and science are similar in that:",
+    "instruction_original": "Hare asserts that ethics and science are similar in that:",
     "subject": "philosophy",
     "choices": [
       "both seek to provide us with true beliefs about the world.",
@@ -1404,7 +1404,7 @@
     "split": "test"
   },
   {
-    "question": "Hume argues that the criteria for judging aesthetic value are _____.",
+    "instruction_original": "Hume argues that the criteria for judging aesthetic value are _____.",
     "subject": "philosophy",
     "choices": [
       "entirely subjective",
@@ -1417,7 +1417,7 @@
     "split": "test"
   },
   {
-    "question": "How many categories of ethical principles do Diener and Crandell refer to?",
+    "instruction_original": "How many categories of ethical principles do Diener and Crandell refer to?",
     "subject": "philosophy",
     "choices": [
       "Three: harm to students; lack of informed consent; invasion of privacy on social media.",
@@ -1430,7 +1430,7 @@
     "split": "test"
   },
   {
-    "question": "In response to the claim that deliberative justification is incomplete:",
+    "instruction_original": "In response to the claim that deliberative justification is incomplete:",
     "subject": "philosophy",
     "choices": [
       "Gauthier expands the definition of deliberative justification.",
@@ -1443,7 +1443,7 @@
     "split": "test"
   },
   {
-    "question": "Aquinas claims that the ultimate perfection of operation is:",
+    "instruction_original": "Aquinas claims that the ultimate perfection of operation is:",
     "subject": "philosophy",
     "choices": [
       "delight.",
@@ -1456,7 +1456,7 @@
     "split": "test"
   },
   {
-    "question": "Rawls argues that parties in the original position would not accept utilitarianism because:",
+    "instruction_original": "Rawls argues that parties in the original position would not accept utilitarianism because:",
     "subject": "philosophy",
     "choices": [
       "it is too difficult to determine which policies would maximize happiness.",
@@ -1469,7 +1469,7 @@
     "split": "test"
   },
   {
-    "question": "What does the notion of “meaning in life” refer to?",
+    "instruction_original": "What does the notion of “meaning in life” refer to?",
     "subject": "philosophy",
     "choices": [
       "external meaning",
@@ -1482,7 +1482,7 @@
     "split": "test"
   },
   {
-    "question": "Stevenson identifies the meaning of a term with:",
+    "instruction_original": "Stevenson identifies the meaning of a term with:",
     "subject": "philosophy",
     "choices": [
       "the empirical observations to which it applies.",
@@ -1495,7 +1495,7 @@
     "split": "test"
   },
   {
-    "question": "Hume thinks that each mind perceives _____.",
+    "instruction_original": "Hume thinks that each mind perceives _____.",
     "subject": "philosophy",
     "choices": [
       "the same beauty",
@@ -1508,7 +1508,7 @@
     "split": "test"
   },
   {
-    "question": "Descartes says that the chief characteristic of physical things is that _____.",
+    "instruction_original": "Descartes says that the chief characteristic of physical things is that _____.",
     "subject": "philosophy",
     "choices": [
       "they cannot be measured",
@@ -1521,7 +1521,7 @@
     "split": "test"
   },
   {
-    "question": "In Book II of the Republic, Glaucon claims that justice originates from:",
+    "instruction_original": "In Book II of the Republic, Glaucon claims that justice originates from:",
     "subject": "philosophy",
     "choices": [
       "a social agreement.",
@@ -1534,7 +1534,7 @@
     "split": "test"
   },
   {
-    "question": "Augustine identifies evil with:",
+    "instruction_original": "Augustine identifies evil with:",
     "subject": "philosophy",
     "choices": [
       "the influence of the devil.",
@@ -1547,7 +1547,7 @@
     "split": "test"
   },
   {
-    "question": "According to Paley, we must conclude that a watch had an intelligent designer if the watch _____.",
+    "instruction_original": "According to Paley, we must conclude that a watch had an intelligent designer if the watch _____.",
     "subject": "philosophy",
     "choices": [
       "shows purposefulness",
@@ -1560,7 +1560,7 @@
     "split": "test"
   },
   {
-    "question": "According to Bentham, a moral sanction is:",
+    "instruction_original": "According to Bentham, a moral sanction is:",
     "subject": "philosophy",
     "choices": [
       "pleasure or pain inflicted by chance members of the community.",
@@ -1573,7 +1573,7 @@
     "split": "test"
   },
   {
-    "question": "Augustine claims that Academic skepticism:",
+    "instruction_original": "Augustine claims that Academic skepticism:",
     "subject": "philosophy",
     "choices": [
       "is true, and can be proven.",
@@ -1586,7 +1586,7 @@
     "split": "test"
   },
   {
-    "question": "If you assume that a set of statements is true, and yet you can deduce a false or absurd statement from it, then the original set of statements as a whole must be false. This kind of argument is known as _____.",
+    "instruction_original": "If you assume that a set of statements is true, and yet you can deduce a false or absurd statement from it, then the original set of statements as a whole must be false. This kind of argument is known as _____.",
     "subject": "philosophy",
     "choices": [
       "modus tollens",
@@ -1599,7 +1599,7 @@
     "split": "test"
   },
   {
-    "question": "Aristotle ends the Ethics with a segue to a discussion of:",
+    "instruction_original": "Aristotle ends the Ethics with a segue to a discussion of:",
     "subject": "philosophy",
     "choices": [
       "aesthetics.",
@@ -1612,7 +1612,7 @@
     "split": "test"
   },
   {
-    "question": "Kant claims that the moral law is given to each person by:",
+    "instruction_original": "Kant claims that the moral law is given to each person by:",
     "subject": "philosophy",
     "choices": [
       "society.",
@@ -1625,7 +1625,7 @@
     "split": "test"
   },
   {
-    "question": "Aesthetics addresses questions that interest _____.",
+    "instruction_original": "Aesthetics addresses questions that interest _____.",
     "subject": "philosophy",
     "choices": [
       "only philosophers",
@@ -1638,7 +1638,7 @@
     "split": "test"
   },
   {
-    "question": "The control condition claims:",
+    "instruction_original": "The control condition claims:",
     "subject": "philosophy",
     "choices": [
       "it is morally wrong to ever lose control of oneself.",
@@ -1651,7 +1651,7 @@
     "split": "test"
   },
   {
-    "question": "According to Feinberg, the claim that we always feel pleasure when we get what we want:",
+    "instruction_original": "According to Feinberg, the claim that we always feel pleasure when we get what we want:",
     "subject": "philosophy",
     "choices": [
       "is true, and supports psychological egoism.",
@@ -1664,7 +1664,7 @@
     "split": "test"
   },
   {
-    "question": "Plato distinguishes knowledge from mere belief or opinion by saying that knowledge must be a true belief for which one can give a justification, a rationale, or \"logos.\"  In terms of his image of the Divided Line, for Plato, knowledge is attained only when our sensible experience is:",
+    "instruction_original": "Plato distinguishes knowledge from mere belief or opinion by saying that knowledge must be a true belief for which one can give a justification, a rationale, or \"logos.\"  In terms of his image of the Divided Line, for Plato, knowledge is attained only when our sensible experience is:",
     "subject": "philosophy",
     "choices": [
       "grounded ultimately in what our senses reveal to us about the world of becoming.",
@@ -1677,7 +1677,7 @@
     "split": "test"
   },
   {
-    "question": "What are the two principal answers to whether life has any meaning for us?",
+    "instruction_original": "What are the two principal answers to whether life has any meaning for us?",
     "subject": "philosophy",
     "choices": [
       "the external view and the internal view",
@@ -1690,7 +1690,7 @@
     "split": "test"
   },
   {
-    "question": "Bentham defines the fecundity of a pleasure or pain as:",
+    "instruction_original": "Bentham defines the fecundity of a pleasure or pain as:",
     "subject": "philosophy",
     "choices": [
       "its chance of occurring.",
@@ -1703,7 +1703,7 @@
     "split": "test"
   },
   {
-    "question": "Disagreements about the aesthetic value or social relevance of a piece of art are _____.",
+    "instruction_original": "Disagreements about the aesthetic value or social relevance of a piece of art are _____.",
     "subject": "philosophy",
     "choices": [
       "uncommon",
@@ -1716,7 +1716,7 @@
     "split": "test"
   },
   {
-    "question": "Aristotle states that if we ask what the highest good of human action is:",
+    "instruction_original": "Aristotle states that if we ask what the highest good of human action is:",
     "subject": "philosophy",
     "choices": [
       "there is no agreement about the answer.",
@@ -1729,7 +1729,7 @@
     "split": "test"
   },
   {
-    "question": "When faced with the complaint that utilitarianism is a doctrine worthy of swine, Mill responds that pleasures differ in:",
+    "instruction_original": "When faced with the complaint that utilitarianism is a doctrine worthy of swine, Mill responds that pleasures differ in:",
     "subject": "philosophy",
     "choices": [
       "purity.",
@@ -1742,7 +1742,7 @@
     "split": "test"
   },
   {
-    "question": "According to Aquinas, an infinite regress of causes is _____.",
+    "instruction_original": "According to Aquinas, an infinite regress of causes is _____.",
     "subject": "philosophy",
     "choices": [
       "finite",
@@ -1755,7 +1755,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus claims that if the wife and children of a virtuous man were to die, he should feel:",
+    "instruction_original": "Epictetus claims that if the wife and children of a virtuous man were to die, he should feel:",
     "subject": "philosophy",
     "choices": [
       "righteous indignation.",
@@ -1768,7 +1768,7 @@
     "split": "test"
   },
   {
-    "question": "Like most rationalists, Plato defines knowledge as justified true belief.  In terms of this definition, we might be able to claim to know something as true which might actually be false, but it is impossible for us really to know something that is false.  Why?",
+    "instruction_original": "Like most rationalists, Plato defines knowledge as justified true belief.  In terms of this definition, we might be able to claim to know something as true which might actually be false, but it is impossible for us really to know something that is false.  Why?",
     "subject": "philosophy",
     "choices": [
       "Because to know something that is false is to know no real thing, nothing (i.e., not to know at all).",
@@ -1781,7 +1781,7 @@
     "split": "test"
   },
   {
-    "question": "By “animal motion,” Hobbes means:",
+    "instruction_original": "By “animal motion,” Hobbes means:",
     "subject": "philosophy",
     "choices": [
       "involuntary operations such as heartbeat and breathing.",
@@ -1794,7 +1794,7 @@
     "split": "test"
   },
   {
-    "question": "Taurek claims that:",
+    "instruction_original": "Taurek claims that:",
     "subject": "philosophy",
     "choices": [
       "the death of two people is always worse than the death of one.",
@@ -1807,7 +1807,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following ideas is not associated with the stance of situation ethics?",
+    "instruction_original": "Which of the following ideas is not associated with the stance of situation ethics?",
     "subject": "philosophy",
     "choices": [
       "Anything goes",
@@ -1820,7 +1820,7 @@
     "split": "test"
   },
   {
-    "question": "For Plato, ordinary sensible objects exist and are knowable as examples or instances of Ideas or \"Forms\" that do not exist in our ordinary sensible world.  Forms do not exist in the sensible world because:",
+    "instruction_original": "For Plato, ordinary sensible objects exist and are knowable as examples or instances of Ideas or \"Forms\" that do not exist in our ordinary sensible world.  Forms do not exist in the sensible world because:",
     "subject": "philosophy",
     "choices": [
       "in the sensible world only mathematical objects (e.g., triangles) can be known using hypotheses which are recollected when we are asked the right kinds of questions.",
@@ -1833,7 +1833,7 @@
     "split": "test"
   },
   {
-    "question": "Descartes declares that he is _____.",
+    "instruction_original": "Descartes declares that he is _____.",
     "subject": "philosophy",
     "choices": [
       "a body",
@@ -1846,7 +1846,7 @@
     "split": "test"
   },
   {
-    "question": "Aquinas says that the first efficient cause of everything is _____.",
+    "instruction_original": "Aquinas says that the first efficient cause of everything is _____.",
     "subject": "philosophy",
     "choices": [
       "the universe",
@@ -1859,7 +1859,7 @@
     "split": "test"
   },
   {
-    "question": "Hume claims that a person who is unaffected by images of human happiness or misery will also be indifferent to:",
+    "instruction_original": "Hume claims that a person who is unaffected by images of human happiness or misery will also be indifferent to:",
     "subject": "philosophy",
     "choices": [
       "art and beauty.",
@@ -1872,7 +1872,7 @@
     "split": "test"
   },
   {
-    "question": "When using visual methods in a research project what should you take into consideration alongside the legal guidelines?",
+    "instruction_original": "When using visual methods in a research project what should you take into consideration alongside the legal guidelines?",
     "subject": "philosophy",
     "choices": [
       "What constitutes a public space",
@@ -1885,7 +1885,7 @@
     "split": "test"
   },
   {
-    "question": "According to Epicurus, the wise man:",
+    "instruction_original": "According to Epicurus, the wise man:",
     "subject": "philosophy",
     "choices": [
       "yearns for the end of life.",
@@ -1898,7 +1898,7 @@
     "split": "test"
   },
   {
-    "question": "To illustrate the attempt to do injustice with impunity, Cicero considers the story of:",
+    "instruction_original": "To illustrate the attempt to do injustice with impunity, Cicero considers the story of:",
     "subject": "philosophy",
     "choices": [
       "the ring of Gyges.",
@@ -1911,7 +1911,7 @@
     "split": "test"
   },
   {
-    "question": "Epicurus states that of all the things required for a complete life, the greatest is:",
+    "instruction_original": "Epicurus states that of all the things required for a complete life, the greatest is:",
     "subject": "philosophy",
     "choices": [
       "honor.",
@@ -1924,7 +1924,7 @@
     "split": "test"
   },
   {
-    "question": "Parfit claims that the magnitude of pains:",
+    "instruction_original": "Parfit claims that the magnitude of pains:",
     "subject": "philosophy",
     "choices": [
       "can be precisely compared.",
@@ -1937,7 +1937,7 @@
     "split": "test"
   },
   {
-    "question": "Nagel claims that prior to reflection, it is plausible that people cannot be morally assessed for:",
+    "instruction_original": "Nagel claims that prior to reflection, it is plausible that people cannot be morally assessed for:",
     "subject": "philosophy",
     "choices": [
       "actions that affect only themselves.",
@@ -1950,7 +1950,7 @@
     "split": "test"
   },
   {
-    "question": "According to Anscombe, “moral obligation” currently signifies:",
+    "instruction_original": "According to Anscombe, “moral obligation” currently signifies:",
     "subject": "philosophy",
     "choices": [
       "the norms of a society.",
@@ -1963,7 +1963,7 @@
     "split": "test"
   },
   {
-    "question": "Hume says that beauty is _____.",
+    "instruction_original": "Hume says that beauty is _____.",
     "subject": "philosophy",
     "choices": [
       "a quality in things themselves",
@@ -1976,7 +1976,7 @@
     "split": "test"
   },
   {
-    "question": "According to Plato, we can attain knowledge only by seeing beyond this world of particular, changing objects to the true essences or Forms in terms of which things in this world are intelligible.  For example, we know what triangularity is not from comparing sensible triangles but by thinking of the ideal of triangularity in terms of which these sensible figures are recognized as triangles.  From this Plato concludes that all knowledge (as opposed to opinion) is innate, because:",
+    "instruction_original": "According to Plato, we can attain knowledge only by seeing beyond this world of particular, changing objects to the true essences or Forms in terms of which things in this world are intelligible.  For example, we know what triangularity is not from comparing sensible triangles but by thinking of the ideal of triangularity in terms of which these sensible figures are recognized as triangles.  From this Plato concludes that all knowledge (as opposed to opinion) is innate, because:",
     "subject": "philosophy",
     "choices": [
       "from the moment we are born we know what things are in the world in terms of ideas that we get through our senses.",
@@ -1989,7 +1989,7 @@
     "split": "test"
   },
   {
-    "question": "According to Stevenson, empirical methods:",
+    "instruction_original": "According to Stevenson, empirical methods:",
     "subject": "philosophy",
     "choices": [
       "are never useful in resolving ethical disagreement.",
@@ -2002,7 +2002,7 @@
     "split": "test"
   },
   {
-    "question": "Before his conversion, what was Tolstoy surrounded by?",
+    "instruction_original": "Before his conversion, what was Tolstoy surrounded by?",
     "subject": "philosophy",
     "choices": [
       "what is considered complete happiness",
@@ -2015,7 +2015,7 @@
     "split": "test"
   },
   {
-    "question": "According to Sartre, what existentialists have in common is that they think that _____.",
+    "instruction_original": "According to Sartre, what existentialists have in common is that they think that _____.",
     "subject": "philosophy",
     "choices": [
       "essence precedes existence",
@@ -2028,7 +2028,7 @@
     "split": "test"
   },
   {
-    "question": "Feinberg takes his remarks about the two different senses of pleasure to refute:",
+    "instruction_original": "Feinberg takes his remarks about the two different senses of pleasure to refute:",
     "subject": "philosophy",
     "choices": [
       "psychological egoism.",
@@ -2041,7 +2041,7 @@
     "split": "test"
   },
   {
-    "question": "Rawls claims that a conception of justice should be justified by:",
+    "instruction_original": "Rawls claims that a conception of justice should be justified by:",
     "subject": "philosophy",
     "choices": [
       "deducing it from self-evident premises.",
@@ -2054,7 +2054,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus claims that the only thing one can call one’s own is:",
+    "instruction_original": "Epictetus claims that the only thing one can call one’s own is:",
     "subject": "philosophy",
     "choices": [
       "the way one deals with one’s impressions.",
@@ -2067,7 +2067,7 @@
     "split": "test"
   },
   {
-    "question": "In Hobbes’s view, to say something is good is to say that:",
+    "instruction_original": "In Hobbes’s view, to say something is good is to say that:",
     "subject": "philosophy",
     "choices": [
       "it is conducive to human happiness.",
@@ -2080,7 +2080,7 @@
     "split": "test"
   },
   {
-    "question": "Moore claims that there is no meaning in saying that pleasure is good, unless:",
+    "instruction_original": "Moore claims that there is no meaning in saying that pleasure is good, unless:",
     "subject": "philosophy",
     "choices": [
       "goodness and pleasure are the same thing.",
@@ -2093,7 +2093,7 @@
     "split": "test"
   },
   {
-    "question": "Baier asserts that when we ask for moral advice, we are asking for others to:",
+    "instruction_original": "Baier asserts that when we ask for moral advice, we are asking for others to:",
     "subject": "philosophy",
     "choices": [
       "issue commands.",
@@ -2106,7 +2106,7 @@
     "split": "test"
   },
   {
-    "question": "Moral theories that say that the rightness of actions depends solely on their consequences are _____.",
+    "instruction_original": "Moral theories that say that the rightness of actions depends solely on their consequences are _____.",
     "subject": "philosophy",
     "choices": [
       "deontological",
@@ -2119,7 +2119,7 @@
     "split": "test"
   },
   {
-    "question": "Socrates tells Crito that he should attempt to break out of prison if and only if doing so would be:",
+    "instruction_original": "Socrates tells Crito that he should attempt to break out of prison if and only if doing so would be:",
     "subject": "philosophy",
     "choices": [
       "to his advantage.",
@@ -2132,7 +2132,7 @@
     "split": "test"
   },
   {
-    "question": "According to the Ideal Moral Code theory, one is obligated to do what the ideal moral rules would require:",
+    "instruction_original": "According to the Ideal Moral Code theory, one is obligated to do what the ideal moral rules would require:",
     "subject": "philosophy",
     "choices": [
       "in one’s actual institutional setting.",
@@ -2145,7 +2145,7 @@
     "split": "test"
   },
   {
-    "question": "According to Cicero, the most practical branch of philosophy deals with:",
+    "instruction_original": "According to Cicero, the most practical branch of philosophy deals with:",
     "subject": "philosophy",
     "choices": [
       "logic.",
@@ -2158,7 +2158,7 @@
     "split": "test"
   },
   {
-    "question": "According to Socrates, the value or quality of one's life depends on understanding the principles of, or basic rationale for human existence.  Without such knowledge (he suggests) life lacks virtue, because:",
+    "instruction_original": "According to Socrates, the value or quality of one's life depends on understanding the principles of, or basic rationale for human existence.  Without such knowledge (he suggests) life lacks virtue, because:",
     "subject": "philosophy",
     "choices": [
       "acting virtuously means acting in way that is informed about what one is doing and why.",
@@ -2171,7 +2171,7 @@
     "split": "test"
   },
   {
-    "question": "Rawls claims that students with fewer native assets (such as intelligence) should be given:",
+    "instruction_original": "Rawls claims that students with fewer native assets (such as intelligence) should be given:",
     "subject": "philosophy",
     "choices": [
       "more attention and resources than those with more native assets.",
@@ -2184,7 +2184,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that the specification of particular virtues:",
+    "instruction_original": "Nussbaum claims that the specification of particular virtues:",
     "subject": "philosophy",
     "choices": [
       "will always consist of a single answer.",
@@ -2197,7 +2197,7 @@
     "split": "test"
   },
   {
-    "question": "According to Rawls, we can enter the original position:",
+    "instruction_original": "According to Rawls, we can enter the original position:",
     "subject": "philosophy",
     "choices": [
       "only by leaving society and remaking social institutions from scratch.",
@@ -2210,7 +2210,7 @@
     "split": "test"
   },
   {
-    "question": "Mill argues that virtue:",
+    "instruction_original": "Mill argues that virtue:",
     "subject": "philosophy",
     "choices": [
       "is not desirable.",
@@ -2223,7 +2223,7 @@
     "split": "test"
   },
   {
-    "question": "Bentham claims that utilitarian calculations:",
+    "instruction_original": "Bentham claims that utilitarian calculations:",
     "subject": "philosophy",
     "choices": [
       "should be performed prior to each action.",
@@ -2236,7 +2236,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that for Aristotle the reference of each virtue term is fixed by:",
+    "instruction_original": "Nussbaum claims that for Aristotle the reference of each virtue term is fixed by:",
     "subject": "philosophy",
     "choices": [
       "conventional use.",
@@ -2249,7 +2249,7 @@
     "split": "test"
   },
   {
-    "question": "According to Gauthier, deliberative justification:",
+    "instruction_original": "According to Gauthier, deliberative justification:",
     "subject": "philosophy",
     "choices": [
       "is refuted by moral requirements.",
@@ -2262,7 +2262,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that recent anthropological work has shown that fear is:",
+    "instruction_original": "Nussbaum claims that recent anthropological work has shown that fear is:",
     "subject": "philosophy",
     "choices": [
       "partially learned and culturally variant.",
@@ -2275,7 +2275,7 @@
     "split": "test"
   },
   {
-    "question": "Of the ways of escaping moral arguments that he discusses, Hare claims:",
+    "instruction_original": "Of the ways of escaping moral arguments that he discusses, Hare claims:",
     "subject": "philosophy",
     "choices": [
       "none of them are successful.",
@@ -2288,7 +2288,7 @@
     "split": "test"
   },
   {
-    "question": "Most of those who take the externalist approach to meaning view the matter from a _____ standpoint.",
+    "instruction_original": "Most of those who take the externalist approach to meaning view the matter from a _____ standpoint.",
     "subject": "philosophy",
     "choices": [
       "secular",
@@ -2301,7 +2301,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hume, reason:",
+    "instruction_original": "According to Hume, reason:",
     "subject": "philosophy",
     "choices": [
       "should serve our passions.",
@@ -2314,7 +2314,7 @@
     "split": "test"
   },
   {
-    "question": "In response to the argument that famine relief is counterproductive because it leads to overpopulation, Singer claims that:",
+    "instruction_original": "In response to the argument that famine relief is counterproductive because it leads to overpopulation, Singer claims that:",
     "subject": "philosophy",
     "choices": [
       "this has empirically been shown to be false.",
@@ -2327,7 +2327,7 @@
     "split": "test"
   },
   {
-    "question": "Of the two versions of the principle that Singer considers:",
+    "instruction_original": "Of the two versions of the principle that Singer considers:",
     "subject": "philosophy",
     "choices": [
       "he considers the stronger version to be correct.",
@@ -2340,7 +2340,7 @@
     "split": "test"
   },
   {
-    "question": "According to the scripture that Butler discusses in Sermon One, human beings are:",
+    "instruction_original": "According to the scripture that Butler discusses in Sermon One, human beings are:",
     "subject": "philosophy",
     "choices": [
       "independent and autonomous individuals.",
@@ -2353,7 +2353,7 @@
     "split": "test"
   },
   {
-    "question": "At first Descartes supposes that everything he sees is _____.",
+    "instruction_original": "At first Descartes supposes that everything he sees is _____.",
     "subject": "philosophy",
     "choices": [
       "TRUE",
@@ -2366,7 +2366,7 @@
     "split": "test"
   },
   {
-    "question": "According to Socrates, just as there is a difference between what an ironic statement says and its true meaning, so also appearances differ from reality.  Even though societies or individuals appear to differ about what is required for the good life, that in no way contradicts the fact that:",
+    "instruction_original": "According to Socrates, just as there is a difference between what an ironic statement says and its true meaning, so also appearances differ from reality.  Even though societies or individuals appear to differ about what is required for the good life, that in no way contradicts the fact that:",
     "subject": "philosophy",
     "choices": [
       "what is right or wrong, true or false varies from one culture to another.",
@@ -2379,7 +2379,7 @@
     "split": "test"
   },
   {
-    "question": "An example of a morally impossible rule would be:",
+    "instruction_original": "An example of a morally impossible rule would be:",
     "subject": "philosophy",
     "choices": [
       "lie whenever doing so is necessary to prevent a catastrophe.",
@@ -2392,7 +2392,7 @@
     "split": "test"
   },
   {
-    "question": "According to Locke, every man, by consenting with others to make one body politic under one government, puts himself under an obligation to everyone of that society to submit to the determination of_____.",
+    "instruction_original": "According to Locke, every man, by consenting with others to make one body politic under one government, puts himself under an obligation to everyone of that society to submit to the determination of_____.",
     "subject": "philosophy",
     "choices": [
       "the majority",
@@ -2405,7 +2405,7 @@
     "split": "test"
   },
   {
-    "question": "Bentham claims that nature has placed mankind under two sovereign masters:",
+    "instruction_original": "Bentham claims that nature has placed mankind under two sovereign masters:",
     "subject": "philosophy",
     "choices": [
       "pain and pleasure.",
@@ -2418,7 +2418,7 @@
     "split": "test"
   },
   {
-    "question": "The biblical account of the soul is at odds with _____.",
+    "instruction_original": "The biblical account of the soul is at odds with _____.",
     "subject": "philosophy",
     "choices": [
       "a unitary concept of the soul",
@@ -2431,7 +2431,7 @@
     "split": "test"
   },
   {
-    "question": "According to Aristotle, happiness is:",
+    "instruction_original": "According to Aristotle, happiness is:",
     "subject": "philosophy",
     "choices": [
       "a state of mind.",
@@ -2444,7 +2444,7 @@
     "split": "test"
   },
   {
-    "question": "Mill says that the ultimate end of utilitarianism is an existence as free of pain as possible and as rich as possible in _____.",
+    "instruction_original": "Mill says that the ultimate end of utilitarianism is an existence as free of pain as possible and as rich as possible in _____.",
     "subject": "philosophy",
     "choices": [
       "lower pleasures",
@@ -2457,7 +2457,7 @@
     "split": "test"
   },
   {
-    "question": "What was Schopenhauer's attitude toward life?",
+    "instruction_original": "What was Schopenhauer's attitude toward life?",
     "subject": "philosophy",
     "choices": [
       "He thought life was uncertain but worthwhile.",
@@ -2470,7 +2470,7 @@
     "split": "test"
   },
   {
-    "question": "When it comes to defining good, Moore claims that many past philosophers are guilty of:",
+    "instruction_original": "When it comes to defining good, Moore claims that many past philosophers are guilty of:",
     "subject": "philosophy",
     "choices": [
       "begging the question.",
@@ -2483,7 +2483,7 @@
     "split": "test"
   },
   {
-    "question": "According to Aristotle, we should begin ethical inquiry by specifying:",
+    "instruction_original": "According to Aristotle, we should begin ethical inquiry by specifying:",
     "subject": "philosophy",
     "choices": [
       "which things are intrinsically valuable.",
@@ -2496,7 +2496,7 @@
     "split": "test"
   },
   {
-    "question": "According to Epicurus, the wealth required for a good life is:",
+    "instruction_original": "According to Epicurus, the wealth required for a good life is:",
     "subject": "philosophy",
     "choices": [
       "easily procured.",
@@ -2509,7 +2509,7 @@
     "split": "test"
   },
   {
-    "question": "Feinberg claims that the story about Abraham Lincoln:",
+    "instruction_original": "Feinberg claims that the story about Abraham Lincoln:",
     "subject": "philosophy",
     "choices": [
       "provides some evidence for psychological egoism.",
@@ -2522,7 +2522,7 @@
     "split": "test"
   },
   {
-    "question": "According to d'Holbach, all the mental and moral attributes that people think are evidence for an immaterial soul are in fact _____.",
+    "instruction_original": "According to d'Holbach, all the mental and moral attributes that people think are evidence for an immaterial soul are in fact _____.",
     "subject": "philosophy",
     "choices": [
       "purely intellectual",
@@ -2535,7 +2535,7 @@
     "split": "test"
   },
   {
-    "question": "Hare claims that a person who refuses to make any positive moral judgments:",
+    "instruction_original": "Hare claims that a person who refuses to make any positive moral judgments:",
     "subject": "philosophy",
     "choices": [
       "is irrational.",
@@ -2548,7 +2548,7 @@
     "split": "test"
   },
   {
-    "question": "Hobbes claims that all of the laws of nature can be summarized in the precept:",
+    "instruction_original": "Hobbes claims that all of the laws of nature can be summarized in the precept:",
     "subject": "philosophy",
     "choices": [
       "maximize happiness.",
@@ -2561,7 +2561,7 @@
     "split": "test"
   },
   {
-    "question": "In Aristotle’s view, the virtues are:",
+    "instruction_original": "In Aristotle’s view, the virtues are:",
     "subject": "philosophy",
     "choices": [
       "acquired through habit.",
@@ -2574,7 +2574,7 @@
     "split": "test"
   },
   {
-    "question": "Mill claims that the distinction between justice and other moral obligations corresponds perfectly to the distinction between:",
+    "instruction_original": "Mill claims that the distinction between justice and other moral obligations corresponds perfectly to the distinction between:",
     "subject": "philosophy",
     "choices": [
       "perfect and imperfect obligations.",
@@ -2587,7 +2587,7 @@
     "split": "test"
   },
   {
-    "question": "Descartes declares that an evil demon _____.",
+    "instruction_original": "Descartes declares that an evil demon _____.",
     "subject": "philosophy",
     "choices": [
       "undoubtedly exists",
@@ -2600,7 +2600,7 @@
     "split": "test"
   },
   {
-    "question": "During his trial, Socrates argues that he would never intentionally corrupt others because:",
+    "instruction_original": "During his trial, Socrates argues that he would never intentionally corrupt others because:",
     "subject": "philosophy",
     "choices": [
       "it is his duty not to do so.",
@@ -2613,7 +2613,7 @@
     "split": "test"
   },
   {
-    "question": "According to Kant, laws of nature are laws according to which __________, and laws of freedom are laws according to which __________.",
+    "instruction_original": "According to Kant, laws of nature are laws according to which __________, and laws of freedom are laws according to which __________.",
     "subject": "philosophy",
     "choices": [
       "everything will happen; everything will happen",
@@ -2626,7 +2626,7 @@
     "split": "test"
   },
   {
-    "question": "Augustine claims that to be happy, one must know:",
+    "instruction_original": "Augustine claims that to be happy, one must know:",
     "subject": "philosophy",
     "choices": [
       "the causes of natural occurrences.",
@@ -2639,7 +2639,7 @@
     "split": "test"
   },
   {
-    "question": "According to Wolf, a moral saint:",
+    "instruction_original": "According to Wolf, a moral saint:",
     "subject": "philosophy",
     "choices": [
       "cannot read Victorian novels.",
@@ -2652,7 +2652,7 @@
     "split": "test"
   },
   {
-    "question": "According to Socrates, justice is when a soul is ruled by its:",
+    "instruction_original": "According to Socrates, justice is when a soul is ruled by its:",
     "subject": "philosophy",
     "choices": [
       "respect for the law.",
@@ -2665,7 +2665,7 @@
     "split": "test"
   },
   {
-    "question": "Singer claims that his conclusions are similar to those of:",
+    "instruction_original": "Singer claims that his conclusions are similar to those of:",
     "subject": "philosophy",
     "choices": [
       "Plato.",
@@ -2678,7 +2678,7 @@
     "split": "test"
   },
   {
-    "question": "In Cicero’s view, each person is invested by Nature with two characters:",
+    "instruction_original": "In Cicero’s view, each person is invested by Nature with two characters:",
     "subject": "philosophy",
     "choices": [
       "universal and individual.",
@@ -2691,7 +2691,7 @@
     "split": "test"
   },
   {
-    "question": "Aristotle saw his theory of the virtues as:",
+    "instruction_original": "Aristotle saw his theory of the virtues as:",
     "subject": "philosophy",
     "choices": [
       "final and complete.",
@@ -2704,7 +2704,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that in cross-cultural communication, inhabitants of different conceptual schemes tend to view their interaction:",
+    "instruction_original": "Nussbaum claims that in cross-cultural communication, inhabitants of different conceptual schemes tend to view their interaction:",
     "subject": "philosophy",
     "choices": [
       "in a relativist way.",
@@ -2717,7 +2717,7 @@
     "split": "test"
   },
   {
-    "question": "Cicero claims that there could be “no more pernicious doctrine” than the idea that:",
+    "instruction_original": "Cicero claims that there could be “no more pernicious doctrine” than the idea that:",
     "subject": "philosophy",
     "choices": [
       "the gods do not care what we do.",
@@ -2730,7 +2730,7 @@
     "split": "test"
   },
   {
-    "question": "An important moral criterion of adequacy is known as _____.",
+    "instruction_original": "An important moral criterion of adequacy is known as _____.",
     "subject": "philosophy",
     "choices": [
       "simplicity",
@@ -2743,7 +2743,7 @@
     "split": "test"
   },
   {
-    "question": "Gauthier claims that moral agreements that are equally favorable to all parties are desirable because they:",
+    "instruction_original": "Gauthier claims that moral agreements that are equally favorable to all parties are desirable because they:",
     "subject": "philosophy",
     "choices": [
       "satisfy our desire for fairness.",
@@ -2756,7 +2756,7 @@
     "split": "test"
   },
   {
-    "question": "Baier argues that moral rules:",
+    "instruction_original": "Baier argues that moral rules:",
     "subject": "philosophy",
     "choices": [
       "always must be applied to everyone alike.",
@@ -2769,7 +2769,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe claims that an adequate moral psychology would include:",
+    "instruction_original": "Anscombe claims that an adequate moral psychology would include:",
     "subject": "philosophy",
     "choices": [
       "an answer to the mind-body problem.",
@@ -2782,7 +2782,7 @@
     "split": "test"
   },
   {
-    "question": "According to Parfit, the obligation to give priority to the welfare of one’s children is:",
+    "instruction_original": "According to Parfit, the obligation to give priority to the welfare of one’s children is:",
     "subject": "philosophy",
     "choices": [
       "agent-relative.",
@@ -2795,7 +2795,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus recommends that we act:",
+    "instruction_original": "Epictetus recommends that we act:",
     "subject": "philosophy",
     "choices": [
       "according to our passions.",
@@ -2808,7 +2808,7 @@
     "split": "test"
   },
   {
-    "question": "Descartes says that, for all he knows, he may be _____.",
+    "instruction_original": "Descartes says that, for all he knows, he may be _____.",
     "subject": "philosophy",
     "choices": [
       "dreaming",
@@ -2821,7 +2821,7 @@
     "split": "test"
   },
   {
-    "question": "When Euthyphro attempts to define the holy as prosecuting wrongdoers, Socrates objects that:",
+    "instruction_original": "When Euthyphro attempts to define the holy as prosecuting wrongdoers, Socrates objects that:",
     "subject": "philosophy",
     "choices": [
       "there are many other things that are also holy.",
@@ -2834,7 +2834,7 @@
     "split": "test"
   },
   {
-    "question": "Wolf claims that morality:",
+    "instruction_original": "Wolf claims that morality:",
     "subject": "philosophy",
     "choices": [
       "is merely a cultural artifact.",
@@ -2847,7 +2847,7 @@
     "split": "test"
   },
   {
-    "question": "According to Bentham, considerations of pain and pleasure determine:",
+    "instruction_original": "According to Bentham, considerations of pain and pleasure determine:",
     "subject": "philosophy",
     "choices": [
       "what we ought to do.",
@@ -2860,7 +2860,7 @@
     "split": "test"
   },
   {
-    "question": "Augustine claims that all created things are:",
+    "instruction_original": "Augustine claims that all created things are:",
     "subject": "philosophy",
     "choices": [
       "eternally and unchangeably good.",
@@ -2873,7 +2873,7 @@
     "split": "test"
   },
   {
-    "question": "In Augustine’s view, lying is:",
+    "instruction_original": "In Augustine’s view, lying is:",
     "subject": "philosophy",
     "choices": [
       "often permissible if done for the right reasons.",
@@ -2886,7 +2886,7 @@
     "split": "test"
   },
   {
-    "question": "Whereas the social sciences (e.g., psychology, sociology, economics) ask questions about how people think and act, philosophy is the study of:",
+    "instruction_original": "Whereas the social sciences (e.g., psychology, sociology, economics) ask questions about how people think and act, philosophy is the study of:",
     "subject": "philosophy",
     "choices": [
       "how people with different beliefs or backgrounds disagree with one another.",
@@ -2899,7 +2899,7 @@
     "split": "test"
   },
   {
-    "question": " Plato indicates that the knowledge of pure reason is preferable to conceptual understanding, because knowing that something is a certain kind of thing is not as good as knowing:",
+    "instruction_original": " Plato indicates that the knowledge of pure reason is preferable to conceptual understanding, because knowing that something is a certain kind of thing is not as good as knowing:",
     "subject": "philosophy",
     "choices": [
       "how we come to learn what to call a thing in virtue of our own experiences.",
@@ -2912,7 +2912,7 @@
     "split": "test"
   },
   {
-    "question": "According to Socrates, a clear sign that a person has _____ is her exclusive pursuit of social status, wealth, power, and pleasure.",
+    "instruction_original": "According to Socrates, a clear sign that a person has _____ is her exclusive pursuit of social status, wealth, power, and pleasure.",
     "subject": "philosophy",
     "choices": [
       "philosophical ambition",
@@ -2925,7 +2925,7 @@
     "split": "test"
   },
   {
-    "question": "Philo says the analogy that Cleanthes uses to make his case is _____.",
+    "instruction_original": "Philo says the analogy that Cleanthes uses to make his case is _____.",
     "subject": "philosophy",
     "choices": [
       "too complicated",
@@ -2938,7 +2938,7 @@
     "split": "test"
   },
   {
-    "question": "How did Tolstoy's life change after his crisis of meaning?",
+    "instruction_original": "How did Tolstoy's life change after his crisis of meaning?",
     "subject": "philosophy",
     "choices": [
       "His income increased dramatically.",
@@ -2951,7 +2951,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following is not one of Ross’s prima facie duties?",
+    "instruction_original": "Which of the following is not one of Ross’s prima facie duties?",
     "subject": "philosophy",
     "choices": [
       "Fidelity",
@@ -2964,7 +2964,7 @@
     "split": "test"
   },
   {
-    "question": "Cicero claims that it is sometimes permissible to:",
+    "instruction_original": "Cicero claims that it is sometimes permissible to:",
     "subject": "philosophy",
     "choices": [
       "commit acts of injustice.",
@@ -2977,7 +2977,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hobbes, without a common power to keep them in awe humans would exist in a state of:",
+    "instruction_original": "According to Hobbes, without a common power to keep them in awe humans would exist in a state of:",
     "subject": "philosophy",
     "choices": [
       "peace and harmony.",
@@ -2990,7 +2990,7 @@
     "split": "test"
   },
   {
-    "question": "Traditionally art has been defined as _____.",
+    "instruction_original": "Traditionally art has been defined as _____.",
     "subject": "philosophy",
     "choices": [
       "wealth",
@@ -3003,7 +3003,7 @@
     "split": "test"
   },
   {
-    "question": "One objection to Singer’s theory that he considers is that it:",
+    "instruction_original": "One objection to Singer’s theory that he considers is that it:",
     "subject": "philosophy",
     "choices": [
       "does not do enough to address suffering in other countries besides our own.",
@@ -3016,7 +3016,7 @@
     "split": "test"
   },
   {
-    "question": "Anselm assumes that a being that exists in reality is greater than a being that _____.",
+    "instruction_original": "Anselm assumes that a being that exists in reality is greater than a being that _____.",
     "subject": "philosophy",
     "choices": [
       "is worshipped",
@@ -3029,7 +3029,7 @@
     "split": "test"
   },
   {
-    "question": "According to Baier, a rule can be said to be for the good of human beings only if:",
+    "instruction_original": "According to Baier, a rule can be said to be for the good of human beings only if:",
     "subject": "philosophy",
     "choices": [
       "it is not harmful.",
@@ -3042,7 +3042,7 @@
     "split": "test"
   },
   {
-    "question": "A prominent view is that an object has aesthetic value if it _____.",
+    "instruction_original": "A prominent view is that an object has aesthetic value if it _____.",
     "subject": "philosophy",
     "choices": [
       "cannot be defined",
@@ -3055,7 +3055,7 @@
     "split": "test"
   },
   {
-    "question": "Hobbes describes felicity as:",
+    "instruction_original": "Hobbes describes felicity as:",
     "subject": "philosophy",
     "choices": [
       "a state of tranquility.",
@@ -3068,7 +3068,7 @@
     "split": "test"
   },
   {
-    "question": "According to Sartre, there is at least one being in whom existence precedes essence, and this being is _____.",
+    "instruction_original": "According to Sartre, there is at least one being in whom existence precedes essence, and this being is _____.",
     "subject": "philosophy",
     "choices": [
       "God",
@@ -3081,7 +3081,7 @@
     "split": "test"
   },
   {
-    "question": "In Butler’s view, acting virtuously consists of acting in accordance with:",
+    "instruction_original": "In Butler’s view, acting virtuously consists of acting in accordance with:",
     "subject": "philosophy",
     "choices": [
       "our strongest inward principle.",
@@ -3094,7 +3094,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe criticizes Sidgwick on the grounds that:",
+    "instruction_original": "Anscombe criticizes Sidgwick on the grounds that:",
     "subject": "philosophy",
     "choices": [
       "he does not distinguish between the foreseen and intended consequences of one’s action.",
@@ -3107,7 +3107,7 @@
     "split": "test"
   },
   {
-    "question": "Why is it \"easier said than done\" to ensure that the principle of informed consent is adhered to?",
+    "instruction_original": "Why is it \"easier said than done\" to ensure that the principle of informed consent is adhered to?",
     "subject": "philosophy",
     "choices": [
       "It is not practicable to present every participant with all the information about the study.",
@@ -3120,7 +3120,7 @@
     "split": "test"
   },
   {
-    "question": "In Hobbes’s view, a law of nature is:",
+    "instruction_original": "In Hobbes’s view, a law of nature is:",
     "subject": "philosophy",
     "choices": [
       "a command of God.",
@@ -3133,7 +3133,7 @@
     "split": "test"
   },
   {
-    "question": "A Loving Saint is someone:",
+    "instruction_original": "A Loving Saint is someone:",
     "subject": "philosophy",
     "choices": [
       "whose happiness lies in the happiness of others.",
@@ -3146,7 +3146,7 @@
     "split": "test"
   },
   {
-    "question": "Moore defines good as:",
+    "instruction_original": "Moore defines good as:",
     "subject": "philosophy",
     "choices": [
       "pleasure.",
@@ -3159,7 +3159,7 @@
     "split": "test"
   },
   {
-    "question": "Feinberg claims that when people are hungry, they typically desire:",
+    "instruction_original": "Feinberg claims that when people are hungry, they typically desire:",
     "subject": "philosophy",
     "choices": [
       "to eat food.",
@@ -3172,7 +3172,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hobbes, the right of nature is:",
+    "instruction_original": "According to Hobbes, the right of nature is:",
     "subject": "philosophy",
     "choices": [
       "an entitlement to the fruits of one’s labors.",
@@ -3185,7 +3185,7 @@
     "split": "test"
   },
   {
-    "question": "According to Socrates, it is important that we discover what makes a particular action (e.g., a merciful or just act) the kind of action that it is, because without such knowledge:",
+    "instruction_original": "According to Socrates, it is important that we discover what makes a particular action (e.g., a merciful or just act) the kind of action that it is, because without such knowledge:",
     "subject": "philosophy",
     "choices": [
       "no one in society will ever do any action that really is merciful or just, only those actions that they think are merciful or just.",
@@ -3198,7 +3198,7 @@
     "split": "test"
   },
   {
-    "question": "Feinberg claims that the best way to pursue happiness is to:",
+    "instruction_original": "Feinberg claims that the best way to pursue happiness is to:",
     "subject": "philosophy",
     "choices": [
       "pursue pleasure.",
@@ -3211,7 +3211,7 @@
     "split": "test"
   },
   {
-    "question": "Hobbes defines injustice as:",
+    "instruction_original": "Hobbes defines injustice as:",
     "subject": "philosophy",
     "choices": [
       "taking more than one’s share of a good.",
@@ -3224,7 +3224,7 @@
     "split": "test"
   },
   {
-    "question": "In Butler’s view, injustice is caused by:",
+    "instruction_original": "In Butler’s view, injustice is caused by:",
     "subject": "philosophy",
     "choices": [
       "desires for external goods.",
@@ -3237,7 +3237,7 @@
     "split": "test"
   },
   {
-    "question": "According to Rawls, the two parts of his theory:",
+    "instruction_original": "According to Rawls, the two parts of his theory:",
     "subject": "philosophy",
     "choices": [
       "are interdependent: You cannot accept one part without accepting the other.",
@@ -3250,7 +3250,7 @@
     "split": "test"
   },
   {
-    "question": "Aristotle divides the virtues into:",
+    "instruction_original": "Aristotle divides the virtues into:",
     "subject": "philosophy",
     "choices": [
       "natural virtues and artificial virtues.",
@@ -3263,7 +3263,7 @@
     "split": "test"
   },
   {
-    "question": "The idea that mental states are dispositions to behave in particular ways in certain circumstances is known as _____.",
+    "instruction_original": "The idea that mental states are dispositions to behave in particular ways in certain circumstances is known as _____.",
     "subject": "philosophy",
     "choices": [
       "logical nominalism",
@@ -3276,7 +3276,7 @@
     "split": "test"
   },
   {
-    "question": "The view that art is defined by its form is known as _____.",
+    "instruction_original": "The view that art is defined by its form is known as _____.",
     "subject": "philosophy",
     "choices": [
       "informalism",
@@ -3289,7 +3289,7 @@
     "split": "test"
   },
   {
-    "question": "If the world that we individually perceive is limited to an internal perspective, then there is no way that we could determine whether our own perspective is useful, true, or valuable because:",
+    "instruction_original": "If the world that we individually perceive is limited to an internal perspective, then there is no way that we could determine whether our own perspective is useful, true, or valuable because:",
     "subject": "philosophy",
     "choices": [
       "we know whether our internal perspective is correct only by comparing it with an objective, external perspective (the \"real\" world).",
@@ -3302,7 +3302,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe claims that on Sidgwick’s view, the badness of an action must be estimated in light of:",
+    "instruction_original": "Anscombe claims that on Sidgwick’s view, the badness of an action must be estimated in light of:",
     "subject": "philosophy",
     "choices": [
       "its actual consequences.",
@@ -3315,7 +3315,7 @@
     "split": "test"
   },
   {
-    "question": "Which method is most commonly associated with a lack of informed consent?",
+    "instruction_original": "Which method is most commonly associated with a lack of informed consent?",
     "subject": "philosophy",
     "choices": [
       "Qualitative content analysis",
@@ -3328,7 +3328,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus claims that when someone strikes you, what really angers you is:",
+    "instruction_original": "Epictetus claims that when someone strikes you, what really angers you is:",
     "subject": "philosophy",
     "choices": [
       "the force of the blow.",
@@ -3341,7 +3341,7 @@
     "split": "test"
   },
   {
-    "question": "Craig argues that the series of events in time cannot be actually infinite, so we know that _____.",
+    "instruction_original": "Craig argues that the series of events in time cannot be actually infinite, so we know that _____.",
     "subject": "philosophy",
     "choices": [
       "the universe is finite in the past and began to exist",
@@ -3354,7 +3354,7 @@
     "split": "test"
   },
   {
-    "question": "Aquinas claims that:",
+    "instruction_original": "Aquinas claims that:",
     "subject": "philosophy",
     "choices": [
       "pleasure exists for its own sake.",
@@ -3367,7 +3367,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe claims that the notion of moral obligation is derived from the concept of:",
+    "instruction_original": "Anscombe claims that the notion of moral obligation is derived from the concept of:",
     "subject": "philosophy",
     "choices": [
       "preference.",
@@ -3380,7 +3380,7 @@
     "split": "test"
   },
   {
-    "question": "In Brandt’s terminology, a moral code has currency in a society only if:",
+    "instruction_original": "In Brandt’s terminology, a moral code has currency in a society only if:",
     "subject": "philosophy",
     "choices": [
       "a high proportion of the adults in the society subscribe to its principles.",
@@ -3393,7 +3393,7 @@
     "split": "test"
   },
   {
-    "question": "The morality that Gauthier describes as facing a foundational crisis essentially involves:",
+    "instruction_original": "The morality that Gauthier describes as facing a foundational crisis essentially involves:",
     "subject": "philosophy",
     "choices": [
       "enlightened egoism.",
@@ -3406,7 +3406,7 @@
     "split": "test"
   },
   {
-    "question": "In spite of the fact that Socrates claims to be ignorant of the essence or nature of certain things like justice, he is wise insofar as he recognizes that without such knowledge actions are rationally unjustified.  That is, his wisdom consists in his recognition not only that he is ignorant of such essences but also that:",
+    "instruction_original": "In spite of the fact that Socrates claims to be ignorant of the essence or nature of certain things like justice, he is wise insofar as he recognizes that without such knowledge actions are rationally unjustified.  That is, his wisdom consists in his recognition not only that he is ignorant of such essences but also that:",
     "subject": "philosophy",
     "choices": [
       "justice, like knowledge, requires that we admit that we know nothing and never will.",
@@ -3419,7 +3419,7 @@
     "split": "test"
   },
   {
-    "question": "Hare refers to people who endorse ideals without regard for whether people’s interests are pursued by them as:",
+    "instruction_original": "Hare refers to people who endorse ideals without regard for whether people’s interests are pursued by them as:",
     "subject": "philosophy",
     "choices": [
       "fanatics.",
@@ -3432,7 +3432,7 @@
     "split": "test"
   },
   {
-    "question": "In Aquinas’s view, acts of prudence are solely about matters of:",
+    "instruction_original": "In Aquinas’s view, acts of prudence are solely about matters of:",
     "subject": "philosophy",
     "choices": [
       "pleasure.",
@@ -3445,7 +3445,7 @@
     "split": "test"
   },
   {
-    "question": "According to Locke, a man in the state of nature will relinquish his absolute freedom to the state because _____.",
+    "instruction_original": "According to Locke, a man in the state of nature will relinquish his absolute freedom to the state because _____.",
     "subject": "philosophy",
     "choices": [
       "he will also enjoy absolute freedom when subject to the state",
@@ -3458,7 +3458,7 @@
     "split": "test"
   },
   {
-    "question": "Augustine claims that there can be no evil where there is no:",
+    "instruction_original": "Augustine claims that there can be no evil where there is no:",
     "subject": "philosophy",
     "choices": [
       "hatred.",
@@ -3471,7 +3471,7 @@
     "split": "test"
   },
   {
-    "question": "According to Ross, justice is:",
+    "instruction_original": "According to Ross, justice is:",
     "subject": "philosophy",
     "choices": [
       "when all laws are followed.",
@@ -3484,7 +3484,7 @@
     "split": "test"
   },
   {
-    "question": "Logical behaviorism is at odds with our commonsense intuition that mental states _____.",
+    "instruction_original": "Logical behaviorism is at odds with our commonsense intuition that mental states _____.",
     "subject": "philosophy",
     "choices": [
       "cause behavior",
@@ -3497,7 +3497,7 @@
     "split": "test"
   },
   {
-    "question": "Ross claims that we learn of our prima facie duties:",
+    "instruction_original": "Ross claims that we learn of our prima facie duties:",
     "subject": "philosophy",
     "choices": [
       "by seeing the prima facie rightness of particular acts, and then apprehending general principles.",
@@ -3510,7 +3510,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe criticizes as absurd Kant’s idea of:",
+    "instruction_original": "Anscombe criticizes as absurd Kant’s idea of:",
     "subject": "philosophy",
     "choices": [
       "the thing in itself.",
@@ -3523,7 +3523,7 @@
     "split": "test"
   },
   {
-    "question": "In the Inquiry, Hume claims that our final verdicts on moral matters are derived from:",
+    "instruction_original": "In the Inquiry, Hume claims that our final verdicts on moral matters are derived from:",
     "subject": "philosophy",
     "choices": [
       "reason.",
@@ -3536,7 +3536,7 @@
     "split": "test"
   },
   {
-    "question": "According to Nagel, the problem of moral luck arises because:",
+    "instruction_original": "According to Nagel, the problem of moral luck arises because:",
     "subject": "philosophy",
     "choices": [
       "philosophers try to apply arbitrarily stringent standards to moral responsibility.",
@@ -3549,7 +3549,7 @@
     "split": "test"
   },
   {
-    "question": "A moral theory explains _____.",
+    "instruction_original": "A moral theory explains _____.",
     "subject": "philosophy",
     "choices": [
       "why an action is right or wrong",
@@ -3562,7 +3562,7 @@
     "split": "test"
   },
   {
-    "question": "Anscombe criticizes Butler on the grounds that:",
+    "instruction_original": "Anscombe criticizes Butler on the grounds that:",
     "subject": "philosophy",
     "choices": [
       "our consciences are fallible.",
@@ -3575,7 +3575,7 @@
     "split": "test"
   },
   {
-    "question": "Mill claims that a happy life is one of:",
+    "instruction_original": "Mill claims that a happy life is one of:",
     "subject": "philosophy",
     "choices": [
       "tranquility.",
@@ -3588,7 +3588,7 @@
     "split": "test"
   },
   {
-    "question": "According to Moore, “pleasure is good” means the same thing as:",
+    "instruction_original": "According to Moore, “pleasure is good” means the same thing as:",
     "subject": "philosophy",
     "choices": [
       "“pleasure is desired.”",
@@ -3601,7 +3601,7 @@
     "split": "test"
   },
   {
-    "question": "To argue that he is obliged to obey the laws of Athens, Socrates compares the city to:",
+    "instruction_original": "To argue that he is obliged to obey the laws of Athens, Socrates compares the city to:",
     "subject": "philosophy",
     "choices": [
       "an employer.",
@@ -3614,7 +3614,7 @@
     "split": "test"
   },
   {
-    "question": "Soft determinism entails that _____.",
+    "instruction_original": "Soft determinism entails that _____.",
     "subject": "philosophy",
     "choices": [
       "we are free to choose our desires",
@@ -3627,7 +3627,7 @@
     "split": "test"
   },
   {
-    "question": "In the moral life, feelings are _____.",
+    "instruction_original": "In the moral life, feelings are _____.",
     "subject": "philosophy",
     "choices": [
       "essential and inevitable",
@@ -3640,7 +3640,7 @@
     "split": "test"
   },
   {
-    "question": "According to Cicero, it is expedient to be:",
+    "instruction_original": "According to Cicero, it is expedient to be:",
     "subject": "philosophy",
     "choices": [
       "just.",
@@ -3653,7 +3653,7 @@
     "split": "test"
   },
   {
-    "question": "Brandt claims that whether a moral code is ideal depends in part on:",
+    "instruction_original": "Brandt claims that whether a moral code is ideal depends in part on:",
     "subject": "philosophy",
     "choices": [
       "the complexity of the rules.",
@@ -3666,7 +3666,7 @@
     "split": "test"
   },
   {
-    "question": "The view that we consist of two distinct substances (body and mind) and that these two interact is known as _____.",
+    "instruction_original": "The view that we consist of two distinct substances (body and mind) and that these two interact is known as _____.",
     "subject": "philosophy",
     "choices": [
       "functionalism",
@@ -3679,7 +3679,7 @@
     "split": "test"
   },
   {
-    "question": "According to Stevenson, the word “good” has a pleasing emotive meaning that fits it for:",
+    "instruction_original": "According to Stevenson, the word “good” has a pleasing emotive meaning that fits it for:",
     "subject": "philosophy",
     "choices": [
       "descriptive use.",
@@ -3692,7 +3692,7 @@
     "split": "test"
   },
   {
-    "question": "According to Locke, the chief end of men's uniting into a commonwealth is _____.",
+    "instruction_original": "According to Locke, the chief end of men's uniting into a commonwealth is _____.",
     "subject": "philosophy",
     "choices": [
       "domination over other commonwealths",
@@ -3705,7 +3705,7 @@
     "split": "test"
   },
   {
-    "question": "Hare claims that once two people agree on the meaning of the term “ought”:",
+    "instruction_original": "Hare claims that once two people agree on the meaning of the term “ought”:",
     "subject": "philosophy",
     "choices": [
       "they will share all the same moral opinions.",
@@ -3718,7 +3718,7 @@
     "split": "test"
   },
   {
-    "question": "To explain the notion of a prima facie duty, Ross draws an analogy with:",
+    "instruction_original": "To explain the notion of a prima facie duty, Ross draws an analogy with:",
     "subject": "philosophy",
     "choices": [
       "natural laws.",
@@ -3731,7 +3731,7 @@
     "split": "test"
   },
   {
-    "question": "In the Republic, Thrasymachus claims that justice is:",
+    "instruction_original": "In the Republic, Thrasymachus claims that justice is:",
     "subject": "philosophy",
     "choices": [
       "telling the truth and paying one’s debts.",
@@ -3744,7 +3744,7 @@
     "split": "test"
   },
   {
-    "question": "Epictetus claims that the desire for one’s loved ones to live forever is:",
+    "instruction_original": "Epictetus claims that the desire for one’s loved ones to live forever is:",
     "subject": "philosophy",
     "choices": [
       "a natural instinct.",
@@ -3757,7 +3757,7 @@
     "split": "test"
   },
   {
-    "question": "According to Sartre, the first principle of existentialism is that _____.",
+    "instruction_original": "According to Sartre, the first principle of existentialism is that _____.",
     "subject": "philosophy",
     "choices": [
       "God is dead",
@@ -3770,7 +3770,7 @@
     "split": "test"
   },
   {
-    "question": "Aristotle claims that:",
+    "instruction_original": "Aristotle claims that:",
     "subject": "philosophy",
     "choices": [
       "virtue is in our power, and so is vice.",
@@ -3783,7 +3783,7 @@
     "split": "test"
   },
   {
-    "question": "Hume describes reason as:",
+    "instruction_original": "Hume describes reason as:",
     "subject": "philosophy",
     "choices": [
       "cool and disengaged.",
@@ -3796,7 +3796,7 @@
     "split": "test"
   },
   {
-    "question": "According to Brandt, John Stuart Mill’s view most closely resembles:",
+    "instruction_original": "According to Brandt, John Stuart Mill’s view most closely resembles:",
     "subject": "philosophy",
     "choices": [
       "act-utilitarianism.",
@@ -3809,7 +3809,7 @@
     "split": "test"
   },
   {
-    "question": "The version of utilitarianism that Brandt defends makes rightness a function of:",
+    "instruction_original": "The version of utilitarianism that Brandt defends makes rightness a function of:",
     "subject": "philosophy",
     "choices": [
       "the consequences of particular acts.",
@@ -3822,7 +3822,7 @@
     "split": "test"
   },
   {
-    "question": "\"When a person starts on the discovery of the absolute by the light of reason only, and without any assistance of sense, and perseveres until by pure intelligence he arrives at the perception of the absolute good, he at last finds himself at the end of the intellectual world. . . . Dialectic, and dialectic alone, goes directly to the first principle and is the only science which does away with hypotheses in order to make her ground secure.\"  Here Plato indicates how hypothetical knowledge cannot provide the foundation of dialectical knowledge, insofar as hypotheses simply:",
+    "instruction_original": "\"When a person starts on the discovery of the absolute by the light of reason only, and without any assistance of sense, and perseveres until by pure intelligence he arrives at the perception of the absolute good, he at last finds himself at the end of the intellectual world. . . . Dialectic, and dialectic alone, goes directly to the first principle and is the only science which does away with hypotheses in order to make her ground secure.\"  Here Plato indicates how hypothetical knowledge cannot provide the foundation of dialectical knowledge, insofar as hypotheses simply:",
     "subject": "philosophy",
     "choices": [
       "explain sense experiences in terms of general concepts which themselves are not explained.",
@@ -3835,7 +3835,7 @@
     "split": "test"
   },
   {
-    "question": "What are some of the frequent frustrations in writing or reading about research ethics?",
+    "instruction_original": "What are some of the frequent frustrations in writing or reading about research ethics?",
     "subject": "philosophy",
     "choices": [
       "Writers differ over what is ethically acceptable.",
@@ -3848,7 +3848,7 @@
     "split": "test"
   },
   {
-    "question": "According to Cicero, immorality is __________, and expediency is __________.",
+    "instruction_original": "According to Cicero, immorality is __________, and expediency is __________.",
     "subject": "philosophy",
     "choices": [
       "repugnant to Nature; repugnant to Nature.",
@@ -3861,7 +3861,7 @@
     "split": "test"
   },
   {
-    "question": "Epicurus conceives of death as:",
+    "instruction_original": "Epicurus conceives of death as:",
     "subject": "philosophy",
     "choices": [
       "the beginning of the afterlife.",
@@ -3874,7 +3874,7 @@
     "split": "test"
   },
   {
-    "question": "Nussbaum claims that at the first stage of ethical inquiry, terms for the virtues should be:",
+    "instruction_original": "Nussbaum claims that at the first stage of ethical inquiry, terms for the virtues should be:",
     "subject": "philosophy",
     "choices": [
       "as descriptive as possible.",
@@ -3887,7 +3887,7 @@
     "split": "test"
   },
   {
-    "question": "The four main divisions of philosophy are metaphysics, epistemology, axiology, and _____.",
+    "instruction_original": "The four main divisions of philosophy are metaphysics, epistemology, axiology, and _____.",
     "subject": "philosophy",
     "choices": [
       "bioethics",
@@ -3900,7 +3900,7 @@
     "split": "test"
   },
   {
-    "question": "Da Vinci's Mona Lisa is_____.",
+    "instruction_original": "Da Vinci's Mona Lisa is_____.",
     "subject": "philosophy",
     "choices": [
       "representational",
@@ -3913,7 +3913,7 @@
     "split": "test"
   },
   {
-    "question": "According to Butler, the degree to which one acts compassionately depends on:",
+    "instruction_original": "According to Butler, the degree to which one acts compassionately depends on:",
     "subject": "philosophy",
     "choices": [
       "the strength of his affection of compassion.",
@@ -3926,7 +3926,7 @@
     "split": "test"
   },
   {
-    "question": "One example of bad constitutive moral luck would be:",
+    "instruction_original": "One example of bad constitutive moral luck would be:",
     "subject": "philosophy",
     "choices": [
       "a person who is by nature envious and ungenerous.",
@@ -3939,7 +3939,7 @@
     "split": "test"
   },
   {
-    "question": "Moore defines the naturalistic fallacy as the view that:",
+    "instruction_original": "Moore defines the naturalistic fallacy as the view that:",
     "subject": "philosophy",
     "choices": [
       "everything that is natural is good.",
@@ -3952,7 +3952,7 @@
     "split": "test"
   },
   {
-    "question": "Mill claims that the principle of utility:",
+    "instruction_original": "Mill claims that the principle of utility:",
     "subject": "philosophy",
     "choices": [
       "can be proven from self-evident principles.",
@@ -3965,7 +3965,7 @@
     "split": "test"
   },
   {
-    "question": "The theory that says mental states are nothing but brain states is known as _____.",
+    "instruction_original": "The theory that says mental states are nothing but brain states is known as _____.",
     "subject": "philosophy",
     "choices": [
       "brain theory",
@@ -3978,7 +3978,7 @@
     "split": "test"
   },
   {
-    "question": "Butler claims that in the strictest and most proper sense, tofollow nature is to:",
+    "instruction_original": "Butler claims that in the strictest and most proper sense, tofollow nature is to:",
     "subject": "philosophy",
     "choices": [
       "act as one pleases.",
@@ -3991,7 +3991,7 @@
     "split": "test"
   },
   {
-    "question": "According to Craig, the kalam cosmological argument establishes that _____.",
+    "instruction_original": "According to Craig, the kalam cosmological argument establishes that _____.",
     "subject": "philosophy",
     "choices": [
       "the God of Christianity exists",
@@ -4004,7 +4004,7 @@
     "split": "test"
   },
   {
-    "question": "Singer claims that famine relief organizations direct our aid to distant refugees:",
+    "instruction_original": "Singer claims that famine relief organizations direct our aid to distant refugees:",
     "subject": "philosophy",
     "choices": [
       "more effectively than we could get it to our close neighbors.",
@@ -4017,7 +4017,7 @@
     "split": "test"
   },
   {
-    "question": "Kant says that when trying to decide whether an action is morally permissible, we must ask if we can consistently will that the maxim of our action should become _____.",
+    "instruction_original": "Kant says that when trying to decide whether an action is morally permissible, we must ask if we can consistently will that the maxim of our action should become _____.",
     "subject": "philosophy",
     "choices": [
       "a rule for maximizing happiness",
@@ -4030,7 +4030,7 @@
     "split": "test"
   },
   {
-    "question": "Aesthetic values have to do with _______",
+    "instruction_original": "Aesthetic values have to do with _______",
     "subject": "philosophy",
     "choices": [
       "the moral value of works of art and other objects that could be judged beautiful",
@@ -4043,7 +4043,7 @@
     "split": "test"
   },
   {
-    "question": "According to Feinberg, a good moral education:",
+    "instruction_original": "According to Feinberg, a good moral education:",
     "subject": "philosophy",
     "choices": [
       "will make no use of pleasure or pain as sanctions.",
@@ -4056,7 +4056,7 @@
     "split": "test"
   },
   {
-    "question": " For Socrates, the belief that \"virtue is knowledge\" is related to his claim that \"the unexamined life is not worth living,\" because he believes that:",
+    "instruction_original": " For Socrates, the belief that \"virtue is knowledge\" is related to his claim that \"the unexamined life is not worth living,\" because he believes that:",
     "subject": "philosophy",
     "choices": [
       "the unexamined life is one in which we live day to day without asking questions about who we are and why we are here in the first place.",
@@ -4069,7 +4069,7 @@
     "split": "test"
   },
   {
-    "question": "Craig says an actually infinite number of things _____.",
+    "instruction_original": "Craig says an actually infinite number of things _____.",
     "subject": "philosophy",
     "choices": [
       "is possible",
@@ -4082,7 +4082,7 @@
     "split": "test"
   },
   {
-    "question": "Descartes believed that interaction between body and mind took place in _____.",
+    "instruction_original": "Descartes believed that interaction between body and mind took place in _____.",
     "subject": "philosophy",
     "choices": [
       "ectoplasm",
@@ -4095,7 +4095,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following is a form of harm that might be suffered by research participants?",
+    "instruction_original": "Which of the following is a form of harm that might be suffered by research participants?",
     "subject": "philosophy",
     "choices": [
       "Physical injury",

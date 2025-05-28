@@ -1,6 +1,6 @@
 [
   {
-    "question": " What is the sign of the covenant for Jewish males?",
+    "instruction_original": " What is the sign of the covenant for Jewish males?",
     "subject": "world_religions",
     "choices": [
       "The rainbow",
@@ -13,7 +13,7 @@
     "split": "dev"
   },
   {
-    "question": "What is the Second Gem in Buddhism?",
+    "instruction_original": "What is the Second Gem in Buddhism?",
     "subject": "world_religions",
     "choices": [
       "The Dharma",
@@ -26,7 +26,7 @@
     "split": "dev"
   },
   {
-    "question": " In which dynasty was the \"Mandate of Heaven\" developed to legitimatize the new rulers?",
+    "instruction_original": " In which dynasty was the \"Mandate of Heaven\" developed to legitimatize the new rulers?",
     "subject": "world_religions",
     "choices": [
       "Shang",
@@ -39,7 +39,7 @@
     "split": "dev"
   },
   {
-    "question": " Which Japanese government promoted a kind of national cult based on the emperor and his associations with kami?",
+    "instruction_original": " Which Japanese government promoted a kind of national cult based on the emperor and his associations with kami?",
     "subject": "world_religions",
     "choices": [
       "Honen",
@@ -52,7 +52,7 @@
     "split": "dev"
   },
   {
-    "question": "How can the Upanishads be characterized?",
+    "instruction_original": "How can the Upanishads be characterized?",
     "subject": "world_religions",
     "choices": [
       "Ritual texts",
@@ -65,7 +65,7 @@
     "split": "dev"
   },
   {
-    "question": " What can murtis be translated as?",
+    "instruction_original": " What can murtis be translated as?",
     "subject": "world_religions",
     "choices": [
       "Offerings",
@@ -78,7 +78,7 @@
     "split": "test"
   },
   {
-    "question": " Naturalists who concentrated on natural elements and processes are associated with which of the following?",
+    "instruction_original": " Naturalists who concentrated on natural elements and processes are associated with which of the following?",
     "subject": "world_religions",
     "choices": [
       "Daoism",
@@ -91,7 +91,7 @@
     "split": "test"
   },
   {
-    "question": " When was the first Buddhist temple constructed in Japan?",
+    "instruction_original": " When was the first Buddhist temple constructed in Japan?",
     "subject": "world_religions",
     "choices": [
       "325 CE",
@@ -104,7 +104,7 @@
     "split": "test"
   },
   {
-    "question": " What is the name of the ten day New Year festival that celebrated Babylon's culture?",
+    "instruction_original": " What is the name of the ten day New Year festival that celebrated Babylon's culture?",
     "subject": "world_religions",
     "choices": [
       "Akitu",
@@ -117,7 +117,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following terms denote the Japanese art of flower arranging?",
+    "instruction_original": "Which of the following terms denote the Japanese art of flower arranging?",
     "subject": "world_religions",
     "choices": [
       "Zazen",
@@ -130,7 +130,7 @@
     "split": "test"
   },
   {
-    "question": " Guru Nanak and his successors instructed the use of particular Sikh Ragas in order to promote which of the following?",
+    "instruction_original": " Guru Nanak and his successors instructed the use of particular Sikh Ragas in order to promote which of the following?",
     "subject": "world_religions",
     "choices": [
       "Harmony and balance",
@@ -143,7 +143,7 @@
     "split": "test"
   },
   {
-    "question": " Guru Nanak used what term to denote the \"divine word\" as part of divine revelation?",
+    "instruction_original": " Guru Nanak used what term to denote the \"divine word\" as part of divine revelation?",
     "subject": "world_religions",
     "choices": [
       "Shabad",
@@ -156,7 +156,7 @@
     "split": "test"
   },
   {
-    "question": "What is the mi'raj?",
+    "instruction_original": "What is the mi'raj?",
     "subject": "world_religions",
     "choices": [
       "Muhammad's miraculous ascent to heaven",
@@ -169,7 +169,7 @@
     "split": "test"
   },
   {
-    "question": "What is the name of the most famous dharmashastras, which probably dates from around the first century?",
+    "instruction_original": "What is the name of the most famous dharmashastras, which probably dates from around the first century?",
     "subject": "world_religions",
     "choices": [
       "Laws of Dharma",
@@ -182,7 +182,7 @@
     "split": "test"
   },
   {
-    "question": "What does the term \"Qur'an\" literally mean?",
+    "instruction_original": "What does the term \"Qur'an\" literally mean?",
     "subject": "world_religions",
     "choices": [
       "The Holy Book",
@@ -195,7 +195,7 @@
     "split": "test"
   },
   {
-    "question": " Mani referred to God by which of the following names?",
+    "instruction_original": " Mani referred to God by which of the following names?",
     "subject": "world_religions",
     "choices": [
       "Mother of Light",
@@ -208,7 +208,7 @@
     "split": "test"
   },
   {
-    "question": " Which tradition is known to promote \"gradual enlightenment\"?",
+    "instruction_original": " Which tradition is known to promote \"gradual enlightenment\"?",
     "subject": "world_religions",
     "choices": [
       "Bushido",
@@ -221,7 +221,7 @@
     "split": "test"
   },
   {
-    "question": "What is the communal meal offered at the place of worship called in Sikhism?",
+    "instruction_original": "What is the communal meal offered at the place of worship called in Sikhism?",
     "subject": "world_religions",
     "choices": [
       "Sangat",
@@ -234,7 +234,7 @@
     "split": "test"
   },
   {
-    "question": "To which tradition do the anti-Han rebel group known as the Celestial Masters belong?",
+    "instruction_original": "To which tradition do the anti-Han rebel group known as the Celestial Masters belong?",
     "subject": "world_religions",
     "choices": [
       "Buddhism",
@@ -247,7 +247,7 @@
     "split": "test"
   },
   {
-    "question": "What does the word \"Islam\" mean in Arabic?",
+    "instruction_original": "What does the word \"Islam\" mean in Arabic?",
     "subject": "world_religions",
     "choices": [
       "Worship",
@@ -260,7 +260,7 @@
     "split": "test"
   },
   {
-    "question": "What does the term anatman mean?",
+    "instruction_original": "What does the term anatman mean?",
     "subject": "world_religions",
     "choices": [
       "Suffering",
@@ -273,7 +273,7 @@
     "split": "test"
   },
   {
-    "question": " What genre of Sikh literature is denoted by the term janam-sakhis?",
+    "instruction_original": " What genre of Sikh literature is denoted by the term janam-sakhis?",
     "subject": "world_religions",
     "choices": [
       "Spiritual narratives",
@@ -286,7 +286,7 @@
     "split": "test"
   },
   {
-    "question": "Pure Land Buddhism belongs to which school?",
+    "instruction_original": "Pure Land Buddhism belongs to which school?",
     "subject": "world_religions",
     "choices": [
       "Vajrayana",
@@ -299,7 +299,7 @@
     "split": "test"
   },
   {
-    "question": " Which Jaina group only allows women to lead a life of semi-renunciation?",
+    "instruction_original": " Which Jaina group only allows women to lead a life of semi-renunciation?",
     "subject": "world_religions",
     "choices": [
       "Svetambara",
@@ -312,7 +312,7 @@
     "split": "test"
   },
   {
-    "question": "What is the most important prayer in Judaism?",
+    "instruction_original": "What is the most important prayer in Judaism?",
     "subject": "world_religions",
     "choices": [
       "The Shema",
@@ -325,7 +325,7 @@
     "split": "test"
   },
   {
-    "question": " The socio-political alliance between the kshatriyas and the shramanas was rooted in their shared opposition to which of the following?",
+    "instruction_original": " The socio-political alliance between the kshatriyas and the shramanas was rooted in their shared opposition to which of the following?",
     "subject": "world_religions",
     "choices": [
       "Brahminic orthodoxy",
@@ -338,7 +338,7 @@
     "split": "test"
   },
   {
-    "question": " Which early battle led to the conversion of Mecca?",
+    "instruction_original": " Which early battle led to the conversion of Mecca?",
     "subject": "world_religions",
     "choices": [
       "The Battle of Uhud",
@@ -351,7 +351,7 @@
     "split": "test"
   },
   {
-    "question": " What interior discipline must be adopted to achieve spiritual liberation within Sikhism?",
+    "instruction_original": " What interior discipline must be adopted to achieve spiritual liberation within Sikhism?",
     "subject": "world_religions",
     "choices": [
       "Remembering the Divine Name",
@@ -364,7 +364,7 @@
     "split": "test"
   },
   {
-    "question": " During Japan's occupation of Korea (1910-1945), which of the following was imposed upon the Koreans?",
+    "instruction_original": " During Japan's occupation of Korea (1910-1945), which of the following was imposed upon the Koreans?",
     "subject": "world_religions",
     "choices": [
       "Confucianism",
@@ -377,7 +377,7 @@
     "split": "test"
   },
   {
-    "question": "What is the meaning of the Punjabi word \"Sikh\"?",
+    "instruction_original": "What is the meaning of the Punjabi word \"Sikh\"?",
     "subject": "world_religions",
     "choices": [
       "Disciple",
@@ -390,7 +390,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following shuns politics?",
+    "instruction_original": " Which of the following shuns politics?",
     "subject": "world_religions",
     "choices": [
       "The sages of the Zhuangzi",
@@ -403,7 +403,7 @@
     "split": "test"
   },
   {
-    "question": "What does the Hebrew word mashiach mean?",
+    "instruction_original": "What does the Hebrew word mashiach mean?",
     "subject": "world_religions",
     "choices": [
       "Anointed one",
@@ -416,7 +416,7 @@
     "split": "test"
   },
   {
-    "question": "According to Jaina traditions, what does the term ajiva mean?",
+    "instruction_original": "According to Jaina traditions, what does the term ajiva mean?",
     "subject": "world_religions",
     "choices": [
       "Soul",
@@ -429,7 +429,7 @@
     "split": "test"
   },
   {
-    "question": " In the Japanese Zen tradition, what is zazen?",
+    "instruction_original": " In the Japanese Zen tradition, what is zazen?",
     "subject": "world_religions",
     "choices": [
       "A collection of statues",
@@ -442,7 +442,7 @@
     "split": "test"
   },
   {
-    "question": " What is a central component of tantric Buddhism?",
+    "instruction_original": " What is a central component of tantric Buddhism?",
     "subject": "world_religions",
     "choices": [
       "Asceticism",
@@ -455,7 +455,7 @@
     "split": "test"
   },
   {
-    "question": " How does the Egyptian composition Ludul Bel Nemequi (\"I will praise the Lord of wisdom) portray Marduk?",
+    "instruction_original": " How does the Egyptian composition Ludul Bel Nemequi (\"I will praise the Lord of wisdom) portray Marduk?",
     "subject": "world_religions",
     "choices": [
       "Loving and forgiving",
@@ -468,7 +468,7 @@
     "split": "test"
   },
   {
-    "question": " After the Bar Kochba revolt, where were the two main centres for Jewish development?",
+    "instruction_original": " After the Bar Kochba revolt, where were the two main centres for Jewish development?",
     "subject": "world_religions",
     "choices": [
       "Palestine and Babylonia",
@@ -481,7 +481,7 @@
     "split": "test"
   },
   {
-    "question": " In addition to Jainism, which other tradition began as a world-renouncing movement?",
+    "instruction_original": " In addition to Jainism, which other tradition began as a world-renouncing movement?",
     "subject": "world_religions",
     "choices": [
       "Buddhism",
@@ -494,7 +494,7 @@
     "split": "test"
   },
   {
-    "question": "According to Hindu tradition, which age are we in currently?",
+    "instruction_original": "According to Hindu tradition, which age are we in currently?",
     "subject": "world_religions",
     "choices": [
       "Kali yuga",
@@ -507,7 +507,7 @@
     "split": "test"
   },
   {
-    "question": " In the Zoroastrian tradition, the term Gathas refers to which of the following?",
+    "instruction_original": " In the Zoroastrian tradition, the term Gathas refers to which of the following?",
     "subject": "world_religions",
     "choices": [
       "Hymns",
@@ -520,7 +520,7 @@
     "split": "test"
   },
   {
-    "question": "Which form of Buddhism taught the only hope for salvation was in the saving grace of Amida?",
+    "instruction_original": "Which form of Buddhism taught the only hope for salvation was in the saving grace of Amida?",
     "subject": "world_religions",
     "choices": [
       "Pure Land",
@@ -533,7 +533,7 @@
     "split": "test"
   },
   {
-    "question": " According to Hindu tradition, who is considered to be the ideal wife?",
+    "instruction_original": " According to Hindu tradition, who is considered to be the ideal wife?",
     "subject": "world_religions",
     "choices": [
       "Sita",
@@ -546,7 +546,7 @@
     "split": "test"
   },
   {
-    "question": "Who is the woman mystic who exemplified the all-consuming love of the divine?",
+    "instruction_original": "Who is the woman mystic who exemplified the all-consuming love of the divine?",
     "subject": "world_religions",
     "choices": [
       "Rumi",
@@ -559,7 +559,7 @@
     "split": "test"
   },
   {
-    "question": " Who is the eighth-century CE female poet worshipped throughout many South Indian temples dedicated to Vishnu?",
+    "instruction_original": " Who is the eighth-century CE female poet worshipped throughout many South Indian temples dedicated to Vishnu?",
     "subject": "world_religions",
     "choices": [
       "Andal",
@@ -572,7 +572,7 @@
     "split": "test"
   },
   {
-    "question": " Who is associated with the stigmata and preaching to birds?",
+    "instruction_original": " Who is associated with the stigmata and preaching to birds?",
     "subject": "world_religions",
     "choices": [
       "Paul of Tarsus",
@@ -585,7 +585,7 @@
     "split": "test"
   },
   {
-    "question": " In his final work, Laws, Plato shifted from cosmology to which of the following issues?",
+    "instruction_original": " In his final work, Laws, Plato shifted from cosmology to which of the following issues?",
     "subject": "world_religions",
     "choices": [
       "Epistemology",
@@ -598,7 +598,7 @@
     "split": "test"
   },
   {
-    "question": " Which Christian denomination promotes a stripped-down Christianity?",
+    "instruction_original": " Which Christian denomination promotes a stripped-down Christianity?",
     "subject": "world_religions",
     "choices": [
       "Greek Orthodox",
@@ -611,7 +611,7 @@
     "split": "test"
   },
   {
-    "question": " Rome claimed that their bishop (pope) was the director successor of which leader?",
+    "instruction_original": " Rome claimed that their bishop (pope) was the director successor of which leader?",
     "subject": "world_religions",
     "choices": [
       "Peter",
@@ -624,7 +624,7 @@
     "split": "test"
   },
   {
-    "question": "When was the current Dalai Lama born?",
+    "instruction_original": "When was the current Dalai Lama born?",
     "subject": "world_religions",
     "choices": [
       "1935",
@@ -637,7 +637,7 @@
     "split": "test"
   },
   {
-    "question": " According to Jaina traditions, who were the caityavasis?",
+    "instruction_original": " According to Jaina traditions, who were the caityavasis?",
     "subject": "world_religions",
     "choices": [
       "Householders who supported renouncers",
@@ -650,7 +650,7 @@
     "split": "test"
   },
   {
-    "question": "Zhuangzi describes a state as ziran, which means which of the following?",
+    "instruction_original": "Zhuangzi describes a state as ziran, which means which of the following?",
     "subject": "world_religions",
     "choices": [
       "Thoughtfulness",
@@ -663,7 +663,7 @@
     "split": "test"
   },
   {
-    "question": " The mudras, which are an important feature of Buddhist art, are also known as what?",
+    "instruction_original": " The mudras, which are an important feature of Buddhist art, are also known as what?",
     "subject": "world_religions",
     "choices": [
       "hand gestures",
@@ -676,7 +676,7 @@
     "split": "test"
   },
   {
-    "question": " The Maccabean Revolt is associated with which ruler?",
+    "instruction_original": " The Maccabean Revolt is associated with which ruler?",
     "subject": "world_religions",
     "choices": [
       "Julius Caesar",
@@ -689,7 +689,7 @@
     "split": "test"
   },
   {
-    "question": " How old was Guru Nanak when he started to preach the message of the divine Name?",
+    "instruction_original": " How old was Guru Nanak when he started to preach the message of the divine Name?",
     "subject": "world_religions",
     "choices": [
       "30",
@@ -702,7 +702,7 @@
     "split": "test"
   },
   {
-    "question": "The widely adored Egyptian goddess Hathor was depicted as which of the following?",
+    "instruction_original": "The widely adored Egyptian goddess Hathor was depicted as which of the following?",
     "subject": "world_religions",
     "choices": [
       "Serpent",
@@ -715,7 +715,7 @@
     "split": "test"
   },
   {
-    "question": "What does the phrase Guru-Panth mean within the Sikh traditions?",
+    "instruction_original": "What does the phrase Guru-Panth mean within the Sikh traditions?",
     "subject": "world_religions",
     "choices": [
       "Community",
@@ -728,7 +728,7 @@
     "split": "test"
   },
   {
-    "question": " After what event did the Rabbinical period begin within Judaism?",
+    "instruction_original": " After what event did the Rabbinical period begin within Judaism?",
     "subject": "world_religions",
     "choices": [
       "Construction of the Second Temple",
@@ -741,7 +741,7 @@
     "split": "test"
   },
   {
-    "question": "Which monk developed Pure Land Buddhism as we know it today?",
+    "instruction_original": "Which monk developed Pure Land Buddhism as we know it today?",
     "subject": "world_religions",
     "choices": [
       "Genshin",
@@ -754,7 +754,7 @@
     "split": "test"
   },
   {
-    "question": "Which is the largest Muslim country in the world with more than 200 million adherents?",
+    "instruction_original": "Which is the largest Muslim country in the world with more than 200 million adherents?",
     "subject": "world_religions",
     "choices": [
       "Pakistan",
@@ -767,7 +767,7 @@
     "split": "test"
   },
   {
-    "question": "Which pope promoted the cults of St. Peter and St. Paul to bolster authority in Rome?",
+    "instruction_original": "Which pope promoted the cults of St. Peter and St. Paul to bolster authority in Rome?",
     "subject": "world_religions",
     "choices": [
       "Gregory",
@@ -780,7 +780,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following does the term \"Arhats\" refer to?",
+    "instruction_original": "Which of the following does the term \"Arhats\" refer to?",
     "subject": "world_religions",
     "choices": [
       "Enlightened being",
@@ -793,7 +793,7 @@
     "split": "test"
   },
   {
-    "question": "Which Guru was martyred when he refused to embrace Islam?",
+    "instruction_original": "Which Guru was martyred when he refused to embrace Islam?",
     "subject": "world_religions",
     "choices": [
       "Guru Ram Das",
@@ -806,7 +806,7 @@
     "split": "test"
   },
   {
-    "question": " Which Guru donned the two swords symbolling temporal and spiritual authority?",
+    "instruction_original": " Which Guru donned the two swords symbolling temporal and spiritual authority?",
     "subject": "world_religions",
     "choices": [
       "Guru Nanak",
@@ -819,7 +819,7 @@
     "split": "test"
   },
   {
-    "question": " Where is the key to liberation found within Sikhism?",
+    "instruction_original": " Where is the key to liberation found within Sikhism?",
     "subject": "world_religions",
     "choices": [
       "In the community",
@@ -832,7 +832,7 @@
     "split": "test"
   },
   {
-    "question": "Which is one of the most fundamental themes of Japanese culture and civilization?",
+    "instruction_original": "Which is one of the most fundamental themes of Japanese culture and civilization?",
     "subject": "world_religions",
     "choices": [
       "God is eternal and merciful to those who offer worship",
@@ -845,7 +845,7 @@
     "split": "test"
   },
   {
-    "question": " Which goddess is worshipped during the festival of Divali?",
+    "instruction_original": " Which goddess is worshipped during the festival of Divali?",
     "subject": "world_religions",
     "choices": [
       "Durga",
@@ -858,7 +858,7 @@
     "split": "test"
   },
   {
-    "question": " Where did people believe in the goddess known as Holy Mother of Mount Fairy Peach?",
+    "instruction_original": " Where did people believe in the goddess known as Holy Mother of Mount Fairy Peach?",
     "subject": "world_religions",
     "choices": [
       "China",
@@ -871,7 +871,7 @@
     "split": "test"
   },
   {
-    "question": " To whom is the Yoga Sutras attributed?",
+    "instruction_original": " To whom is the Yoga Sutras attributed?",
     "subject": "world_religions",
     "choices": [
       "Madhva",
@@ -884,7 +884,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following does NOT describe the Ka'ba?",
+    "instruction_original": " Which of the following does NOT describe the Ka'ba?",
     "subject": "world_religions",
     "choices": [
       "It was visited by Moses.",
@@ -897,7 +897,7 @@
     "split": "test"
   },
   {
-    "question": "Which elephant-headed Hindu deity is often described as the most beloved?",
+    "instruction_original": "Which elephant-headed Hindu deity is often described as the most beloved?",
     "subject": "world_religions",
     "choices": [
       "Parvati",
@@ -910,7 +910,7 @@
     "split": "test"
   },
   {
-    "question": "Sacred literature originated with which of the following jina?",
+    "instruction_original": "Sacred literature originated with which of the following jina?",
     "subject": "world_religions",
     "choices": [
       "Sri Lakshmi",
@@ -923,7 +923,7 @@
     "split": "test"
   },
   {
-    "question": " Who is the author of Admonitions for Women?",
+    "instruction_original": " Who is the author of Admonitions for Women?",
     "subject": "world_religions",
     "choices": [
       "Ban Zhao",
@@ -936,7 +936,7 @@
     "split": "test"
   },
   {
-    "question": "How many female renouncers were under the tutelage of Chandanbala?",
+    "instruction_original": "How many female renouncers were under the tutelage of Chandanbala?",
     "subject": "world_religions",
     "choices": [
       "36,000",
@@ -949,7 +949,7 @@
     "split": "test"
   },
   {
-    "question": "According to the Sikh tradition, the Mul Mantar illuminates the nature of what?",
+    "instruction_original": "According to the Sikh tradition, the Mul Mantar illuminates the nature of what?",
     "subject": "world_religions",
     "choices": [
       "Ultimate Reality",
@@ -962,7 +962,7 @@
     "split": "test"
   },
   {
-    "question": " What term refers the divine order as an ell-embracing higher principle in Sikhism?",
+    "instruction_original": " What term refers the divine order as an ell-embracing higher principle in Sikhism?",
     "subject": "world_religions",
     "choices": [
       "Sansar",
@@ -975,7 +975,7 @@
     "split": "test"
   },
   {
-    "question": " How many books are in the New Testament?",
+    "instruction_original": " How many books are in the New Testament?",
     "subject": "world_religions",
     "choices": [
       "30",
@@ -988,7 +988,7 @@
     "split": "test"
   },
   {
-    "question": "Which form of Buddhism focuses on social engagement that attracts lay participation?",
+    "instruction_original": "Which form of Buddhism focuses on social engagement that attracts lay participation?",
     "subject": "world_religions",
     "choices": [
       "Zen Buddhism",
@@ -1001,7 +1001,7 @@
     "split": "test"
   },
   {
-    "question": " What was one of the distinctive beliefs or practices of the southerners (Digambara)?",
+    "instruction_original": " What was one of the distinctive beliefs or practices of the southerners (Digambara)?",
     "subject": "world_religions",
     "choices": [
       "They worshipped exclusively outside of the temple",
@@ -1014,7 +1014,7 @@
     "split": "test"
   },
   {
-    "question": "The central prayer in Jainism is known by which of the following names?",
+    "instruction_original": "The central prayer in Jainism is known by which of the following names?",
     "subject": "world_religions",
     "choices": [
       "Namokar Mantra",
@@ -1027,7 +1027,7 @@
     "split": "test"
   },
   {
-    "question": "When did the first Jaina temples appear?",
+    "instruction_original": "When did the first Jaina temples appear?",
     "subject": "world_religions",
     "choices": [
       "Second century CE",
@@ -1040,7 +1040,7 @@
     "split": "test"
   },
   {
-    "question": "How many Jinas have appeared during our age?",
+    "instruction_original": "How many Jinas have appeared during our age?",
     "subject": "world_religions",
     "choices": [
       "7",
@@ -1053,7 +1053,7 @@
     "split": "test"
   },
   {
-    "question": "The title Dalai Lama means which of the following?",
+    "instruction_original": "The title Dalai Lama means which of the following?",
     "subject": "world_religions",
     "choices": [
       "Ocean of Love",
@@ -1066,7 +1066,7 @@
     "split": "test"
   },
   {
-    "question": "Who accompanies Vishnu in many of his incarnations as his consort, and is known as the goddess of good fortune?",
+    "instruction_original": "Who accompanies Vishnu in many of his incarnations as his consort, and is known as the goddess of good fortune?",
     "subject": "world_religions",
     "choices": [
       "Parvati",
@@ -1079,7 +1079,7 @@
     "split": "test"
   },
   {
-    "question": "What is bhakti often translated as?",
+    "instruction_original": "What is bhakti often translated as?",
     "subject": "world_religions",
     "choices": [
       "Gods",
@@ -1092,7 +1092,7 @@
     "split": "test"
   },
   {
-    "question": " Which Hindu god or goddess is speech incarnate, the power of the word, and the mother of the Vedas?",
+    "instruction_original": " Which Hindu god or goddess is speech incarnate, the power of the word, and the mother of the Vedas?",
     "subject": "world_religions",
     "choices": [
       "Vishnu",
@@ -1105,7 +1105,7 @@
     "split": "test"
   },
   {
-    "question": " What is the name of the Jewish prayer used for mourning since the Middle Ages?",
+    "instruction_original": " What is the name of the Jewish prayer used for mourning since the Middle Ages?",
     "subject": "world_religions",
     "choices": [
       "The Shema",
@@ -1118,7 +1118,7 @@
     "split": "test"
   },
   {
-    "question": "Krishna and Rama are incarnations of which Hindu god?",
+    "instruction_original": "Krishna and Rama are incarnations of which Hindu god?",
     "subject": "world_religions",
     "choices": [
       "Shiva",
@@ -1131,7 +1131,7 @@
     "split": "test"
   },
   {
-    "question": " The kshatriyas is the caste name assigned to which group?",
+    "instruction_original": " The kshatriyas is the caste name assigned to which group?",
     "subject": "world_religions",
     "choices": [
       "Priests",
@@ -1144,7 +1144,7 @@
     "split": "test"
   },
   {
-    "question": "When was the Old Babylonian version of Gilgamesh modified into the standard version?",
+    "instruction_original": "When was the Old Babylonian version of Gilgamesh modified into the standard version?",
     "subject": "world_religions",
     "choices": [
       "Toward the end of the first millennium BCE",
@@ -1157,7 +1157,7 @@
     "split": "test"
   },
   {
-    "question": " What is the meaning ofsamyak jnanawithin the Jaina traditions?",
+    "instruction_original": " What is the meaning ofsamyak jnanawithin the Jaina traditions?",
     "subject": "world_religions",
     "choices": [
       "Correct knowledge",
@@ -1170,7 +1170,7 @@
     "split": "test"
   },
   {
-    "question": " What type of Buddhist organization is the Bodu Bala Sena?",
+    "instruction_original": " What type of Buddhist organization is the Bodu Bala Sena?",
     "subject": "world_religions",
     "choices": [
       "Activist and militant organization in Sri Lanka",
@@ -1183,7 +1183,7 @@
     "split": "test"
   },
   {
-    "question": "Which mystic believed that evil was a distortion that reveals divine love more clearly?",
+    "instruction_original": "Which mystic believed that evil was a distortion that reveals divine love more clearly?",
     "subject": "world_religions",
     "choices": [
       "Julian of Norwich",
@@ -1196,7 +1196,7 @@
     "split": "test"
   },
   {
-    "question": "In the Jaina traditions \"bad karma\" is known by which of the following terms?",
+    "instruction_original": "In the Jaina traditions \"bad karma\" is known by which of the following terms?",
     "subject": "world_religions",
     "choices": [
       "Paap",
@@ -1209,7 +1209,7 @@
     "split": "test"
   },
   {
-    "question": " During what Japanese festival do the spirits of deceased family members return to receive ritual offerings of food made by their loved ones?",
+    "instruction_original": " During what Japanese festival do the spirits of deceased family members return to receive ritual offerings of food made by their loved ones?",
     "subject": "world_religions",
     "choices": [
       "Obon",
@@ -1222,7 +1222,7 @@
     "split": "test"
   },
   {
-    "question": "What does \"Mahavira\" mean?",
+    "instruction_original": "What does \"Mahavira\" mean?",
     "subject": "world_religions",
     "choices": [
       "\"Great Hero\"",
@@ -1235,7 +1235,7 @@
     "split": "test"
   },
   {
-    "question": " What does the Tripitaka mean?",
+    "instruction_original": " What does the Tripitaka mean?",
     "subject": "world_religions",
     "choices": [
       "Three gems",
@@ -1248,7 +1248,7 @@
     "split": "test"
   },
   {
-    "question": "Where is the largest network of Confucian shrines in the world?",
+    "instruction_original": "Where is the largest network of Confucian shrines in the world?",
     "subject": "world_religions",
     "choices": [
       "Indonesia",
@@ -1261,7 +1261,7 @@
     "split": "test"
   },
   {
-    "question": " Ghosa, Apala and Lopamurda, all named in the early Vedas, are which of the following?",
+    "instruction_original": " Ghosa, Apala and Lopamurda, all named in the early Vedas, are which of the following?",
     "subject": "world_religions",
     "choices": [
       "Female princesses",
@@ -1274,7 +1274,7 @@
     "split": "test"
   },
   {
-    "question": " What is the title for the religious and administrative leaders who succeeded the Prophet?",
+    "instruction_original": " What is the title for the religious and administrative leaders who succeeded the Prophet?",
     "subject": "world_religions",
     "choices": [
       "Rasul",
@@ -1287,7 +1287,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following is NOT included in the Islamic understanding of jurisprudence?",
+    "instruction_original": "Which of the following is NOT included in the Islamic understanding of jurisprudence?",
     "subject": "world_religions",
     "choices": [
       "Consensus",
@@ -1300,7 +1300,7 @@
     "split": "test"
   },
   {
-    "question": "Why is Mahavira a significant person in the Jaina traditions?",
+    "instruction_original": "Why is Mahavira a significant person in the Jaina traditions?",
     "subject": "world_religions",
     "choices": [
       "He is the last of the ascetic prophets.",
@@ -1313,7 +1313,7 @@
     "split": "test"
   },
   {
-    "question": " The Tibetan Book of the Dead is also known as which of the following?",
+    "instruction_original": " The Tibetan Book of the Dead is also known as which of the following?",
     "subject": "world_religions",
     "choices": [
       "Bardo Thodol",
@@ -1326,7 +1326,7 @@
     "split": "test"
   },
   {
-    "question": " Which Hindu festival involves decorating the house with lights, setting off firecrackers and wearing new clothes?",
+    "instruction_original": " Which Hindu festival involves decorating the house with lights, setting off firecrackers and wearing new clothes?",
     "subject": "world_religions",
     "choices": [
       "Deepavali",
@@ -1339,7 +1339,7 @@
     "split": "test"
   },
   {
-    "question": "What hours are set aside as the ambrosial hours for the Sikhs?",
+    "instruction_original": "What hours are set aside as the ambrosial hours for the Sikhs?",
     "subject": "world_religions",
     "choices": [
       "5–7 a.m.",
@@ -1352,7 +1352,7 @@
     "split": "test"
   },
   {
-    "question": " Self-sacrifice is an important theme for which Buddhist thinker?",
+    "instruction_original": " Self-sacrifice is an important theme for which Buddhist thinker?",
     "subject": "world_religions",
     "choices": [
       "Thich Nhat Hanh",
@@ -1365,7 +1365,7 @@
     "split": "test"
   },
   {
-    "question": " How many times a day is the Fatihah recited?",
+    "instruction_original": " How many times a day is the Fatihah recited?",
     "subject": "world_religions",
     "choices": [
       "Exactly 17",
@@ -1378,7 +1378,7 @@
     "split": "test"
   },
   {
-    "question": "Which branch of Judaism founded by Zacharias Frankel is known for its \"Positive-Historical Judaism\"?",
+    "instruction_original": "Which branch of Judaism founded by Zacharias Frankel is known for its \"Positive-Historical Judaism\"?",
     "subject": "world_religions",
     "choices": [
       "Conservative",
@@ -1391,7 +1391,7 @@
     "split": "test"
   },
   {
-    "question": " What is the term used to describe the \"pure\" as an order of loyal Sikhs bound together?",
+    "instruction_original": " What is the term used to describe the \"pure\" as an order of loyal Sikhs bound together?",
     "subject": "world_religions",
     "choices": [
       "Khalsa",
@@ -1404,7 +1404,7 @@
     "split": "test"
   },
   {
-    "question": "Who is the founder of Sikhism?",
+    "instruction_original": "Who is the founder of Sikhism?",
     "subject": "world_religions",
     "choices": [
       "Guru Gobind Singh",
@@ -1417,7 +1417,7 @@
     "split": "test"
   },
   {
-    "question": "Which term is usually associated with women in Hindu traditions?",
+    "instruction_original": "Which term is usually associated with women in Hindu traditions?",
     "subject": "world_religions",
     "choices": [
       "Polluted",
@@ -1430,7 +1430,7 @@
     "split": "test"
   },
   {
-    "question": "What is another name for Enuma Elish?",
+    "instruction_original": "What is another name for Enuma Elish?",
     "subject": "world_religions",
     "choices": [
       "Epic of Creation",
@@ -1443,7 +1443,7 @@
     "split": "test"
   },
   {
-    "question": " What was the most important female-centered festival in cities throughout Greece?",
+    "instruction_original": " What was the most important female-centered festival in cities throughout Greece?",
     "subject": "world_religions",
     "choices": [
       "Thesmophoria",
@@ -1456,7 +1456,7 @@
     "split": "test"
   },
   {
-    "question": "Speaking in tongues is a feature of which Christian denomination?",
+    "instruction_original": "Speaking in tongues is a feature of which Christian denomination?",
     "subject": "world_religions",
     "choices": [
       "Evangelicalism",
@@ -1469,7 +1469,7 @@
     "split": "test"
   },
   {
-    "question": " Charism can be defined as which of the following?",
+    "instruction_original": " Charism can be defined as which of the following?",
     "subject": "world_religions",
     "choices": [
       "An oil",
@@ -1482,7 +1482,7 @@
     "split": "test"
   },
   {
-    "question": " In Islam, what is the qiblah?",
+    "instruction_original": " In Islam, what is the qiblah?",
     "subject": "world_religions",
     "choices": [
       "Almsgiving",
@@ -1495,7 +1495,7 @@
     "split": "test"
   },
   {
-    "question": "In Tendai Buddhism, what does the term honji mean?",
+    "instruction_original": "In Tendai Buddhism, what does the term honji mean?",
     "subject": "world_religions",
     "choices": [
       "Trace",
@@ -1508,7 +1508,7 @@
     "split": "test"
   },
   {
-    "question": " What is the name of a recent revivalist movement in Turkey led by Fetullah Gülen?",
+    "instruction_original": " What is the name of a recent revivalist movement in Turkey led by Fetullah Gülen?",
     "subject": "world_religions",
     "choices": [
       "Hizmet",
@@ -1521,7 +1521,7 @@
     "split": "test"
   },
   {
-    "question": "For whom are the Hindu Vedas most significant?",
+    "instruction_original": "For whom are the Hindu Vedas most significant?",
     "subject": "world_religions",
     "choices": [
       "Brahmins",
@@ -1534,7 +1534,7 @@
     "split": "test"
   },
   {
-    "question": " According to the Korean foundation myth, who transformed into a human in order to father Dangun?",
+    "instruction_original": " According to the Korean foundation myth, who transformed into a human in order to father Dangun?",
     "subject": "world_religions",
     "choices": [
       "Hwanin",
@@ -1547,7 +1547,7 @@
     "split": "test"
   },
   {
-    "question": " In Buddhism, what are ordained women known as?",
+    "instruction_original": " In Buddhism, what are ordained women known as?",
     "subject": "world_religions",
     "choices": [
       "Bhikshus",
@@ -1560,7 +1560,7 @@
     "split": "test"
   },
   {
-    "question": " What is the name of the most authoritative Kabbalah text?",
+    "instruction_original": " What is the name of the most authoritative Kabbalah text?",
     "subject": "world_religions",
     "choices": [
       "Gemarah",
@@ -1573,7 +1573,7 @@
     "split": "test"
   },
   {
-    "question": " Which Confucian philosopher is described as a mystic due to his focus on qi (or ch'i)?",
+    "instruction_original": " Which Confucian philosopher is described as a mystic due to his focus on qi (or ch'i)?",
     "subject": "world_religions",
     "choices": [
       "Dao",
@@ -1586,7 +1586,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following does the Qur'an permit?",
+    "instruction_original": " Which of the following does the Qur'an permit?",
     "subject": "world_religions",
     "choices": [
       "Honor Killing",
@@ -1599,7 +1599,7 @@
     "split": "test"
   },
   {
-    "question": " Which is the main form of Buddhism in Sri Lanka?",
+    "instruction_original": " Which is the main form of Buddhism in Sri Lanka?",
     "subject": "world_religions",
     "choices": [
       "Theravada",
@@ -1612,7 +1612,7 @@
     "split": "test"
   },
   {
-    "question": " Which leader is known for spreading the dharma of non-violence?",
+    "instruction_original": " Which leader is known for spreading the dharma of non-violence?",
     "subject": "world_religions",
     "choices": [
       "Ngo Dinh Diem",
@@ -1625,7 +1625,7 @@
     "split": "test"
   },
   {
-    "question": "What are the two sacraments that all Christians celebrate?",
+    "instruction_original": "What are the two sacraments that all Christians celebrate?",
     "subject": "world_religions",
     "choices": [
       "Baptism and Eucharist",
@@ -1638,7 +1638,7 @@
     "split": "test"
   },
   {
-    "question": "What is the most important festival for Sikhs?",
+    "instruction_original": "What is the most important festival for Sikhs?",
     "subject": "world_religions",
     "choices": [
       "Holi",
@@ -1651,7 +1651,7 @@
     "split": "test"
   },
   {
-    "question": " Who declared Muhammad a prophet?",
+    "instruction_original": " Who declared Muhammad a prophet?",
     "subject": "world_religions",
     "choices": [
       "Khadijah",
@@ -1664,7 +1664,7 @@
     "split": "test"
   },
   {
-    "question": "The Jataka tales are a collection of which genre of stories?",
+    "instruction_original": "The Jataka tales are a collection of which genre of stories?",
     "subject": "world_religions",
     "choices": [
       "Life stories",
@@ -1677,7 +1677,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is the timespan for Japan's closure to Christianity and Europe?",
+    "instruction_original": " Which of the following is the timespan for Japan's closure to Christianity and Europe?",
     "subject": "world_religions",
     "choices": [
       "1749-1945",
@@ -1690,7 +1690,7 @@
     "split": "test"
   },
   {
-    "question": " In Yiddish, what is the word for covenant?",
+    "instruction_original": " In Yiddish, what is the word for covenant?",
     "subject": "world_religions",
     "choices": [
       "Haggadah",
@@ -1703,7 +1703,7 @@
     "split": "test"
   },
   {
-    "question": "According to the Sumerian King List, where does kingship come from?",
+    "instruction_original": "According to the Sumerian King List, where does kingship come from?",
     "subject": "world_religions",
     "choices": [
       "Through initiation into the mystery cults",
@@ -1716,7 +1716,7 @@
     "split": "test"
   },
   {
-    "question": "What is the name of the Hindu community associated with environmental activism?",
+    "instruction_original": "What is the name of the Hindu community associated with environmental activism?",
     "subject": "world_religions",
     "choices": [
       "Puranas",
@@ -1729,7 +1729,7 @@
     "split": "test"
   },
   {
-    "question": " Which bodhisattva is known for conducting the souls of dead children to salvation?",
+    "instruction_original": " Which bodhisattva is known for conducting the souls of dead children to salvation?",
     "subject": "world_religions",
     "choices": [
       "Guan-yin",
@@ -1742,7 +1742,7 @@
     "split": "test"
   },
   {
-    "question": " The Gospel of John is associated with which theological concept?",
+    "instruction_original": " The Gospel of John is associated with which theological concept?",
     "subject": "world_religions",
     "choices": [
       "Incarnation",
@@ -1755,7 +1755,7 @@
     "split": "test"
   },
   {
-    "question": "Which god supplanted the earlier Mesopotamian supreme god Enil?",
+    "instruction_original": "Which god supplanted the earlier Mesopotamian supreme god Enil?",
     "subject": "world_religions",
     "choices": [
       "Horus",
@@ -1768,7 +1768,7 @@
     "split": "test"
   },
   {
-    "question": "Which of the following movements was founded by Mordechai Kaplan?",
+    "instruction_original": "Which of the following movements was founded by Mordechai Kaplan?",
     "subject": "world_religions",
     "choices": [
       "Liberal Judaism",
@@ -1781,7 +1781,7 @@
     "split": "test"
   },
   {
-    "question": "When was the State of Israel established?",
+    "instruction_original": "When was the State of Israel established?",
     "subject": "world_religions",
     "choices": [
       "1947",
@@ -1794,7 +1794,7 @@
     "split": "test"
   },
   {
-    "question": " Icons are a main feature of which church?",
+    "instruction_original": " Icons are a main feature of which church?",
     "subject": "world_religions",
     "choices": [
       "Anglican",
@@ -1807,7 +1807,7 @@
     "split": "test"
   },
   {
-    "question": "The first of the Four Noble Truths teaches which of the following cannot be escaped?",
+    "instruction_original": "The first of the Four Noble Truths teaches which of the following cannot be escaped?",
     "subject": "world_religions",
     "choices": [
       "Pride",
@@ -1820,7 +1820,7 @@
     "split": "test"
   },
   {
-    "question": " The Continental Reformation started in what year?",
+    "instruction_original": " The Continental Reformation started in what year?",
     "subject": "world_religions",
     "choices": [
       "1545",
@@ -1833,7 +1833,7 @@
     "split": "test"
   },
   {
-    "question": "The minimalism of Haiku is said to be derived from which tradition?",
+    "instruction_original": "The minimalism of Haiku is said to be derived from which tradition?",
     "subject": "world_religions",
     "choices": [
       "Zen Buddhism",
@@ -1846,7 +1846,7 @@
     "split": "test"
   },
   {
-    "question": "Which deity is the Roman counterpart to the Greek god Zeus?",
+    "instruction_original": "Which deity is the Roman counterpart to the Greek god Zeus?",
     "subject": "world_religions",
     "choices": [
       "Jupiter",
@@ -1859,7 +1859,7 @@
     "split": "test"
   },
   {
-    "question": "The philosopher Laozi is associated with which tradition?",
+    "instruction_original": "The philosopher Laozi is associated with which tradition?",
     "subject": "world_religions",
     "choices": [
       "Jainism",
@@ -1872,7 +1872,7 @@
     "split": "test"
   },
   {
-    "question": " Which Egyptian gods did Akhenaten make a determined effort to eliminate?",
+    "instruction_original": " Which Egyptian gods did Akhenaten make a determined effort to eliminate?",
     "subject": "world_religions",
     "choices": [
       "Shu and Set",
@@ -1885,7 +1885,7 @@
     "split": "test"
   },
   {
-    "question": "The term xin refers to which of the following?",
+    "instruction_original": "The term xin refers to which of the following?",
     "subject": "world_religions",
     "choices": [
       "Piety",
@@ -1898,7 +1898,7 @@
     "split": "test"
   },
   {
-    "question": " Which term in the dharma texts of the classical period denotes the four stages of life?",
+    "instruction_original": " Which term in the dharma texts of the classical period denotes the four stages of life?",
     "subject": "world_religions",
     "choices": [
       "Kama",
@@ -1911,7 +1911,7 @@
     "split": "test"
   },
   {
-    "question": "What is the term for commentary on the Qur'an, which means \"unveiling\"?",
+    "instruction_original": "What is the term for commentary on the Qur'an, which means \"unveiling\"?",
     "subject": "world_religions",
     "choices": [
       "fiqh",
@@ -1924,7 +1924,7 @@
     "split": "test"
   },
   {
-    "question": " With which branch of Islam are the Isma'ilis are associated?",
+    "instruction_original": " With which branch of Islam are the Isma'ilis are associated?",
     "subject": "world_religions",
     "choices": [
       "The Sunni",
@@ -1937,7 +1937,7 @@
     "split": "test"
   },
   {
-    "question": " The term mappo is associated with which of the following?",
+    "instruction_original": " The term mappo is associated with which of the following?",
     "subject": "world_religions",
     "choices": [
       "The dharma",
@@ -1950,7 +1950,7 @@
     "split": "test"
   },
   {
-    "question": " What is the name of the bodhisattva in Japan known for a commitment to alleviating suffering?",
+    "instruction_original": " What is the name of the bodhisattva in Japan known for a commitment to alleviating suffering?",
     "subject": "world_religions",
     "choices": [
       "Amaterasu",
@@ -1963,7 +1963,7 @@
     "split": "test"
   },
   {
-    "question": "Who was the first significant anchorite hermit?",
+    "instruction_original": "Who was the first significant anchorite hermit?",
     "subject": "world_religions",
     "choices": [
       "Pachomius",
@@ -1976,7 +1976,7 @@
     "split": "test"
   },
   {
-    "question": "Which are the synoptic Gospels?",
+    "instruction_original": "Which are the synoptic Gospels?",
     "subject": "world_religions",
     "choices": [
       "Peter, John, Mark",
@@ -1989,7 +1989,7 @@
     "split": "test"
   },
   {
-    "question": "What is the English title for the divination text also known as the Yijing?",
+    "instruction_original": "What is the English title for the divination text also known as the Yijing?",
     "subject": "world_religions",
     "choices": [
       "The Classic of Documents",
@@ -2002,7 +2002,7 @@
     "split": "test"
   },
   {
-    "question": " Where was the most famous site of the mystery cults in Greece?",
+    "instruction_original": " Where was the most famous site of the mystery cults in Greece?",
     "subject": "world_religions",
     "choices": [
       "Ephesus",
@@ -2015,7 +2015,7 @@
     "split": "test"
   },
   {
-    "question": "When did the Babylonian captivity of \"Exile\" begin?",
+    "instruction_original": "When did the Babylonian captivity of \"Exile\" begin?",
     "subject": "world_religions",
     "choices": [
       "515 BCE",
@@ -2028,7 +2028,7 @@
     "split": "test"
   },
   {
-    "question": " The term vajrya means diamond and which of the following?",
+    "instruction_original": " The term vajrya means diamond and which of the following?",
     "subject": "world_religions",
     "choices": [
       "Emerald",
@@ -2041,7 +2041,7 @@
     "split": "test"
   },
   {
-    "question": " In Jainism, what is the cycle that one must liberate oneself from?",
+    "instruction_original": " In Jainism, what is the cycle that one must liberate oneself from?",
     "subject": "world_religions",
     "choices": [
       "Punya",
@@ -2054,7 +2054,7 @@
     "split": "test"
   },
   {
-    "question": " The classic text Daodejing is known by what title in English?",
+    "instruction_original": " The classic text Daodejing is known by what title in English?",
     "subject": "world_religions",
     "choices": [
       "Classic of Changes",
@@ -2067,7 +2067,7 @@
     "split": "test"
   },
   {
-    "question": " The Communidades de Base is associated with which of the following?",
+    "instruction_original": " The Communidades de Base is associated with which of the following?",
     "subject": "world_religions",
     "choices": [
       "Bishop Oscar Romero",
@@ -2080,7 +2080,7 @@
     "split": "test"
   },
   {
-    "question": "What does the term matsuri mean?",
+    "instruction_original": "What does the term matsuri mean?",
     "subject": "world_religions",
     "choices": [
       "Amulets",
@@ -2093,7 +2093,7 @@
     "split": "test"
   },
   {
-    "question": " Which Roman statesman encouraged civic religion in his work The Laws?",
+    "instruction_original": " Which Roman statesman encouraged civic religion in his work The Laws?",
     "subject": "world_religions",
     "choices": [
       "Varro",
@@ -2106,7 +2106,7 @@
     "split": "test"
   },
   {
-    "question": " What does \"Svetambara\" mean?",
+    "instruction_original": " What does \"Svetambara\" mean?",
     "subject": "world_religions",
     "choices": [
       "\"Sky-clad\"",
@@ -2119,7 +2119,7 @@
     "split": "test"
   },
   {
-    "question": "What is seen by Europeans, and many Muslims, as the symbol of Islam?",
+    "instruction_original": "What is seen by Europeans, and many Muslims, as the symbol of Islam?",
     "subject": "world_religions",
     "choices": [
       "The Hijab",
@@ -2132,7 +2132,7 @@
     "split": "test"
   },
   {
-    "question": " What is the purpose for hearing the Guru's Vak in the morning?",
+    "instruction_original": " What is the purpose for hearing the Guru's Vak in the morning?",
     "subject": "world_religions",
     "choices": [
       "Prayers on behalf of people outside of the Sikh community",
@@ -2145,7 +2145,7 @@
     "split": "test"
   },
   {
-    "question": " What are the rabbinical commentaries produced after the Mishnah called?",
+    "instruction_original": " What are the rabbinical commentaries produced after the Mishnah called?",
     "subject": "world_religions",
     "choices": [
       "Septuagint",
@@ -2158,7 +2158,7 @@
     "split": "test"
   },
   {
-    "question": "What is a mohel?",
+    "instruction_original": "What is a mohel?",
     "subject": "world_religions",
     "choices": [
       "A ritual circumciser",
@@ -2171,7 +2171,7 @@
     "split": "test"
   },
   {
-    "question": "The \"Flower Sermon\" is associated with which form of Buddhism?",
+    "instruction_original": "The \"Flower Sermon\" is associated with which form of Buddhism?",
     "subject": "world_religions",
     "choices": [
       "Theravada",
@@ -2184,7 +2184,7 @@
     "split": "test"
   },
   {
-    "question": " When was the major shift by Greek philosophers who rejected the anthropomorphic view of the divine?",
+    "instruction_original": " When was the major shift by Greek philosophers who rejected the anthropomorphic view of the divine?",
     "subject": "world_religions",
     "choices": [
       "Early Third Century BCE",
@@ -2197,7 +2197,7 @@
     "split": "test"
   },
   {
-    "question": " What is the foremost reason for wearing the hijab in the present day?",
+    "instruction_original": " What is the foremost reason for wearing the hijab in the present day?",
     "subject": "world_religions",
     "choices": [
       "Islamic identity",
@@ -2210,7 +2210,7 @@
     "split": "test"
   },
   {
-    "question": "The Oral Torah, in its written form, is known as what?",
+    "instruction_original": "The Oral Torah, in its written form, is known as what?",
     "subject": "world_religions",
     "choices": [
       "Mishnah",
@@ -2223,7 +2223,7 @@
     "split": "test"
   },
   {
-    "question": "What has been a central focus of religious traditions in China and Korea?",
+    "instruction_original": "What has been a central focus of religious traditions in China and Korea?",
     "subject": "world_religions",
     "choices": [
       "Peace and harmony",
@@ -2236,7 +2236,7 @@
     "split": "test"
   },
   {
-    "question": " To whom did ordinary folk appeal during a drought in the time of the Han Dynasty?",
+    "instruction_original": " To whom did ordinary folk appeal during a drought in the time of the Han Dynasty?",
     "subject": "world_religions",
     "choices": [
       "The Buddha",
@@ -2249,7 +2249,7 @@
     "split": "test"
   },
   {
-    "question": " The theological term homoousios means which of the following?",
+    "instruction_original": " The theological term homoousios means which of the following?",
     "subject": "world_religions",
     "choices": [
       "of a similar substance",
@@ -2262,7 +2262,7 @@
     "split": "test"
   },
   {
-    "question": "According to the Japanese origin myth, who gives birth to Amaterasu from his left eye?",
+    "instruction_original": "According to the Japanese origin myth, who gives birth to Amaterasu from his left eye?",
     "subject": "world_religions",
     "choices": [
       "Es",
@@ -2275,7 +2275,7 @@
     "split": "test"
   },
   {
-    "question": " The numen of Augustus referred to which of the following characteristics?",
+    "instruction_original": " The numen of Augustus referred to which of the following characteristics?",
     "subject": "world_religions",
     "choices": [
       "Divine power",

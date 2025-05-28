@@ -1,6 +1,6 @@
 [
   {
-    "question": "According to Metz, what is wrong with consequentialist arguments against capital punishment based on African values?",
+    "instruction_original": "According to Metz, what is wrong with consequentialist arguments against capital punishment based on African values?",
     "subject": "moral_disputes",
     "choices": [
       "It is unclear as of yet whether or not capital punishment deters harm to the community.",
@@ -13,7 +13,7 @@
     "split": "dev"
   },
   {
-    "question": "A fertilized ovum is also known as",
+    "instruction_original": "A fertilized ovum is also known as",
     "subject": "moral_disputes",
     "choices": [
       "a zygote.",
@@ -26,7 +26,7 @@
     "split": "dev"
   },
   {
-    "question": "Which of the following is an intrinsic good, according to Singer?",
+    "instruction_original": "Which of the following is an intrinsic good, according to Singer?",
     "subject": "moral_disputes",
     "choices": [
       "being in the upper class",
@@ -39,7 +39,7 @@
     "split": "dev"
   },
   {
-    "question": "Pence compares six different cases of reproduction, from natural twinning to SCNT. What conclusion does he draw from this comparison?",
+    "instruction_original": "Pence compares six different cases of reproduction, from natural twinning to SCNT. What conclusion does he draw from this comparison?",
     "subject": "moral_disputes",
     "choices": [
       "SCNT is not a different kind of reproduction because there are no morally relevant differences between it and other permissible means of reproduction.",
@@ -52,7 +52,7 @@
     "split": "dev"
   },
   {
-    "question": "Baron admits that the versions of the ticking bomb hypothetical she discusses are \"stunningly stupid,\" but she claims this is actually evidence of",
+    "instruction_original": "Baron admits that the versions of the ticking bomb hypothetical she discusses are \"stunningly stupid,\" but she claims this is actually evidence of",
     "subject": "moral_disputes",
     "choices": [
       "the stupidity of most traditional philosophical examples.",
@@ -65,7 +65,7 @@
     "split": "dev"
   },
   {
-    "question": " Just war theory's principle of military necessity belongs to",
+    "instruction_original": " Just war theory's principle of military necessity belongs to",
     "subject": "moral_disputes",
     "choices": [
       "jus in bello.",
@@ -78,7 +78,7 @@
     "split": "test"
   },
   {
-    "question": " According to Mill, censoring speech that is possibly true",
+    "instruction_original": " According to Mill, censoring speech that is possibly true",
     "subject": "moral_disputes",
     "choices": [
       "violates human dignity.",
@@ -91,7 +91,7 @@
     "split": "test"
   },
   {
-    "question": " West argues that feminist rhetoric has",
+    "instruction_original": " West argues that feminist rhetoric has",
     "subject": "moral_disputes",
     "choices": [
       "obscures the harms of noncoerced, consensual sex by implying that because what is coerced is bad what is noncoerced is good.",
@@ -104,7 +104,7 @@
     "split": "test"
   },
   {
-    "question": " According to Mill, the value of a particular pleasure depends on",
+    "instruction_original": " According to Mill, the value of a particular pleasure depends on",
     "subject": "moral_disputes",
     "choices": [
       "its quantity alone.",
@@ -117,7 +117,7 @@
     "split": "test"
   },
   {
-    "question": " According to Carruthers, whenever someone is required to act in a certain way toward an animal for the sake of the animal, what explains that fact are facts about",
+    "instruction_original": " According to Carruthers, whenever someone is required to act in a certain way toward an animal for the sake of the animal, what explains that fact are facts about",
     "subject": "moral_disputes",
     "choices": [
       "the animal.",
@@ -130,7 +130,7 @@
     "split": "test"
   },
   {
-    "question": " What does SCNT stand for, as used in the discussion on cloning?",
+    "instruction_original": " What does SCNT stand for, as used in the discussion on cloning?",
     "subject": "moral_disputes",
     "choices": [
       "skin cell nuclear transfer",
@@ -143,7 +143,7 @@
     "split": "test"
   },
   {
-    "question": " Velleman worries that, by offering a patient the option of euthanasia,",
+    "instruction_original": " Velleman worries that, by offering a patient the option of euthanasia,",
     "subject": "moral_disputes",
     "choices": [
       "we allow the patient to harm him- or herself.",
@@ -156,7 +156,7 @@
     "split": "test"
   },
   {
-    "question": " Nathanson supports which of the following kinds of retributivism?",
+    "instruction_original": " Nathanson supports which of the following kinds of retributivism?",
     "subject": "moral_disputes",
     "choices": [
       "preventive",
@@ -169,7 +169,7 @@
     "split": "test"
   },
   {
-    "question": " Carruthers approaches questions about the moral standing of nonhuman animals from the perspective of which of the following moral theories?",
+    "instruction_original": " Carruthers approaches questions about the moral standing of nonhuman animals from the perspective of which of the following moral theories?",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism",
@@ -182,7 +182,7 @@
     "split": "test"
   },
   {
-    "question": " In Gardiner's analysis, which of the following is a characteristic of the climate change problem?",
+    "instruction_original": " In Gardiner's analysis, which of the following is a characteristic of the climate change problem?",
     "subject": "moral_disputes",
     "choices": [
       "institutional adequacy",
@@ -195,7 +195,7 @@
     "split": "test"
   },
   {
-    "question": " What is the \"intergenerational storm\" of climate change?",
+    "instruction_original": " What is the \"intergenerational storm\" of climate change?",
     "subject": "moral_disputes",
     "choices": [
       "the problem of massive world overpopulation over generations.",
@@ -208,7 +208,7 @@
     "split": "test"
   },
   {
-    "question": " Hourdequin argues that one flaw of consequentialist calculation is that",
+    "instruction_original": " Hourdequin argues that one flaw of consequentialist calculation is that",
     "subject": "moral_disputes",
     "choices": [
       "it fails to reconcile prima facie duties.",
@@ -221,7 +221,7 @@
     "split": "test"
   },
   {
-    "question": " Dershowitz discusses the hypothetical case where the hijacked planes of 9/11 must be shot down to argue that important decisions like these",
+    "instruction_original": " Dershowitz discusses the hypothetical case where the hijacked planes of 9/11 must be shot down to argue that important decisions like these",
     "subject": "moral_disputes",
     "choices": [
       "often have to be made quickly and without immediate authorization.",
@@ -234,7 +234,7 @@
     "split": "test"
   },
   {
-    "question": " Baxter argues that we should view our treatment of the environment as a matter of various trade-offs whose aim is",
+    "instruction_original": " Baxter argues that we should view our treatment of the environment as a matter of various trade-offs whose aim is",
     "subject": "moral_disputes",
     "choices": [
       "to minimize damage incurred by all individual living beings.",
@@ -247,7 +247,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a value-based moral theory?",
+    "instruction_original": " Which of the following is an example of a value-based moral theory?",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism",
@@ -260,7 +260,7 @@
     "split": "test"
   },
   {
-    "question": " Kass worries that cloned individuals:",
+    "instruction_original": " Kass worries that cloned individuals:",
     "subject": "moral_disputes",
     "choices": [
       "will be seen as curiosities.",
@@ -273,7 +273,7 @@
     "split": "test"
   },
   {
-    "question": " Why, according to Gill, does Leon Kass think the notion of being \"better off dead\" is incoherent?",
+    "instruction_original": " Why, according to Gill, does Leon Kass think the notion of being \"better off dead\" is incoherent?",
     "subject": "moral_disputes",
     "choices": [
       "because dead people no longer exist, and thus cannot benefit from choosing to die.",
@@ -286,7 +286,7 @@
     "split": "test"
   },
   {
-    "question": " In response to the argument that embryos are not persons because they lack certain rights that all persons have (such as the right to life), Lee and George argue that",
+    "instruction_original": " In response to the argument that embryos are not persons because they lack certain rights that all persons have (such as the right to life), Lee and George argue that",
     "subject": "moral_disputes",
     "choices": [
       "the right to life belongs to a human being at all times that he or she exists.",
@@ -299,7 +299,7 @@
     "split": "test"
   },
   {
-    "question": " The consequentialist approach to punishment is at odds with",
+    "instruction_original": " The consequentialist approach to punishment is at odds with",
     "subject": "moral_disputes",
     "choices": [
       "retributive theories of punishment.",
@@ -312,7 +312,7 @@
     "split": "test"
   },
   {
-    "question": " What does Hursthouse say about the claim that any adequate action-guiding (i.e., moral) theory must provide clear guidance about what ought and ought not to be done that any intelligent person could follow?",
+    "instruction_original": " What does Hursthouse say about the claim that any adequate action-guiding (i.e., moral) theory must provide clear guidance about what ought and ought not to be done that any intelligent person could follow?",
     "subject": "moral_disputes",
     "choices": [
       "She says the claim is very plausible.",
@@ -325,7 +325,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not an objection that Kass makes against cloning?",
+    "instruction_original": " Which of the following is not an objection that Kass makes against cloning?",
     "subject": "moral_disputes",
     "choices": [
       "It constitutes unethical experimentation.",
@@ -338,7 +338,7 @@
     "split": "test"
   },
   {
-    "question": " In response to the objection that freedom of association is much more important in the marital context than the political realm, Wellman says",
+    "instruction_original": " In response to the objection that freedom of association is much more important in the marital context than the political realm, Wellman says",
     "subject": "moral_disputes",
     "choices": [
       "there is no freedom of association in the marital context.",
@@ -351,7 +351,7 @@
     "split": "test"
   },
   {
-    "question": " If it were known that a policy would wipe out several animal species without negatively affecting human beings, Baxter would most likely say that",
+    "instruction_original": " If it were known that a policy would wipe out several animal species without negatively affecting human beings, Baxter would most likely say that",
     "subject": "moral_disputes",
     "choices": [
       "this policy is morally problematic because it harms the environment.",
@@ -364,7 +364,7 @@
     "split": "test"
   },
   {
-    "question": " According to Reiman, van den Haag's argument leads to the conclusion that",
+    "instruction_original": " According to Reiman, van den Haag's argument leads to the conclusion that",
     "subject": "moral_disputes",
     "choices": [
       "we should refrain from imposing the death penalty.",
@@ -377,7 +377,7 @@
     "split": "test"
   },
   {
-    "question": " According to Singer, the principle of equality requires",
+    "instruction_original": " According to Singer, the principle of equality requires",
     "subject": "moral_disputes",
     "choices": [
       "identical treatment.",
@@ -390,7 +390,7 @@
     "split": "test"
   },
   {
-    "question": " Advocates of care ethics argue that",
+    "instruction_original": " Advocates of care ethics argue that",
     "subject": "moral_disputes",
     "choices": [
       "care ethics is an important development of virtue ethics.",
@@ -403,7 +403,7 @@
     "split": "test"
   },
   {
-    "question": " According to Norcross, any attempt to justify the claim that humans have a higher moral status than other animals by appealing to some version of rationality as the morally relevant difference between humans and animals will",
+    "instruction_original": " According to Norcross, any attempt to justify the claim that humans have a higher moral status than other animals by appealing to some version of rationality as the morally relevant difference between humans and animals will",
     "subject": "moral_disputes",
     "choices": [
       "fail to give an adequate answer to the argument from marginal cases.",
@@ -416,7 +416,7 @@
     "split": "test"
   },
   {
-    "question": " In response to the argument that the death penalty does not deter murderers, van den Haag claims that",
+    "instruction_original": " In response to the argument that the death penalty does not deter murderers, van den Haag claims that",
     "subject": "moral_disputes",
     "choices": [
       "he is still confident that the threat of the death penalty at least sometimes prevents murder.",
@@ -429,7 +429,7 @@
     "split": "test"
   },
   {
-    "question": " Thomas Nagel call the two kinds of moral considerations he discusses in \"War and Massacre\"",
+    "instruction_original": " Thomas Nagel call the two kinds of moral considerations he discusses in \"War and Massacre\"",
     "subject": "moral_disputes",
     "choices": [
       "consequentialist and dignity-based",
@@ -442,7 +442,7 @@
     "split": "test"
   },
   {
-    "question": " What is the main reason why Arthur doesn't think that the poor have a right to aid from the affluent?",
+    "instruction_original": " What is the main reason why Arthur doesn't think that the poor have a right to aid from the affluent?",
     "subject": "moral_disputes",
     "choices": [
       "Persons can never have a right to aid from anyone.",
@@ -455,7 +455,7 @@
     "split": "test"
   },
   {
-    "question": " What assumption does Pence think people who object to SCNT make when they say that SCNT is not best for the child?",
+    "instruction_original": " What assumption does Pence think people who object to SCNT make when they say that SCNT is not best for the child?",
     "subject": "moral_disputes",
     "choices": [
       "The parents have good motives.",
@@ -468,7 +468,7 @@
     "split": "test"
   },
   {
-    "question": " Van den Haag is",
+    "instruction_original": " Van den Haag is",
     "subject": "moral_disputes",
     "choices": [
       "a distributionist.",
@@ -481,7 +481,7 @@
     "split": "test"
   },
   {
-    "question": " Against Kant's view of sexual objectification, Papadaki argues that",
+    "instruction_original": " Against Kant's view of sexual objectification, Papadaki argues that",
     "subject": "moral_disputes",
     "choices": [
       "it is not clear how sexual use sacrifices humanity.",
@@ -494,7 +494,7 @@
     "split": "test"
   },
   {
-    "question": " Thomson discusses a different version of the violinist case wherein the violinist only needs to use your kidneys for one hour to survive. Her own view about this case is that",
+    "instruction_original": " Thomson discusses a different version of the violinist case wherein the violinist only needs to use your kidneys for one hour to survive. Her own view about this case is that",
     "subject": "moral_disputes",
     "choices": [
       "you have no obligation to let the violinist use your kidneys for that hour.",
@@ -507,7 +507,7 @@
     "split": "test"
   },
   {
-    "question": " Fine asks us to consider the example of a yoga group that practices in Central Park and is free to reject prospective members but isn't free to exclude others from making use of Central Park. The point of this example is to show that",
+    "instruction_original": " Fine asks us to consider the example of a yoga group that practices in Central Park and is free to reject prospective members but isn't free to exclude others from making use of Central Park. The point of this example is to show that",
     "subject": "moral_disputes",
     "choices": [
       "Central Park qualifies as a state.",
@@ -520,7 +520,7 @@
     "split": "test"
   },
   {
-    "question": " The annual death-toll from poverty related causes is, according to Pogge,",
+    "instruction_original": " The annual death-toll from poverty related causes is, according to Pogge,",
     "subject": "moral_disputes",
     "choices": [
       "around one quarter of all human deaths.",
@@ -533,7 +533,7 @@
     "split": "test"
   },
   {
-    "question": " What is the overall percentage of capital cases that are overturned because of serious errors?",
+    "instruction_original": " What is the overall percentage of capital cases that are overturned because of serious errors?",
     "subject": "moral_disputes",
     "choices": [
       "under 50 percent",
@@ -546,7 +546,7 @@
     "split": "test"
   },
   {
-    "question": " According to Nussbaum, treating someone as an object is",
+    "instruction_original": " According to Nussbaum, treating someone as an object is",
     "subject": "moral_disputes",
     "choices": [
       "sufficient for sexual objectification.",
@@ -559,7 +559,7 @@
     "split": "test"
   },
   {
-    "question": " In Corvino's reading of Aquinas, \"unnatural\" sexual acts are those that are",
+    "instruction_original": " In Corvino's reading of Aquinas, \"unnatural\" sexual acts are those that are",
     "subject": "moral_disputes",
     "choices": [
       "deliberately pro-creative.",
@@ -572,7 +572,7 @@
     "split": "test"
   },
   {
-    "question": " Rachels compares the cases of Smith and Jones to show that",
+    "instruction_original": " Rachels compares the cases of Smith and Jones to show that",
     "subject": "moral_disputes",
     "choices": [
       "killing is in itself morally worse than letting die.",
@@ -585,7 +585,7 @@
     "split": "test"
   },
   {
-    "question": " Biocentrism is the view that",
+    "instruction_original": " Biocentrism is the view that",
     "subject": "moral_disputes",
     "choices": [
       "the only beings that possess direct moral standing are human beings.",
@@ -598,7 +598,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a feature of consequentialist moral theory?",
+    "instruction_original": " Which of the following is a feature of consequentialist moral theory?",
     "subject": "moral_disputes",
     "choices": [
       "It is a value-based theory.",
@@ -611,7 +611,7 @@
     "split": "test"
   },
   {
-    "question": " On West's account, women who engage in undesired sex because of actual or felt dependence on their partner may experience injury to their sense of autonomy because",
+    "instruction_original": " On West's account, women who engage in undesired sex because of actual or felt dependence on their partner may experience injury to their sense of autonomy because",
     "subject": "moral_disputes",
     "choices": [
       "they have neglected to take whatever steps would lead to their self-sustenance.",
@@ -624,7 +624,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not mentioned by Macedo as a duty that societies have toward nonmembers?",
+    "instruction_original": " Which of the following is not mentioned by Macedo as a duty that societies have toward nonmembers?",
     "subject": "moral_disputes",
     "choices": [
       "duties of fair dealing (e.g., nonexploitation)",
@@ -637,7 +637,7 @@
     "split": "test"
   },
   {
-    "question": " Mill thinks that each person desires",
+    "instruction_original": " Mill thinks that each person desires",
     "subject": "moral_disputes",
     "choices": [
       "to do his or her duty.",
@@ -650,7 +650,7 @@
     "split": "test"
   },
   {
-    "question": " According to Valls, a just cause for political violence is usually",
+    "instruction_original": " According to Valls, a just cause for political violence is usually",
     "subject": "moral_disputes",
     "choices": [
       "defensive.",
@@ -663,7 +663,7 @@
     "split": "test"
   },
   {
-    "question": " Fine asks us to consider an example in which a private club \"regularly arranges noisy late-night gatherings\" to show that",
+    "instruction_original": " Fine asks us to consider an example in which a private club \"regularly arranges noisy late-night gatherings\" to show that",
     "subject": "moral_disputes",
     "choices": [
       "private clubs can rightfully exclude outsiders.",
@@ -676,7 +676,7 @@
     "split": "test"
   },
   {
-    "question": " According to Huemer, even if drug use harms a person's friends, families, and other relations,",
+    "instruction_original": " According to Huemer, even if drug use harms a person's friends, families, and other relations,",
     "subject": "moral_disputes",
     "choices": [
       "this would still not justify drug prohibition.",
@@ -689,7 +689,7 @@
     "split": "test"
   },
   {
-    "question": " The basic idea of social contract theories of morality is that correct or justified moral rules or principles are the ones that result from",
+    "instruction_original": " The basic idea of social contract theories of morality is that correct or justified moral rules or principles are the ones that result from",
     "subject": "moral_disputes",
     "choices": [
       "a social leader's moral deliberations.",
@@ -702,7 +702,7 @@
     "split": "test"
   },
   {
-    "question": " In Singer's view, the question of when it's wrong to painlessly kill an animal is one",
+    "instruction_original": " In Singer's view, the question of when it's wrong to painlessly kill an animal is one",
     "subject": "moral_disputes",
     "choices": [
       "to which we need to give a precise answer.",
@@ -715,7 +715,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is one of de Marneffe's responses to the objection that drug prohibition would be paternalistic?",
+    "instruction_original": " Which of the following is one of de Marneffe's responses to the objection that drug prohibition would be paternalistic?",
     "subject": "moral_disputes",
     "choices": [
       "Drug prohibition would be done for the benefit of others, not the benefit of those who wish to produce/sell drugs, so it is not paternalistic in an objectionable sense.",
@@ -728,7 +728,7 @@
     "split": "test"
   },
   {
-    "question": " Lukianoff and Haidt argue that the disinvitation of certain speakers",
+    "instruction_original": " Lukianoff and Haidt argue that the disinvitation of certain speakers",
     "subject": "moral_disputes",
     "choices": [
       "is an example of mental filtering.",
@@ -741,7 +741,7 @@
     "split": "test"
   },
   {
-    "question": " Ashford's article is meant to address a particular paralysis in the face of",
+    "instruction_original": " Ashford's article is meant to address a particular paralysis in the face of",
     "subject": "moral_disputes",
     "choices": [
       "the sheer scope of global poverty.",
@@ -754,7 +754,7 @@
     "split": "test"
   },
   {
-    "question": " In support of her thesis that global social institutions violate the rights of the world's poor, Ashford argues that",
+    "instruction_original": " In support of her thesis that global social institutions violate the rights of the world's poor, Ashford argues that",
     "subject": "moral_disputes",
     "choices": [
       "illicit cash flow to tax havens from rich countries exceeds aid to the world's poor.",
@@ -767,7 +767,7 @@
     "split": "test"
   },
   {
-    "question": " Papadaki argues that",
+    "instruction_original": " Papadaki argues that",
     "subject": "moral_disputes",
     "choices": [
       "sexual objectification is not always wrong.",
@@ -780,7 +780,7 @@
     "split": "test"
   },
   {
-    "question": " The two kinds of anti-homosexuality arguments to which Corvino responds are",
+    "instruction_original": " The two kinds of anti-homosexuality arguments to which Corvino responds are",
     "subject": "moral_disputes",
     "choices": [
       "naturalness arguments and arguments from fidelity.",
@@ -793,7 +793,7 @@
     "split": "test"
   },
   {
-    "question": " The view that moral considerations do not apply to war is known as",
+    "instruction_original": " The view that moral considerations do not apply to war is known as",
     "subject": "moral_disputes",
     "choices": [
       "jus ad bellum.",
@@ -806,7 +806,7 @@
     "split": "test"
   },
   {
-    "question": " In the context of Gardiner's article, \"the fragmentation of agency\" refers to what?",
+    "instruction_original": " In the context of Gardiner's article, \"the fragmentation of agency\" refers to what?",
     "subject": "moral_disputes",
     "choices": [
       "an agent's inability to acknowledge his or her contribution to climate change",
@@ -819,7 +819,7 @@
     "split": "test"
   },
   {
-    "question": " Ashford thinks that the right test of whether or not legal and economic structures are minimally just is to see whether or not",
+    "instruction_original": " Ashford thinks that the right test of whether or not legal and economic structures are minimally just is to see whether or not",
     "subject": "moral_disputes",
     "choices": [
       "they help develop human capabilities.",
@@ -832,7 +832,7 @@
     "split": "test"
   },
   {
-    "question": " Little argues that we should accept a prerogative on the part of mothers to end a pregnancy until the fetus is a person because",
+    "instruction_original": " Little argues that we should accept a prerogative on the part of mothers to end a pregnancy until the fetus is a person because",
     "subject": "moral_disputes",
     "choices": [
       "we should accept a prerogative to decline radical changes to one's practical identity.",
@@ -845,7 +845,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is, according to the introduction to chapter 8, typically defined as the act or practice of killing or allowing someone to die?",
+    "instruction_original": " Which of the following is, according to the introduction to chapter 8, typically defined as the act or practice of killing or allowing someone to die?",
     "subject": "moral_disputes",
     "choices": [
       "murder",
@@ -858,7 +858,7 @@
     "split": "test"
   },
   {
-    "question": " In Baxter's view, the first and foremost step toward a solution of our environmental problems is a clear recognition that our objective is not pure air or water but rather",
+    "instruction_original": " In Baxter's view, the first and foremost step toward a solution of our environmental problems is a clear recognition that our objective is not pure air or water but rather",
     "subject": "moral_disputes",
     "choices": [
       "some optimal state of pollution.",
@@ -871,7 +871,7 @@
     "split": "test"
   },
   {
-    "question": " Ross's moral theory is a version of",
+    "instruction_original": " Ross's moral theory is a version of",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism.",
@@ -884,7 +884,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following are forms of misogynist speech according to Richardson-Self?",
+    "instruction_original": " Which of the following are forms of misogynist speech according to Richardson-Self?",
     "subject": "moral_disputes",
     "choices": [
       "Interdivisional misogynist speech",
@@ -897,7 +897,7 @@
     "split": "test"
   },
   {
-    "question": " Leopold most likely describes the \"land pyramid\" to",
+    "instruction_original": " Leopold most likely describes the \"land pyramid\" to",
     "subject": "moral_disputes",
     "choices": [
       "argue that nature is not inherently normative.",
@@ -910,7 +910,7 @@
     "split": "test"
   },
   {
-    "question": " Ecoholism is the view that",
+    "instruction_original": " Ecoholism is the view that",
     "subject": "moral_disputes",
     "choices": [
       "only whole ecosystems (not any of the individuals that make up those ecosystems) have direct moral standing.",
@@ -923,7 +923,7 @@
     "split": "test"
   },
   {
-    "question": " The view according to which wars are always (or at least nearly always) morally wrong is known as",
+    "instruction_original": " The view according to which wars are always (or at least nearly always) morally wrong is known as",
     "subject": "moral_disputes",
     "choices": [
       "just war theory.",
@@ -936,7 +936,7 @@
     "split": "test"
   },
   {
-    "question": " According to Reiman, van den Haag's arguments in favor of the death penalty",
+    "instruction_original": " According to Reiman, van den Haag's arguments in favor of the death penalty",
     "subject": "moral_disputes",
     "choices": [
       "are incompatible with the right to retaliation.",
@@ -949,7 +949,7 @@
     "split": "test"
   },
   {
-    "question": " What two problems does individualism lead us into, according to Hourdequin?",
+    "instruction_original": " What two problems does individualism lead us into, according to Hourdequin?",
     "subject": "moral_disputes",
     "choices": [
       "It leads to failures of developing integration and integrality.",
@@ -962,7 +962,7 @@
     "split": "test"
   },
   {
-    "question": " One message that Nathanson argues we can send by abolishing the death penalty is that",
+    "instruction_original": " One message that Nathanson argues we can send by abolishing the death penalty is that",
     "subject": "moral_disputes",
     "choices": [
       "we respect the dignity of human life.",
@@ -975,7 +975,7 @@
     "split": "test"
   },
   {
-    "question": " Aristotle claims that a state of character arises from the repetition of similar",
+    "instruction_original": " Aristotle claims that a state of character arises from the repetition of similar",
     "subject": "moral_disputes",
     "choices": [
       "beliefs.",
@@ -988,7 +988,7 @@
     "split": "test"
   },
   {
-    "question": " Corvino considers the following argument: Homosexuals are \"born that way\"; therefore, homosexual activity is good and natural. Corvino claims that this argument is unsound. Why?",
+    "instruction_original": " Corvino considers the following argument: Homosexuals are \"born that way\"; therefore, homosexual activity is good and natural. Corvino claims that this argument is unsound. Why?",
     "subject": "moral_disputes",
     "choices": [
       "It ignores the possibility that homosexuality is a lifestyle choice.",
@@ -1001,7 +1001,7 @@
     "split": "test"
   },
   {
-    "question": " Hardin's approach to the moral issues of hunger and poverty is essentially",
+    "instruction_original": " Hardin's approach to the moral issues of hunger and poverty is essentially",
     "subject": "moral_disputes",
     "choices": [
       "a consequentialist approach.",
@@ -1014,7 +1014,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following theories will approach the morality of abortion by considering how much overall intrinsic value is likely to be brought about by abortion?",
+    "instruction_original": " Which of the following theories will approach the morality of abortion by considering how much overall intrinsic value is likely to be brought about by abortion?",
     "subject": "moral_disputes",
     "choices": [
       "virtue ethics",
@@ -1027,7 +1027,7 @@
     "split": "test"
   },
   {
-    "question": " In his definition of terrorism, Valls defines \"violence\" as",
+    "instruction_original": " In his definition of terrorism, Valls defines \"violence\" as",
     "subject": "moral_disputes",
     "choices": [
       "including only bodily harm to persons.",
@@ -1040,7 +1040,7 @@
     "split": "test"
   },
   {
-    "question": " What information is available to occupants within Rawls's original position?",
+    "instruction_original": " What information is available to occupants within Rawls's original position?",
     "subject": "moral_disputes",
     "choices": [
       "knowledge of how one is talented compared to others",
@@ -1053,7 +1053,7 @@
     "split": "test"
   },
   {
-    "question": " Shapiro claims that surveys have been confirmed by longitudinal studies that indicate that",
+    "instruction_original": " Shapiro claims that surveys have been confirmed by longitudinal studies that indicate that",
     "subject": "moral_disputes",
     "choices": [
       "excessive use of illegal drugs is the norm.",
@@ -1066,7 +1066,7 @@
     "split": "test"
   },
   {
-    "question": " A truly environmental ethic must hold that which of the following has direct moral standing?",
+    "instruction_original": " A truly environmental ethic must hold that which of the following has direct moral standing?",
     "subject": "moral_disputes",
     "choices": [
       "at least some nonhuman beings",
@@ -1079,7 +1079,7 @@
     "split": "test"
   },
   {
-    "question": " Ashford argues that worries about causing dependency on aid agencies among those in extreme poverty does not mean that we should",
+    "instruction_original": " Ashford argues that worries about causing dependency on aid agencies among those in extreme poverty does not mean that we should",
     "subject": "moral_disputes",
     "choices": [
       "abandon the world's poor to their unjust predicament.",
@@ -1092,7 +1092,7 @@
     "split": "test"
   },
   {
-    "question": " According to Singer, the conclusions argued for in \"all animals are equal\" flow from which of the following principles alone?",
+    "instruction_original": " According to Singer, the conclusions argued for in \"all animals are equal\" flow from which of the following principles alone?",
     "subject": "moral_disputes",
     "choices": [
       "the principle of maximizing happiness",
@@ -1105,7 +1105,7 @@
     "split": "test"
   },
   {
-    "question": " Mill thinks that if something is desirable, but not desirable as an end, then it must be",
+    "instruction_original": " Mill thinks that if something is desirable, but not desirable as an end, then it must be",
     "subject": "moral_disputes",
     "choices": [
       "desirable as a rule.",
@@ -1118,7 +1118,7 @@
     "split": "test"
   },
   {
-    "question": " From the fact that emigration is often associated with significant costs, Fine concludes that",
+    "instruction_original": " From the fact that emigration is often associated with significant costs, Fine concludes that",
     "subject": "moral_disputes",
     "choices": [
       "those who are willing (or forced) to leave a state often have substantial interests in living in another state.",
@@ -1131,7 +1131,7 @@
     "split": "test"
   },
   {
-    "question": " Mill defends which of the following liberty-limiting principles?",
+    "instruction_original": " Mill defends which of the following liberty-limiting principles?",
     "subject": "moral_disputes",
     "choices": [
       "the harm principle",
@@ -1144,7 +1144,7 @@
     "split": "test"
   },
   {
-    "question": " By definition, if a person or thing needs to be taken into account in moral decision-making (i.e., if it counts morally), then that person or thing has",
+    "instruction_original": " By definition, if a person or thing needs to be taken into account in moral decision-making (i.e., if it counts morally), then that person or thing has",
     "subject": "moral_disputes",
     "choices": [
       "moral standing.",
@@ -1157,7 +1157,7 @@
     "split": "test"
   },
   {
-    "question": " What is an example of \"mutual coercion, mutually agreed upon\"?",
+    "instruction_original": " What is an example of \"mutual coercion, mutually agreed upon\"?",
     "subject": "moral_disputes",
     "choices": [
       "all countries cooperating to change the existing incentive structure by introducing a system of enforceable sanctions to curb climate change.",
@@ -1170,7 +1170,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a problem for Kant's principle of equality and an \"eye for an eye\" according to Nathanson?",
+    "instruction_original": " Which of the following is a problem for Kant's principle of equality and an \"eye for an eye\" according to Nathanson?",
     "subject": "moral_disputes",
     "choices": [
       "It fails to tell us what the appropriate punishment would be for all cases of criminal action.",
@@ -1183,7 +1183,7 @@
     "split": "test"
   },
   {
-    "question": " What is Pence's main objective in his article \"Will Cloning Harm People?\"",
+    "instruction_original": " What is Pence's main objective in his article \"Will Cloning Harm People?\"",
     "subject": "moral_disputes",
     "choices": [
       "to use consequentialist arguments to show that cloning is immoral",
@@ -1196,7 +1196,7 @@
     "split": "test"
   },
   {
-    "question": " Timmons suggests that many people believe in moral relativism because",
+    "instruction_original": " Timmons suggests that many people believe in moral relativism because",
     "subject": "moral_disputes",
     "choices": [
       "They believe in tolerating differences.",
@@ -1209,7 +1209,7 @@
     "split": "test"
   },
   {
-    "question": " According to Sandel, eugenics and genetic enhancement can be seen to be wrong from a religious perspective because",
+    "instruction_original": " According to Sandel, eugenics and genetic enhancement can be seen to be wrong from a religious perspective because",
     "subject": "moral_disputes",
     "choices": [
       "their use would lead to atheism or agnosticism.",
@@ -1222,7 +1222,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a method of torture that Dershowitz believes is appropriate in those cases where torture is permissible?",
+    "instruction_original": " Which of the following is a method of torture that Dershowitz believes is appropriate in those cases where torture is permissible?",
     "subject": "moral_disputes",
     "choices": [
       "having a sterilized needle shoved under the victim's fingernails",
@@ -1235,7 +1235,7 @@
     "split": "test"
   },
   {
-    "question": " In Rachels's thought experiment with Smith and Jones, Jones's action (i.e., his watching the child, who slipped accidentally, drowned in the tub) is supposed to be an example of",
+    "instruction_original": " In Rachels's thought experiment with Smith and Jones, Jones's action (i.e., his watching the child, who slipped accidentally, drowned in the tub) is supposed to be an example of",
     "subject": "moral_disputes",
     "choices": [
       "killing.",
@@ -1248,7 +1248,7 @@
     "split": "test"
   },
   {
-    "question": " According to Gill, the moral value of autonomy mostly consists in",
+    "instruction_original": " According to Gill, the moral value of autonomy mostly consists in",
     "subject": "moral_disputes",
     "choices": [
       "the ability to act and choose while free from distress.",
@@ -1261,7 +1261,7 @@
     "split": "test"
   },
   {
-    "question": " Foot's Rescue I and Rescue II cases are intended to",
+    "instruction_original": " Foot's Rescue I and Rescue II cases are intended to",
     "subject": "moral_disputes",
     "choices": [
       "contrast evil intentions with good intentions.",
@@ -1274,7 +1274,7 @@
     "split": "test"
   },
   {
-    "question": " In contrast to Garrett Hardin's approach, the Confucian model rejects coercion because",
+    "instruction_original": " In contrast to Garrett Hardin's approach, the Confucian model rejects coercion because",
     "subject": "moral_disputes",
     "choices": [
       "the costs of eliminating a collective action problem are not irrelevant to its solution",
@@ -1287,7 +1287,7 @@
     "split": "test"
   },
   {
-    "question": " Velleman believes that the option of euthanasia may harm some patients. What does he think is the most significant way in which this might happen?",
+    "instruction_original": " Velleman believes that the option of euthanasia may harm some patients. What does he think is the most significant way in which this might happen?",
     "subject": "moral_disputes",
     "choices": [
       "by burdening a patient with having to justify his or her continued existence",
@@ -1300,7 +1300,7 @@
     "split": "test"
   },
   {
-    "question": " Velleman believes that euthanasia can be justified on the basis of",
+    "instruction_original": " Velleman believes that euthanasia can be justified on the basis of",
     "subject": "moral_disputes",
     "choices": [
       "Kantian considerations.",
@@ -1313,7 +1313,7 @@
     "split": "test"
   },
   {
-    "question": " Carruthers argues that, on contractualist grounds, nonhuman animals may be accorded which of the following kinds of moral standing?",
+    "instruction_original": " Carruthers argues that, on contractualist grounds, nonhuman animals may be accorded which of the following kinds of moral standing?",
     "subject": "moral_disputes",
     "choices": [
       "direct",
@@ -1326,7 +1326,7 @@
     "split": "test"
   },
   {
-    "question": " One of the premises of the \"lack of imagination\" argument that Kamm discusses is that",
+    "instruction_original": " One of the premises of the \"lack of imagination\" argument that Kamm discusses is that",
     "subject": "moral_disputes",
     "choices": [
       "genetic enhancement is always morally permissible.",
@@ -1339,7 +1339,7 @@
     "split": "test"
   },
   {
-    "question": " In accordance with the theory of justice proposed by John Rawls, Stephen Macedo argues,\"We must consider the justifiability of policies from the standpoint of the _____ well-off among our fellow citizens.\"",
+    "instruction_original": " In accordance with the theory of justice proposed by John Rawls, Stephen Macedo argues,\"We must consider the justifiability of policies from the standpoint of the _____ well-off among our fellow citizens.\"",
     "subject": "moral_disputes",
     "choices": [
       "most",
@@ -1352,7 +1352,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not a prima facie duty that Ross discusses?",
+    "instruction_original": " Which of the following is not a prima facie duty that Ross discusses?",
     "subject": "moral_disputes",
     "choices": [
       "the duty to keep promises",
@@ -1365,7 +1365,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a vice of character?",
+    "instruction_original": " Which of the following is an example of a vice of character?",
     "subject": "moral_disputes",
     "choices": [
       "blindness",
@@ -1378,7 +1378,7 @@
     "split": "test"
   },
   {
-    "question": " Leopold claims that history has shown that \"the conqueror role is eventually self-defeating.\" It is self-defeating, in this view, because",
+    "instruction_original": " Leopold claims that history has shown that \"the conqueror role is eventually self-defeating.\" It is self-defeating, in this view, because",
     "subject": "moral_disputes",
     "choices": [
       "the conqueror doesn't understand what makes the conquered community tick.",
@@ -1391,7 +1391,7 @@
     "split": "test"
   },
   {
-    "question": " Sarah Fine's \"internal critique\" of Wellman's argument targets his claim that",
+    "instruction_original": " Sarah Fine's \"internal critique\" of Wellman's argument targets his claim that",
     "subject": "moral_disputes",
     "choices": [
       "we have an absolute right to freedom of association (i.e., one that cannot be outweighed by anything else).",
@@ -1404,7 +1404,7 @@
     "split": "test"
   },
   {
-    "question": " Shapiro discusses experiments about the role of expectations in the experience of drug use to show that",
+    "instruction_original": " Shapiro discusses experiments about the role of expectations in the experience of drug use to show that",
     "subject": "moral_disputes",
     "choices": [
       "drug effects are inherently biological and are not influenced at all by expectations and other psychological factors.",
@@ -1417,7 +1417,7 @@
     "split": "test"
   },
   {
-    "question": " What kind of consequentialist theory does Dershowitz think can justify terrorism in certain extreme particular cases?",
+    "instruction_original": " What kind of consequentialist theory does Dershowitz think can justify terrorism in certain extreme particular cases?",
     "subject": "moral_disputes",
     "choices": [
       "act-based deontology",
@@ -1430,7 +1430,7 @@
     "split": "test"
   },
   {
-    "question": " On the proposal that we need to establish world food banks to help those who are in need, Hardin would say that",
+    "instruction_original": " On the proposal that we need to establish world food banks to help those who are in need, Hardin would say that",
     "subject": "moral_disputes",
     "choices": [
       "if the proposal were to be realized, the operation must be conducted consistently.",
@@ -1443,7 +1443,7 @@
     "split": "test"
   },
   {
-    "question": " A utilitarian who recognizes rights will attempt to explain rights on the basis of utility by claiming that",
+    "instruction_original": " A utilitarian who recognizes rights will attempt to explain rights on the basis of utility by claiming that",
     "subject": "moral_disputes",
     "choices": [
       "there are no moral rights; there is only utility.",
@@ -1456,7 +1456,7 @@
     "split": "test"
   },
   {
-    "question": " If a global ban would not be effective in prohibiting genetic engineering that goes beyond eliminating obvious defects, then Singer suggests which \"bolder\" strategy?",
+    "instruction_original": " If a global ban would not be effective in prohibiting genetic engineering that goes beyond eliminating obvious defects, then Singer suggests which \"bolder\" strategy?",
     "subject": "moral_disputes",
     "choices": [
       "creating a world military that would enforce the ban with greater strength",
@@ -1469,7 +1469,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a kind of consequentialist theory that explains right action in terms of the net balance of pleasure (or lack of pain) produced by that action?",
+    "instruction_original": " Which of the following is a kind of consequentialist theory that explains right action in terms of the net balance of pleasure (or lack of pain) produced by that action?",
     "subject": "moral_disputes",
     "choices": [
       "hedonistic utilitarianism",
@@ -1482,7 +1482,7 @@
     "split": "test"
   },
   {
-    "question": " The retributive theory of punishment does not claim that",
+    "instruction_original": " The retributive theory of punishment does not claim that",
     "subject": "moral_disputes",
     "choices": [
       "wrongdoers deserve to be punished.",
@@ -1495,7 +1495,7 @@
     "split": "test"
   },
   {
-    "question": " Mary's laptop deserves moral consideration only because she owns it and cares about it. Thus, Mary's laptop has",
+    "instruction_original": " Mary's laptop deserves moral consideration only because she owns it and cares about it. Thus, Mary's laptop has",
     "subject": "moral_disputes",
     "choices": [
       "direct moral standing.",
@@ -1508,7 +1508,7 @@
     "split": "test"
   },
   {
-    "question": " Collins suggests that the moral value of caring actions comes from",
+    "instruction_original": " Collins suggests that the moral value of caring actions comes from",
     "subject": "moral_disputes",
     "choices": [
       "the intrinsic value of caring attitudes which motivate caring actions.",
@@ -1521,7 +1521,7 @@
     "split": "test"
   },
   {
-    "question": " Kant's humanity formulation of the categorical imperative makes it impermissible for us to, he argues,",
+    "instruction_original": " Kant's humanity formulation of the categorical imperative makes it impermissible for us to, he argues,",
     "subject": "moral_disputes",
     "choices": [
       "sell one of our teeth.",
@@ -1534,7 +1534,7 @@
     "split": "test"
   },
   {
-    "question": " According to Nathanson, criminals who commit murder forfeit their right to",
+    "instruction_original": " According to Nathanson, criminals who commit murder forfeit their right to",
     "subject": "moral_disputes",
     "choices": [
       "life.",
@@ -1547,7 +1547,7 @@
     "split": "test"
   },
   {
-    "question": " Reiman suggests that the refusal to execute criminals teaches",
+    "instruction_original": " Reiman suggests that the refusal to execute criminals teaches",
     "subject": "moral_disputes",
     "choices": [
       "the wrongfulness of murder.",
@@ -1560,7 +1560,7 @@
     "split": "test"
   },
   {
-    "question": " According to Shapiro, the standard view has to explain the preeminence of controlled use by arguing that",
+    "instruction_original": " According to Shapiro, the standard view has to explain the preeminence of controlled use by arguing that",
     "subject": "moral_disputes",
     "choices": [
       "controlled use is preeminent.",
@@ -1573,7 +1573,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a premise of Kass's despotism argument?",
+    "instruction_original": " Which of the following is a premise of Kass's despotism argument?",
     "subject": "moral_disputes",
     "choices": [
       "Cloning is inherently morally wrong.",
@@ -1586,7 +1586,7 @@
     "split": "test"
   },
   {
-    "question": " In Rachels's thought experiment with Smith and Jones, Smith's action (i.e., his holding the child underwater) is supposed to be an example of",
+    "instruction_original": " In Rachels's thought experiment with Smith and Jones, Smith's action (i.e., his holding the child underwater) is supposed to be an example of",
     "subject": "moral_disputes",
     "choices": [
       "killing.",
@@ -1599,7 +1599,7 @@
     "split": "test"
   },
   {
-    "question": " All cases of euthanasia in which the patient has consented to the active bringing of his or her death are cases of",
+    "instruction_original": " All cases of euthanasia in which the patient has consented to the active bringing of his or her death are cases of",
     "subject": "moral_disputes",
     "choices": [
       "voluntary euthanasia.",
@@ -1612,7 +1612,7 @@
     "split": "test"
   },
   {
-    "question": " According to Ross, when our duties conflict with each other we should",
+    "instruction_original": " According to Ross, when our duties conflict with each other we should",
     "subject": "moral_disputes",
     "choices": [
       "not do anything because duties cannot actually conflict with each other.",
@@ -1625,7 +1625,7 @@
     "split": "test"
   },
   {
-    "question": " Kamm claims that Sandel's moral distinction between treatment and enhancement assumes that",
+    "instruction_original": " Kamm claims that Sandel's moral distinction between treatment and enhancement assumes that",
     "subject": "moral_disputes",
     "choices": [
       "nature in itself has no moral value.",
@@ -1638,7 +1638,7 @@
     "split": "test"
   },
   {
-    "question": " West argues that feminist legal theory has inadvertently led to the under-acknowledgement of the harms of consensual sex because",
+    "instruction_original": " West argues that feminist legal theory has inadvertently led to the under-acknowledgement of the harms of consensual sex because",
     "subject": "moral_disputes",
     "choices": [
       "it posits that all sex is rape.",
@@ -1651,7 +1651,7 @@
     "split": "test"
   },
   {
-    "question": " Sinnott-Armstrong is most interested in examining issues about the moral obligations of",
+    "instruction_original": " Sinnott-Armstrong is most interested in examining issues about the moral obligations of",
     "subject": "moral_disputes",
     "choices": [
       "individuals.",
@@ -1664,7 +1664,7 @@
     "split": "test"
   },
   {
-    "question": " The decision to remove Terri Schiavo's feeding tube, thus allowing her to die of dehydration, is a case of:",
+    "instruction_original": " The decision to remove Terri Schiavo's feeding tube, thus allowing her to die of dehydration, is a case of:",
     "subject": "moral_disputes",
     "choices": [
       "voluntary euthanasia.",
@@ -1677,7 +1677,7 @@
     "split": "test"
   },
   {
-    "question": " De Marneffe explains that we might call someone a drug addict to show that",
+    "instruction_original": " De Marneffe explains that we might call someone a drug addict to show that",
     "subject": "moral_disputes",
     "choices": [
       "it is a mistake to suppose that drug use is sometimes evidence of low self-control.",
@@ -1690,7 +1690,7 @@
     "split": "test"
   },
   {
-    "question": " Frances Kamm discusses the case of a scientist who works on finding a cure for congenital blindness and is motivated only by a bad desire for mastery to suggest that",
+    "instruction_original": " Frances Kamm discusses the case of a scientist who works on finding a cure for congenital blindness and is motivated only by a bad desire for mastery to suggest that",
     "subject": "moral_disputes",
     "choices": [
       "sometimes an action can be permissible even if it is motivated by a bad desire.",
@@ -1703,7 +1703,7 @@
     "split": "test"
   },
   {
-    "question": " If Thomson's conclusion is correct, then",
+    "instruction_original": " If Thomson's conclusion is correct, then",
     "subject": "moral_disputes",
     "choices": [
       "the abortion issue cannot be settled just by determining at what stage (if any) the fetus is a person.",
@@ -1716,7 +1716,7 @@
     "split": "test"
   },
   {
-    "question": " In satisfying Kant's Humanity formulation of the categorical imperative, we are obligated to adopt two very general goals: the goal of promoting the (morally permissible) ends of others and the goal of",
+    "instruction_original": " In satisfying Kant's Humanity formulation of the categorical imperative, we are obligated to adopt two very general goals: the goal of promoting the (morally permissible) ends of others and the goal of",
     "subject": "moral_disputes",
     "choices": [
       "self-perfection.",
@@ -1729,7 +1729,7 @@
     "split": "test"
   },
   {
-    "question": " Ashford defines a structural human rights violation as",
+    "instruction_original": " Ashford defines a structural human rights violation as",
     "subject": "moral_disputes",
     "choices": [
       "violations of human rights that pertain to the structure of a person's practical, social, and political agency.",
@@ -1742,7 +1742,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a possible source of obligations, according to Cohen?",
+    "instruction_original": " Which of the following is a possible source of obligations, according to Cohen?",
     "subject": "moral_disputes",
     "choices": [
       "rights",
@@ -1755,7 +1755,7 @@
     "split": "test"
   },
   {
-    "question": " Richardson-Self argues that sexist speech",
+    "instruction_original": " Richardson-Self argues that sexist speech",
     "subject": "moral_disputes",
     "choices": [
       "is always hate speech, because it involves violence.",
@@ -1768,7 +1768,7 @@
     "split": "test"
   },
   {
-    "question": " Norcross agrees that if a being is incapable of moral reasoning, at even the most basic level, then it cannot be",
+    "instruction_original": " Norcross agrees that if a being is incapable of moral reasoning, at even the most basic level, then it cannot be",
     "subject": "moral_disputes",
     "choices": [
       "a moral patient.",
@@ -1781,7 +1781,7 @@
     "split": "test"
   },
   {
-    "question": " Shapiro cites a study of Vietnam veterans, which showed a significant decrease in heroin use after the veterans returned home. Which factor does Shapiro cite as explaining this decrease?",
+    "instruction_original": " Shapiro cites a study of Vietnam veterans, which showed a significant decrease in heroin use after the veterans returned home. Which factor does Shapiro cite as explaining this decrease?",
     "subject": "moral_disputes",
     "choices": [
       "the type of drug used",
@@ -1794,7 +1794,7 @@
     "split": "test"
   },
   {
-    "question": " One suggestion that Lukianoff and Haidt make to challenge vindictive protectiveness is",
+    "instruction_original": " One suggestion that Lukianoff and Haidt make to challenge vindictive protectiveness is",
     "subject": "moral_disputes",
     "choices": [
       "have colleges and universities officially and strongly discourage trigger warnings.",
@@ -1807,7 +1807,7 @@
     "split": "test"
   },
   {
-    "question": " Aristotle's moral theory is a version of",
+    "instruction_original": " Aristotle's moral theory is a version of",
     "subject": "moral_disputes",
     "choices": [
       "virtue ethics.",
@@ -1820,7 +1820,7 @@
     "split": "test"
   },
   {
-    "question": " Suppose Wellman argued that just as you have a right not to marry someone who would be harmed by your refusal, a state is free to exclude others even if it causes harm to them. Fine would respond by saying that",
+    "instruction_original": " Suppose Wellman argued that just as you have a right not to marry someone who would be harmed by your refusal, a state is free to exclude others even if it causes harm to them. Fine would respond by saying that",
     "subject": "moral_disputes",
     "choices": [
       "the liberal state cannot claim to be primarily an intimate or expressive association.",
@@ -1833,7 +1833,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a \"right of noninterference\" according to Arthur?",
+    "instruction_original": " Which of the following is an example of a \"right of noninterference\" according to Arthur?",
     "subject": "moral_disputes",
     "choices": [
       "the right to privacy",
@@ -1846,7 +1846,7 @@
     "split": "test"
   },
   {
-    "question": " Audi proposed that we expand Ross's list of prima facie duties to include",
+    "instruction_original": " Audi proposed that we expand Ross's list of prima facie duties to include",
     "subject": "moral_disputes",
     "choices": [
       "veracity.",
@@ -1859,7 +1859,7 @@
     "split": "test"
   },
   {
-    "question": " According to Singer, which of the following historical defenders of the principle of equal consideration of interests was one of the few to recognize that the principle applies to members of other species as well as to our own?",
+    "instruction_original": " According to Singer, which of the following historical defenders of the principle of equal consideration of interests was one of the few to recognize that the principle applies to members of other species as well as to our own?",
     "subject": "moral_disputes",
     "choices": [
       "Immanuel Kant",
@@ -1872,7 +1872,7 @@
     "split": "test"
   },
   {
-    "question": " The only way to break out of the \"terrorist cycle,\" says Walzer, is to",
+    "instruction_original": " The only way to break out of the \"terrorist cycle,\" says Walzer, is to",
     "subject": "moral_disputes",
     "choices": [
       "attack quickly, swiftly, and with full force.",
@@ -1885,7 +1885,7 @@
     "split": "test"
   },
   {
-    "question": " According to Norcross, which of the following arguments poses a formidable challenge to any proposed criterion of full moral standing that excludes animals?",
+    "instruction_original": " According to Norcross, which of the following arguments poses a formidable challenge to any proposed criterion of full moral standing that excludes animals?",
     "subject": "moral_disputes",
     "choices": [
       "the ontological argument",
@@ -1898,7 +1898,7 @@
     "split": "test"
   },
   {
-    "question": " According to Aquinas's moral theory, morality is ultimately grounded in",
+    "instruction_original": " According to Aquinas's moral theory, morality is ultimately grounded in",
     "subject": "moral_disputes",
     "choices": [
       "agreements made between individuals.",
@@ -1911,7 +1911,7 @@
     "split": "test"
   },
   {
-    "question": " Kant's moral theory is a version of",
+    "instruction_original": " Kant's moral theory is a version of",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism.",
@@ -1924,7 +1924,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following statements best describes Gill's response to the argument that the Oregon physician-assisted law falsely assumes that doctors are qualified to judge whether a life is worth living?",
+    "instruction_original": " Which of the following statements best describes Gill's response to the argument that the Oregon physician-assisted law falsely assumes that doctors are qualified to judge whether a life is worth living?",
     "subject": "moral_disputes",
     "choices": [
       "Doctors are as qualified as any other mature adult to decide whether a life is worth living.",
@@ -1937,7 +1937,7 @@
     "split": "test"
   },
   {
-    "question": " The best explanation for drug addiction, according to Shapiro, appeals to",
+    "instruction_original": " The best explanation for drug addiction, according to Shapiro, appeals to",
     "subject": "moral_disputes",
     "choices": [
       "one's individual mindset and social setting.",
@@ -1950,7 +1950,7 @@
     "split": "test"
   },
   {
-    "question": " Wellman accepts that there are other values besides the freedom of association, such as",
+    "instruction_original": " Wellman accepts that there are other values besides the freedom of association, such as",
     "subject": "moral_disputes",
     "choices": [
       "egalitarian values concerning the elimination of inequalities that make people vulnerable to oppression.",
@@ -1963,7 +1963,7 @@
     "split": "test"
   },
   {
-    "question": " What does Marquis think is the main reason why it is wrong to kill a fetus?",
+    "instruction_original": " What does Marquis think is the main reason why it is wrong to kill a fetus?",
     "subject": "moral_disputes",
     "choices": [
       "The fetus can feel pain.",
@@ -1976,7 +1976,7 @@
     "split": "test"
   },
   {
-    "question": " Altman believes that there are significant difficulties associated with defending a pro-censorship position based solely on claims of which of the following kinds of harm?",
+    "instruction_original": " Altman believes that there are significant difficulties associated with defending a pro-censorship position based solely on claims of which of the following kinds of harm?",
     "subject": "moral_disputes",
     "choices": [
       "expressive harm",
@@ -1989,7 +1989,7 @@
     "split": "test"
   },
   {
-    "question": " According to Hardin, the \"ratchet effect\" refers to the fact that",
+    "instruction_original": " According to Hardin, the \"ratchet effect\" refers to the fact that",
     "subject": "moral_disputes",
     "choices": [
       "overpopulation does not affect the number of people who are poor.",
@@ -2002,7 +2002,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is the term used to refer to a stage in prenatal development which in humans begins at roughly the second week of pregnancy and lasts until roughly the eighth week?",
+    "instruction_original": " Which of the following is the term used to refer to a stage in prenatal development which in humans begins at roughly the second week of pregnancy and lasts until roughly the eighth week?",
     "subject": "moral_disputes",
     "choices": [
       "fertilization",
@@ -2015,7 +2015,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following potentially morally relevant differences between Fred's behavior and the behavior of the consumers of factory-raised meat does Norcross not discuss?",
+    "instruction_original": " Which of the following potentially morally relevant differences between Fred's behavior and the behavior of the consumers of factory-raised meat does Norcross not discuss?",
     "subject": "moral_disputes",
     "choices": [
       "Fred's behavior involves the suffering of puppies, whereas the behavior of meat-eaters \"merely\" involves the suffering of chickens, pigs, cows, calves, sheep, and the like.",
@@ -2028,7 +2028,7 @@
     "split": "test"
   },
   {
-    "question": " According to Singer, international corporations that deal with corrupt dictators are akin to",
+    "instruction_original": " According to Singer, international corporations that deal with corrupt dictators are akin to",
     "subject": "moral_disputes",
     "choices": [
       "murderers of those who witness crimes.",
@@ -2041,7 +2041,7 @@
     "split": "test"
   },
   {
-    "question": " Since we who live in wealthy countries have directly caused harm, Pogge argues that we have very stringent",
+    "instruction_original": " Since we who live in wealthy countries have directly caused harm, Pogge argues that we have very stringent",
     "subject": "moral_disputes",
     "choices": [
       "libertarian duties towards the global poor",
@@ -2054,7 +2054,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not a requirement on the definition of \"legal punishment\"?",
+    "instruction_original": " Which of the following is not a requirement on the definition of \"legal punishment\"?",
     "subject": "moral_disputes",
     "choices": [
       "It must be for an offense against legal rules.",
@@ -2067,7 +2067,7 @@
     "split": "test"
   },
   {
-    "question": " According to Mill, the only evidence it is possible to produce that anything is desirable is that",
+    "instruction_original": " According to Mill, the only evidence it is possible to produce that anything is desirable is that",
     "subject": "moral_disputes",
     "choices": [
       "God has deemed it desirable.",
@@ -2080,7 +2080,7 @@
     "split": "test"
   },
   {
-    "question": " Velleman worries that the word dignity is sometimes used (incorrectly) to glorify which of the following:",
+    "instruction_original": " Velleman worries that the word dignity is sometimes used (incorrectly) to glorify which of the following:",
     "subject": "moral_disputes",
     "choices": [
       "a patient's capacity for self-determination",
@@ -2093,7 +2093,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a virtue of character?",
+    "instruction_original": " Which of the following is an example of a virtue of character?",
     "subject": "moral_disputes",
     "choices": [
       "tallness",
@@ -2106,7 +2106,7 @@
     "split": "test"
   },
   {
-    "question": " The most common form of cosmopolitanism is _____ cosmopolitanism, according to which those in a position to do so have an obligation to assist those in need because of poverty and to promote basic human rights.",
+    "instruction_original": " The most common form of cosmopolitanism is _____ cosmopolitanism, according to which those in a position to do so have an obligation to assist those in need because of poverty and to promote basic human rights.",
     "subject": "moral_disputes",
     "choices": [
       "moral",
@@ -2119,7 +2119,7 @@
     "split": "test"
   },
   {
-    "question": " What is wrong with a conservation system based wholly on economic motives according to Leopold?",
+    "instruction_original": " What is wrong with a conservation system based wholly on economic motives according to Leopold?",
     "subject": "moral_disputes",
     "choices": [
       "It assumes that the economic parts of the biotic system will function without the uneconomic parts.",
@@ -2132,7 +2132,7 @@
     "split": "test"
   },
   {
-    "question": " Singer argues that developing nations are harming poor nations by",
+    "instruction_original": " Singer argues that developing nations are harming poor nations by",
     "subject": "moral_disputes",
     "choices": [
       "causing global warming.",
@@ -2145,7 +2145,7 @@
     "split": "test"
   },
   {
-    "question": " According to Sandel, eugenics and genetic enhancement can be seen to be wrong from a secular perspective because they would produce unwelcome changes in",
+    "instruction_original": " According to Sandel, eugenics and genetic enhancement can be seen to be wrong from a secular perspective because they would produce unwelcome changes in",
     "subject": "moral_disputes",
     "choices": [
       "humility.",
@@ -2158,7 +2158,7 @@
     "split": "test"
   },
   {
-    "question": " According to some defenders of meat-eating, the suffering of animals counts less than the suffering of humans (if at all) because",
+    "instruction_original": " According to some defenders of meat-eating, the suffering of animals counts less than the suffering of humans (if at all) because",
     "subject": "moral_disputes",
     "choices": [
       "animals are rational and humans are not.",
@@ -2171,7 +2171,7 @@
     "split": "test"
   },
   {
-    "question": " To say that an action is intrinsically permissible (a feature mentioned in the doctrine of double effect) is to say that",
+    "instruction_original": " To say that an action is intrinsically permissible (a feature mentioned in the doctrine of double effect) is to say that",
     "subject": "moral_disputes",
     "choices": [
       "the action, apart from its effects, is morally permissible.",
@@ -2184,7 +2184,7 @@
     "split": "test"
   },
   {
-    "question": " Locke can be thought of as accepting a",
+    "instruction_original": " Locke can be thought of as accepting a",
     "subject": "moral_disputes",
     "choices": [
       "natural law conception of morality.",
@@ -2197,7 +2197,7 @@
     "split": "test"
   },
   {
-    "question": " Metz argues that dignity is based in",
+    "instruction_original": " Metz argues that dignity is based in",
     "subject": "moral_disputes",
     "choices": [
       "a capacity for communal or friendly relationships",
@@ -2210,7 +2210,7 @@
     "split": "test"
   },
   {
-    "question": " According to Singer, which of the following is the single relevant factor in determining whether something has moral status?",
+    "instruction_original": " According to Singer, which of the following is the single relevant factor in determining whether something has moral status?",
     "subject": "moral_disputes",
     "choices": [
       "dignity",
@@ -2223,7 +2223,7 @@
     "split": "test"
   },
   {
-    "question": " Nathanson proposes a form of retributivism that requires all of the following except",
+    "instruction_original": " Nathanson proposes a form of retributivism that requires all of the following except",
     "subject": "moral_disputes",
     "choices": [
       "a list of crimes ranked according to their seriousness.",
@@ -2236,7 +2236,7 @@
     "split": "test"
   },
   {
-    "question": " According to Kant, all imperatives are expressed by the word",
+    "instruction_original": " According to Kant, all imperatives are expressed by the word",
     "subject": "moral_disputes",
     "choices": [
       "\"want.\"",
@@ -2249,7 +2249,7 @@
     "split": "test"
   },
   {
-    "question": " The goal of cognitive-behavioral therapy is to",
+    "instruction_original": " The goal of cognitive-behavioral therapy is to",
     "subject": "moral_disputes",
     "choices": [
       "build grit.",
@@ -2262,7 +2262,7 @@
     "split": "test"
   },
   {
-    "question": " Thomson's appeal to the vices of callousness and self-centeredness relates to what kind of approach to abortion?",
+    "instruction_original": " Thomson's appeal to the vices of callousness and self-centeredness relates to what kind of approach to abortion?",
     "subject": "moral_disputes",
     "choices": [
       "deontological approach",
@@ -2275,7 +2275,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is evidence that de Marneffe cites in support of the claim that increased availability of a drug leads to increased use of that drug?",
+    "instruction_original": " Which of the following is evidence that de Marneffe cites in support of the claim that increased availability of a drug leads to increased use of that drug?",
     "subject": "moral_disputes",
     "choices": [
       "Heroin use was much higher among military personnel in Vietnam than it was among veterans who returned to the United States.",
@@ -2288,7 +2288,7 @@
     "split": "test"
   },
   {
-    "question": " Carens's main conclusion is that",
+    "instruction_original": " Carens's main conclusion is that",
     "subject": "moral_disputes",
     "choices": [
       "liberal egalitarianism should almost always press for more openness toward immigrants and refugees.",
@@ -2301,7 +2301,7 @@
     "split": "test"
   },
   {
-    "question": " Carens accepts that it is possible for the sudden opening of one country's borders to do more harm than good from a liberal egalitarian perspective. However, he argues that",
+    "instruction_original": " Carens accepts that it is possible for the sudden opening of one country's borders to do more harm than good from a liberal egalitarian perspective. However, he argues that",
     "subject": "moral_disputes",
     "choices": [
       "in practice, feasible policy options will not entail major costs to current citizens.",
@@ -2314,7 +2314,7 @@
     "split": "test"
   },
   {
-    "question": " Callahan is against the legalization of euthanasia because he believes legalization would",
+    "instruction_original": " Callahan is against the legalization of euthanasia because he believes legalization would",
     "subject": "moral_disputes",
     "choices": [
       "be contrary to the Constitution of the United States.",
@@ -2327,7 +2327,7 @@
     "split": "test"
   },
   {
-    "question": " Callahan discusses the Dutch Commission on Euthanasia in 1990 to show that",
+    "instruction_original": " Callahan discusses the Dutch Commission on Euthanasia in 1990 to show that",
     "subject": "moral_disputes",
     "choices": [
       "laws permitting euthanasia can and have been abused.",
@@ -2340,7 +2340,7 @@
     "split": "test"
   },
   {
-    "question": " According to Lukianoff and Haidt, institutionalizing vindictive protectiveness will",
+    "instruction_original": " According to Lukianoff and Haidt, institutionalizing vindictive protectiveness will",
     "subject": "moral_disputes",
     "choices": [
       "encourage students to think pathologically.",
@@ -2353,7 +2353,7 @@
     "split": "test"
   },
   {
-    "question": " Baxter claims that his \"very general way\" of stating what we should strive for environmentally assumes that",
+    "instruction_original": " Baxter claims that his \"very general way\" of stating what we should strive for environmentally assumes that",
     "subject": "moral_disputes",
     "choices": [
       "we have a god-like control over the environment.",
@@ -2366,7 +2366,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following objections to adopting speech codes does Altman discuss?",
+    "instruction_original": " Which of the following objections to adopting speech codes does Altman discuss?",
     "subject": "moral_disputes",
     "choices": [
       "Speech codes encourage bigotry.",
@@ -2379,7 +2379,7 @@
     "split": "test"
   },
   {
-    "question": " In Singer's understanding, the principle of the equality of human beings is",
+    "instruction_original": " In Singer's understanding, the principle of the equality of human beings is",
     "subject": "moral_disputes",
     "choices": [
       "a description of an alleged actual equality among humans.",
@@ -2392,7 +2392,7 @@
     "split": "test"
   },
   {
-    "question": " Nathanson believes that killing another person in self-defense is compatible with",
+    "instruction_original": " Nathanson believes that killing another person in self-defense is compatible with",
     "subject": "moral_disputes",
     "choices": [
       "respect for the dignity of persons.",
@@ -2405,7 +2405,7 @@
     "split": "test"
   },
   {
-    "question": " Sandel believes that the use of genetic enhancement is inherently wrong because",
+    "instruction_original": " Sandel believes that the use of genetic enhancement is inherently wrong because",
     "subject": "moral_disputes",
     "choices": [
       "its use would be unsafe.",
@@ -2418,7 +2418,7 @@
     "split": "test"
   },
   {
-    "question": "According to Michael Huemer, the harm of drug use to individual drug users",
+    "instruction_original": "According to Michael Huemer, the harm of drug use to individual drug users",
     "subject": "moral_disputes",
     "choices": [
       "justifies state prohibition of drug use.",
@@ -2431,7 +2431,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a basic intrinsic good, according to Aquinas's version of natural law theory?",
+    "instruction_original": " Which of the following is a basic intrinsic good, according to Aquinas's version of natural law theory?",
     "subject": "moral_disputes",
     "choices": [
       "human life",
@@ -2444,7 +2444,7 @@
     "split": "test"
   },
   {
-    "question": " Mary is a person, and as such she plausibly deserves moral consideration because of features inherent to her (e.g., being self-aware). This suggests that she has",
+    "instruction_original": " Mary is a person, and as such she plausibly deserves moral consideration because of features inherent to her (e.g., being self-aware). This suggests that she has",
     "subject": "moral_disputes",
     "choices": [
       "direct moral standing.",
@@ -2457,7 +2457,7 @@
     "split": "test"
   },
   {
-    "question": " In his objection to \"the second prong of the libertarian case for open borders,\" Wellman responds to the objection that he is essentially denying that we have a right to freedom of movement. Which of the following is part of his response?",
+    "instruction_original": " In his objection to \"the second prong of the libertarian case for open borders,\" Wellman responds to the objection that he is essentially denying that we have a right to freedom of movement. Which of the following is part of his response?",
     "subject": "moral_disputes",
     "choices": [
       "He would say this begs the question because the immigration question is identical to the freedom-of-movement question.",
@@ -2470,7 +2470,7 @@
     "split": "test"
   },
   {
-    "question": " Richardson-Self discusses which of the following kinds of speech?",
+    "instruction_original": " Richardson-Self discusses which of the following kinds of speech?",
     "subject": "moral_disputes",
     "choices": [
       "hate speech",
@@ -2483,7 +2483,7 @@
     "split": "test"
   },
   {
-    "question": " Lex talionis is another name for",
+    "instruction_original": " Lex talionis is another name for",
     "subject": "moral_disputes",
     "choices": [
       "proportional retributivism.",
@@ -2496,7 +2496,7 @@
     "split": "test"
   },
   {
-    "question": " Huemer argues that there is no reason to think that the harms of drug use are in an important sense",
+    "instruction_original": " Huemer argues that there is no reason to think that the harms of drug use are in an important sense",
     "subject": "moral_disputes",
     "choices": [
       "more harmful on average than legally permitted harmful activities.",
@@ -2509,7 +2509,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a value that Arthur believes is more fundamental than rights and desert?",
+    "instruction_original": " Which of the following is a value that Arthur believes is more fundamental than rights and desert?",
     "subject": "moral_disputes",
     "choices": [
       "justice",
@@ -2522,7 +2522,7 @@
     "split": "test"
   },
   {
-    "question": " One of the main factors that Hardin links to world hunger and poverty is",
+    "instruction_original": " One of the main factors that Hardin links to world hunger and poverty is",
     "subject": "moral_disputes",
     "choices": [
       "reproduction rates.",
@@ -2535,7 +2535,7 @@
     "split": "test"
   },
   {
-    "question": " According to the Humanity formulation of Kant's principle, we must treat persons",
+    "instruction_original": " According to the Humanity formulation of Kant's principle, we must treat persons",
     "subject": "moral_disputes",
     "choices": [
       "never as a means.",
@@ -2548,7 +2548,7 @@
     "split": "test"
   },
   {
-    "question": " Since Nagel thinks there can be genuine moral dilemmas, he denies the moral principle that",
+    "instruction_original": " Since Nagel thinks there can be genuine moral dilemmas, he denies the moral principle that",
     "subject": "moral_disputes",
     "choices": [
       "can implies should.",
@@ -2561,7 +2561,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not an example of vice?",
+    "instruction_original": " Which of the following is not an example of vice?",
     "subject": "moral_disputes",
     "choices": [
       "callousness",
@@ -2574,7 +2574,7 @@
     "split": "test"
   },
   {
-    "question": " On Metz's view, what kind of punishment is justified for wrongdoers?",
+    "instruction_original": " On Metz's view, what kind of punishment is justified for wrongdoers?",
     "subject": "moral_disputes",
     "choices": [
       "Harmful punishment that is proportionate to the harm done by the wrongdoing.",
@@ -2587,7 +2587,7 @@
     "split": "test"
   },
   {
-    "question": " According to the principle of greatest equal liberty proposed by John Rawls, each person is to have an equal right to",
+    "instruction_original": " According to the principle of greatest equal liberty proposed by John Rawls, each person is to have an equal right to",
     "subject": "moral_disputes",
     "choices": [
       "the highest level of happiness that is attainable by the least happy person in the society.",
@@ -2600,7 +2600,7 @@
     "split": "test"
   },
   {
-    "question": " Wellman argues that insisting on unlimited property rights commits one to",
+    "instruction_original": " Wellman argues that insisting on unlimited property rights commits one to",
     "subject": "moral_disputes",
     "choices": [
       "deontological theory.",
@@ -2613,7 +2613,7 @@
     "split": "test"
   },
   {
-    "question": " Ross argues that the existing body of moral convictions of the best people is the cumulative product of",
+    "instruction_original": " Ross argues that the existing body of moral convictions of the best people is the cumulative product of",
     "subject": "moral_disputes",
     "choices": [
       "the moral reflection of many generations.",
@@ -2626,7 +2626,7 @@
     "split": "test"
   },
   {
-    "question": " Kant argues that marriage allows spouses to treat each other not as mere means when engaging in sexual activity because",
+    "instruction_original": " Kant argues that marriage allows spouses to treat each other not as mere means when engaging in sexual activity because",
     "subject": "moral_disputes",
     "choices": [
       "God demands that all sexual activity occur in the context of marriage.",
@@ -2639,7 +2639,7 @@
     "split": "test"
   },
   {
-    "question": " On Pogge's view, affluent citizens are harming the poor by",
+    "instruction_original": " On Pogge's view, affluent citizens are harming the poor by",
     "subject": "moral_disputes",
     "choices": [
       "imposing on them the lasting effects of historical crimes.",
@@ -2652,7 +2652,7 @@
     "split": "test"
   },
   {
-    "question": " According to Aquinas, the first precept of natural law is",
+    "instruction_original": " According to Aquinas, the first precept of natural law is",
     "subject": "moral_disputes",
     "choices": [
       "\"good is to be done, evil to be avoided.\"",
@@ -2665,7 +2665,7 @@
     "split": "test"
   },
   {
-    "question": " Shapiro discusses Mediterranean cultures' use of alcohol to show that",
+    "instruction_original": " Shapiro discusses Mediterranean cultures' use of alcohol to show that",
     "subject": "moral_disputes",
     "choices": [
       "even cultures with very low levels of alcohol consumption can have comparatively high levels of alcoholism.",
@@ -2678,7 +2678,7 @@
     "split": "test"
   },
   {
-    "question": " Little argues that the norms governing the moral permission of abortion are",
+    "instruction_original": " Little argues that the norms governing the moral permission of abortion are",
     "subject": "moral_disputes",
     "choices": [
       "impersonal and categorical.",
@@ -2691,7 +2691,7 @@
     "split": "test"
   },
   {
-    "question": " According to Hardin, the fundamental error of \"sharing ethics\" is that",
+    "instruction_original": " According to Hardin, the fundamental error of \"sharing ethics\" is that",
     "subject": "moral_disputes",
     "choices": [
       "it is anti-Christian.",
@@ -2704,7 +2704,7 @@
     "split": "test"
   },
   {
-    "question": " The principle Arthur calls \"the greater moral evil rule\"says that",
+    "instruction_original": " The principle Arthur calls \"the greater moral evil rule\"says that",
     "subject": "moral_disputes",
     "choices": [
       "people are entitled to keep their earnings only if there is no way for them to prevent a greater evil by giving them away.",
@@ -2717,7 +2717,7 @@
     "split": "test"
   },
   {
-    "question": " Ross claims that the essential defect of utilitarianism is that it ignores",
+    "instruction_original": " Ross claims that the essential defect of utilitarianism is that it ignores",
     "subject": "moral_disputes",
     "choices": [
       "the value of pleasure.",
@@ -2730,7 +2730,7 @@
     "split": "test"
   },
   {
-    "question": " The second premise in Singer's main argument is: \"If it is in your power to prevent something bad from happening, without sacrificing anything nearly as important, it is wrong not to do so.\" Which phrase in this premise is deliberately left vague?",
+    "instruction_original": " The second premise in Singer's main argument is: \"If it is in your power to prevent something bad from happening, without sacrificing anything nearly as important, it is wrong not to do so.\" Which phrase in this premise is deliberately left vague?",
     "subject": "moral_disputes",
     "choices": [
       "\"something bad\"",
@@ -2743,7 +2743,7 @@
     "split": "test"
   },
   {
-    "question": " According to Lukianoff and Haidt, the recent trend to uncover microaggressions encourages",
+    "instruction_original": " According to Lukianoff and Haidt, the recent trend to uncover microaggressions encourages",
     "subject": "moral_disputes",
     "choices": [
       "students to confabulate reasons.",
@@ -2756,7 +2756,7 @@
     "split": "test"
   },
   {
-    "question": " Marcia Baron argues that the artificiality of ticking bomb cases is problematic because",
+    "instruction_original": " Marcia Baron argues that the artificiality of ticking bomb cases is problematic because",
     "subject": "moral_disputes",
     "choices": [
       "the artificial assumptions are, in fact, empirical claims that are central to the debate.",
@@ -2769,7 +2769,7 @@
     "split": "test"
   },
   {
-    "question": " Carens argues that a policy of exclusion does not always imply that the culture and people being protected are superior because",
+    "instruction_original": " Carens argues that a policy of exclusion does not always imply that the culture and people being protected are superior because",
     "subject": "moral_disputes",
     "choices": [
       "such a policy actually implies that the protected culture is inferior.",
@@ -2782,7 +2782,7 @@
     "split": "test"
   },
   {
-    "question": " In responding to terrorism, says Walzer, it is particularly important that",
+    "instruction_original": " In responding to terrorism, says Walzer, it is particularly important that",
     "subject": "moral_disputes",
     "choices": [
       "we make an effort to convince the terrorists that they are acting wrongly.",
@@ -2795,7 +2795,7 @@
     "split": "test"
   },
   {
-    "question": " In response to the argument that embryos are not persons because they do not exercise higher mental capacities, Lee and George argue that",
+    "instruction_original": " In response to the argument that embryos are not persons because they do not exercise higher mental capacities, Lee and George argue that",
     "subject": "moral_disputes",
     "choices": [
       "embryos actually do exercise higher mental capacities.",
@@ -2808,7 +2808,7 @@
     "split": "test"
   },
   {
-    "question": " Mill considers which of the following cases?",
+    "instruction_original": " Mill considers which of the following cases?",
     "subject": "moral_disputes",
     "choices": [
       "censoring an opinion that is true.",
@@ -2821,7 +2821,7 @@
     "split": "test"
   },
   {
-    "question": " According to Velleman, who, if anyone, should decide whether a patient receives euthanasia?",
+    "instruction_original": " According to Velleman, who, if anyone, should decide whether a patient receives euthanasia?",
     "subject": "moral_disputes",
     "choices": [
       "the patient",
@@ -2834,7 +2834,7 @@
     "split": "test"
   },
   {
-    "question": " In response to the objection that it would be wrong to prohibit the manufacture and sale of fatty foods and tobacco products, de Marneffe argues that",
+    "instruction_original": " In response to the objection that it would be wrong to prohibit the manufacture and sale of fatty foods and tobacco products, de Marneffe argues that",
     "subject": "moral_disputes",
     "choices": [
       "fatty foods and tobacco products are not actually harmful.",
@@ -2847,7 +2847,7 @@
     "split": "test"
   },
   {
-    "question": " According to Kass, one problem with cloning is that",
+    "instruction_original": " According to Kass, one problem with cloning is that",
     "subject": "moral_disputes",
     "choices": [
       "cloned individuals are likely to experience psychological and social identity problems.",
@@ -2860,7 +2860,7 @@
     "split": "test"
   },
   {
-    "question": " In Carruther's view, the justification for moral criticism for things that we do (or don't to do) to an animal derives from",
+    "instruction_original": " In Carruther's view, the justification for moral criticism for things that we do (or don't to do) to an animal derives from",
     "subject": "moral_disputes",
     "choices": [
       "the animal's direct moral standing.",
@@ -2873,7 +2873,7 @@
     "split": "test"
   },
   {
-    "question": " One way to value a patient's autonomy is by aiming to maximize his or her effective options. When we value a patient's autonomy in this way, what, according to Velleman, do we value?",
+    "instruction_original": " One way to value a patient's autonomy is by aiming to maximize his or her effective options. When we value a patient's autonomy in this way, what, according to Velleman, do we value?",
     "subject": "moral_disputes",
     "choices": [
       "the patient's opportunities for self-determination",
@@ -2886,7 +2886,7 @@
     "split": "test"
   },
   {
-    "question": " McGrecgor, following Hampton, argues that the harm of rape involves",
+    "instruction_original": " McGrecgor, following Hampton, argues that the harm of rape involves",
     "subject": "moral_disputes",
     "choices": [
       "moral injury.",
@@ -2899,7 +2899,7 @@
     "split": "test"
   },
   {
-    "question": " On Mill's view, the collision with error makes",
+    "instruction_original": " On Mill's view, the collision with error makes",
     "subject": "moral_disputes",
     "choices": [
       "the impression of truth all the clearer.",
@@ -2912,7 +2912,7 @@
     "split": "test"
   },
   {
-    "question": " According to Kass the fact that people (like him) feel repugnance at the thought of human reproductive cloning",
+    "instruction_original": " According to Kass the fact that people (like him) feel repugnance at the thought of human reproductive cloning",
     "subject": "moral_disputes",
     "choices": [
       "shows conclusively that reproductive cloning is always wrong.",
@@ -2925,7 +2925,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following capacities does Carruther's assume that animals lack?",
+    "instruction_original": " Which of the following capacities does Carruther's assume that animals lack?",
     "subject": "moral_disputes",
     "choices": [
       "the capacity for suffering",
@@ -2938,7 +2938,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following best characterizes de Marneffe's view?",
+    "instruction_original": " Which of the following best characterizes de Marneffe's view?",
     "subject": "moral_disputes",
     "choices": [
       "The use, sale, and manufacturing of drugs should be legal.",
@@ -2951,7 +2951,7 @@
     "split": "test"
   },
   {
-    "question": " Wellman's response to the \"egalitarian\" objection to the state's right to exclude is that states can fulfill their duties to outsiders without allowing them into their territory. Fine thinks Wellman's response is insufficient because",
+    "instruction_original": " Wellman's response to the \"egalitarian\" objection to the state's right to exclude is that states can fulfill their duties to outsiders without allowing them into their territory. Fine thinks Wellman's response is insufficient because",
     "subject": "moral_disputes",
     "choices": [
       "egalitarians are committed to utilitarian principles.",
@@ -2964,7 +2964,7 @@
     "split": "test"
   },
   {
-    "question": " According to Huemer,",
+    "instruction_original": " According to Huemer,",
     "subject": "moral_disputes",
     "choices": [
       "it is just bad for the government to fail to recognize natural rights.",
@@ -2977,7 +2977,7 @@
     "split": "test"
   },
   {
-    "question": " One kind of externality imposed on the world's poor by the economic activity of wealthy nation is",
+    "instruction_original": " One kind of externality imposed on the world's poor by the economic activity of wealthy nation is",
     "subject": "moral_disputes",
     "choices": [
       "unequal social order.",
@@ -2990,7 +2990,7 @@
     "split": "test"
   },
   {
-    "question": " In therapeutic cloning, the goal is to",
+    "instruction_original": " In therapeutic cloning, the goal is to",
     "subject": "moral_disputes",
     "choices": [
       "produce and raise a child.",
@@ -3003,7 +3003,7 @@
     "split": "test"
   },
   {
-    "question": " According to Collins, one key claim of care ethics is that",
+    "instruction_original": " According to Collins, one key claim of care ethics is that",
     "subject": "moral_disputes",
     "choices": [
       "Deliberation should include sympathy and direct attendance to concrete particulars.",
@@ -3016,7 +3016,7 @@
     "split": "test"
   },
   {
-    "question": " According to Confucian the model of persons,",
+    "instruction_original": " According to Confucian the model of persons,",
     "subject": "moral_disputes",
     "choices": [
       "we learn to be persons through familial relations and by learning from other's example.",
@@ -3029,7 +3029,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a virtue?",
+    "instruction_original": " Which of the following is an example of a virtue?",
     "subject": "moral_disputes",
     "choices": [
       "honesty",
@@ -3042,7 +3042,7 @@
     "split": "test"
   },
   {
-    "question": " Carens argues that, for example, liberal egalitarianism has nothing to say about the question of whether a black doctor has a moral obligation to practice in a black community. This is because the only limit that liberal egalitarianism places on individuals' moral obligations, according to Caren, is that they",
+    "instruction_original": " Carens argues that, for example, liberal egalitarianism has nothing to say about the question of whether a black doctor has a moral obligation to practice in a black community. This is because the only limit that liberal egalitarianism places on individuals' moral obligations, according to Caren, is that they",
     "subject": "moral_disputes",
     "choices": [
       "must not conflict with the rights and duties that liberal egalitarianism itself prescribes.",
@@ -3055,7 +3055,7 @@
     "split": "test"
   },
   {
-    "question": " Sandel's case against moral engineering can best be considered",
+    "instruction_original": " Sandel's case against moral engineering can best be considered",
     "subject": "moral_disputes",
     "choices": [
       "a Kantian approach.",
@@ -3068,7 +3068,7 @@
     "split": "test"
   },
   {
-    "question": " One problem with treating the ticking bomb case as involving only a single instance of torture, according to Baron, is that",
+    "instruction_original": " One problem with treating the ticking bomb case as involving only a single instance of torture, according to Baron, is that",
     "subject": "moral_disputes",
     "choices": [
       "justifying one instance of torture requires justifying the practice of torture.",
@@ -3081,7 +3081,7 @@
     "split": "test"
   },
   {
-    "question": " According to Cohen, animals are",
+    "instruction_original": " According to Cohen, animals are",
     "subject": "moral_disputes",
     "choices": [
       "moral agents.",
@@ -3094,7 +3094,7 @@
     "split": "test"
   },
   {
-    "question": " One objection to care ethics is thatit seems to imply that we areresponsible for our attitudes, even though they seem not to be under our voluntary control. Collins responds by arguing that",
+    "instruction_original": " One objection to care ethics is thatit seems to imply that we areresponsible for our attitudes, even though they seem not to be under our voluntary control. Collins responds by arguing that",
     "subject": "moral_disputes",
     "choices": [
       "caring attitudes are not moral attitudes at all.",
@@ -3107,7 +3107,7 @@
     "split": "test"
   },
   {
-    "question": " According to Sinnott-Armstrong, if we cannot find any moral principle to back up our intuition that wasteful driving (of the sort mentioned in his article) is wrong, then",
+    "instruction_original": " According to Sinnott-Armstrong, if we cannot find any moral principle to back up our intuition that wasteful driving (of the sort mentioned in his article) is wrong, then",
     "subject": "moral_disputes",
     "choices": [
       "we know that wasteful driving is morally permissible.",
@@ -3120,7 +3120,7 @@
     "split": "test"
   },
   {
-    "question": " The idea of \"using someone as a mere means\" is centrally relevant to which of the following moral theories?",
+    "instruction_original": " The idea of \"using someone as a mere means\" is centrally relevant to which of the following moral theories?",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism",
@@ -3133,7 +3133,7 @@
     "split": "test"
   },
   {
-    "question": " According to consequentialist theories of punishment, a lawbreaker should be punished only if",
+    "instruction_original": " According to consequentialist theories of punishment, a lawbreaker should be punished only if",
     "subject": "moral_disputes",
     "choices": [
       "the punishment would likely produce as much overall intrinsic value as would any other alternative punishment.",
@@ -3146,7 +3146,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not an example Aquinas gives of a self-evident proposition?",
+    "instruction_original": " Which of the following is not an example Aquinas gives of a self-evident proposition?",
     "subject": "moral_disputes",
     "choices": [
       "\"Every whole is greater than its part.\"",
@@ -3159,7 +3159,7 @@
     "split": "test"
   },
   {
-    "question": " Marquis argues that abortion is morally wrong by",
+    "instruction_original": " Marquis argues that abortion is morally wrong by",
     "subject": "moral_disputes",
     "choices": [
       "showing that a fetus is a person with full moral rights, including the right to life.",
@@ -3172,7 +3172,7 @@
     "split": "test"
   },
   {
-    "question": " Of the following social problems that could result from a genetic supermarket, which does Singer think is the least serious?",
+    "instruction_original": " Of the following social problems that could result from a genetic supermarket, which does Singer think is the least serious?",
     "subject": "moral_disputes",
     "choices": [
       "loss of human diversity",
@@ -3185,7 +3185,7 @@
     "split": "test"
   },
   {
-    "question": " In response to Sandel's argument about the relationship between genetic enhancement and parent-child relationships, Kamm argues that",
+    "instruction_original": " In response to Sandel's argument about the relationship between genetic enhancement and parent-child relationships, Kamm argues that",
     "subject": "moral_disputes",
     "choices": [
       "genetic transformation will actually strengthen the bond between parent and child.",
@@ -3198,7 +3198,7 @@
     "split": "test"
   },
   {
-    "question": " According to Marquis, abortion is",
+    "instruction_original": " According to Marquis, abortion is",
     "subject": "moral_disputes",
     "choices": [
       "absolutely wrong.",
@@ -3211,7 +3211,7 @@
     "split": "test"
   },
   {
-    "question": " Michael Gill begins by discussing arguments against autonomy-based justifications of euthanasia. According to these arguments, autonomy-based justifications are contradictory because",
+    "instruction_original": " Michael Gill begins by discussing arguments against autonomy-based justifications of euthanasia. According to these arguments, autonomy-based justifications are contradictory because",
     "subject": "moral_disputes",
     "choices": [
       "the value of autonomy relates only to the making of big decisions.",
@@ -3224,7 +3224,7 @@
     "split": "test"
   },
   {
-    "question": " A war over ideological differences carried out by methods short of sustained overt military action and usually without breaking off diplomatic relations is known as",
+    "instruction_original": " A war over ideological differences carried out by methods short of sustained overt military action and usually without breaking off diplomatic relations is known as",
     "subject": "moral_disputes",
     "choices": [
       "a war simpliciter.",
@@ -3237,7 +3237,7 @@
     "split": "test"
   },
   {
-    "question": " Huemer worries that the employment of a \"war\" metaphor when describing government policies about drug use",
+    "instruction_original": " Huemer worries that the employment of a \"war\" metaphor when describing government policies about drug use",
     "subject": "moral_disputes",
     "choices": [
       "masks a bad argument by analogy.",
@@ -3250,7 +3250,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not one of the four main excuses for terrorism that Michael Walzer discusses?",
+    "instruction_original": " Which of the following is not one of the four main excuses for terrorism that Michael Walzer discusses?",
     "subject": "moral_disputes",
     "choices": [
       "Terrorism is a form of freedom of speech.",
@@ -3263,7 +3263,7 @@
     "split": "test"
   },
   {
-    "question": " Christopher Heath Wellman defends the position that",
+    "instruction_original": " Christopher Heath Wellman defends the position that",
     "subject": "moral_disputes",
     "choices": [
       "anti-egalitarianism is compatible with liberal cosmopolitanism.",
@@ -3276,7 +3276,7 @@
     "split": "test"
   },
   {
-    "question": " Ross proposed that we have a duty of reparation-that is, the prima facie duty-to",
+    "instruction_original": " Ross proposed that we have a duty of reparation-that is, the prima facie duty-to",
     "subject": "moral_disputes",
     "choices": [
       "make amends to others for any past wrongs one has done to them.",
@@ -3289,7 +3289,7 @@
     "split": "test"
   },
   {
-    "question": " Joseph Carens argues that restrictions on free migration can be justified if",
+    "instruction_original": " Joseph Carens argues that restrictions on free migration can be justified if",
     "subject": "moral_disputes",
     "choices": [
       "such restrictions are decreed by a sovereign leader.",
@@ -3302,7 +3302,7 @@
     "split": "test"
   },
   {
-    "question": " An unborn vertebrate animal that has developed to the point of having the basic structure that is characteristic of its kind is known as",
+    "instruction_original": " An unborn vertebrate animal that has developed to the point of having the basic structure that is characteristic of its kind is known as",
     "subject": "moral_disputes",
     "choices": [
       "a zygote.",
@@ -3315,7 +3315,7 @@
     "split": "test"
   },
   {
-    "question": " Corresponding to the theoretical aim of moral theory is the principle of",
+    "instruction_original": " Corresponding to the theoretical aim of moral theory is the principle of",
     "subject": "moral_disputes",
     "choices": [
       "explanatory power.",
@@ -3328,7 +3328,7 @@
     "split": "test"
   },
   {
-    "question": " According to Aquinas, every law is ordained to",
+    "instruction_original": " According to Aquinas, every law is ordained to",
     "subject": "moral_disputes",
     "choices": [
       "the truth.",
@@ -3341,7 +3341,7 @@
     "split": "test"
   },
   {
-    "question": " The question of whether the killing/letting die distinction is morally relevant can be posed by asking whether we are equally to blame for allowing people in Third World countries to starve as we would be for",
+    "instruction_original": " The question of whether the killing/letting die distinction is morally relevant can be posed by asking whether we are equally to blame for allowing people in Third World countries to starve as we would be for",
     "subject": "moral_disputes",
     "choices": [
       "killing them by sending poisoned food.",
@@ -3354,7 +3354,7 @@
     "split": "test"
   },
   {
-    "question": " Singer presents his three-premise argument in addition to appealing to the case of the drowning child because",
+    "instruction_original": " Singer presents his three-premise argument in addition to appealing to the case of the drowning child because",
     "subject": "moral_disputes",
     "choices": [
       "he believes that abstract arguments are more likely to convince one to act.",
@@ -3367,7 +3367,7 @@
     "split": "test"
   },
   {
-    "question": " Why can't animals be bearers of rights according to Cohen?",
+    "instruction_original": " Why can't animals be bearers of rights according to Cohen?",
     "subject": "moral_disputes",
     "choices": [
       "because rights are essentially human",
@@ -3380,7 +3380,7 @@
     "split": "test"
   },
   {
-    "question": " An oocyte is",
+    "instruction_original": " An oocyte is",
     "subject": "moral_disputes",
     "choices": [
       "an unfertilized egg.",
@@ -3393,7 +3393,7 @@
     "split": "test"
   },
   {
-    "question": " According to Corvino, the \"unnaturalness\" charge can carry moral weight only if those who level it can do two things:",
+    "instruction_original": " According to Corvino, the \"unnaturalness\" charge can carry moral weight only if those who level it can do two things:",
     "subject": "moral_disputes",
     "choices": [
       "(i) explain the harms of anal sex and (ii) establish that all homosexuals will inevitably suffer those harms.",
@@ -3406,7 +3406,7 @@
     "split": "test"
   },
   {
-    "question": " Mill defends the harm principle on the basis of which moral theory?",
+    "instruction_original": " Mill defends the harm principle on the basis of which moral theory?",
     "subject": "moral_disputes",
     "choices": [
       "Kantian moral theory",
@@ -3419,7 +3419,7 @@
     "split": "test"
   },
   {
-    "question": " According to Carruthers, our duties to animals are",
+    "instruction_original": " According to Carruthers, our duties to animals are",
     "subject": "moral_disputes",
     "choices": [
       "direct and basic.",
@@ -3432,7 +3432,7 @@
     "split": "test"
   },
   {
-    "question": " Nagel clarifies that absolutism is the view that we should",
+    "instruction_original": " Nagel clarifies that absolutism is the view that we should",
     "subject": "moral_disputes",
     "choices": [
       "prevent murder at all costs",
@@ -3445,7 +3445,7 @@
     "split": "test"
   },
   {
-    "question": " An unjust society, according to John Rawls, can be roughly characterized as any society where",
+    "instruction_original": " An unjust society, according to John Rawls, can be roughly characterized as any society where",
     "subject": "moral_disputes",
     "choices": [
       "some have more goods (e.g., happiness) than others.",
@@ -3458,7 +3458,7 @@
     "split": "test"
   },
   {
-    "question": " With respect to the issue of world hunger and poverty, Arthur points out that Singer ignores",
+    "instruction_original": " With respect to the issue of world hunger and poverty, Arthur points out that Singer ignores",
     "subject": "moral_disputes",
     "choices": [
       "the principles of equality and harm.",
@@ -3471,7 +3471,7 @@
     "split": "test"
   },
   {
-    "question": " According to Altman, a viewpoint-biased speech restriction should be troubling to whom?",
+    "instruction_original": " According to Altman, a viewpoint-biased speech restriction should be troubling to whom?",
     "subject": "moral_disputes",
     "choices": [
       "those who value a strong right to privacy",
@@ -3484,7 +3484,7 @@
     "split": "test"
   },
   {
-    "question": " According to McGregor, the expressive harm of rape",
+    "instruction_original": " According to McGregor, the expressive harm of rape",
     "subject": "moral_disputes",
     "choices": [
       "needs to be intentionally inflicted.",
@@ -3497,7 +3497,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not an objection Pence gives to the argument that SCNT is not best for the child?",
+    "instruction_original": " Which of the following is not an objection Pence gives to the argument that SCNT is not best for the child?",
     "subject": "moral_disputes",
     "choices": [
       "The argument assumes genetic determinism or genetic reductionism.",
@@ -3510,7 +3510,7 @@
     "split": "test"
   },
   {
-    "question": " According to rule consequentialism, the rightness or wrongness of an action depends on",
+    "instruction_original": " According to rule consequentialism, the rightness or wrongness of an action depends on",
     "subject": "moral_disputes",
     "choices": [
       "that action's relationship to the operative rules of law.",
@@ -3523,7 +3523,7 @@
     "split": "test"
   },
   {
-    "question": " Kant argues that because sexual attraction involves seeing another person as the object of one's appetites,",
+    "instruction_original": " Kant argues that because sexual attraction involves seeing another person as the object of one's appetites,",
     "subject": "moral_disputes",
     "choices": [
       "moral relationship with that person becomes impaired.",
@@ -3536,7 +3536,7 @@
     "split": "test"
   },
   {
-    "question": " One common objection to utilitarianism is that the principle of utility is",
+    "instruction_original": " One common objection to utilitarianism is that the principle of utility is",
     "subject": "moral_disputes",
     "choices": [
       "too complicated.",
@@ -3549,7 +3549,7 @@
     "split": "test"
   },
   {
-    "question": " According to Macedo, we have special obligations to our fellow citizens arising from",
+    "instruction_original": " According to Macedo, we have special obligations to our fellow citizens arising from",
     "subject": "moral_disputes",
     "choices": [
       "our relationships to noncitizens.",
@@ -3562,7 +3562,7 @@
     "split": "test"
   },
   {
-    "question": " According to the basic principle of natural law theory, an action is right if and only if (and because)",
+    "instruction_original": " According to the basic principle of natural law theory, an action is right if and only if (and because)",
     "subject": "moral_disputes",
     "choices": [
       "the action only indirectly violates some of the basic values.",
@@ -3575,7 +3575,7 @@
     "split": "test"
   },
   {
-    "question": " In reproductive cloning, the cloned individual will have nearly the same genetic makeup as",
+    "instruction_original": " In reproductive cloning, the cloned individual will have nearly the same genetic makeup as",
     "subject": "moral_disputes",
     "choices": [
       "the female who carries the zygote to term.",
@@ -3588,7 +3588,7 @@
     "split": "test"
   },
   {
-    "question": " One of the messages Nathanson believes we can send by abolishing the death penalty is that",
+    "instruction_original": " One of the messages Nathanson believes we can send by abolishing the death penalty is that",
     "subject": "moral_disputes",
     "choices": [
       "criminals deserve inhumane treatment.",
@@ -3601,7 +3601,7 @@
     "split": "test"
   },
   {
-    "question": " Rachels believes that active euthanasia is better than passive euthanasia in cases where",
+    "instruction_original": " Rachels believes that active euthanasia is better than passive euthanasia in cases where",
     "subject": "moral_disputes",
     "choices": [
       "the patient will suffer more if he or she is allowed to die, compared to how much he or she would suffer if the physician actively ended his or her life.",
@@ -3614,7 +3614,7 @@
     "split": "test"
   },
   {
-    "question": " According to Altman, expressive harm is",
+    "instruction_original": " According to Altman, expressive harm is",
     "subject": "moral_disputes",
     "choices": [
       "a causal consequence of hate speech.",
@@ -3627,7 +3627,7 @@
     "split": "test"
   },
   {
-    "question": " Papadaki thinks that in cases where partners in a relationship mutually deny each other's humanity that",
+    "instruction_original": " Papadaki thinks that in cases where partners in a relationship mutually deny each other's humanity that",
     "subject": "moral_disputes",
     "choices": [
       "sexual objectification occurs.",
@@ -3640,7 +3640,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following statements would Macedo disagree with?",
+    "instruction_original": " Which of the following statements would Macedo disagree with?",
     "subject": "moral_disputes",
     "choices": [
       "States should give special weight to their own citizens.",
@@ -3653,7 +3653,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following best characterizes Rachels's argument?",
+    "instruction_original": " Which of the following best characterizes Rachels's argument?",
     "subject": "moral_disputes",
     "choices": [
       "Both active and passive euthanasia involve the intentional termination of a human life with dignity; therefore, both are morally wrong.",
@@ -3666,7 +3666,7 @@
     "split": "test"
   },
   {
-    "question": " Suppose two athletes, A and B, are equally skilled. Suppose also that A naturally inherited certain traits from her father that made playing the sport easier for her, and thus she didn't have to train as hard as B. According to the ethic of willfulness,",
+    "instruction_original": " Suppose two athletes, A and B, are equally skilled. Suppose also that A naturally inherited certain traits from her father that made playing the sport easier for her, and thus she didn't have to train as hard as B. According to the ethic of willfulness,",
     "subject": "moral_disputes",
     "choices": [
       "A is a better athlete.",
@@ -3679,7 +3679,7 @@
     "split": "test"
   },
   {
-    "question": " According to Altman, justifications of speech codes that take account of which of the following kinds of harm have the best prospects for success?",
+    "instruction_original": " According to Altman, justifications of speech codes that take account of which of the following kinds of harm have the best prospects for success?",
     "subject": "moral_disputes",
     "choices": [
       "causal harm",
@@ -3692,7 +3692,7 @@
     "split": "test"
   },
   {
-    "question": " Kant's Universal Law formulation does not refer to an agent's wants; rather, it represents",
+    "instruction_original": " Kant's Universal Law formulation does not refer to an agent's wants; rather, it represents",
     "subject": "moral_disputes",
     "choices": [
       "an ethical dilemma.",
@@ -3705,7 +3705,7 @@
     "split": "test"
   },
   {
-    "question": " Wellman cites a number of \"unpalatable implications that follow from denying a country's right to freedom of association,\" including",
+    "instruction_original": " Wellman cites a number of \"unpalatable implications that follow from denying a country's right to freedom of association,\" including",
     "subject": "moral_disputes",
     "choices": [
       "the inability to explain why it would be wrong to force Canada to join NAFTA.",
@@ -3718,7 +3718,7 @@
     "split": "test"
   },
   {
-    "question": " According to West, which of the following reasons for a women to engage in sex with her male partner may cause her harm?",
+    "instruction_original": " According to West, which of the following reasons for a women to engage in sex with her male partner may cause her harm?",
     "subject": "moral_disputes",
     "choices": [
       "She or her children are economically dependent on her male partner, and so she reasons that she better have sex with him and keep him happy.",
@@ -3731,7 +3731,7 @@
     "split": "test"
   },
   {
-    "question": " According to Kant, an imperative that represents an action as a necessary means to something that is willed is what kind of imperative?",
+    "instruction_original": " According to Kant, an imperative that represents an action as a necessary means to something that is willed is what kind of imperative?",
     "subject": "moral_disputes",
     "choices": [
       "categorical",
@@ -3744,7 +3744,7 @@
     "split": "test"
   },
   {
-    "question": " What does Pence think is an appropriate standard for the safety of SCNT before it should be allowed?",
+    "instruction_original": " What does Pence think is an appropriate standard for the safety of SCNT before it should be allowed?",
     "subject": "moral_disputes",
     "choices": [
       "There should be no standards for safety.",
@@ -3757,7 +3757,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following claims would Leopold clearly accept?",
+    "instruction_original": " Which of the following claims would Leopold clearly accept?",
     "subject": "moral_disputes",
     "choices": [
       "The problems associated with how we should use our natural environment ultimately concern how human beings should treat each other.",
@@ -3770,7 +3770,7 @@
     "split": "test"
   },
   {
-    "question": " Mill argues on that even a false opinion should not be censored because",
+    "instruction_original": " Mill argues on that even a false opinion should not be censored because",
     "subject": "moral_disputes",
     "choices": [
       "no one actually knows anything.",
@@ -3783,7 +3783,7 @@
     "split": "test"
   },
   {
-    "question": " Norcross claims that if morality demands that we not torture puppies merely to enhance our own eating pleasure, morality also demands that",
+    "instruction_original": " Norcross claims that if morality demands that we not torture puppies merely to enhance our own eating pleasure, morality also demands that",
     "subject": "moral_disputes",
     "choices": [
       "we try to reduce our carbon footprint.",
@@ -3796,7 +3796,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not one of the potentially negative consequences of imposing the death penalty?",
+    "instruction_original": " Which of the following is not one of the potentially negative consequences of imposing the death penalty?",
     "subject": "moral_disputes",
     "choices": [
       "the prevention of future murders",
@@ -3809,7 +3809,7 @@
     "split": "test"
   },
   {
-    "question": " According to Sinnott-Armstrong, the fact your government morally ought to do something",
+    "instruction_original": " According to Sinnott-Armstrong, the fact your government morally ought to do something",
     "subject": "moral_disputes",
     "choices": [
       "does not prove that government officials ought to promote it.",
@@ -3822,7 +3822,7 @@
     "split": "test"
   },
   {
-    "question": " Some forms of misogynist speech only target a subset of women. Richardson-Self argues that we should",
+    "instruction_original": " Some forms of misogynist speech only target a subset of women. Richardson-Self argues that we should",
     "subject": "moral_disputes",
     "choices": [
       "deny that subsets of women can be the targets of hate speech.",
@@ -3835,7 +3835,7 @@
     "split": "test"
   },
   {
-    "question": " Instead of asking why the act of destroying the environment might be immoral, Hill wants to ask",
+    "instruction_original": " Instead of asking why the act of destroying the environment might be immoral, Hill wants to ask",
     "subject": "moral_disputes",
     "choices": [
       "why the act of destroying nature might be immoral.",
@@ -3848,7 +3848,7 @@
     "split": "test"
   },
   {
-    "question": " Philippa Foot explains the moral relevance of the killing/letting die distinction by appealing to",
+    "instruction_original": " Philippa Foot explains the moral relevance of the killing/letting die distinction by appealing to",
     "subject": "moral_disputes",
     "choices": [
       "rights of noninterference.",
@@ -3861,7 +3861,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a duty-based moral theory?",
+    "instruction_original": " Which of the following is an example of a duty-based moral theory?",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism",
@@ -3874,7 +3874,7 @@
     "split": "test"
   },
   {
-    "question": " Lukianoff and Haidt argue that trigger warnings involve which kind of pathological thinking?",
+    "instruction_original": " Lukianoff and Haidt argue that trigger warnings involve which kind of pathological thinking?",
     "subject": "moral_disputes",
     "choices": [
       "fortune-telling",
@@ -3887,7 +3887,7 @@
     "split": "test"
   },
   {
-    "question": " Corresponding to the practical aim of moral theory is the principle of",
+    "instruction_original": " Corresponding to the practical aim of moral theory is the principle of",
     "subject": "moral_disputes",
     "choices": [
       "parsimony.",
@@ -3900,7 +3900,7 @@
     "split": "test"
   },
   {
-    "question": " By recognizing that we have backup duties to donate to aid agencies, Ashford argues that we can",
+    "instruction_original": " By recognizing that we have backup duties to donate to aid agencies, Ashford argues that we can",
     "subject": "moral_disputes",
     "choices": [
       "acknowledge the force of the criticism that effective altruism is at best a band-aid approach while diffusing this same criticism.",
@@ -3913,7 +3913,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a view that Dershowitz argues for?",
+    "instruction_original": " Which of the following is a view that Dershowitz argues for?",
     "subject": "moral_disputes",
     "choices": [
       "Torture is permissible in the \"ticking bomb\" case.",
@@ -3926,7 +3926,7 @@
     "split": "test"
   },
   {
-    "question": " According to de Marneffe, which of the following is a reason we might call someone a drug addict?",
+    "instruction_original": " According to de Marneffe, which of the following is a reason we might call someone a drug addict?",
     "subject": "moral_disputes",
     "choices": [
       "They use a drug to relieve a craving.",
@@ -3939,7 +3939,7 @@
     "split": "test"
   },
   {
-    "question": " On McGregor's view, our rights carve out",
+    "instruction_original": " On McGregor's view, our rights carve out",
     "subject": "moral_disputes",
     "choices": [
       "what we are free to do.",
@@ -3952,7 +3952,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is an example of a duty that corresponds to a right to goods and service?",
+    "instruction_original": " Which of the following is an example of a duty that corresponds to a right to goods and service?",
     "subject": "moral_disputes",
     "choices": [
       "John's duty to return to Mary that car that he borrowed from her",
@@ -3965,7 +3965,7 @@
     "split": "test"
   },
   {
-    "question": " In response to the worry that the freedom of association could justify immigration policies that exclude entry to members of a given race, Wellman claims that",
+    "instruction_original": " In response to the worry that the freedom of association could justify immigration policies that exclude entry to members of a given race, Wellman claims that",
     "subject": "moral_disputes",
     "choices": [
       "such a policy would wrongly disrespect existing citizens who belong to that race.",
@@ -3978,7 +3978,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following conditions would make a slippery-slope argument fallacious?",
+    "instruction_original": " Which of the following conditions would make a slippery-slope argument fallacious?",
     "subject": "moral_disputes",
     "choices": [
       "The envisioned results of the action or practice under consideration turn out not to be bad.",
@@ -3991,7 +3991,7 @@
     "split": "test"
   },
   {
-    "question": " According to Carruthers, which of the following groups should not be accorded direct moral standing?",
+    "instruction_original": " According to Carruthers, which of the following groups should not be accorded direct moral standing?",
     "subject": "moral_disputes",
     "choices": [
       "human infants",
@@ -4004,7 +4004,7 @@
     "split": "test"
   },
   {
-    "question": " If the killing/letting die distinction is morally relevant, then that would show that the following distinction is also morally relevant:",
+    "instruction_original": " If the killing/letting die distinction is morally relevant, then that would show that the following distinction is also morally relevant:",
     "subject": "moral_disputes",
     "choices": [
       "killing/murder",
@@ -4017,7 +4017,7 @@
     "split": "test"
   },
   {
-    "question": " Macedo describes his position on immigration as politically",
+    "instruction_original": " Macedo describes his position on immigration as politically",
     "subject": "moral_disputes",
     "choices": [
       "liberal.",
@@ -4030,7 +4030,7 @@
     "split": "test"
   },
   {
-    "question": " In the context of Gardiner's article, what is \"the dispersion of causes and effects\"?",
+    "instruction_original": " In the context of Gardiner's article, what is \"the dispersion of causes and effects\"?",
     "subject": "moral_disputes",
     "choices": [
       "the dispersion of the impacts of emissions of greenhouse gases to other actors and regions of the Earth",
@@ -4043,7 +4043,7 @@
     "split": "test"
   },
   {
-    "question": " Kant refers to the special worth or value of persons as",
+    "instruction_original": " Kant refers to the special worth or value of persons as",
     "subject": "moral_disputes",
     "choices": [
       "virtue.",
@@ -4056,7 +4056,7 @@
     "split": "test"
   },
   {
-    "question": " Stephen Macedo approaches the ethical issue of immigration from the perspective of _____ justice.",
+    "instruction_original": " Stephen Macedo approaches the ethical issue of immigration from the perspective of _____ justice.",
     "subject": "moral_disputes",
     "choices": [
       "feminist",
@@ -4069,7 +4069,7 @@
     "split": "test"
   },
   {
-    "question": " On Kant's view, it is morally permissible to:",
+    "instruction_original": " On Kant's view, it is morally permissible to:",
     "subject": "moral_disputes",
     "choices": [
       "masturbate.",
@@ -4082,7 +4082,7 @@
     "split": "test"
   },
   {
-    "question": " West posits that one reason that these harms go unnoticed in the U.S. is that people in the U.S.",
+    "instruction_original": " West posits that one reason that these harms go unnoticed in the U.S. is that people in the U.S.",
     "subject": "moral_disputes",
     "choices": [
       "are less sensitive to threats from coercion.",
@@ -4095,7 +4095,7 @@
     "split": "test"
   },
   {
-    "question": " Cases in which a doctor is involved to some degree in assisting an individual to commit suicide are known as",
+    "instruction_original": " Cases in which a doctor is involved to some degree in assisting an individual to commit suicide are known as",
     "subject": "moral_disputes",
     "choices": [
       "mercy killing.",
@@ -4108,7 +4108,7 @@
     "split": "test"
   },
   {
-    "question": " In contrast to other moral theories, care ethics emphasizes",
+    "instruction_original": " In contrast to other moral theories, care ethics emphasizes",
     "subject": "moral_disputes",
     "choices": [
       "the importance of attitudes as well as actions.",
@@ -4121,7 +4121,7 @@
     "split": "test"
   },
   {
-    "question": " Why does Metz think that extant dignity-based arguments based on African values fail?",
+    "instruction_original": " Why does Metz think that extant dignity-based arguments based on African values fail?",
     "subject": "moral_disputes",
     "choices": [
       "It is unclear that they show that capital punishment is degrading, and so therefore wrong.",
@@ -4134,7 +4134,7 @@
     "split": "test"
   },
   {
-    "question": " John considers what Mary has done and thinks to himself, Mary did the right thing. This thought is primarily a judgment about",
+    "instruction_original": " John considers what Mary has done and thinks to himself, Mary did the right thing. This thought is primarily a judgment about",
     "subject": "moral_disputes",
     "choices": [
       "Mary's upbringing.",
@@ -4147,7 +4147,7 @@
     "split": "test"
   },
   {
-    "question": " A central premise of Wellman's argument is that the state's right to freedom of association implies a right to _____ prospective members:",
+    "instruction_original": " A central premise of Wellman's argument is that the state's right to freedom of association implies a right to _____ prospective members:",
     "subject": "moral_disputes",
     "choices": [
       "exclude",
@@ -4160,7 +4160,7 @@
     "split": "test"
   },
   {
-    "question": " Papadaki argues that the narrow view of sexual objectification",
+    "instruction_original": " Papadaki argues that the narrow view of sexual objectification",
     "subject": "moral_disputes",
     "choices": [
       "is correct.",
@@ -4173,7 +4173,7 @@
     "split": "test"
   },
   {
-    "question": " Baron cites a summary of Ali Soufan's Senate testimony to suggest that",
+    "instruction_original": " Baron cites a summary of Ali Soufan's Senate testimony to suggest that",
     "subject": "moral_disputes",
     "choices": [
       "torture works in only limited situations.",
@@ -4186,7 +4186,7 @@
     "split": "test"
   },
   {
-    "question": " A war that involves actual fighting is known as",
+    "instruction_original": " A war that involves actual fighting is known as",
     "subject": "moral_disputes",
     "choices": [
       "a hot war.",
@@ -4199,7 +4199,7 @@
     "split": "test"
   },
   {
-    "question": " Carens defends a form of",
+    "instruction_original": " Carens defends a form of",
     "subject": "moral_disputes",
     "choices": [
       "Kantian distributionism.",
@@ -4212,7 +4212,7 @@
     "split": "test"
   },
   {
-    "question": " Callahan cites the Oregon Death with Dignity Legal Defense and the Education Center's finding that \"after four full years .. there have been no missteps, abuses or coercive tendencies\" regarding laws permitting euthanasia. In response he argues that",
+    "instruction_original": " Callahan cites the Oregon Death with Dignity Legal Defense and the Education Center's finding that \"after four full years .. there have been no missteps, abuses or coercive tendencies\" regarding laws permitting euthanasia. In response he argues that",
     "subject": "moral_disputes",
     "choices": [
       "they can't know this to be true without an anonymous survey.",
@@ -4225,7 +4225,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not an example of a natural right that Locke uses?",
+    "instruction_original": " Which of the following is not an example of a natural right that Locke uses?",
     "subject": "moral_disputes",
     "choices": [
       "the right to life",
@@ -4238,7 +4238,7 @@
     "split": "test"
   },
   {
-    "question": " Shapiro claims that humans are social or cultural animals, which is significant for his view because it implies that",
+    "instruction_original": " Shapiro claims that humans are social or cultural animals, which is significant for his view because it implies that",
     "subject": "moral_disputes",
     "choices": [
       "social norms or rules play a significant role in influencing behavior.",
@@ -4251,7 +4251,7 @@
     "split": "test"
   },
   {
-    "question": " Van den Haag thinks that we can't know whether a murderer who receives the death penalty",
+    "instruction_original": " Van den Haag thinks that we can't know whether a murderer who receives the death penalty",
     "subject": "moral_disputes",
     "choices": [
       "is justly punished.",
@@ -4264,7 +4264,7 @@
     "split": "test"
   },
   {
-    "question": " Critics of speech codes adopted in the 1980s and early 1990s argued that these codes violated which of the following principles?",
+    "instruction_original": " Critics of speech codes adopted in the 1980s and early 1990s argued that these codes violated which of the following principles?",
     "subject": "moral_disputes",
     "choices": [
       "freedom of speech",
@@ -4277,7 +4277,7 @@
     "split": "test"
   },
   {
-    "question": " According to Aristotle, if something has a function, then its good depends on",
+    "instruction_original": " According to Aristotle, if something has a function, then its good depends on",
     "subject": "moral_disputes",
     "choices": [
       "its function.",
@@ -4290,7 +4290,7 @@
     "split": "test"
   },
   {
-    "question": " Suppose Nathan argues that while neither nonhuman nor nonsentient beings have direct moral standing, we still ought to have a certain noninstrumental regard for the environment because failing to do so involves a deficiency in one's moral character. Nathan is most likely applying what moral theory?",
+    "instruction_original": " Suppose Nathan argues that while neither nonhuman nor nonsentient beings have direct moral standing, we still ought to have a certain noninstrumental regard for the environment because failing to do so involves a deficiency in one's moral character. Nathan is most likely applying what moral theory?",
     "subject": "moral_disputes",
     "choices": [
       "virtue ethics",
@@ -4303,7 +4303,7 @@
     "split": "test"
   },
   {
-    "question": " More than communicating to an individual, McGregor argues that rape",
+    "instruction_original": " More than communicating to an individual, McGregor argues that rape",
     "subject": "moral_disputes",
     "choices": [
       "reinforces a corrupt legal system.",
@@ -4316,7 +4316,7 @@
     "split": "test"
   },
   {
-    "question": " What is the main difference between a cloned (SCNT) individual and an individual who is a product of normal sexual reproduction?",
+    "instruction_original": " What is the main difference between a cloned (SCNT) individual and an individual who is a product of normal sexual reproduction?",
     "subject": "moral_disputes",
     "choices": [
       "The SCNT individual has genetic material primarily from one person instead of two.",
@@ -4329,7 +4329,7 @@
     "split": "test"
   },
   {
-    "question": " According to Lee and George, ova/sperm are not human beings because",
+    "instruction_original": " According to Lee and George, ova/sperm are not human beings because",
     "subject": "moral_disputes",
     "choices": [
       "they cannot reproduce.",
@@ -4342,7 +4342,7 @@
     "split": "test"
   },
   {
-    "question": " Little suggests that we should think about the abortion issue in terms of degrees and layers because",
+    "instruction_original": " Little suggests that we should think about the abortion issue in terms of degrees and layers because",
     "subject": "moral_disputes",
     "choices": [
       "the fetus gains a more certain claim to the right to life over time.",
@@ -4355,7 +4355,7 @@
     "split": "test"
   },
   {
-    "question": " West worries that liberal theory in academia has inadvertently led to the under-acknowledgement of the harms of consensual sex because",
+    "instruction_original": " West worries that liberal theory in academia has inadvertently led to the under-acknowledgement of the harms of consensual sex because",
     "subject": "moral_disputes",
     "choices": [
       "it is implicitly sexist.",
@@ -4368,7 +4368,7 @@
     "split": "test"
   },
   {
-    "question": " Utilitarian arguments depend heavily on factual claims about",
+    "instruction_original": " Utilitarian arguments depend heavily on factual claims about",
     "subject": "moral_disputes",
     "choices": [
       "what a virtuous person ought to do in a particular situation.",
@@ -4381,7 +4381,7 @@
     "split": "test"
   },
   {
-    "question": " In his discussion of discrimination in war, Valls suggests that",
+    "instruction_original": " In his discussion of discrimination in war, Valls suggests that",
     "subject": "moral_disputes",
     "choices": [
       "there is no difference between combatants and noncombatants.",
@@ -4394,7 +4394,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is not, according to Carens, a concern for all liberal egalitarians?",
+    "instruction_original": " Which of the following is not, according to Carens, a concern for all liberal egalitarians?",
     "subject": "moral_disputes",
     "choices": [
       "the ability of people to pursue their own projects",
@@ -4407,7 +4407,7 @@
     "split": "test"
   },
   {
-    "question": " Lukianoff and Haidt argue that American colleges and universities now encourage",
+    "instruction_original": " Lukianoff and Haidt argue that American colleges and universities now encourage",
     "subject": "moral_disputes",
     "choices": [
       "emotional reasoning.",
@@ -4420,7 +4420,7 @@
     "split": "test"
   },
   {
-    "question": " Aristotle defines virtue as",
+    "instruction_original": " Aristotle defines virtue as",
     "subject": "moral_disputes",
     "choices": [
       "the ability to control one's anger.",
@@ -4433,7 +4433,7 @@
     "split": "test"
   },
   {
-    "question": " Nagel thinks that the core of the absolutist position is that",
+    "instruction_original": " Nagel thinks that the core of the absolutist position is that",
     "subject": "moral_disputes",
     "choices": [
       "human persons have a right to life.",
@@ -4446,7 +4446,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following is a \"positional good,\" according to Peter Singer's definition?",
+    "instruction_original": " Which of the following is a \"positional good,\" according to Peter Singer's definition?",
     "subject": "moral_disputes",
     "choices": [
       "being at least six feet tall (in a population where this is above average)",
@@ -4459,7 +4459,7 @@
     "split": "test"
   },
   {
-    "question": " Aquinas's moral theory is a version of",
+    "instruction_original": " Aquinas's moral theory is a version of",
     "subject": "moral_disputes",
     "choices": [
       "consequentialism.",
@@ -4472,7 +4472,7 @@
     "split": "test"
   },
   {
-    "question": " Van den Haag responds to the \"miscarriages of justice\" objection by claiming that",
+    "instruction_original": " Van den Haag responds to the \"miscarriages of justice\" objection by claiming that",
     "subject": "moral_disputes",
     "choices": [
       "miscarriages of justice are offset by the moral benefits and usefulness of doing justice.",
@@ -4485,7 +4485,7 @@
     "split": "test"
   },
   {
-    "question": " Which of the following does Corvino take to be a problematic \"hidden assumption\" of harm arguments against homosexuality?",
+    "instruction_original": " Which of the following does Corvino take to be a problematic \"hidden assumption\" of harm arguments against homosexuality?",
     "subject": "moral_disputes",
     "choices": [
       "If a practice is riskier than the alternatives, then that practice is moral, prudent, or otherwise to be pursued.",
@@ -4498,7 +4498,7 @@
     "split": "test"
   },
   {
-    "question": " Patrick Lee and Robert George argue that human embryos are complete human beings because",
+    "instruction_original": " Patrick Lee and Robert George argue that human embryos are complete human beings because",
     "subject": "moral_disputes",
     "choices": [
       "they are complete organisms that are genetically human.",
@@ -4511,7 +4511,7 @@
     "split": "test"
   },
   {
-    "question": " Hate speech, according to Richardson-Self involves",
+    "instruction_original": " Hate speech, according to Richardson-Self involves",
     "subject": "moral_disputes",
     "choices": [
       "only violence",
@@ -4524,7 +4524,7 @@
     "split": "test"
   },
   {
-    "question": " When we think about the norms of creation, Little argues that",
+    "instruction_original": " When we think about the norms of creation, Little argues that",
     "subject": "moral_disputes",
     "choices": [
       "it can be a sign of respect to terminate a pregnancy when certain background conditions, like a loving family, are not met.",
@@ -4537,7 +4537,7 @@
     "split": "test"
   },
   {
-    "question": " In Altman's characterization, racial epithets and similar terms of abuse are communicative tools for expressing an extreme form of which of the following?",
+    "instruction_original": " In Altman's characterization, racial epithets and similar terms of abuse are communicative tools for expressing an extreme form of which of the following?",
     "subject": "moral_disputes",
     "choices": [
       "moral blame",
@@ -4550,7 +4550,7 @@
     "split": "test"
   },
   {
-    "question": " In ethics, the terms \"right\" and \"wrong\" are used primarily to evaluate the morality of",
+    "instruction_original": " In ethics, the terms \"right\" and \"wrong\" are used primarily to evaluate the morality of",
     "subject": "moral_disputes",
     "choices": [
       "persons.",
