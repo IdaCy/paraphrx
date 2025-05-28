@@ -1,4 +1,3 @@
-*.json*
 *target
 *.lock
 notes
@@ -7,3 +6,6 @@ zz_archive
 !c_assess_inf/output/*
 !a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json
 !a_data/alpaca/slice_100/*
+*.sif
+logs
+b_tests/data/*
