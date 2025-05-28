@@ -9,3 +9,4 @@ zz_archive
 !a_data/alpaca/slice_100/*
 *.sif
 logs
+b_tests/data/*

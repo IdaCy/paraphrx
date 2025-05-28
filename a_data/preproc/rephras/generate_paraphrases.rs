@@ -93,9 +93,12 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
     "special_chars" => &[
         "instruct_emoji", "instruct_emoticon", "instruct_kaomoji",
         "instruct_confusable_unicode", "instruct_zero_width",
-        "instruct_html_tags", "instruct_markdown_bold", "instruct_code_fence",
-        "instruct_spoiler_bars", "instruct_zalgo", "instruct_gzip_b64_blob",
-        "instruct_qr_ascii", "instruct_random_bytes",
+        "instruct_html_tags", "instruct_several_html_tags",
+        "instruct_markdown_bold_and_italic", "instruct_markdown_bold",
+        "instruct_markdown_italic", "instruct_helpful_markdown_structure",
+        "instruct_code_fence",
+        "instruct_spoiler_bars", "instruct_zalgo", "instruct_with_inbetween_gzip_b64_blob",
+        "instruct_qr_ascii", "instruct_helpful_meaning_reinforing_characters",
 
         // combinations with obstructions
         "instruct_all_caps_and_typo", "instruct_all_caps_and_typo_and_missing_bracket", "instruct_all_caps_and_typo_and_missing_quote",
@@ -108,7 +111,7 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_confusable_unicode_and_typo", "instruct_zero_width_and_typo",
         "instruct_emoji_and_typo_and_missing_bracket", "instruct_emoticon_and_typo_and_missing_bracket",
         "instruct_emoji_and_typo_and_missing_quote", "instruct_emoticon_and_typo_and_missing_quote",
-    ]
+    ],
 
     // Syntax Tweaks
     "syntax" => &[
@@ -230,6 +233,48 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         // Mixed Modality
         //"modality" => &[
         "instruct_see_attached_diagram", "instruct_musical_notation", "instruct_chemical_smiles",
+    ],
+
+    // Extra Instructions
+    "extra" => &[
+        "instruct_with_additional_context", "instruct_with_technical_details",
+        "instruct_with_citations", "instruct_with_examples",
+        "instruct_with_counterarguments", "instruct_with_rebuttals",
+        "instruct_with_analogies", "instruct_with_metaphors",
+        "instruct_with_similes", "instruct_with_personal_touch",
+        "instruct_with_emotional_appeal", "instruct_with_statistics",
+        "instruct_with_case_studies",
+        
+        // Helpful
+        "instruct_with_helpful_explanations", "instruct_with_step_by_step",
+        "instruct_with_detailed_instructions", "instruct_evidence_cited_md",
+        "instruct_with_examples_and_explanations", "instruct_with_summary",
+        "instruct_expert_consensus", "instruct_step_rationale",
+        "instruct_comparison_table", "instruct_risks_and_benefits",
+        "instruct_summary_then_detail", "instruct_output_yaml",
+        "instruct_output_json", "instruct_output_csv",
+        "instruct_output_markdown", "instruct_output_html",
+        "instruct_output_sql", "instruct_output_python",
+        "instruct_90char_bullet", "instruct_dynamic_quiz", "instruct_checklist_markdown",
+
+        // Even Extra
+        "instruct_role_expert_cot", "instruct_role_expert_cot_with_examples",
+        "instruct_role_expert_cot_with_examples_and_explanations",
+        "instruct_role_expert_cot_with_examples_and_explanations_and_summary",
+        "instruct_role_expert_cot_with_examples_and_explanations_and_summary_and_risks",
+        "instruct_plan_execute_reflect", "instruct_self_consistency", "instruct_socratic_dialogue",
+        "instruct_react_tool_calls", "instruct_validator_pass", "instruct_rubric_scored",
+        "instruct_fact_check_inline", "instruct_dual_audience", "instruct_condensed_then_expand",
+        "instruct_condensed_then_expand_with_examples", "instruct_condensed_then_expand_with_examples_and_explanations",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits_and_references",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits_and_references_and_citations",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits_and_references_and_citations_and_counterarguments",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits_and_references_and_citations_and_counterarguments_and_rebuttals",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits_and_references_and_citations_and_counterarguments_and_rebuttals_and_analogies",
+        "instruct_condensed_then_expand_with_examples_and_explanations_and_summary_and_risks_and_benefits_and_references_and_citations_and_counterarguments_and_rebuttals_and_analogies_and_metaphors",
     ],
 };
 
