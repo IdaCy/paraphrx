@@ -23,7 +23,8 @@ python c_assess_inf/src/run_inference.py \
        c_assess_inf/output/alpaca_prx_style1_slice1.json \
        --model google/gemma-2b-it \
        --temperature 0 \
-       --max_tokens 256
+       --max_tokens 256 \
+       --n_samples 2
 """
 from __future__ import annotations
 
