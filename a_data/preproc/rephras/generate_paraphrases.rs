@@ -16,7 +16,7 @@ use serde_json::json;
 use std::{env, fs, path::PathBuf};
 use tokio::time::{sleep, Duration};
 
-// All the variant key-sets to support - Can contain `_` but no spaces
+// All the variant key-sets to support - Can contain '_' but no spaces
 static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_map! {
     // STYLE / TONE
     "style" => &[
@@ -43,7 +43,8 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
 
     // LENGTH / VERBOSITY─
     "length" => &[
-        "instruct_one_word",
+        "instruct_few_words",
+        "instruct_fewest_words",
         "instruct_sentence_fragment",
         "instruct_single_sentence",
         "instruct_two_sentence",
@@ -51,13 +52,19 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_multi_paragraph",
         "instruct_bulleted_outline",
         "instruct_numbered_steps",
-        "instruct_research_paper",
-        "instruct_stream_of_consciousness",
-        "instruct_tldr_summary",
+        "instruct_with_research_paper",
+        "instruct_with_stream_of_consciousness",
+        "instruct_with_tldr_summary",
         "instruct_redundant_waffle",
         "instruct_nested_parentheticals",
         "instruct_recursive_self_reference",
+        //],
+        // Compression vs. Redundancy
+        //"compression" => &[
+        "instruct_contractions", "instruct_no_contractions",
+        "instruct_acronyms_spelled_out", "instruct_footnotes", "instruct_ellipsis_style",
     ],
+
 
     // OBSTRUCTIONS / NOISE (typos, case, weird chars...)
     "obstruction" => &[
@@ -65,6 +72,10 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_typo_swap", "instruct_typo_transpose", "instruct_typo_adjacent",
         "instruct_typo_missing_vowels", "instruct_typo_repeated_letters",
         "instruct_typo_homophone", "instruct_sms_abbrev", "instruct_leet_speak",
+        "instruct_typo_random", "instruct_typo_extra_letter", "instruct_typo_missing_letter",
+        "instruct_typo_wrong_letter", "instruct_typo_extra_space", "instruct_typo_missing_space",
+        "instruct_one_typo_punctuation", "instruct_two_typos_punctuation", "instruct_three_typos_punctuation",
+        "instruct_typo_swap_and_punctuation", "instruct_typo_swap_and_transpose_and_punctuation",
 
         // Case / punctuation
         "instruct_all_caps", "instruct_no_caps", "instruct_random_caps",
@@ -72,20 +83,46 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_oxford_comma", "instruct_misplaced_commas",
         "instruct_em_dash_break", "instruct_parenthetical_aside",
         "instruct_interrobang", "instruct_missing_bracket", "instruct_missing_quote",
+        "instruct_missing_bracket_and_quote",
 
-        // Special chars
+        // Noise insertion
+        "instruct_inline_ad", "instruct_inline_url", "instruct_hashtags", "instruct_key_smash",
+    ],
+
+    // SPECIAL CHARACTERS & COMBINATIONS
+    "special_chars" => &[
         "instruct_emoji", "instruct_emoticon", "instruct_kaomoji",
         "instruct_confusable_unicode", "instruct_zero_width",
         "instruct_html_tags", "instruct_markdown_bold", "instruct_code_fence",
         "instruct_spoiler_bars", "instruct_zalgo", "instruct_gzip_b64_blob",
         "instruct_qr_ascii", "instruct_random_bytes",
 
+        // combinations with obstructions
+        "instruct_all_caps_and_typo", "instruct_all_caps_and_typo_and_missing_bracket", "instruct_all_caps_and_typo_and_missing_quote",
+        "instruct_all_caps_and_typo_and_missing_bracket_and_quote",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket", "instruct_random_linebreaks_and_typo_and_missing_quote",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket_and_quote",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket_and_quote_and_wrong_punctuation",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket_and_quote_and_wrong_punctuation_and_extra_space",
+        "instruct_emoji_and_typo", "instruct_emoticon_and_typo", "instruct_kaomoji_and_typo",
+        "instruct_confusable_unicode_and_typo", "instruct_zero_width_and_typo",
+        "instruct_emoji_and_typo_and_missing_bracket", "instruct_emoticon_and_typo_and_missing_bracket",
+        "instruct_emoji_and_typo_and_missing_quote", "instruct_emoticon_and_typo_and_missing_quote",
+    ]
+
+    // Syntax Tweaks
+    "syntax" => &[
+        "instruct_cleft_it_is", "instruct_pseudo_cleft", "instruct_topicalization",
+        "instruct_inversion", "instruct_nominalization", "instruct_coord_to_subord",
+
+        // Visual Layout
+        //"layout" => &[
+        "instruct_bullet_list", "instruct_numbered_list", "instruct_table_layout",
+        "instruct_checklist", "instruct_markdown_quote", "instruct_csv_line",
+
         // Structure
         "instruct_random_linebreaks", "instruct_no_spaces", "instruct_reversed_text",
         "instruct_rot13", "instruct_base64", "instruct_html_comment",
-
-        // Noise insertion
-        "instruct_inline_ad", "instruct_inline_url", "instruct_hashtags", "instruct_key_smash",
     ],
 
     // LANGUAGE / DIALECT
@@ -96,6 +133,24 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_spanish", "instruct_french", "instruct_german", "instruct_chinese_simplified",
         "instruct_klingon", "instruct_esperanto",
         "instruct_emoji_only", "instruct_morse_code",
+
+        // REGISTER
+        "instruct_very_formal", "instruct_neutral", "instruct_casual",
+        "instruct_slang_heavy", "instruct_gamer_slang",
+        "instruct_vulgar", "instruct_euphemistic",
+        "instruct_legalese", "instruct_bureaucratic", "instruct_marketing_speak",
+        //],
+        // Domain Jargon
+        //"domain" => &[
+        "instruct_medical_jargon", "instruct_legal_jargon", "instruct_finance_jargon",
+        "instruct_software_jargon", "instruct_physics_jargon", "instruct_gaming_jargon",
+        "instruct_sports_jargon", "instruct_culinary_jargon", "instruct_fashion_jargon",
+        //],
+
+        // Number / Symbol Swap
+        //"numbers" => &[
+        "instruct_exact_numbers", "instruct_fuzzy_numbers", "instruct_roman_numeral",
+        "instruct_scientific_notation",
     ],
 
     // CONTEXTUAL FRAMING
@@ -105,50 +160,18 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_therapy_session", "instruct_journalist_interview",
         "instruct_roleplay_knight", "instruct_emergency_alert",
         "instruct_indirect_relay", "instruct_meta_question",
-    ],
-    // Register & Formality
-    "register" => &[
-        "instruct_very_formal", "instruct_neutral", "instruct_casual",
-        "instruct_slang_heavy", "instruct_gamer_slang",
-        "instruct_vulgar", "instruct_euphemistic",
-        "instruct_legalese", "instruct_bureaucratic", "instruct_marketing_speak",
-    ],
-
-    // Perspective & Voice
-    "voice" => &[
-        "instruct_first_singular", "instruct_first_plural", "instruct_second_person", "instruct_third_person",
-        "instruct_passive_voice", "instruct_impersonal_one_should",
-        "instruct_past_tense", "instruct_future_tense",
-    ],
-
-    // Speech-Act
-    "speech_act" => &[
-        "instruct_direct_question", "instruct_indirect_question",
-        "instruct_command", "instruct_polite_request", "instruct_suggestion",
-        "instruct_statement", "instruct_exclamation", "instruct_apology", "instruct_greeting",
-    ],
-
-    // Question-Type
-    "question_type" => &[
-        "instruct_yes_no", "instruct_wh_question", "instruct_choice_question",
-        "instruct_tag_question", "instruct_rhetorical_question", "instruct_nested_question",
-    ],
-
-    // Syntax Tweaks
-    "syntax" => &[
-        "instruct_cleft_it_is", "instruct_pseudo_cleft", "instruct_topicalization",
-        "instruct_inversion", "instruct_nominalization", "instruct_coord_to_subord",
-    ],
-
-    // Polarity & Modality
-    "polarity" => &[
-        "instruct_positive", "instruct_negated", "instruct_double_negative", "instruct_litotes",
-        "instruct_modal_must", "instruct_modal_should", "instruct_modal_may",
-        "instruct_hypothetical_if", "instruct_paradox",
-    ],
-
-    // Genre / Format
-    "genre" => &[
+        //],
+        // Dialogue Frames
+        //"dialogue" => &[
+        "instruct_qa_script", "instruct_timestamped_chat",
+        "instruct_forum_quote", "instruct_debate_turns",
+        //],
+        // Self-Reflection / Edits
+        //"self_reflect" => &[
+        "instruct_might_be_wrong", "instruct_edit_typo", "instruct_sic_marker",
+        //],
+        // Genre / Format
+        //"genre" => &[
         "instruct_tweet", "instruct_sms", "instruct_email", "instruct_memo",
         "instruct_news_headline", "instruct_haiku", "instruct_rap_verse",
         "instruct_advertisement", "instruct_error_message",
@@ -156,10 +179,22 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_markdown_doc", "instruct_regex_pattern",
     ],
 
-    // Visual Layout
-    "layout" => &[
-        "instruct_bullet_list", "instruct_numbered_list", "instruct_table_layout",
-        "instruct_checklist", "instruct_markdown_quote", "instruct_csv_line",
+    // Perspective & Voice
+    "voice" => &[
+        "instruct_first_singular", "instruct_first_plural", "instruct_second_person", "instruct_third_person",
+        "instruct_passive_voice", "instruct_impersonal_one_should",
+        "instruct_past_tense", "instruct_future_tense",
+        //],
+        // Question-Type
+        //"question_type" => &[
+        "instruct_yes_no", "instruct_wh_question", "instruct_choice_question",
+        "instruct_tag_question", "instruct_rhetorical_question", "instruct_nested_question",
+        //],
+        // Speech-Act
+        //"speech_act" => &[
+        "instruct_direct_question", "instruct_indirect_question",
+        "instruct_command", "instruct_polite_request", "instruct_suggestion",
+        "instruct_statement", "instruct_exclamation", "instruct_apology", "instruct_greeting",
     ],
 
     // Tone & Emotion
@@ -167,65 +202,34 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_enthusiastic", "instruct_urgent", "instruct_skeptical", "instruct_confident",
         "instruct_sarcastic", "instruct_cynical", "instruct_hopeful",
         "instruct_dramatic", "instruct_melancholy",
-    ],
-
-    // Domain Jargon
-    "domain" => &[
-        "instruct_medical_jargon", "instruct_legal_jargon", "instruct_finance_jargon",
-        "instruct_software_jargon", "instruct_physics_jargon", "instruct_gaming_jargon",
-        "instruct_sports_jargon", "instruct_culinary_jargon", "instruct_fashion_jargon",
-    ],
-
-    // Cultural Reference
-    "culture" => &[
-        "instruct_pop_culture_meme", "instruct_historical_analogy",
-        "instruct_sports_metaphor", "instruct_proverb_or_idiom",
-    ],
-
-    // Number / Symbol Swap
-    "numbers" => &[
-        "instruct_exact_numbers", "instruct_fuzzy_numbers", "instruct_roman_numeral",
-        "instruct_scientific_notation",
-    ],
-
-    // Compression vs. Redundancy
-    "compression" => &[
-        "instruct_contractions", "instruct_no_contractions",
-        "instruct_acronyms_spelled_out", "instruct_footnotes", "instruct_ellipsis_style",
-    ],
-
-    // Dialogue Frames
-    "dialogue" => &[
-        "instruct_qa_script", "instruct_timestamped_chat",
-        "instruct_forum_quote", "instruct_debate_turns",
-    ],
-
-    // Self-Reflection / Edits
-    "self_reflect" => &[
-        "instruct_might_be_wrong", "instruct_edit_typo", "instruct_sic_marker",
-    ],
-
-    // Encoding & Ciphers
-    "encoding" => &[
-        "instruct_morse_code", "instruct_binary_code", "instruct_hex_code",
-        "instruct_url_encoded", "instruct_caesar_cipher", "instruct_pig_latin",
-        "instruct_emoji_cipher",
-    ],
-
-    // Mixed Modality
-    "modality" => &[
-        "instruct_see_attached_diagram", "instruct_musical_notation", "instruct_chemical_smiles",
+        // Humor & Playfulness
+        //"humor" => &[
+        "instruct_joke", "instruct_pun", "instruct_witty", "instruct_silly",
+        "instruct_playful", "instruct_lighthearted", "instruct_ironic",
+        "instruct_sardonic", "instruct_deadpan", "instruct_self_deprecating",
+        "instruct_surreal", "instruct_absurdist",
+        //],
+        // Polarity & Modality
+        //"polarity" => &[
+        "instruct_positive", "instruct_negated", "instruct_double_negative", "instruct_litotes",
+        "instruct_modal_must", "instruct_modal_should", "instruct_modal_may",
+        "instruct_hypothetical_if", "instruct_paradox",
     ],
 
     // Boundary Cases
     "boundary" => &[
         "instruct_empty_input", "instruct_contradictory_ask", "instruct_paradox_statement",
-    ],
+        //],
 
-    // Mis-direction
-    "misdirection" => &[
+        // Mis-direction
+        //"misdirection" => &[
         "instruct_garden_path", "instruct_pun_based", "instruct_malapropism",
         "instruct_ambiguous_scope",
+        //],
+
+        // Mixed Modality
+        //"modality" => &[
+        "instruct_see_attached_diagram", "instruct_musical_notation", "instruct_chemical_smiles",
     ],
 };
 
@@ -342,6 +346,7 @@ fn build_prompt(original: &str, keys: &[&str], label: &str) -> String {
         "You are an expert paraphraser.\n\
          Rewrite the *Original Instruction* in ALL of the variants listed below.\n\n\
          {bullet_list}\n\n\
+         Every variant needs to contain the same instruction of the original, but expressed in the style given by the key.\n\
          Return **only** one JSON object with exactly those keys.\n\n\
          Original Instruction:\n{original}"
     )
