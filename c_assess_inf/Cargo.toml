@@ -5,8 +5,8 @@ edition = "2021"
 
 [[bin]]
 name = "assess_results"
-# path = "src/assess_results.rs"
-path = "src/summarise_scores.rs"
+path = "src/assess_results.rs"
+#path = "src/summarise_scores.rs"
 
 # Shared dependencies for both binaries
 [dependencies]

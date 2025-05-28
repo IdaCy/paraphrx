@@ -3,9 +3,10 @@ cargo run \
   --manifest-path c_assess_inf/Cargo.toml \
   --release -- \
   --version-set politeness \
-  b_tests/data/alpaca_10_politeness.json \
-  c_assess_inf/output/results_all.json \
-  c_assess_inf/output/results_all_eval.json
+  a_data/alpaca/slice_100/alpaca_prx_voice1_slice2.json \
+  c_assess_inf/output/alpaca/voice1_slice2_infresults.json \
+  c_assess_inf/output/alpaca/voice1_slice2_infresults_eval.json
+
 */
 
 use anyhow::{anyhow, Context, Result};
@@ -85,9 +86,12 @@ async fn main() -> Result<()> {
     let mut records: Vec<Record> = serde_json::from_str(&ans_raw)?;
 
     // misc
-    let keys = VERSION_SETS
-        .get(cli.version_set.as_str())
-        .ok_or_else(|| anyhow!("unknown version set {}", cli.version_set))?;
+    //let keys = VERSION_SETS
+    //    .get(cli.version_set.as_str())
+    //    .ok_or_else(|| anyhow!("unknown version set {}", cli.version_set))?;
+    //let schema = schema_for();
+
+    let predefined_keys = VERSION_SETS.get(cli.version_set.as_str()).copied();
     let schema = schema_for();
 
     let api_key = env::var("GOOGLE_API_KEY").context("GOOGLE_API_KEY not set")?;
@@ -115,7 +119,32 @@ async fn main() -> Result<()> {
             .as_deref()
             .ok_or_else(|| anyhow!("gold missing output for id {}", rec.prompt_count))?;
 
-        for &key in *keys {
+        // gather *all* candidate keys:
+        let mut keys: Vec<String> = Vec::new();
+
+        // 1. any predefined set (still supported for backward compatibility)
+        if let Some(set) = predefined_keys {
+            keys.extend(set.iter().map(|s| s.to_string()));
+        }
+
+        // 2. everything that starts with “instruct_” in the record itself
+        keys.extend(
+            rec.extra
+                .keys()
+                .filter(|k| k.starts_with("instruct_") && !k.ends_with("_eval"))
+                .cloned(),
+        );
+
+        // 3. always include the original
+        keys.push("instruction_original".to_string());
+
+        // deduplicate
+        keys.sort();
+        keys.dedup();
+
+        for key in &keys {
+            let key = key.as_str();          // &str for the rest of the code
+
             let answer: &str = if key == "instruction_original" {
                 &rec.instruction_original
             } else {
