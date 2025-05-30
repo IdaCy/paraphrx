@@ -1,0 +1,35 @@
+#!/bin/bash
+#PBS -N voice_assess_results_robust
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=45:00:00
+#PBS -o logs/voice_assess_results_robust.out
+#PBS -e logs/voice_assess_results_robust.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - voice_assess_results_robust started" >> $HOME/times.log
+
+export GOOGLE_API_KEY="AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY"
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/c_assess_inf/Cargo.toml"
+Q_JSON="a_data/alpaca/slice_100/alpaca_prx_voice1_slice1.json"
+A_JSON="c_assess_inf/output/alpaca/gemma-1-2b-it/voice1_slice1_infresults.json"
+E_JSON="c_assess_inf/output/alpaca/gemma-1-2b-it/voice1_slice1_infresults_eval.json"
+#Q_JSON="b_tests/data/alpaca_1_politeness.json"
+#A_JSON="b_tests/assess_inf/results_1.json"
+#E_JSON="b_tests/assess_inf/results_1_eval2.json"
+
+# Run the Rust program
+cargo assess_robust \
+    --manifest-path c_assess_inf/Cargo.toml \
+    --release \
+    -- \
+    --model gemini-2.0-flash \
+    "$Q_JSON" \
+    "$A_JSON" \
+    "$E_JSON"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - voice_assess_results_robust finished" >> $HOME/times.log

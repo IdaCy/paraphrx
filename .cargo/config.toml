@@ -1,0 +1,4 @@
+[alias]
+assess  = "run -p c_assess_inf --bin assess_results"
+assess_robust  = "run -p c_assess_inf --bin assess_results_robust"
+summary = "run -p c_assess_inf --bin summarise_scores"
