@@ -48,9 +48,35 @@ struct Cli {
     max_attempts: u8,
 }
 
+/// Build a strict JSON-Schema that requires every key and
+/// forces each value to be an array of **exactly 10** integers.
+fn schema_for_keys(keys: &[String]) -> Value {
+    let mut props = JsonMap::new();
+    for k in keys {
+        props.insert(
+            k.clone(),
+            json!({
+                "type": "array",
+                "items": {                 // 10 ints, 0-10 each
+                    "type":    "integer",
+                    "minimum": 0,
+                    "maximum": 10
+                },
+                "minItems": 10,
+                "maxItems": 10
+            }),
+        );
+    }
+
+    json!({
+        "type": "object",
+        "properties": props,
+        "required": keys          // slice serialises fine
+    })
+}
+
 //const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 const MODEL: &str = "gemini-2.5-flash-preview-05-20";
-//const MODEL: &str = "gemini-2.5-flash-preview";
 
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 
@@ -109,6 +135,9 @@ async fn main() -> Result<()> {
         keys.dedup();
 
         // assemble variant section
+        // JSON-schema the model must satisfy
+        let schema = schema_for_keys(&keys);
+
         let mut section = String::new();
         for key in &keys {
             let instr_text = if key == "instruction_original" {
@@ -134,13 +163,16 @@ async fn main() -> Result<()> {
             ));
         }
 
+        //let prompt = build_eval_prompt(&section);
+        // the natural-language prompt
         let prompt = build_eval_prompt(&section);
 
         let mut eval_json: JsonMap<String, Value> = JsonMap::new();
         let mut success = false;
 
         for attempt in 1..=cli.max_attempts {
-            match query_gemini(&client, &api_key, prompt.clone()).await {
+            //match query_gemini(&client, &api_key, prompt.clone()).await {
+            match query_gemini(&client, &api_key, schema.clone(), prompt.clone()).await {
                 Ok(obj) => {
                     eval_json = obj;
                     success = true;
@@ -200,7 +232,7 @@ fn build_eval_prompt(variant_section: &str) -> String {
     format!(
 r#"You are an expert evaluator.
 
-For every answer below, assess it against **ten metrics**. Each metric must be scored on a 0–5 integer scale (higher is better).
+For every answer below, assess it against **ten metrics**. Each metric must be scored on a 0–10 integer scale (higher is better).
 
 Metrics (use **exact** order):
 1. Task Fulfilment / Relevance
@@ -233,6 +265,7 @@ Begin data to evaluate:
 async fn query_gemini(
     client: &reqwest::Client,
     key: &str,
+    schema: Value,
     prompt: String,
 ) -> Result<JsonMap<String, Value>> {
     let url = format!(
@@ -244,7 +277,8 @@ async fn query_gemini(
     let body = json!({
         "contents":[{ "role":"user","parts":[{ "text": prompt }] }],
         "generationConfig":{
-            "responseMimeType":"application/json"
+            "responseMimeType":"application/json",
+            "responseSchema": schema
         }
     });
 
