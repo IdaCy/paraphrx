@@ -3,7 +3,7 @@ cargo summary \
   --manifest-path c_assess_inf/Cargo.toml \
   --release \
   -- \
-  b_tests/summary
+  c_assess_inf/output/alpaca/gemma-1-2b-it/summary
 */
 
 use anyhow::{bail, Context, Result};
@@ -15,15 +15,30 @@ use std::{
     path::{Path, PathBuf},
 };
 
-/// Command line arguments
+/// Human-readable metric labels (index == metric ID – 1)
+const METRIC_NAMES: [&str; METRIC_COUNT] = [
+    "Task-Fulfilment / Relevance",
+    "Usefulness & Actionability",
+    "Factual Accuracy & Verifiability",
+    "Efficiency / Depth & Completeness",
+    "Reasoning Quality / Transparency",
+    "Tone & Likeability",
+    "Adaptation to Context",
+    "Safety & Bias Avoidance",
+    "Structure & Formatting & UX Extras",
+    "Creativity",
+];
+
+const METRIC_COUNT: usize = 10;
+const MAX_SCORE: u8 = 10; // scores are now 0-10
+
+/// Command-line arguments
 #[derive(Parser, Debug)]
 #[command(author, version, about)]
 struct Cli {
     /// Directory that contains JSON files to evaluate
     directory: PathBuf,
 }
-
-const METRIC_COUNT: usize = 10;
 
 /// Per-paraphrase, per-metric aggregates
 #[derive(Clone, Debug)]
@@ -59,7 +74,7 @@ impl ParaphraseAgg {
 
     /// Average over *all* metrics (macro-score)
     fn overall_avg(&self) -> f64 {
-        let total: u64 = self.sum.iter().take(METRIC_COUNT).sum();
+        let total: u64 = self.sum.iter().sum();
         total as f64 / (self.count * METRIC_COUNT) as f64
     }
 }
@@ -104,15 +119,13 @@ fn main() -> Result<()> {
     let mut by_paraphrase: HashMap<String, ParaphraseAgg> = HashMap::new();
     let mut by_metric: [MetricAgg; METRIC_COUNT] = std::array::from_fn(|_| MetricAgg::new());
 
-    let json_files = fs::read_dir(&cli.directory)
-        .with_context(|| format!("Reading {}", cli.directory.display()))?;
-
-    for entry in json_files {
+    for entry in fs::read_dir(&cli.directory)
+        .with_context(|| format!("Reading {}", cli.directory.display()))?
+    {
         let entry = entry?;
-        if !entry.file_type()?.is_file() {
-            continue;
-        }
-        if entry.path().extension().and_then(|s| s.to_str()) != Some("json") {
+        if !entry.file_type()?.is_file()
+            || entry.path().extension().and_then(|s| s.to_str()) != Some("json")
+        {
             continue;
         }
         process_file(&entry.path(), &mut by_paraphrase, &mut by_metric)?;
@@ -138,10 +151,10 @@ fn process_file(
     for rec in records {
         let obj = rec
             .as_object()
-            .with_context(|| format!("Top level JSON value must be object in {}", path.display()))?;
+            .with_context(|| format!("Top-level JSON value must be object in {}", path.display()))?;
 
         for (key, val) in obj {
-            if key == "prompt_count" || key == "prompt_id" {
+            if key == "prompt_id" || key == "prompt_count" {
                 continue;
             }
             let arr = val
@@ -149,7 +162,7 @@ fn process_file(
                 .with_context(|| format!("Field {key} is not an array in {}", path.display()))?;
             if arr.len() != METRIC_COUNT {
                 bail!(
-                    "{key} array length is {}, expected {METRIC_COUNT} in {}",
+                    "{key} array length is {}, expected {METRIC_COUNT} ({})",
                     arr.len(),
                     path.display()
                 );
@@ -163,10 +176,25 @@ fn process_file(
                 })
                 .collect::<Result<_>>()?;
 
-            let entry = by_paraphrase.entry(key.clone()).or_insert_with(ParaphraseAgg::new);
-            entry.update(&scores);
+            // enforce 0-10 range
+            if let Some((pos, val)) = scores
+                .iter()
+                .enumerate()
+                .find(|(_, &s)| s > MAX_SCORE)
+            {
+                bail!(
+                    "Score {} in metric {} of {key} (file {}) exceeds {MAX_SCORE}",
+                    val,
+                    pos + 1,
+                    path.display()
+                );
+            }
 
-            // update global variability stats
+            by_paraphrase
+                .entry(key.clone())
+                .or_insert_with(ParaphraseAgg::new)
+                .update(&scores);
+
             for (i, &s) in scores.iter().enumerate() {
                 by_metric[i].update(s);
             }
@@ -181,8 +209,9 @@ fn report(by_para: &HashMap<String, ParaphraseAgg>, by_metric: &[MetricAgg; METR
         println!("► {p}");
         for i in 0..METRIC_COUNT {
             println!(
-                "    Metric {:2}:  avg {:4.2}   min {}   max {}",
+                "    {:2}. {:34}:  avg {:4.2} | min {:2} | max {:2}",
                 i + 1,
+                METRIC_NAMES[i],
                 stats.avg(i),
                 stats.min[i],
                 stats.max[i]
@@ -202,7 +231,7 @@ fn report(by_para: &HashMap<String, ParaphraseAgg>, by_metric: &[MetricAgg; METR
             .collect();
         v.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
 
-        println!("Metric {:2}:", m + 1);
+        println!("{}:", METRIC_NAMES[m]);
         for (rank, (name, score)) in v.into_iter().take(3).enumerate() {
             println!("    #{rank}: {name}   ({:.2})", score);
         }
@@ -221,16 +250,13 @@ fn report(by_para: &HashMap<String, ParaphraseAgg>, by_metric: &[MetricAgg; METR
     println!("\n================== METRIC VARIABILITY ==================");
     for (i, agg) in by_metric.iter().enumerate() {
         println!(
-            "Metric {:2}: min {}   max {}   avg {:4.2}   {}",
+            "{:2}. {:34}: min {:2} | max {:2} | avg {:4.2}   {}",
             i + 1,
+            METRIC_NAMES[i],
             agg.min,
             agg.max,
             agg.avg(),
-            if agg.min == agg.max {
-                "⚠ no variability"
-            } else {
-                ""
-            }
+            if agg.min == agg.max { "⚠ no variability" } else { "" }
         );
     }
 }
