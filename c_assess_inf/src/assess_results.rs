@@ -2,17 +2,14 @@
 cargo run \
   --manifest-path c_assess_inf/Cargo.toml \
   --release -- \
-  --version-set politeness \
-  a_data/alpaca/slice_100/alpaca_prx_voice1_slice2.json \
-  c_assess_inf/output/alpaca/voice1_slice2_infresults.json \
-  c_assess_inf/output/alpaca/voice1_slice2_infresults_eval.json
-
+  b_tests/data/alpaca_2_politeness.json \
+  b_tests/assess_inf/results_2.json \
+  b_tests/assess_inf/results_2_eval2.json
 */
 
 use anyhow::{anyhow, Context, Result};
 use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
-use phf::phf_map;
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map as JsonMap, Value};
@@ -23,21 +20,10 @@ use std::{
 };
 use tokio::time::{sleep, Duration};
 
-// paraphrase key-sets
-static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf_map! {
-    "politeness" => &[
-        "instruction_original",
-        "instruct_1_samelength",
-        "instruct_2_polite",
-        "instruct_3_properpolite",
-        "instruct_4_superpolite",
-        "instruct_5_longpolite"
-    ]
-};
-
 // data structs
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct Record {
+    prompt_id: String,
     prompt_count: u32,
     #[serde(alias = "instruction", alias = "instruction_original")]
     instruction_original: String,
@@ -53,12 +39,9 @@ struct Record {
 #[derive(Parser, Debug)]
 #[command(version, author, about = "Assess paraphrase answers with Gemini")]
 struct Cli {
-    gold:    PathBuf,
+    instructions: PathBuf,
     answers: PathBuf,
-    output:  PathBuf,
-
-    #[arg(long, default_value = "style")]
-    version_set: String,
+    output: PathBuf,
 
     #[arg(long, default_value_t = 3)]
     max_attempts: u8,
@@ -72,10 +55,10 @@ const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 async fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    // gold
-    let gold_raw = fs::read_to_string(&cli.gold)
-        .with_context(|| format!("failed to read {}", cli.gold.display()))?;
-    let gold_map: HashMap<String, Record> = serde_json::from_str::<Vec<Record>>(&gold_raw)?
+    // instructions
+    let instr_raw = fs::read_to_string(&cli.instructions)
+        .with_context(|| format!("failed to read {}", cli.instructions.display()))?;
+    let instr_map: HashMap<String, Record> = serde_json::from_str::<Vec<Record>>(&instr_raw)?
         .into_iter()
         .map(|r| (r.prompt_count.to_string(), r))
         .collect();
@@ -83,22 +66,17 @@ async fn main() -> Result<()> {
     // answers
     let ans_raw = fs::read_to_string(&cli.answers)
         .with_context(|| format!("failed to read {}", cli.answers.display()))?;
-    let mut records: Vec<Record> = serde_json::from_str(&ans_raw)?;
+    let ans_map: HashMap<String, Record> = serde_json::from_str::<Vec<Record>>(&ans_raw)?
+        .into_iter()
+        .map(|r| (r.prompt_count.to_string(), r))
+        .collect();
 
     // misc
-    //let keys = VERSION_SETS
-    //    .get(cli.version_set.as_str())
-    //    .ok_or_else(|| anyhow!("unknown version set {}", cli.version_set))?;
-    //let schema = schema_for();
-
-    let predefined_keys = VERSION_SETS.get(cli.version_set.as_str()).copied();
-    let schema = schema_for();
-
     let api_key = env::var("GOOGLE_API_KEY").context("GOOGLE_API_KEY not set")?;
     let client = build_client()?;
 
     // progress bar
-    let bar = ProgressBar::new(records.len() as u64);
+    let bar = ProgressBar::new(instr_map.len() as u64);
     bar.set_style(
         ProgressStyle::with_template(
             "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] \
@@ -107,99 +85,102 @@ async fn main() -> Result<()> {
         .unwrap(),
     );
 
-    // loop
-    for rec in &mut records {
-        let gold = gold_map
-            .get(&rec.prompt_count.to_string())
-            .ok_or_else(|| anyhow!("gold missing id {}", rec.prompt_count))?
-            .clone();
+    let mut results: Vec<Value> = Vec::new();
 
-        let gold_output = gold
-            .output
-            .as_deref()
-            .ok_or_else(|| anyhow!("gold missing output for id {}", rec.prompt_count))?;
+    // loop through prompts
+    for (id, inst) in &instr_map {
+        let ans = ans_map
+            .get(id)
+            .ok_or_else(|| anyhow!("answers missing id {}", id))?;
 
-        // gather *all* candidate keys:
-        let mut keys: Vec<String> = Vec::new();
-
-        // 1. any predefined set (still supported for backward compatibility)
-        if let Some(set) = predefined_keys {
-            keys.extend(set.iter().map(|s| s.to_string()));
-        }
-
-        // 2. everything that starts with “instruct_” in the record itself
+        // gather keys: instruction_original + any instruct_* in instruction record
+        let mut keys: Vec<String> = vec!["instruction_original".to_string()];
         keys.extend(
-            rec.extra
+            inst.extra
                 .keys()
-                .filter(|k| k.starts_with("instruct_") && !k.ends_with("_eval"))
+                .filter(|k| k.starts_with("instruct_"))
                 .cloned(),
         );
-
-        // 3. always include the original
-        keys.push("instruction_original".to_string());
-
-        // deduplicate
         keys.sort();
         keys.dedup();
 
+        // assemble variant section
+        let mut section = String::new();
         for key in &keys {
-            let key = key.as_str();          // &str for the rest of the code
-
-            let answer: &str = if key == "instruction_original" {
-                &rec.instruction_original
+            let instr_text = if key == "instruction_original" {
+                inst.instruction_original.as_str()
             } else {
-                rec.extra
+                inst.extra
                     .get(key)
                     .and_then(Value::as_str)
-                    .ok_or_else(|| anyhow!(
-                        "record {} missing candidate answer for {}",
-                        rec.prompt_count, key
-                    ))?
+                    .ok_or_else(|| anyhow!("instruction missing {key} for id {id}"))?
             };
 
-            let eval_key = format!("{key}_eval");
-            if rec.extra.contains_key(&eval_key) {
-                continue;
-            }
+            let ans_text = if key == "instruction_original" {
+                ans.instruction_original.as_str()
+            } else {
+                ans.extra
+                    .get(key)
+                    .and_then(Value::as_str)
+                    .ok_or_else(|| anyhow!("answer missing {key} for id {id}"))?
+            };
 
-            let prompt = build_eval_prompt(
-                &gold.instruction_original,
-                gold_output,
-                answer,
-            );
+            section.push_str(&format!(
+                "### {key}\n[Instruction]\n{instr_text}\n\n[Answer]\n{ans_text}\n\n"
+            ));
+        }
 
-            let mut success = false;
-            for attempt in 1..=cli.max_attempts {
-                match query_gemini(&client, &api_key, &schema, prompt.clone()).await {
-                    Ok(eval_obj) => {
-                        rec.extra.insert(eval_key.clone(), Value::Object(eval_obj));
-                        success = true;
-                        break;
-                    }
-                    Err(e) if attempt < cli.max_attempts => {
-                        eprintln!(
-                            "[warn] id {} {key} attempt {}/{} failed: {}",
-                            rec.prompt_count, attempt, cli.max_attempts, e
-                        );
-                        sleep(Duration::from_millis(300 * attempt as u64)).await;
-                    }
-                    Err(e) => return Err(anyhow!("id {}, {key}: {e}", rec.prompt_count)),
+        let prompt = build_eval_prompt(&section);
+
+        let mut eval_json: JsonMap<String, Value> = JsonMap::new();
+        let mut success = false;
+
+        for attempt in 1..=cli.max_attempts {
+            match query_gemini(&client, &api_key, prompt.clone()).await {
+                Ok(obj) => {
+                    eval_json = obj;
+                    success = true;
+                    break;
                 }
-            }
-
-            if !success {
-                return Err(anyhow!(
-                    "evaluation failed for id {} key {key}",
-                    rec.prompt_count
-                ));
+                Err(e) if attempt < cli.max_attempts => {
+                    eprintln!(
+                        "[warn] id {id} attempt {}/{} failed: {}",
+                        attempt, cli.max_attempts, e
+                    );
+                    sleep(Duration::from_millis(300 * attempt as u64)).await;
+                }
+                Err(e) => return Err(anyhow!("id {id}: {e}")),
             }
         }
+
+        if !success {
+            return Err(anyhow!("evaluation failed for id {}", id));
+        }
+
+        // build result object
+        let mut res_obj = JsonMap::new();
+        res_obj.insert("prompt_id".to_string(), Value::String(inst.prompt_id.clone()));
+        res_obj.insert(
+            "prompt_count".to_string(),
+            serde_json::to_value(inst.prompt_count)?,
+        );
+
+        for key in &keys {
+            let arr_val = eval_json
+                .get(key)
+                .cloned()
+                .ok_or_else(|| anyhow!("evaluation missing key {key} for id {id}"))?;
+            res_obj.insert(key.clone(), arr_val);
+        }
+
+        results.push(Value::Object(res_obj));
         bar.inc(1);
     }
+
     bar.finish_with_message("done");
 
     // write out
-    fs::write(&cli.output, serde_json::to_string_pretty(&records)?)?;
+    fs::write(&cli.output, serde_json::to_string_pretty(&results)?)?;
     println!("evaluation written to {}", cli.output.display());
     Ok(())
 }
@@ -211,49 +192,43 @@ fn build_client() -> Result<reqwest::Client> {
     Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
 
-fn build_eval_prompt(
-    instruction: &str,
-    gold_answer: &str,
-    candidate: &str,
-) -> String {
+fn build_eval_prompt(variant_section: &str) -> String {
     format!(
 r#"You are an expert evaluator.
-We executed the *same* instruction twice:
 
-[Instruction]
-{instruction}
+For every answer below, assess it against **ten metrics**. Each metric must be scored on a 0–5 integer scale (higher is better).
 
-[Gold Answer] – authoritatively correct:
-{gold_answer}
+Metrics (use **exact** order):
+1. Task Fulfilment / Relevance
+2. Usefulness & Actionability
+3. Factual Accuracy & Verifiability
+4. Efficiency / Depth & Completeness
+5. Reasoning Quality / Transparency
+6. Tone & Likeability
+7. Adaptation to Context
+8. Safety & Bias Avoidance
+9. Structure & Formatting & UX Extras
+10. Creativity
 
-[Candidate Answer] – produced after paraphrasing the instruction:
-{candidate}
+Return **only** JSON conforming to this Pydantic model (nothing else, no code fences):
 
-Assess the candidate ONLY for faithfulness to the instruction, completeness, and correctness.
-Return **one** JSON with exactly these keys:
-* "is_correct" – boolean
-* "score_0_to_5" – integer
-* "explanation" – short (≤30 words) critique
-No other keys, no prose."#
-    )
-}
+```python
+from typing import Dict, List
+from pydantic import BaseModel, conlist
 
-fn schema_for() -> Value {
-    json!({
-        "type": "object",
-        "properties": {
-            "is_correct":  { "type": "boolean" },
-            "score_0_to_5":{ "type": "integer", "minimum":0, "maximum":5 },
-            "explanation": { "type": "string" }
-        },
-        "required": ["is_correct","score_0_to_5","explanation"]
-    })
+class EvalResult(BaseModel):
+    __root__: Dict[str, conlist(int, min_items=10, max_items=10)]
+```
+
+Begin data to evaluate:
+
+{variant_section}
+"#)
 }
 
 async fn query_gemini(
     client: &reqwest::Client,
     key: &str,
-    schema: &Value,
     prompt: String,
 ) -> Result<JsonMap<String, Value>> {
     let url = format!(
@@ -265,8 +240,7 @@ async fn query_gemini(
     let body = json!({
         "contents":[{ "role":"user","parts":[{ "text": prompt }] }],
         "generationConfig":{
-            "responseMimeType":"application/json",
-            "responseSchema": schema
+            "responseMimeType":"application/json"
         }
     });
 
@@ -280,5 +254,5 @@ async fn query_gemini(
         .as_str()
         .ok_or_else(|| anyhow!("unexpected response structure"))?;
 
-    Ok(serde_json::from_str(json_text)?)
+    Ok(serde_json::from_str(json_text.trim())?)
 }
