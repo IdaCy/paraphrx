@@ -1,154 +1,236 @@
 /*
-cargo run --manifest-path c_assess_inf/Cargo.toml \
-    --release -- \
-    --version-set politeness \
-    c_assess_inf/output/results_all_eval.json
+cargo summary \
+  --manifest-path c_assess_inf/Cargo.toml \
+  --release \
+  -- \
+  b_tests/summary
 */
 
-use anyhow::{anyhow, Context, Result};
+use anyhow::{bail, Context, Result};
 use clap::Parser;
-use phf::phf_map;
-use serde::Deserialize;
-use serde_json::{Map as JsonMap, Value};
-use std::{collections::HashMap, fs, path::PathBuf};
-
-// paraphrase key-sets
-static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf_map! {
-    "politeness" => &[
-        "instruction_original",
-        "instruct_1_samelength",
-        "instruct_2_polite",
-        "instruct_3_properpolite",
-        "instruct_4_superpolite",
-        "instruct_5_longpolite"
-    ]
+use serde_json::Value;
+use std::{
+    collections::HashMap,
+    fs,
+    path::{Path, PathBuf},
 };
 
-// data models
-#[derive(Debug, Deserialize)]
-struct EvalObj {
-    is_correct: bool,
-    score_0_to_5: i64,
-    // we ignore the explanation here
-}
-
-#[derive(Debug, Deserialize)]
-struct Record {
-    prompt_count: u32,
-
-    // the model answers (and eval objects) live here
-    #[serde(flatten)]
-    extra: JsonMap<String, Value>,
-}
-
-// CLI
+/// Command line arguments
 #[derive(Parser, Debug)]
-#[command(version, author, about = "Summarise paraphrase evaluation scores")]
+#[command(author, version, about)]
 struct Cli {
-    #[arg(long, default_value = "style")]
-    version_set: String,
-
-    /// JSON produced by assess_results
-    eval_file: PathBuf,
+    /// Directory that contains JSON files to evaluate
+    directory: PathBuf,
 }
 
-// helpers
-fn mean(data: &[f64]) -> f64 {
-    data.iter().copied().sum::<f64>() / data.len() as f64
+const METRIC_COUNT: usize = 10;
+
+/// Per-paraphrase, per-metric aggregates
+#[derive(Clone, Debug)]
+struct ParaphraseAgg {
+    count: usize,
+    sum: [u64; METRIC_COUNT],
+    min: [u8; METRIC_COUNT],
+    max: [u8; METRIC_COUNT],
 }
 
-fn std_dev(data: &[f64]) -> f64 {
-    let m = mean(data);
-    (data.iter().map(|x| (x - m).powi(2)).sum::<f64>() / data.len() as f64).sqrt()
-}
+impl ParaphraseAgg {
+    fn new() -> Self {
+        Self {
+            count: 0,
+            sum: [0; METRIC_COUNT],
+            min: [u8::MAX; METRIC_COUNT],
+            max: [u8::MIN; METRIC_COUNT],
+        }
+    }
 
-fn median(data: &mut [f64]) -> f64 {
-    data.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    let mid = data.len() / 2;
-    if data.len() % 2 == 0 {
-        (data[mid - 1] + data[mid]) / 2.0
-    } else {
-        data[mid]
+    fn update(&mut self, scores: &[u8]) {
+        self.count += 1;
+        for (i, &s) in scores.iter().enumerate().take(METRIC_COUNT) {
+            self.sum[i] += s as u64;
+            self.min[i] = self.min[i].min(s);
+            self.max[i] = self.max[i].max(s);
+        }
+    }
+
+    fn avg(&self, i: usize) -> f64 {
+        self.sum[i] as f64 / self.count as f64
+    }
+
+    /// Average over *all* metrics (macro-score)
+    fn overall_avg(&self) -> f64 {
+        let total: u64 = self.sum.iter().take(METRIC_COUNT).sum();
+        total as f64 / (self.count * METRIC_COUNT) as f64
     }
 }
 
-// main
+/// Global, cross-paraphrase variability for each metric
+#[derive(Clone, Debug)]
+struct MetricAgg {
+    min: u8,
+    max: u8,
+    sum: u64,
+    count: u64,
+}
+
+impl MetricAgg {
+    fn new() -> Self {
+        Self {
+            min: u8::MAX,
+            max: u8::MIN,
+            sum: 0,
+            count: 0,
+        }
+    }
+
+    fn update(&mut self, score: u8) {
+        self.min = self.min.min(score);
+        self.max = self.max.max(score);
+        self.sum += score as u64;
+        self.count += 1;
+    }
+
+    fn avg(&self) -> f64 {
+        self.sum as f64 / self.count as f64
+    }
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    let keys = VERSION_SETS
-        .get(cli.version_set.as_str())
-        .ok_or_else(|| anyhow!("unknown version set {}", cli.version_set))?;
-
-    // load JSON
-    let raw = fs::read_to_string(&cli.eval_file)
-        .with_context(|| format!("failed to read {}", cli.eval_file.display()))?;
-    let records: Vec<Record> = serde_json::from_str(&raw)?;
-
-    // aggregates (per key)
-    let mut per_key_scores: HashMap<&str, Vec<f64>> = HashMap::new();
-    let mut per_key_correct: HashMap<&str, Vec<bool>> = HashMap::new();
-
-    // per-question discrepancy stats
-    let mut per_question_delta: Vec<f64> = Vec::new();
-    let mut per_question_stdev: Vec<f64> = Vec::new();
-
-    for rec in &records {
-        let mut scores_this_rec: Vec<f64> = Vec::new();
-
-        for &k in *keys {
-            let eval_key = format!("{k}_eval");
-            let Some(eval_val) = rec.extra.get(&eval_key) else {
-                return Err(anyhow!(
-                    "record {} missing {eval_key}",
-                    rec.prompt_count
-                ));
-            };
-            let obj: EvalObj = serde_json::from_value(eval_val.clone())?;
-
-            per_key_scores.entry(k).or_default().push(obj.score_0_to_5 as f64);
-            per_key_correct.entry(k).or_default().push(obj.is_correct);
-
-            scores_this_rec.push(obj.score_0_to_5 as f64);
-        }
-
-        // intra-question stats
-        if !scores_this_rec.is_empty() {
-            let min = scores_this_rec.iter().fold(f64::INFINITY, |a, &b| a.min(b));
-            let max = scores_this_rec.iter().fold(f64::NEG_INFINITY, |a, &b| a.max(b));
-            per_question_delta.push(max - min);
-            per_question_stdev.push(std_dev(&scores_this_rec));
-        }
+    if !cli.directory.is_dir() {
+        bail!("{} is not a directory", cli.directory.display());
     }
 
-    // reporting
-    println!("\n=== Summary for version-set \"{}\" ({} records) ===",
-             cli.version_set, records.len());
+    let mut by_paraphrase: HashMap<String, ParaphraseAgg> = HashMap::new();
+    let mut by_metric: [MetricAgg; METRIC_COUNT] = std::array::from_fn(|_| MetricAgg::new());
 
-    println!("\nPer-paraphrase key:");
-    println!("{:<30} {:>6} {:>6} {:>6} {:>8}",
-             "key", "mean", "std", "med", "acc%");
-    for &k in *keys {
-        let mut scores = per_key_scores.remove(k).unwrap_or_default();
-        let mean_v = mean(&scores);
-        let std_v  = std_dev(&scores);
-        let med_v  = median(&mut scores);
-        let acc = per_key_correct
-            .remove(k).unwrap_or_default()
-            .iter()
-            .filter(|&&b| b)
-            .count() as f64
-            / records.len() as f64 * 100.0;
+    let json_files = fs::read_dir(&cli.directory)
+        .with_context(|| format!("Reading {}", cli.directory.display()))?;
 
-        println!("{:<30} {:>6.2} {:>6.2} {:>6.2} {:>7.1}",
-                 k, mean_v, std_v, med_v, acc);
+    for entry in json_files {
+        let entry = entry?;
+        if !entry.file_type()?.is_file() {
+            continue;
+        }
+        if entry.path().extension().and_then(|s| s.to_str()) != Some("json") {
+            continue;
+        }
+        process_file(&entry.path(), &mut by_paraphrase, &mut by_metric)?;
     }
 
-    println!("\nPer-question discrepancy (across all paraphrases):");
-    println!("  mean range  : {:5.2}",  mean(&per_question_delta));
-    println!("  mean stdev  : {:5.2}",  mean(&per_question_stdev));
-    println!("  max  range  : {:5.2}",  per_question_delta.iter().cloned().fold(0./0., f64::max));
-    println!("  max  stdev  : {:5.2}",  per_question_stdev .iter().cloned().fold(0./0., f64::max));
+    if by_paraphrase.is_empty() {
+        bail!("No valid JSON files found in {}", cli.directory.display());
+    }
 
-    println!("\nDone.");
+    report(&by_paraphrase, &by_metric);
     Ok(())
+}
+
+fn process_file(
+    path: &Path,
+    by_paraphrase: &mut HashMap<String, ParaphraseAgg>,
+    by_metric: &mut [MetricAgg; METRIC_COUNT],
+) -> Result<()> {
+    let data = fs::read_to_string(path).with_context(|| format!("Reading {}", path.display()))?;
+    let records: Vec<Value> =
+        serde_json::from_str(&data).with_context(|| format!("Parsing {}", path.display()))?;
+
+    for rec in records {
+        let obj = rec
+            .as_object()
+            .with_context(|| format!("Top level JSON value must be object in {}", path.display()))?;
+
+        for (key, val) in obj {
+            if key == "prompt_count" || key == "prompt_id" {
+                continue;
+            }
+            let arr = val
+                .as_array()
+                .with_context(|| format!("Field {key} is not an array in {}", path.display()))?;
+            if arr.len() != METRIC_COUNT {
+                bail!(
+                    "{key} array length is {}, expected {METRIC_COUNT} in {}",
+                    arr.len(),
+                    path.display()
+                );
+            }
+            let scores: Vec<u8> = arr
+                .iter()
+                .map(|v| {
+                    v.as_u64()
+                        .with_context(|| format!("Non-integer score in {key} of {}", path.display()))
+                        .map(|n| n as u8)
+                })
+                .collect::<Result<_>>()?;
+
+            let entry = by_paraphrase.entry(key.clone()).or_insert_with(ParaphraseAgg::new);
+            entry.update(&scores);
+
+            // update global variability stats
+            for (i, &s) in scores.iter().enumerate() {
+                by_metric[i].update(s);
+            }
+        }
+    }
+    Ok(())
+}
+
+fn report(by_para: &HashMap<String, ParaphraseAgg>, by_metric: &[MetricAgg; METRIC_COUNT]) {
+    println!("\n================== PARAPHRASE STATS ==================");
+    for (p, stats) in by_para {
+        println!("► {p}");
+        for i in 0..METRIC_COUNT {
+            println!(
+                "    Metric {:2}:  avg {:4.2}   min {}   max {}",
+                i + 1,
+                stats.avg(i),
+                stats.min[i],
+                stats.max[i]
+            );
+        }
+        println!(
+            "    → overall average across all metrics: {:.3}\n",
+            stats.overall_avg()
+        );
+    }
+
+    println!("================== TOP-3 BY EACH METRIC ==================");
+    for m in 0..METRIC_COUNT {
+        let mut v: Vec<(&str, f64)> = by_para
+            .iter()
+            .map(|(name, s)| (name.as_str(), s.avg(m)))
+            .collect();
+        v.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+
+        println!("Metric {:2}:", m + 1);
+        for (rank, (name, score)) in v.into_iter().take(3).enumerate() {
+            println!("    #{rank}: {name}   ({:.2})", score);
+        }
+    }
+
+    println!("\n================== TOP-3 OVERALL ==================");
+    let mut overall: Vec<(&str, f64)> = by_para
+        .iter()
+        .map(|(n, s)| (n.as_str(), s.overall_avg()))
+        .collect();
+    overall.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+    for (rank, (name, score)) in overall.into_iter().take(3).enumerate() {
+        println!("#{rank}: {name}   ({:.3})", score);
+    }
+
+    println!("\n================== METRIC VARIABILITY ==================");
+    for (i, agg) in by_metric.iter().enumerate() {
+        println!(
+            "Metric {:2}: min {}   max {}   avg {:4.2}   {}",
+            i + 1,
+            agg.min,
+            agg.max,
+            agg.avg(),
+            if agg.min == agg.max {
+                "⚠ no variability"
+            } else {
+                ""
+            }
+        );
+    }
 }

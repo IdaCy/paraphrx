@@ -92,6 +92,30 @@ def main() -> None:
 
     args = parser.parse_args()
 
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!! TEMPORARY HACK !!!!!!!!!! OVERRIDING TO 2B MODEL !!!!!!!!!!
+    if args.model != "google/gemma-2-2b-it":
+        print(
+            f"Requested model '{args.model}' ignored; "
+            "using 'google/gemma-2-2b-it' instead."
+        )
+    args.model = "google/gemma-2-2b-it"
+
+    orig_out = Path(args.output_json)
+    forced_dir = Path("c_assess_inf/output/alpaca/gemma-2-2b-it")
+    forced_dir.mkdir(parents=True, exist_ok=True)
+
+    forced_path = forced_dir / orig_out.name    # keep their filename
+
+    if forced_path != orig_out:
+        print(
+            f"Requested output '{orig_out}' ignored; "
+            f"saving to '{forced_path}' instead."
+        )
+    args.output_json = str(forced_path)
+    # !!!!!!!!!! TEMPORARY HACK END !!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     # Authenticate and sanity-check access
     ensure_hf_auth(args.hf_token)
     assert_model_access(args.model, args.hf_token)
