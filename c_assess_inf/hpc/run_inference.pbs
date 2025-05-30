@@ -23,7 +23,7 @@ singularity exec --nv \
     python "$SCRIPT_PATH" \
         a_data/alpaca/slice_100/alpaca_prx_special_chars2_slice1.json \
         c_assess_inf/output/alpaca/special_chars2_slice1_infresults.json \
-        --model google/gemma-2b-it \
+        --model google/gemma-2-2b-it \
         --temperature 0 \
         --max_tokens 256 \
         --device cuda:0

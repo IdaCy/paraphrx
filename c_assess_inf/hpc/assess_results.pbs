@@ -1,0 +1,33 @@
+#!/bin/bash
+#PBS -N assess_results
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=45:00:00
+#PBS -o logs/assess_results.out
+#PBS -e logs/assess_results.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - assess_results started" >> $HOME/times.log
+
+export GOOGLE_API_KEY="AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY"
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/c_assess_inf/Cargo.toml"
+Q_JSON="a_data/alpaca/slice_100/alpaca_prx_tone1_slice1.json"
+A_JSON="c_assess_inf/output/alpaca/gemma-1-2b-it/tone1_slice1_infresults.json"
+E_JSON="c_assess_inf/output/alpaca/gemma-1-2b-it/tone1_slice1_infresults_eval.json"
+#Q_JSON="b_tests/data/alpaca_1_politeness.json"
+#A_JSON="b_tests/assess_inf/results_1.json"
+#E_JSON="b_tests/assess_inf/results_1_eval2.json"
+
+# Run the Rust program
+cargo assess \
+    --manifest-path c_assess_inf/Cargo.toml \
+    --release -- \
+    "$Q_JSON" \
+    "$A_JSON" \
+    "$E_JSON"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - assess_results finished" >> $HOME/times.log
