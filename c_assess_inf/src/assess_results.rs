@@ -2,6 +2,15 @@
 cargo run \
   --manifest-path c_assess_inf/Cargo.toml \
   --release -- \
+  --bin assess_results \
+  b_tests/data/alpaca_2_politeness.json \
+  b_tests/assess_inf/results_2.json \
+  b_tests/assess_inf/results_2_eval2.json
+
+cargo assess \
+  --manifest-path c_assess_inf/Cargo.toml \
+  --release \
+  -- \
   b_tests/data/alpaca_2_politeness.json \
   b_tests/assess_inf/results_2.json \
   b_tests/assess_inf/results_2_eval2.json
@@ -47,7 +56,10 @@ struct Cli {
     max_attempts: u8,
 }
 
-const MODEL: &str = "gemini-2.5-flash-preview-04-17";
+//const MODEL: &str = "gemini-2.5-flash-preview-04-17";
+const MODEL: &str = "gemini-2.5-flash-preview-05-20";
+//const MODEL: &str = "gemini-2.5-flash-preview";
+
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 
 // main
