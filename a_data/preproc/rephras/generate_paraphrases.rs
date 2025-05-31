@@ -392,9 +392,9 @@ fn build_prompt(original: &str, keys: &[&str], label: &str) -> String {
         "You are an expert paraphraser.\n\
          Rewrite the *Original Instruction* in ALL of the variants listed below.\n\n\
          {bullet_list}\n\n\
-         For every variant, try a total rewrite of the original instructions in the style of the key.\n\
-         However, for every single variant: It must ask for the same information as the original instruction.\n\
-         **Important:** Watch out to ensure that the paraphrase still gives the instruction the original did.\n\n\
+         Rewrite the original instruction in the style of each key name.\n\
+         Phrase every variant instruction so that its answer will be an answer to the original instruction or in some way (e.g. completeness, creativity, style, structure, efficiency, tone) better.\n\
+         **Important:** Each variant must still yield an answer to the _original instruction_.\n\n\
          Return **only** one JSON object with exactly those keys.\n\n\
          Original Instruction:\n{original}"
     )
