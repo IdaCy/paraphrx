@@ -1,24 +1,24 @@
 #!/bin/bash
-#PBS -N alpaca_gen_phrx
+#PBS -N t_prx_alpaca_gen_phrx
 #PBS -l select=1:ncpus=8:mem=64gb
 #PBS -l walltime=45:00:00
-#PBS -o logs/alpaca_gen_phrx.out
-#PBS -e logs/alpaca_gen_phrx.err
+#PBS -o logs/t_prx_alpaca_gen_phrx.out
+#PBS -e logs/t_prx_alpaca_gen_phrx.err
 
 # Move to the directory from which the job was submitted
 cd "$PBS_O_WORKDIR"
 . "$HOME/.cargo/env"
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - alpaca_gen_phrx started" >> "$HOME/times.log"
+echo "$(date "+%Y-%m-%d %H:%M:%S") - t_prx_alpaca_gen_phrx started" >> "$HOME/times.log"
 
 export GOOGLE_API_KEY="AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY"
 
 # Path to the Rust workspace
 MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
 
-IN_JSON="a_data/mmlu/formal_philosophy_500.json"
+IN_JSON="a_data/alpaca/slice_100/alpaca_slice1.json"
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_style.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_style_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -29,7 +29,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_length.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_length_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -40,7 +40,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_obstruction.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_obstruction_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -51,7 +51,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_special_chars.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_special_chars_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -62,7 +62,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_syntax.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_syntax_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -73,7 +73,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_language.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_language_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -84,7 +84,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_context.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_context_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -95,7 +95,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_voice.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_voice_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -106,7 +106,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_tone.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_tone_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -117,7 +117,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_boundary.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_boundary_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -128,7 +128,7 @@ cargo run \
     "$OUT_JSON"
 
 
-OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_preserv_extra.json"
+OUT_JSON="a_data/alpaca/slice_100/prxed_extra_slice1.json"
 
 # Run the Rust program
 cargo run \
@@ -139,4 +139,4 @@ cargo run \
     "$OUT_JSON"
 
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - alpaca_gen_phrx finished" >> "$HOME/times.log"
+echo "$(date "+%Y-%m-%d %H:%M:%S") - t_prx_alpaca_gen_phrx finished" >> "$HOME/times.log"
