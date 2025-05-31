@@ -11,6 +11,11 @@ path = "src/assess_results.rs"
 [[bin]]
 name = "assess_results_robust"
 path = "src/assess_results_robust.rs"
+#path = "src/assess_results.rs"
+
+[[bin]]
+name = "assess_results_robust_longinstruct"
+path = "src/assess_results_robust_longinstruct.rs"
 
 [[bin]]
 name = "summarise_scores"     # cargo run --bin summarise_scores

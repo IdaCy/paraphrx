@@ -1,31 +1,31 @@
 #!/bin/bash
-#PBS -N sp1lice1_run_inference
+#PBS -N st1lice1_run_inference
 #PBS -l select=1:ncpus=8:ngpus=1:mem=10gb
 #PBS -l walltime=05:00:00
-#PBS -o logs/sp1lice1_run_inference.out
-#PBS -e logs/sp1lice1_run_inference.err
+#PBS -o logs/st1lice1_run_inference.out
+#PBS -e logs/st1lice1_run_inference.err
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - sp1lice1_run_inference started" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - st1lice1_run_inference started" >> $HOME/times.log
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
-SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/run_inference.py"
+SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/run_inference_flexible.py"
 
 # Run the script inside the container
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
-        a_data/alpaca/slice_100/alpaca_prx_special_chars2_slice1.json \
-        c_assess_inf/output/alpaca/special_chars2_slice1_infresults.json \
+        a_data/alpaca/slice_100/prxed_style_slice1.json \
+        c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/style_slice1_infresults.json \
         --model google/gemma-2-2b-it \
         --temperature 0 \
         --max_tokens 256 \
         --device cuda:0
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - sp1lice1_run_inference finished" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - st1lice1_run_inference finished" >> $HOME/times.log
