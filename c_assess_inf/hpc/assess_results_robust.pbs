@@ -11,7 +11,7 @@ cd "$PBS_O_WORKDIR"
 
 echo "$(date "+%Y-%m-%d %H:%M:%S") - robu_assess_results started" >> $HOME/times.log
 
-export GOOGLE_API_KEY="AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY"
+export GOOGLE_API_KEY=""
 
 # Path to the Rust workspace
 MANIFEST_PATH="$PBS_O_WORKDIR/c_assess_inf/Cargo.toml"

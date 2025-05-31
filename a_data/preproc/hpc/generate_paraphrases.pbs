@@ -11,7 +11,7 @@ cd "$PBS_O_WORKDIR"
 
 echo "$(date "+%Y-%m-%d %H:%M:%S") - slice1_generate_paraphrases started" >> "$HOME/times.log"
 
-export GOOGLE_API_KEY="AIzaSyD8JwTOvg_7aajlfn61eGh00gj_Ob73Xi8"
+export GOOGLE_API_KEY=""
 #export SLICE="slice1"
 
 # Path to the Rust workspace
