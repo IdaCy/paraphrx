@@ -3,7 +3,7 @@ cargo summary \
   --manifest-path c_assess_inf/Cargo.toml \
   --release \
   -- \
-  c_assess_inf/output/alpaca/gemma-1-2b-it/summary
+  c_assess_inf/output/alpaca/gemma-1-2b-it/summary_tone
 */
 
 use anyhow::{bail, Context, Result};
