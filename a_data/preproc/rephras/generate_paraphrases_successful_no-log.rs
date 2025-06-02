@@ -16,10 +16,6 @@ use serde_json::json;
 use std::{env, fs, path::PathBuf};
 use tokio::time::{sleep, Duration};
 
-// logging
-use chrono::Local;
-use simplelog::{ConfigBuilder, LevelFilter, WriteLogger};
-
 // All the variant key-sets to support - Can contain '_' but no spaces
 static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_map! {
     // STYLE / TONE
@@ -312,38 +308,9 @@ const MODEL: &str = "gemini-2.5-pro-preview-05-06";
 //const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 
-// How often to emit log lines during the record loop
-const LOG_EVERY_N: usize = 10;
-
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
     let cli = Cli::parse();
-
-    // ---------------------------- logger setup ----------------------------
-    let log_dir = PathBuf::from("logs");
-    fs::create_dir_all(&log_dir).with_context(|| "failed to create logs directory")?;
-
-    let timestamp = Local::now().format("%Y-%m-%d_%H-%M-%S").to_string();
-    let out_file_name = cli
-        .output
-        .file_name()
-        .map(|s| s.to_string_lossy().into_owned())
-        .unwrap_or_else(|| "output.json".to_string());
-    let log_path = log_dir.join(format!("{}+{}", timestamp, out_file_name));
-
-    let log_file = fs::File::create(&log_path)
-        .with_context(|| format!("failed to create log file {}", log_path.display()))?;
-
-    WriteLogger::init(
-        LevelFilter::Info,
-        ConfigBuilder::new()
-            .set_time_format_str("%Y-%m-%d %H:%M:%S")
-            .build(),
-        log_file,
-    ).expect("failed to initialise file logger");
-
-    log::info!("Program started");
-    // ---------------------------------------------------------------------
 
     let keys = VERSION_SETS
         .get(cli.version_set.as_str())
@@ -355,8 +322,6 @@ async fn main() -> Result<()> {
         .with_context(|| format!("failed to read {}", cli.input.display()))?;
     let mut records: Vec<Record> = serde_json::from_str(&data)?;
 
-    log::info!("Loaded {} records from {}", records.len(), cli.input.display());
-
     let key = env::var("GOOGLE_API_KEY").context("GOOGLE_API_KEY not set")?;
     let client = build_client()?;
 
@@ -365,13 +330,7 @@ async fn main() -> Result<()> {
         .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})")
         .unwrap());
 
-    let mut processed: usize = 0;
     for rec in &mut records {
-        processed += 1;
-        if processed % LOG_EVERY_N == 0 {
-            log::info!("Processing record {} (prompt_count {})", processed, rec.prompt_count);
-        }
-
         let prompt = build_prompt(&rec.instruction_original, keys, &cli.version_set);
         let mut success = false;
 
@@ -382,7 +341,6 @@ async fn main() -> Result<()> {
                             rec.extra.insert(k, v);
                         }
                         success = true;
-                        log::info!("prompt_count {} processed successfully", rec.prompt_count);
                     break;
                 }
                 Err(err) if attempt < cli.max_attempts => {
@@ -390,7 +348,6 @@ async fn main() -> Result<()> {
                         "[warn] prompt_count {} attempt {}/{} failed: {}",
                         rec.prompt_count, attempt, cli.max_attempts, err
                     );
-                    log::warn!("prompt_count {} attempt {}/{} failed: {}", rec.prompt_count, attempt, cli.max_attempts, err);
                     sleep(Duration::from_millis(500 * u64::from(attempt))).await;
                 }
                 Err(err) => return Err(anyhow!("id {}: {}", rec.prompt_count, err)),
@@ -404,13 +361,10 @@ async fn main() -> Result<()> {
     }
     bar.finish_with_message("done");
 
-    log::info!("All records processed – writing output to {}", cli.output.display());
-
     // Write output
     let out = serde_json::to_string_pretty(&records)?;
     fs::write(&cli.output, out)?;
     println!("utput written to {}", cli.output.display());
-    log::info!("Output written to {}", cli.output.display());
 
     Ok(())
 }
@@ -495,3 +449,4 @@ async fn query_gemini(
     let map: serde_json::Map<String, serde_json::Value> = serde_json::from_str(json_text)?;
     Ok(map)
 }
+
