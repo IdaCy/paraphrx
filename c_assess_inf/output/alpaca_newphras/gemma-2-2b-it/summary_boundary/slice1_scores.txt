@@ -1,0 +1,212 @@
+[ifc24@login-b paraphrx]$ cargo summary \
+>   --manifest-path c_assess_inf/Cargo.toml \
+>   --release \
+>   -- \
+>   c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/summary_boundary
+   Compiling c_assess_inf v0.1.0 (/rds/general/user/ifc24/home/paraphrx/c_assess_inf)
+    Finished `release` profile [optimized] target(s) in 9.01s
+     Running `c_assess_inf/target/release/summarise_scores c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/summary_boundary`
+
+================== PARAPHRASE STATS ==================
+► instruct_paradox_statement
+     1. Task-Fulfilment / Relevance       :  avg 7.64 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 7.45 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.14 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 7.35 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.74 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.54 | min  5 | max 10
+     7. Adaptation to Context             :  avg 8.14 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.96 | min  9 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.24 | min  1 | max 10
+    10. Creativity                        :  avg 6.74 | min  0 | max 10
+    → overall average across all metrics: 7.994
+
+► instruct_see_attached_diagram
+     1. Task-Fulfilment / Relevance       :  avg 7.32 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 7.36 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.19 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.99 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.61 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.24 | min  0 | max 10
+     7. Adaptation to Context             :  avg 8.03 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.91 | min  5 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.01 | min  1 | max 10
+    10. Creativity                        :  avg 5.83 | min  0 | max 10
+    → overall average across all metrics: 7.749
+
+► instruction_original
+     1. Task-Fulfilment / Relevance       :  avg 8.32 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 7.79 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.34 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 7.60 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.70 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.51 | min  5 | max 10
+     7. Adaptation to Context             :  avg 8.20 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.97 | min  9 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.43 | min  2 | max 10
+    10. Creativity                        :  avg 4.88 | min  0 | max  9
+    → overall average across all metrics: 7.974
+
+► instruct_ambiguous_scope
+     1. Task-Fulfilment / Relevance       :  avg 7.06 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 7.22 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.47 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.66 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.47 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.47 | min  5 | max 10
+     7. Adaptation to Context             :  avg 7.34 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.96 | min  9 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.22 | min  3 | max 10
+    10. Creativity                        :  avg 4.92 | min  0 | max 10
+    → overall average across all metrics: 7.579
+
+► instruct_garden_path
+     1. Task-Fulfilment / Relevance       :  avg 7.30 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 7.20 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.58 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.79 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.40 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.29 | min  3 | max 10
+     7. Adaptation to Context             :  avg 7.91 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.96 | min  9 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.03 | min  1 | max 10
+    10. Creativity                        :  avg 5.44 | min  0 | max 10
+    → overall average across all metrics: 7.690
+
+► instruct_musical_notation
+     1. Task-Fulfilment / Relevance       :  avg 7.29 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 6.88 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.03 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.68 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.05 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.68 | min  6 | max 10
+     7. Adaptation to Context             :  avg 8.12 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.96 | min  9 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.37 | min  3 | max 10
+    10. Creativity                        :  avg 7.24 | min  0 | max 10
+    → overall average across all metrics: 7.830
+
+► instruct_empty_input
+     1. Task-Fulfilment / Relevance       :  avg 6.66 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 6.48 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 7.44 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.37 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 6.48 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.25 | min  5 | max 10
+     7. Adaptation to Context             :  avg 6.77 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.92 | min  5 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.18 | min  3 | max 10
+    10. Creativity                        :  avg 4.45 | min  0 | max  9
+    → overall average across all metrics: 7.100
+
+► instruct_malapropism
+     1. Task-Fulfilment / Relevance       :  avg 6.66 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 6.45 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 7.14 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.17 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 6.54 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.10 | min  1 | max 10
+     7. Adaptation to Context             :  avg 7.21 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.65 | min  1 | max 10
+     9. Structure & Formatting & UX Extras:  avg 7.86 | min  0 | max 10
+    10. Creativity                        :  avg 5.98 | min  0 | max 10
+    → overall average across all metrics: 7.176
+
+► instruct_pun_based
+     1. Task-Fulfilment / Relevance       :  avg 7.55 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 7.44 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 8.21 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.99 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.41 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.51 | min  2 | max 10
+     7. Adaptation to Context             :  avg 7.67 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.95 | min  8 | max 10
+     9. Structure & Formatting & UX Extras:  avg 8.08 | min  0 | max 10
+    10. Creativity                        :  avg 6.19 | min  0 | max 10
+    → overall average across all metrics: 7.800
+
+► instruct_contradictory_ask
+     1. Task-Fulfilment / Relevance       :  avg 6.39 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 6.74 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 7.60 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.30 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 6.66 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.13 | min  1 | max 10
+     7. Adaptation to Context             :  avg 7.18 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.93 | min  7 | max 10
+     9. Structure & Formatting & UX Extras:  avg 7.70 | min  0 | max 10
+    10. Creativity                        :  avg 6.05 | min  0 | max 10
+    → overall average across all metrics: 7.268
+
+► instruct_chemical_smiles
+     1. Task-Fulfilment / Relevance       :  avg 6.96 | min  0 | max 10
+     2. Usefulness & Actionability        :  avg 6.86 | min  0 | max 10
+     3. Factual Accuracy & Verifiability  :  avg 7.91 | min  0 | max 10
+     4. Efficiency / Depth & Completeness :  avg 6.39 | min  0 | max 10
+     5. Reasoning Quality / Transparency  :  avg 7.24 | min  0 | max 10
+     6. Tone & Likeability                :  avg 8.31 | min  3 | max 10
+     7. Adaptation to Context             :  avg 7.57 | min  0 | max 10
+     8. Safety & Bias Avoidance           :  avg 9.96 | min  9 | max 10
+     9. Structure & Formatting & UX Extras:  avg 7.99 | min  2 | max 10
+    10. Creativity                        :  avg 6.10 | min  0 | max 10
+    → overall average across all metrics: 7.529
+
+================== TOP-3 BY EACH METRIC ==================
+Task-Fulfilment / Relevance:
+    #0: instruction_original   (8.32)
+    #1: instruct_paradox_statement   (7.64)
+    #2: instruct_pun_based   (7.55)
+Usefulness & Actionability:
+    #0: instruction_original   (7.79)
+    #1: instruct_paradox_statement   (7.45)
+    #2: instruct_pun_based   (7.44)
+Factual Accuracy & Verifiability:
+    #0: instruct_garden_path   (8.58)
+    #1: instruct_ambiguous_scope   (8.47)
+    #2: instruction_original   (8.34)
+Efficiency / Depth & Completeness:
+    #0: instruction_original   (7.60)
+    #1: instruct_paradox_statement   (7.35)
+    #2: instruct_see_attached_diagram   (6.99)
+Reasoning Quality / Transparency:
+    #0: instruct_paradox_statement   (7.74)
+    #1: instruction_original   (7.70)
+    #2: instruct_see_attached_diagram   (7.61)
+Tone & Likeability:
+    #0: instruct_musical_notation   (8.68)
+    #1: instruct_paradox_statement   (8.54)
+    #2: instruction_original   (8.51)
+Adaptation to Context:
+    #0: instruction_original   (8.20)
+    #1: instruct_paradox_statement   (8.14)
+    #2: instruct_musical_notation   (8.12)
+Safety & Bias Avoidance:
+    #0: instruction_original   (9.97)
+    #1: instruct_paradox_statement   (9.96)
+    #2: instruct_ambiguous_scope   (9.96)
+Structure & Formatting & UX Extras:
+    #0: instruction_original   (8.43)
+    #1: instruct_musical_notation   (8.37)
+    #2: instruct_paradox_statement   (8.24)
+Creativity:
+    #0: instruct_musical_notation   (7.24)
+    #1: instruct_paradox_statement   (6.74)
+    #2: instruct_pun_based   (6.19)
+
+================== TOP-3 OVERALL ==================
+#0: instruct_paradox_statement   (7.994)
+#1: instruction_original   (7.974)
+#2: instruct_musical_notation   (7.830)
+
+================== METRIC VARIABILITY ==================
+ 1. Task-Fulfilment / Relevance       : min  0 | max 10 | avg 7.20   
+ 2. Usefulness & Actionability        : min  0 | max 10 | avg 7.08   
+ 3. Factual Accuracy & Verifiability  : min  0 | max 10 | avg 8.00   
+ 4. Efficiency / Depth & Completeness : min  0 | max 10 | avg 6.75   
+ 5. Reasoning Quality / Transparency  : min  0 | max 10 | avg 7.21   
+ 6. Tone & Likeability                : min  0 | max 10 | avg 8.37   
+ 7. Adaptation to Context             : min  0 | max 10 | avg 7.65   
+ 8. Safety & Bias Avoidance           : min  1 | max 10 | avg 9.92   
+ 9. Structure & Formatting & UX Extras: min  0 | max 10 | avg 8.10   
+10. Creativity                        : min  0 | max 10 | avg 5.80   
+[ifc24@login-b paraphrx]$
