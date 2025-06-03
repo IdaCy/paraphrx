@@ -1,15 +1,15 @@
 #!/bin/bash
-#PBS -N prx_alpaca_gen_phrx
+#PBS -N sy-la-co_1-2_prx_alpaca_gen_phrx
 #PBS -l select=1:ncpus=8:mem=64gb
 #PBS -l walltime=65:00:00
-#PBS -o logs/prx_alpaca_gen_phrx.out
-#PBS -e logs/prx_alpaca_gen_phrx.err
+#PBS -o logs/sy-la-co_1-2_prx_alpaca_gen_phrx.out
+#PBS -e logs/sy-la-co_1-2_prx_alpaca_gen_phrx.err
 
 # Move to the directory from which the job was submitted
 cd "$PBS_O_WORKDIR"
 . "$HOME/.cargo/env"
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - prx_alpaca_gen_phrx started" >> "$HOME/times.log"
+echo "$(date "+%Y-%m-%d %H:%M:%S") - sy-la-co_1-2_prx_alpaca_gen_phrx started" >> "$HOME/times.log"
 
 export GOOGLE_API_KEY=""
 
@@ -17,7 +17,7 @@ export GOOGLE_API_KEY=""
 MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
 
 
-for SLICE in 1 2 3 4 5
+for SLICE in 1 2
     do
     IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
 
@@ -34,5 +34,4 @@ for SLICE in 1 2 3 4 5
     done
 done
 
-
-echo "$(date "+%Y-%m-%d %H:%M:%S") - prx_alpaca_gen_phrx finished" >> "$HOME/times.log"
+echo "$(date "+%Y-%m-%d %H:%M:%S") - sy-la-co_1-2_prx_alpaca_gen_phrx finished" >> "$HOME/times.log"
