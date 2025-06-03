@@ -3,10 +3,13 @@ name    = "alpaca_polite_gen"
 version = "0.1.0"
 edition = "2021"
 
-# tell Cargo “my binary is that file”
 [[bin]]
 name = "generate_paraphrases"
 path = "generate_paraphrases.rs"
+
+[[bin]]
+name = "generate_paraphrases_modelchoice"
+path = "generate_paraphrases_modelchoice.rs"
 
 [dependencies]
 anyhow      = "1"

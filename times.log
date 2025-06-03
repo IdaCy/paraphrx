@@ -14,3 +14,35 @@
 2025-06-03 17:33:34 - sy-la-co_1-2_prx_alpaca_gen_phrx started
 2025-06-03 18:02:00 - sy-la-co_1-2_prx_alpaca_gen_phrx started
 2025-06-03 18:02:29 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:25:59 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:36:44 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:39:51 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:40:05 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:40:18 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:40:37 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:54:38 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 18:55:00 - sy-la-co_1-2_prx_alpaca_gen_phrx finished
+2025-06-03 18:56:30 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 19:09:24 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 19:11:50 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+[ERROR] 2025-06-03 19:13:39 - slice 2 type extra failed
+2025-06-03 19:21:40 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+[ERROR] 2025-06-03 19:21:43 - slice 2 type extra failed
+2025-06-03 19:21:43 - sy-la-co_1-2_prx_alpaca_gen_phrx finished
+2025-06-03 19:32:57 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+[ERROR] 2025-06-03 19:33:01 - slice 2 type extra failed
+2025-06-03 19:33:01 - sy-la-co_1-2_prx_alpaca_gen_phrx finished
+2025-06-03 19:33:23 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 19:38:22 - sy-la-co_1-2_prx_alpaca_gen_phrx started
+2025-06-03 20:31:49 - sy-la-co_1-2_prx_alpaca_gen_phrx finished
+2025-06-03 20:36:53 - sy-la-co_1-2_prx_alpaca_gen_phrx finished
+2025-06-03 22:13:19 - further_1-2_prx_alpaca_gen_phrx started alpaca
+2025-06-03 22:21:54 - gsmlu_1-2_prx_alpaca_gen_phrx started alpaca
+2025-06-03 22:39:32 - gsmlu_1-2_prx_alpaca_gen_phrx started alpaca
+[ERROR] 2025-06-03 22:43:19 - slice 5 type special_chars failed
+[ERROR] 2025-06-03 22:55:24 - slice 3 type language failed
+[ERROR] 2025-06-03 22:55:28 - slice 3 type context failed
+[ERROR] 2025-06-03 22:55:30 - slice 4 type language failed
+[ERROR] 2025-06-03 22:55:32 - slice 4 type context failed
+[ERROR] 2025-06-03 22:55:35 - slice 5 type language failed
+[ERROR] 2025-06-03 22:55:37 - slice 5 type context failed

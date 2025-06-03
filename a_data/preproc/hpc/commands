@@ -1,0 +1,26 @@
+for p in 14616 18654 76924 95357 16947; do
+  echo "=== wrapper $p ==="
+  kids=$(pgrep -P "$p")
+  if [ -z "$kids" ]; then
+    echo "  (no active worker — wrapper is sleeping or finished)"
+  else
+    ps -o pid,ppid,etime,args -p $(echo "$kids" | tr '\n' ',' | sed 's/,$//')
+  fi
+  echo
+done
+
+
+
+for p in 14616 18654 76924 95357 16947; do
+  echo "=== wrapper $p ==="
+  kids=$(pgrep -P "$p")
+  if [ -z "$kids" ]; then
+    echo "  (no active worker — wrapper is sleeping or finished)"
+  else
+    # -o …command (or args) plus -ww to remove width limit
+    ps -o pid,ppid,etime,command -ww -p $(echo "$kids" | paste -sd, -)
+  fi
+  echo
+done
+
+

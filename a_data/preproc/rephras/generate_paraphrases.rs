@@ -310,7 +310,9 @@ struct Cli {
 }
 
 
-const MODEL: &str = "gemini-2.5-pro-preview-05-06";
+//const MODEL: &str = "gemini-2.5-pro-preview-05-20";
+const MODEL: &str = "gemini-2.5-flash-preview-05-20";
+//const MODEL: &str = "gemini-2.5-pro-preview-05-06";
 //const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 

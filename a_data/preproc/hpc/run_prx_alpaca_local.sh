@@ -22,7 +22,7 @@ fi
 echo "$(date '+%Y-%m-%d %H:%M:%S') - sy-la-co_1-2_prx_alpaca_gen_phrx started" >> "$WORKDIR/times.log"
 
 # Optional: set your Google API key in the environment
-export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
+export GOOGLE_API_KEY=""
 
 for SLICE in 1 2; do
   IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
