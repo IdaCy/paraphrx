@@ -20,6 +20,7 @@ use time::macros::format_description;
 // logging
 use chrono::Local;
 use simplelog::{ConfigBuilder, LevelFilter, WriteLogger};
+//use std::time::Duration;
 
 // All the variant key-sets to support - Can contain '_' but no spaces
 static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_map! {
@@ -309,7 +310,8 @@ struct Cli {
 }
 
 
-const MODEL: &str = "gemini-2.5-pro-preview-05-06";
+//const MODEL: &str = "gemini-2.5-pro-preview-05-20";
+const MODEL: &str = "gemini-2.5-flash-preview-05-20";
 //const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 
@@ -433,6 +435,7 @@ fn build_client() -> Result<reqwest::Client> {
 
     let client = reqwest::Client::builder()
         .default_headers(headers)
+        .timeout(Duration::from_secs(90))
         .build()?;
 
     Ok(client)
