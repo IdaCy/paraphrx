@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N sy-la-co_1-2_prx_alpaca_gen_phrx
-#PBS -l select=1:ncpus=8:mem=64gb
-#PBS -l walltime=65:00:00
+#PBS -l select=1:ncpus=8:mem=20gb
+#PBS -l walltime=25:00:00
 #PBS -o logs/sy-la-co_1-2_prx_alpaca_gen_phrx.out
 #PBS -e logs/sy-la-co_1-2_prx_alpaca_gen_phrx.err
 
@@ -11,17 +11,17 @@ cd "$PBS_O_WORKDIR"
 
 echo "$(date "+%Y-%m-%d %H:%M:%S") - sy-la-co_1-2_prx_alpaca_gen_phrx started" >> "$HOME/times.log"
 
-export GOOGLE_API_KEY=""
+export GOOGLE_API_KEY="AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY"
 
 # Path to the Rust workspace
 MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
 
 
-for SLICE in 1 2
+for SLICE in 2 3 4 5
     do
     IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
 
-    for TYPE in syntax language context
+    for TYPE in extra boundary length obstruction special_chars style tone voice
         do
         OUT_JSON="a_data/alpaca/slice_100/prxed_"$TYPE"_slice"$SLICE".json"
         # Run the Rust program
