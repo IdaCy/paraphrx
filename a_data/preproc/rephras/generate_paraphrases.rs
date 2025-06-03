@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::{env, fs, path::PathBuf};
 use tokio::time::{sleep, Duration};
+use time::macros::format_description;
 
 // logging
 use chrono::Local;
@@ -337,10 +338,21 @@ async fn main() -> Result<()> {
     WriteLogger::init(
         LevelFilter::Info,
         ConfigBuilder::new()
-            .set_time_format_str("%Y-%m-%d %H:%M:%S")
+            .set_time_format_custom(
+                format_description!("[year]-[month]-[day] [hour]:[minute]:[second]")
+            )
             .build(),
         log_file,
     ).expect("failed to initialise file logger");
+
+    /*WriteLogger::init(
+        LevelFilter::Info,
+        ConfigBuilder::new()
+            //.set_time_format_str("%Y-%m-%d %H:%M:%S")
+            .set_time_format_custom("%Y-%m-%d %H:%M:%S")
+            .build(),
+        log_file,
+    ).expect("failed to initialise file logger");*/
 
     log::info!("Program started");
     // ---------------------------------------------------------------------
