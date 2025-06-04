@@ -31,7 +31,7 @@ done
 
 !!! in gerneal:
 # wrapper = any *.sh still running
-for p in $(pgrep -f 'run_prx_alpaca_local_modelchoice.*\.sh'); do
+for p in $(pgrep -f '.*\.sh'); do
   echo "=== wrapper $p ==="
   kids=$(pgrep -P "$p")
   if [ -z "$kids" ]; then

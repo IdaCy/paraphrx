@@ -178,3 +178,23 @@
 [ERROR] 2025-06-04 15:46:29 - type style failed
 [ERROR] 2025-06-04 15:46:38 - type special_chars failed
 [ERROR] 2025-06-04 15:48:39 - type obstruction failed
+2025-06-04 21:06:41 - gsm8k_prx started
+[ERROR] 2025-06-04 21:06:44 - type voice failed
+[ERROR] 2025-06-04 21:06:44 - type tone failed
+[ERROR] 2025-06-04 21:06:45 - type syntax failed
+[ERROR] 2025-06-04 21:06:45 - type style failed
+[ERROR] 2025-06-04 21:06:46 - type special_chars failed
+[ERROR] 2025-06-04 21:06:46 - type obstruction failed
+[ERROR] 2025-06-04 21:06:46 - type language failed
+[ERROR] 2025-06-04 21:06:47 - type length failed
+[ERROR] 2025-06-04 21:06:47 - type boundary failed
+[ERROR] 2025-06-04 21:06:48 - type extra failed
+[ERROR] 2025-06-04 21:06:48 - type context failed
+2025-06-04 21:06:48 - gsm8k_prx finished 
+2025-06-04 21:08:02 - gsm8k_prx started
+2025-06-04 21:08:42 - gsm8k_prx started
+2025-06-04 21:11:58 - gsm8k_prx started
+2025-06-04 21:15:10 - mmlu_prx started
+2025-06-04 21:23:34 - slice3_alpaca started
+2025-06-04 21:38:26 - alpacaslices_bocoexlalesp started
+2025-06-04 21:38:48 - alpacaslices_obstsytv started

@@ -1,9 +1,10 @@
-# Purpose: Re-phrase Alpaca JSON slices locally (CPU-only)
+# Purpose: Re-phrase Alpaca JSON slices locally
 # Usage:
-# chmod +x ./a_data/preproc/hpc/run_prx_alpaca_local_modelchoice_gsm8k.sh
-# nohup ./a_data/preproc/hpc/run_prx_alpaca_local_modelchoice_gsm8k.sh >  logs/prx_modelchoice_gsm8k_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# chmod +x a_data/preproc/hpc/gsm8k_prx.sh
+# nohup a_data/preproc/hpc/gsm8k_prx.sh > logs/gsm8k_prx_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# caffeinate -dims nohup a_data/preproc/hpc/gsm8k_prx.sh > logs/gsm8k_prx_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
 #
-# ps -f -u "$USER" | grep run_prx_alpaca_local_modelchoice_gsm8k.sh | grep -v grep
+# ps -f -u "$USER" | grep gsm8k_prx.sh | grep -v grep
 
 set -euo pipefail
 
@@ -27,14 +28,15 @@ fi
 #const MODEL: &str = "gemini-2.5-pro-preview-05-06";
 #const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_alpaca_gen_phrx started alpaca" >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
+export GOOGLE_API_KEY=""
 
 ### GSM8K main dataset
-IN_JSON="$DATA_DIR/gsm8k/main_500.json"
+IN_JSON="$DATA_DIR/gsm8k/original/main_500.json"
 
-for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
+#for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
+for TYPE in tone syntax style special_chars obstruction language length boundary extra context; do
   OUT_JSON="$DATA_DIR/gsm8k/main_500_prxed_${TYPE}.json"
 
   echo "Processing GSM8K ($TYPE)..."
@@ -48,5 +50,5 @@ for TYPE in voice tone syntax style special_chars obstruction language length bo
   fi
 done
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_alpaca_gen_phrx finished mmlu language" >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx finished " >> "$WORKDIR/times.log"
 echo "All slices complete."

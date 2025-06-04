@@ -32,7 +32,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - short_context_2_prx_alpaca_gen_phrx started
 
 # Optional: set your Google API key in the environment
 #export GOOGLE_API_KEY=""
-export GOOGLE_API_KEY="AIzaSyB06EIgeIZ-W5gnKvVXOGKU7CUAjyxf5bI"
+export GOOGLE_API_KEY=""
 
 for SLICE in 3; do
   IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"

@@ -1,9 +1,10 @@
 # Purpose: Re-phrase Alpaca JSON slices locally (CPU-only)
 # Usage:
-# chmod +x ./a_data/preproc/hpc/run_prx_alpaca_local_modelchoice_short_language.sh
-# nohup ./a_data/preproc/hpc/run_prx_alpaca_local_modelchoice_short_language.sh >  logs/prx_modelchoice_short_language_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# chmod +x ./a_data/preproc/hpc/slice3_alpaca_prx.sh
+# nohup ./a_data/preproc/hpc/slice3_alpaca_prx.sh > logs/slice3_alpaca_prx_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# caffeinate -dims nohup a_data/preproc/hpc/slice3_alpaca_prx.sh > logs/slice3_alpaca_prx_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
 #
-# ps -f -u "$USER" | grep run_prx_alpaca_local_modelchoice_short_language.sh | grep -v grep
+# ps -f -u "$USER" | grep slice3_alpaca_prx.sh | grep -v grep
 
 set -euo pipefail
 
@@ -26,18 +27,15 @@ fi
 #const MODEL: &str = "gemini-2.5-flash-preview-05-20";
 #const MODEL: &str = "gemini-2.5-pro-preview-05-06";
 #const MODEL: &str = "gemini-2.5-flash-preview-04-17";
-# language context !!
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - short_language_2_prx_alpaca_gen_phrx started" >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - slice3_alpaca started" >> "$WORKDIR/times.log"
 
-# Optional: set your Google API key in the environment
-#export GOOGLE_API_KEY=""
 export GOOGLE_API_KEY=""
 
 for SLICE in 3; do
   IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
 
-  for TYPE in language; do
+  for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
     OUT_JSON="$DATA_DIR/alpaca/slice_100/prxed_${TYPE}_slice${SLICE}.json"
 
     echo "▶︎ Processing slice $SLICE ($TYPE)..."
@@ -52,5 +50,5 @@ for SLICE in 3; do
   done
 done
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - short_language_2_prx_alpaca_gen_phrx finished" >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - slice3_alpaca finished" >> "$WORKDIR/times.log"
 echo "All slices complete."

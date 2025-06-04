@@ -1,9 +1,10 @@
 # Purpose: Re-phrase Alpaca JSON slices locally (CPU-only)
 # Usage:
-# chmod +x ./a_data/preproc/hpc/run_prx_alpaca_local_modelchoice_onextra25.sh
-# nohup ./a_data/preproc/hpc/run_prx_alpaca_local_modelchoice_onextra25.sh >  logs/prx_modelchoice_$(date +%Y%m%d_%H%M%S)_onextra25.log 2>&1 & disown
+# chmod +x ./a_data/preproc/hpc/alpacaslices_obstsytv.sh
+# nohup ./a_data/preproc/hpc/alpacaslices_obstsytv.sh >  logs/alpacaslices_obstsytv_$(date +%Y%m%d_%H%M%S)_onextra25.log 2>&1 & disown
+# caffeinate -dims nohup a_data/preproc/hpc/alpacaslices_obstsytv.sh > logs/alpacaslices_obstsytv_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
 #
-# ps -f -u "$USER" | grep run_prx_alpaca_local_modelchoice_onextra25.sh | grep -v grep
+# ps -f -u "$USER" | grep alpacaslices_obstsytv.sh | grep -v grep
 
 set -euo pipefail
 
@@ -27,77 +28,13 @@ fi
 #const MODEL: &str = "gemini-2.5-pro-preview-05-06";
 #const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - onextra25_prx_alpaca_gen_phrx started" >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - alpacaslices_obstsytv started" >> "$WORKDIR/times.log"
 
 export GOOGLE_API_KEY=""
 
-# TONE - 2
-SLICE="2"
-TYPE="tone"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
 
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-# VOICE - 2
-SLICE="2"
-TYPE="voice"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-# boundary - 5
-SLICE="5"
-TYPE="boundary"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-# context - 5
-SLICE="5"
-TYPE="context"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-# length - 5
-SLICE="5"
-TYPE="length"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-# obstruction - 5
-SLICE="5"
+# OBSTRUCTION - 4
+SLICE="4"
 TYPE="obstruction"
 IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
 OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
@@ -109,9 +46,10 @@ cargo gen_phrx_modchoice \
   "$IN_JSON" \
   "$OUT_JSON"
 
-# special_chars - 5
-SLICE="5"
-TYPE="special_chars"
+
+# STYLE
+SLICE="2"
+TYPE="boundary"
 IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
 OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
 echo "Processing slice $SLICE ($TYPE)..."
@@ -121,7 +59,73 @@ cargo gen_phrx_modchoice \
   --model "gemini-2.5-flash-preview-05-20" \
   "$IN_JSON" \
   "$OUT_JSON"
-  
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - onextra25_prx_alpaca_gen_phrx finished" >> "$WORKDIR/times.log"
+SLICE="4"
+TYPE="style"
+IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
+OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
+echo "Processing slice $SLICE ($TYPE)..."
+
+cargo gen_phrx_modchoice \
+  --version-set "$TYPE" \
+  --model "gemini-2.5-flash-preview-05-20" \
+  "$IN_JSON" \
+  "$OUT_JSON"
+
+
+# SYNTAX
+SLICE="2"
+TYPE="syntax"
+IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
+OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
+echo "Processing slice $SLICE ($TYPE)..."
+
+cargo gen_phrx_modchoice \
+  --version-set "$TYPE" \
+  --model "gemini-2.5-flash-preview-05-20" \
+  "$IN_JSON" \
+  "$OUT_JSON"
+
+SLICE="4"
+TYPE="syntax"
+IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
+OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
+echo "Processing slice $SLICE ($TYPE)..."
+
+cargo gen_phrx_modchoice \
+  --version-set "$TYPE" \
+  --model "gemini-2.5-flash-preview-05-20" \
+  "$IN_JSON" \
+  "$OUT_JSON"
+
+
+# TONE - 4
+SLICE="4"
+TYPE="tone"
+IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
+OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
+echo "Processing slice $SLICE ($TYPE)..."
+
+cargo gen_phrx_modchoice \
+  --version-set "$TYPE" \
+  --model "gemini-2.5-flash-preview-05-20" \
+  "$IN_JSON" \
+  "$OUT_JSON"
+
+
+# VOICE - 4
+SLICE="4"
+TYPE="voice"
+IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
+OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
+echo "Processing slice $SLICE ($TYPE)..."
+
+cargo gen_phrx_modchoice \
+  --version-set "$TYPE" \
+  --model "gemini-2.5-flash-preview-05-20" \
+  "$IN_JSON" \
+  "$OUT_JSON"
+
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - alpacaslices_obstsytv finished" >> "$WORKDIR/times.log"
 echo "All slices complete."

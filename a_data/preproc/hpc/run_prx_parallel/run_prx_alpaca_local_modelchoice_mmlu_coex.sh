@@ -29,7 +29,7 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - mmlu_coex_prx_alpaca_gen_phrx started alpaca" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyD7_c8jRdu8xwHxRTjjfJVU0slt7aAzGGI"
+export GOOGLE_API_KEY=""
 
 
 ### MMLU moral dataset
