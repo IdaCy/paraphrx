@@ -24,17 +24,17 @@ python c_assess_inf/src/run_inference_batched_type.py \
        --model google/gemma-2b-it \
        --temperature 0 \
        --max_tokens 256 \
-       --type obstruction \
+       --type style \
        --n_samples 2
 
 nohup python c_assess_inf/src/run_inference_batched_type.py \
-      a_data/alpaca/slice_100/obstruction_slice1.json \
-      c_assess_inf/output/alpaca_newphras/Qwen1.5-1.8B/obstruction_slice1_infresults.json \
+      a_data/alpaca/slice_100/style_slice1.json \
+      c_assess_inf/output/alpaca_newphras/Qwen1.5-1.8B/style_slice1_infresults.json \
       --model Qwen/Qwen1.5-1.8B \
       --batch 512 \
       --log_every 90 \
-       --type obstruction \
-      > logs/obstruction_console.out 2>&1 &
+       --type style \
+      > logs/style_console.out 2>&1 &
 # tail -f run_inf_128_google-gemma-2b-it_*.log
 # tail -f console.out
 """
