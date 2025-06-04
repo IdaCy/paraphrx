@@ -39,7 +39,7 @@ impl Logger {
         Ok(Self { writer: BufWriter::new(file) })
     }
     fn log(&mut self, msg: &str) {
-        let ts = Local::now().format("%Y-%m-%d %H:%M:%S");      // human‑readable
+        let ts = Local::now().format("%Y-%m-%d %H:%M:%S");
         let _ = writeln!(self.writer, "[{ts}] {msg}");
         let _ = self.writer.flush();
     }
