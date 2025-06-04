@@ -1,4 +1,8 @@
-for p in 14616 18654 76924 95357 16947; do
+
+ps -f -ww -u "$USER" | grep -Ei 'run_prx_alpaca_local_modelchoice' | grep -v grep
+
+
+for p in 14616 18654 76924 95357 16947 68642 69031; do
   echo "=== wrapper $p ==="
   kids=$(pgrep -P "$p")
   if [ -z "$kids" ]; then
@@ -11,7 +15,7 @@ done
 
 
 
-for p in 14616 18654 76924 95357 16947; do
+for p in 14616 18654 76924 95357 16947 68642 69031; do
   echo "=== wrapper $p ==="
   kids=$(pgrep -P "$p")
   if [ -z "$kids" ]; then
