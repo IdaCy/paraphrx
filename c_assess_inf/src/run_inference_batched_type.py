@@ -29,51 +29,12 @@ python c_assess_inf/src/run_inference_batched_type.py \
 
 nohup python c_assess_inf/src/run_inference_batched_type.py \
       a_data/alpaca/slice_100/language_slice1.json \
-      c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/language_slice1_infresults.json \
-      --model google/gemma-2-2b-it \
-      --batch 128 \
+      c_assess_inf/output/alpaca_newphras/Qwen1.5-1.8B/language_slice1_infresults.json \
+      --model Qwen/Qwen1.5-1.8B \
+      --batch 1024 \
       --log_every 90 \
-      --type language \
-      > logs/console.out 2>&1 &
-# tail -f run_inf_128_google-gemma-2b-it_*.log
-# tail -f console.out
-"""
-
-#!/usr/bin/env python3
-"""
-Each JSON needed like:
-[
-  {
-    "prompt_id": "uuid-string",
-    "instruction_original": "Give three tips for staying healthy.",
-    "input": "",  # optional – may be empty or missing
-    "instruct_apologetic": "I'm sorry to ask, but could you perhaps...",
-    "instruct_archaic": "Pray tell, reveal unto me...",
-    ...
-  },
-  ...
-]
-
-Running:
-    export HF_TOKEN="..."
-
-and then:
-
-python c_assess_inf/src/run_inference_batched.py \
-       a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json \
-       c_assess_inf/output/alpaca_prx_style1_slice1.json \
-       --model google/gemma-2b-it \
-       --temperature 0 \
-       --max_tokens 256 \
-       --n_samples 2
-
-nohup python c_assess_inf/src/run_inference_batched.py \
-      a_data/alpaca/slice_100/language_slice1.json \
-      c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/language_slice1_infresults.json \
-      --model google/gemma-2-2b-it \
-      --batch 128 \
-      --log_every 90 \
-      > logs/console.out 2>&1 &
+       --type language \
+      > logs/language_console.out 2>&1 &
 # tail -f run_inf_128_google-gemma-2b-it_*.log
 # tail -f console.out
 """
