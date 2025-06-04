@@ -1,0 +1,25 @@
+/* ----- basic layout ------------------------------------------------------ */
+body { font-family: Arial, sans-serif; margin: 20px; }
+h1   { margin-bottom: 1rem; }
+
+/* ----- tabs -------------------------------------------------------------- */
+.tabs         { margin-bottom: 1rem; }
+.tablink       { padding: 10px 20px; border: none; cursor: pointer;
+                 background:#e0e0e0; margin-right:5px; border-radius:4px 4px 0 0; }
+.tablink.active{ background:#ffffff; border-bottom:2px solid #ffffff; }
+
+.tab-content   { display:none; border:1px solid #ccc; padding:1rem;
+                 border-radius:0 4px 4px 4px; }
+.tab-content.active{ display:block; }
+
+/* ----- tables ------------------------------------------------------------ */
+.table-wrapper { max-height:450px; overflow:auto; margin-top:1rem; }
+table          { border-collapse:collapse; width:100%; }
+th,td          { border:1px solid #ddd; padding:6px 8px; text-align:center; }
+th             { background:#f4f4f4; position:sticky; top:0; z-index:1; }
+
+/* highlight top-10 % cells */
+td.top10       { background:#d2f4d2; font-weight:bold; }
+
+/* charts */
+canvas         { margin-top:2rem; max-height:500px; }

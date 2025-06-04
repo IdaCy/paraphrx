@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LLM Paraphrase-Scoring Explorer</title>
+
+  <!-- layout / colours -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- simple charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>LLM Paraphrase-Scoring Explorer</h1>
+
+  <div class="tabs">
+    <button class="tablink active" data-tab="perModelTab">Per Model</button>
+    <button class="tablink" data-tab="acrossModelsTab">Across Models</button>
+  </div>
+
+  <!-- --- TAB 1 ------------------------ -->
+  <div id="perModelTab" class="tab-content active">
+    <label for="modelSelect"><strong>Select model:</strong></label>
+    <select id="modelSelect"></select>
+
+    <div class="table-wrapper">
+      <table id="perModelTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <canvas id="perModelChart"></canvas>
+  </div>
+
+  <!-- --- TAB 2 ------------------------ -->
+  <div id="acrossModelsTab" class="tab-content">
+    <div class="table-wrapper">
+      <table id="acrossModelsTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <canvas id="acrossModelsChart"></canvas>
+  </div>
+
+  <!-- behaviour -->
+  <script type="module" src="script.js"></script>
+</body>
+</html>

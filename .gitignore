@@ -1,6 +1,6 @@
 *target
 *.lock
-notes
+notes*
 zz_archive
 !b_tests/data/*
 !c_assess_inf/output/*
