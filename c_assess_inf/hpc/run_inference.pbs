@@ -1,17 +1,18 @@
 #!/bin/bash
-#PBS -N b1lice1_run_inference
+#PBS -N boundary1lice1_run_inference
 #PBS -l select=1:ncpus=8:ngpus=1:mem=20gb
 #PBS -l walltime=05:00:00
-#PBS -o logs/b1lice1_run_inference.out
-#PBS -e logs/b1lice1_run_inference.err
+#PBS -o logs/boundary1lice1_run_inference.out
+#PBS -e logs/boundary1lice1_run_inference.err
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - b1lice1_run_inference started" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - boundary1lice1_run_inference started" >> $HOME/times.log
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
+# boundary
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
@@ -21,11 +22,13 @@ SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/run_inference_flexible.py"
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
-        a_data/alpaca/slice_100/prxed_boundary_slice1.json \
-        c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/boundary_slice1_infresults.json \
-        --model google/gemma-2-2b-it \
+        a_data/alpaca/slice_100/boundary_slice1.json \
+        c_assess_inf/output/alpaca_newphras/Qwen1.5-1.8B/boundary_slice1_infresults.json \
+        --model Qwen/Qwen1.5-1.8B \
         --temperature 0 \
         --max_tokens 256 \
         --device cuda:0
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - b1lice1_run_inference finished" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - boundary1lice1_run_inference finished" >> $HOME/times.log
+
+        #--model google/gemma-2-2b-it \
