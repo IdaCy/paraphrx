@@ -3,6 +3,7 @@
 # chmod +x ./a_data/preproc/hpc/alpacaslices_bocoexlalesp.sh
 # nohup ./a_data/preproc/hpc/alpacaslices_bocoexlalesp.sh >  logs/alpacaslices_bocoexlalesp_$(date +%Y%m%d_%H%M%S)_onextra25.log 2>&1 & disown
 # caffeinate -dims nohup a_data/preproc/hpc/alpacaslices_bocoexlalesp.sh > logs/alpacaslices_bocoexlalesp_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# caffeinate -dims a_data/preproc/hpc/alpacaslices_bocoexlalesp.sh > logs/alpacaslices_bocoexlalesp_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
 #
 # ps -f -u "$USER" | grep alpacaslices_bocoexlalesp.sh | grep -v grep
 
@@ -31,20 +32,6 @@ fi
 echo "$(date '+%Y-%m-%d %H:%M:%S') - alpacaslices_bocoexlalesp started" >> "$WORKDIR/times.log"
 
 export GOOGLE_API_KEY=""
-
-
-# BOUNDARY - 4
-SLICE="4"
-TYPE="boundary"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
 
 
 # CONTEXT - 4
