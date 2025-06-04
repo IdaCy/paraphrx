@@ -18,7 +18,7 @@ Running:
 
 and then:
 
-python c_assess_inf/src/run_inference.py \
+python c_assess_inf/src/run_inference_flexible.py \
        a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json \
        c_assess_inf/output/alpaca_prx_style1_slice1.json \
        --model google/gemma-2b-it \
