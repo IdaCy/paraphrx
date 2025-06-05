@@ -202,3 +202,36 @@
 2025-06-04 23:00:08 - alpacaslices_obstsytv started
 2025-06-04 23:10:18 - alpacaslices_bocoexlalesp started
 2025-06-04 23:10:32 - alpacaslices_obstsytv started
+[ERROR] 2025-06-05 00:01:51 - slice 3 type special_chars failed
+[ERROR] 2025-06-05 06:20:01 - type syntax failed
+2025-06-05 08:32:54 - slice3_alpaca started
+[ERROR] 2025-06-05 08:32:57 - slice 2 type special_chars_simplified failed
+[ERROR] 2025-06-05 08:32:57 - slice 3 type special_chars_simplified failed
+[ERROR] 2025-06-05 08:32:58 - slice 4 type special_chars_simplified failed
+[ERROR] 2025-06-05 08:32:58 - slice 5 type special_chars_simplified failed
+2025-06-05 08:32:58 - slice3_alpaca finished
+2025-06-05 08:33:06 - alpacaslices_obstsytv started
+2025-06-05 08:33:13 - alpacaslices_bocoexlalesp started
+2025-06-05 08:37:37 - alpacaslices_obstsytv started
+2025-06-05 08:37:44 - alpacaslices_bocoexlalesp started
+2025-06-05 08:38:46 - slice3_alpaca started
+[ERROR] 2025-06-05 09:24:48 - slice 2 type special_chars_simplified failed
+[ERROR] 2025-06-05 10:38:47 - type special_chars failed
+2025-06-05 10:41:33 - alpacaslices_obstsytv finished
+[ERROR] 2025-06-05 10:56:59 - type special_chars failed
+2025-06-05 11:05:25 - alpacaslices_bocoexlalesp finished
+[ERROR] 2025-06-05 12:04:31 - type obstruction failed
+[ERROR] 2025-06-05 12:04:36 - type language failed
+[ERROR] 2025-06-05 12:04:38 - type length failed
+[ERROR] 2025-06-05 12:05:20 - type boundary failed
+[ERROR] 2025-06-05 12:05:22 - type extra failed
+[ERROR] 2025-06-05 12:05:24 - type context failed
+[ERROR] 2025-06-05 12:13:41 - slice 4 type special_chars_simplified failed
+[ERROR] 2025-06-05 12:13:45 - slice 5 type special_chars_simplified failed
+2025-06-05 12:13:45 - slice3_alpaca finished
+[ERROR] 2025-06-05 12:13:53 - type obstruction failed
+[ERROR] 2025-06-05 15:52:24 - type language failed
+[ERROR] 2025-06-05 16:02:48 - type length failed
+[ERROR] 2025-06-05 16:51:17 - type boundary failed
+2025-06-05 17:16:33 - gsm8k_prx started
+2025-06-05 17:18:02 - slice3_alpaca started
