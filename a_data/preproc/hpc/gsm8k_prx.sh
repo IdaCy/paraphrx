@@ -36,7 +36,7 @@ export GOOGLE_API_KEY=""
 IN_JSON="$DATA_DIR/gsm8k/original/main_500.json"
 
 #for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
-for TYPE in tone syntax style special_chars obstruction language length boundary extra context; do
+for TYPE in special_chars_simplified obstruction language length boundary extra context; do
   OUT_JSON="$DATA_DIR/gsm8k/main_500_prxed_${TYPE}.json"
 
   echo "Processing GSM8K ($TYPE)..."

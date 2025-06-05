@@ -31,33 +31,8 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - alpacaslices_obstsytv started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY=""
+export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
 
-
-# STYLE
-SLICE="2"
-TYPE="style"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-SLICE="4"
-TYPE="style"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
 
 
 # SYNTAX

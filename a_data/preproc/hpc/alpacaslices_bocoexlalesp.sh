@@ -31,21 +31,7 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - alpacaslices_bocoexlalesp started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY=""
-
-
-# CONTEXT - 4
-SLICE="4"
-TYPE="context"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
+export GOOGLE_API_KEY="AIzaSyD7_c8jRdu8xwHxRTjjfJVU0slt7aAzGGI"
 
 
 # EXTRA - 5
@@ -90,33 +76,9 @@ cargo gen_phrx_modchoice \
   "$OUT_JSON"
 
 
-# SPECIAL_CHARS
-SLICE="2"
-TYPE="special_chars"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
+# STYLE
 SLICE="4"
-TYPE="special_chars"
-IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
-OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
-echo "Processing slice $SLICE ($TYPE)..."
-
-cargo gen_phrx_modchoice \
-  --version-set "$TYPE" \
-  --model "gemini-2.5-flash-preview-05-20" \
-  "$IN_JSON" \
-  "$OUT_JSON"
-
-SLICE="5"
-TYPE="special_chars"
+TYPE="style"
 IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
 OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
 echo "Processing slice $SLICE ($TYPE)..."

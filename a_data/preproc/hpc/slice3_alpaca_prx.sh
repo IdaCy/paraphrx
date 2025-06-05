@@ -32,11 +32,11 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - slice3_alpaca started" >> "$WORKDIR/times.l
 
 export GOOGLE_API_KEY=""
 
-for SLICE in 3; do
+for SLICE in 2 4 5; do
   IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
 
-  for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
-    OUT_JSON="$DATA_DIR/alpaca/slice_100/prxed_${TYPE}_slice${SLICE}.json"
+  for TYPE in special_chars_simplified; do
+    OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
 
     echo "▶︎ Processing slice $SLICE ($TYPE)..."
 
