@@ -13,3 +13,4 @@ a_data/mmlu/all.json
 a_data/alpaca/original
 a_data/alpaca/slice_1k
 a_data/preproc/rephras/target
+a_data/mmlu/unselected

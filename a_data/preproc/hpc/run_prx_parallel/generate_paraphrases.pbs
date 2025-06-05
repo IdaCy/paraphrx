@@ -1,0 +1,32 @@
+#!/bin/bash
+#PBS -N slice1_generate_paraphrases
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=10:00:00
+#PBS -o logs/slice1_generate_paraphrases.out
+#PBS -e logs/slice1_generate_paraphrases.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - slice1_generate_paraphrases started" >> "$HOME/times.log"
+
+export GOOGLE_API_KEY=""
+#export SLICE="slice1"
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
+#IN_JSON="b_tests/data/alpaca_${SLICE}.json"
+IN_JSON="a_data/alpaca/slice_100/alpaca_${SLICE}.json"
+#OUT_JSON="b_tests/data/alpaca_${SLICE}_prxed.json"
+OUT_JSON="a_data/alpaca/slice_100/alpaca_prx_special_chars2_${SLICE}.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - slice1_generate_paraphrases finished" >> "$HOME/times.log"

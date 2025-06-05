@@ -1,0 +1,31 @@
+#!/bin/bash
+#PBS -N t_prx_alpaca_gen_phrx
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=45:00:00
+#PBS -o logs/t_prx_alpaca_gen_phrx.out
+#PBS -e logs/t_prx_alpaca_gen_phrx.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - t_prx_alpaca_gen_phrx started" >> "$HOME/times.log"
+
+export GOOGLE_API_KEY=""
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
+
+IN_JSON="b_tests/phrx/alpaca_slice1.json"
+
+OUT_JSON="b_tests/phrx/tone_1.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - t_prx_alpaca_gen_phrx finished" >> "$HOME/times.log"

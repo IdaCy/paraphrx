@@ -1,0 +1,37 @@
+#!/bin/bash
+#PBS -N sy-la-co_1-2_prx_alpaca_gen_phrx
+#PBS -l select=1:ncpus=8:mem=20gb
+#PBS -l walltime=25:00:00
+#PBS -o logs/sy-la-co_1-2_prx_alpaca_gen_phrx.out
+#PBS -e logs/sy-la-co_1-2_prx_alpaca_gen_phrx.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - sy-la-co_1-2_prx_alpaca_gen_phrx started" >> "$HOME/times.log"
+
+export GOOGLE_API_KEY=""
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
+
+
+for SLICE in 2 3 4 5
+    do
+    IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
+
+    for TYPE in extra boundary length obstruction special_chars style tone voice
+        do
+        OUT_JSON="a_data/alpaca/slice_100/prxed_"$TYPE"_slice"$SLICE".json"
+        # Run the Rust program
+        cargo run \
+            --manifest-path "$MANIFEST_PATH" \
+            --release -- \
+            --version-set "$TYPE" \
+            "$IN_JSON" \
+            "$OUT_JSON"
+    done
+done
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - sy-la-co_1-2_prx_alpaca_gen_phrx finished" >> "$HOME/times.log"

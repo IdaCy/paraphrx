@@ -96,6 +96,31 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_inline_ad", "instruct_inline_url", "instruct_hashtags", "instruct_key_smash",
     ],
 
+    // SPECIAL CHARACTERS & COMBINATIONS - SIMPLIFIED NO QUOTES
+    "special_chars_simplified" => &[
+        "instruct_emoji", "instruct_emoticon", "instruct_kaomoji",
+        "instruct_confusable_unicode", "instruct_zero_width",
+        "instruct_html_tags", "instruct_several_html_tags",
+        "instruct_markdown_bold_and_italic", "instruct_markdown_bold",
+        "instruct_markdown_italic", "instruct_helpful_markdown_structure",
+        "instruct_code_fence",
+        "instruct_spoiler_bars", "instruct_zalgo", "instruct_with_inbetween_gzip_b64_blob",
+        "instruct_qr_ascii", "instruct_helpful_meaning_reinforing_characters",
+
+        // combinations with obstructions
+        "instruct_all_caps_and_typo", "instruct_all_caps_and_typo_and_missing_bracket",
+        "instruct_all_caps_and_typo_and_missing_bracket_and_random_characters",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket",
+        "instruct_random_linebreaks_and_typo_and_missing_random_characters",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket_and_wrong_punctuation",
+        "instruct_random_linebreaks_and_typo_and_missing_bracket_and_wrong_punctuation_and_extra_space",
+        "instruct_emoji_and_typo", "instruct_emoticon_and_typo", "instruct_kaomoji_and_typo",
+        "instruct_confusable_unicode_and_typo", "instruct_zero_width_and_typo",
+        "instruct_emoji_and_typo_and_missing_bracket", "instruct_emoticon_and_typo_and_missing_bracket",
+        "instruct_emoji_and_typo_and_random_question_marks", "instruct_emoticon_and_typo_and_random_exclamations",
+    ],
+
     // SPECIAL CHARACTERS & COMBINATIONS
     "special_chars" => &[
         "instruct_emoji", "instruct_emoticon", "instruct_kaomoji",

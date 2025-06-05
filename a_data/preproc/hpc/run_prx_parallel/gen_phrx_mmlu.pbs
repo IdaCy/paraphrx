@@ -1,0 +1,142 @@
+#!/bin/bash
+#PBS -N fph_mmlu_gen_phrx
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=45:00:00
+#PBS -o logs/fph_mmlu_gen_phrx.out
+#PBS -e logs/fph_mmlu_gen_phrx.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - fph_mmlu_gen_phrx started" >> "$HOME/times.log"
+
+export GOOGLE_API_KEY=""
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
+
+IN_JSON="a_data/mmlu/formal_philosophy_500.json"
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_style.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set style \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_length.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set length \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_obstruction.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set obstruction \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_special_chars.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_syntax.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set syntax \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_language.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set language \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_context.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set context \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_voice.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set voice \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_tone.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_boundary.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set boundary \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/mmlu/formal_philosophy_500_phrxd_extra.json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set extra \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - fph_mmlu_gen_phrx finished" >> "$HOME/times.log"

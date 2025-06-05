@@ -28,7 +28,6 @@ async function loadModel(model) {
   const buckets = {};   // { paraphraseVersion -> [ [10 scores], … ] }
 
   await Promise.all(categories.map(async cat => {
-    //const path = `${baseDir}/${model}/${cat}_json`;
     const path = `${baseDir}/${model}/${cat}.json`;
     try {
       const res = await fetch(path);
