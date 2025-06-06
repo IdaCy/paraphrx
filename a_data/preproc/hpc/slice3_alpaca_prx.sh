@@ -32,10 +32,10 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - slice3_alpaca started" >> "$WORKDIR/times.l
 
 export GOOGLE_API_KEY=""
 
-for SLICE in 2 4 5; do
+for SLICE in 2 3; do
   IN_JSON="$DATA_DIR/alpaca/un_prxed/slice${SLICE}.json"
 
-  for TYPE in special_chars_simplified; do
+  for TYPE in spec_char; do
     OUT_JSON="$DATA_DIR/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
 
     echo "▶︎ Processing slice $SLICE ($TYPE)..."
@@ -43,6 +43,7 @@ for SLICE in 2 4 5; do
     if ! cargo gen_phrx_modchoice \
         --version-set "$TYPE" \
         --model "gemini-2.5-flash-preview-05-20" \
+        --max-attempts 6 \
         "$IN_JSON" \
         "$OUT_JSON"; then
       echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - slice $SLICE type $TYPE failed" >> "$WORKDIR/times.log"
