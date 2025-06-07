@@ -134,7 +134,7 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
         "instruct_small_hex_blob",
     ],
     // SPECIAL CHARACTERS & COMBINATIONS - SIMPLIFIED NO QUOTES
-    "special_chars_simplified" => &[
+    "xxspecial_chars_simplified" => &[
         "instruct_emoji",
         "instruct_emoticon",
         "instruct_kaomoji",
@@ -174,7 +174,7 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
     ],
 
     // SPECIAL CHARACTERS & COMBINATIONS
-    "special_chars" => &[
+    "xxspecial_chars" => &[
         "instruct_emoji", "instruct_emoticon", "instruct_kaomoji",
         "instruct_confusable_unicode", "instruct_zero_width",
         "instruct_html_tags", "instruct_several_html_tags",
@@ -468,33 +468,48 @@ async fn main() -> Result<()> {
 
         let prompt = build_prompt(&rec.instruction_original, keys, &cli.version_set);
         let mut success = false;
+        let mut last_error: Option<anyhow::Error> = None;
+
 
         for attempt in 1..=cli.max_attempts {
-            match query_gemini(&client, &key, &schema, prompt.clone(), &cli.model).await {
+            match query_gemini(&client, &key, &schema, &prompt, &cli.model).await {
+            //match query_gemini(&client, &key, &schema, prompt.clone(), &cli.model).await {
                 Ok(ver) => {
-                        for (k, v) in ver {
-                            rec.extra.insert(k, v);
-                        }
-                        success = true;
-                        log::info!("prompt_count {} processed successfully", rec.prompt_count);
+                    for (k, v) in ver {
+                        rec.extra.insert(k, v);
+                    }
+                    success = true;
+                    log::info!("prompt_count {} processed successfully", rec.prompt_count);
                     break;
                 }
-                Err(err) if attempt < cli.max_attempts => {
-                    eprintln!(
-                        "[warn] prompt_count {} attempt {}/{} failed: {}",
-                        rec.prompt_count, attempt, cli.max_attempts, err
-                    );
-                    log::warn!("prompt_count {} attempt {}/{} failed: {}", rec.prompt_count, attempt, cli.max_attempts, err);
-                    sleep(Duration::from_millis(500 * u64::from(attempt))).await;
+                Err(err) => {
+                    last_error = Some(err);
+                    if attempt < cli.max_attempts {
+                        log::warn!(
+                            "prompt_count {} attempt {}/{} failed: {}",
+                            rec.prompt_count,
+                            attempt,
+                            cli.max_attempts,
+                            last_error.as_ref().unwrap()
+                        );
+                        sleep(Duration::from_millis(500 * u64::from(attempt))).await;
+                    } else {
+                        log::error!(
+                            "prompt_count {} failed after {} attempts – skipping.\n\
+                            Last error details:\n{}",
+                            rec.prompt_count,
+                            cli.max_attempts,
+                            last_error.as_ref().unwrap()
+                        );
+                    }
                 }
-                Err(err) => return Err(anyhow!("id {}: {}", rec.prompt_count, err)),
             }
         }
 
-        if !success {
-            return Err(anyhow!("validation failed for prompt_count {}", rec.prompt_count));
-        }
         bar.inc(1);
+        if !success {
+            continue;
+        }
     }
     bar.finish_with_message("done");
 
@@ -503,7 +518,7 @@ async fn main() -> Result<()> {
     // Write output
     let out = serde_json::to_string_pretty(&records)?;
     fs::write(&cli.output, out)?;
-    println!("utput written to {}", cli.output.display());
+    println!("output written to {}", cli.output.display());
     log::info!("Output written to {}", cli.output.display());
 
     Ok(())
@@ -558,7 +573,7 @@ async fn query_gemini(
     client: &reqwest::Client,
     key: &str,
     schema: &serde_json::Value,
-    prompt: String,
+    prompt: &str,
     model: &str,
 ) -> Result<serde_json::Map<String, serde_json::Value>> {
     let url = format!(
@@ -584,10 +599,25 @@ async fn query_gemini(
     }
 
     let resp_json: serde_json::Value = resp.json().await?;
+
+    // Gracefully report any layout surprises with the full payload
     let json_text = resp_json["candidates"][0]["content"]["parts"][0]["text"]
         .as_str()
-        .ok_or_else(|| anyhow!("unexpected response structure"))?;
+        .ok_or_else(|| {
+            anyhow!(
+                "unexpected response structure; full JSON from Gemini:\n{}",
+                serde_json::to_string_pretty(&resp_json)
+                    .unwrap_or_else(|_| "<unable to serialise>".to_string())
+            )
+        })?;
 
-    let map: serde_json::Map<String, serde_json::Value> = serde_json::from_str(json_text)?;
+    // Attach the offending string if the inner deserialise blows up
+    let map: serde_json::Map<String, serde_json::Value> =
+        serde_json::from_str(json_text).map_err(|e| {
+            anyhow!(
+                "failed to parse JSON returned by Gemini: {e}\njson_text:\n{json_text}"
+            )
+        })?;
+
     Ok(map)
 }
