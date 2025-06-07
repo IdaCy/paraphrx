@@ -40,7 +40,7 @@ for TYPE in voice tone syntax style special_chars obstruction language length bo
 
   echo "Processing mmlu ($TYPE)..."
 
-  if ! cargo gen_phrx_modchoice \
+  if ! cargo gen_phrx_skipfail \
       --version-set "$TYPE" \
       --model "gemini-2.5-flash-preview-05-20" \
       "$IN_JSON" \

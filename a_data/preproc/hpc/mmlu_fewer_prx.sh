@@ -30,12 +30,12 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - mmlu_fewer_prx started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY=""
+export GOOGLE_API_KEY="AIzaSyD7_c8jRdu8xwHxRTjjfJVU0slt7aAzGGI"
 
 ### mmlu main dataset
 IN_JSON="$DATA_DIR/mmlu/selection_original/moral_scenarios_500.json"
 
-for TYPE in syntax spec_char obstruction language length boundary; do
+for TYPE in syntax spec_char obstruction language; do
   OUT_JSON="$DATA_DIR/mmlu/moral_500_prxed_${TYPE}.json"
 
   echo "..."
@@ -43,9 +43,10 @@ for TYPE in syntax spec_char obstruction language length boundary; do
   echo "..."
   echo "Processing mmlu ($TYPE)..."
 
-  if ! cargo gen_phrx_modchoice \
+  if ! cargo gen_phrx_skipfail \
       --version-set "$TYPE" \
       --model "gemini-2.5-flash-preview-05-20" \
+      --max-attempts 6 \
       "$IN_JSON" \
       "$OUT_JSON"; then
     echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - type $TYPE failed" >> "$WORKDIR/times.log"

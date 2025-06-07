@@ -1,10 +1,10 @@
 # Purpose: Re-phrase Alpaca JSON slices locally
 # Usage:
-# chmod +x a_data/preproc/hpc/gsm8k_prx.sh
-# nohup a_data/preproc/hpc/gsm8k_prx.sh > logs/gsm8k_prx_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
-# caffeinate -dims nohup a_data/preproc/hpc/gsm8k_prx.sh > logs/gsm8k_prx_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# chmod +x a_data/preproc/hpc/gsm8k_prx_remain.sh
+# nohup a_data/preproc/hpc/gsm8k_prx_remain.sh > logs/gsm8k_prx_remain_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
+# caffeinate -dims nohup a_data/preproc/hpc/gsm8k_prx_remain.sh > logs/gsm8k_prx_remain_$(date +%Y%m%d_%H%M%S).log 2>&1 & disown
 #
-# ps -f -u "$USER" | grep gsm8k_prx.sh | grep -v grep
+# ps -f -u "$USER" | grep gsm8k_prx_remain.sh | grep -v grep
 
 set -euo pipefail
 
@@ -28,15 +28,15 @@ fi
 #const MODEL: &str = "gemini-2.5-pro-preview-05-06";
 #const MODEL: &str = "gemini-2.5-flash-preview-04-17";
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx started" >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_remain started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY=""
+export GOOGLE_API_KEY="AIzaSyDGO2Q2VtQS9oeIKOGx0ZYiqXLJyMudz3Q"
 
 ### GSM8K main dataset
 IN_JSON="$DATA_DIR/gsm8k/original/main_500.json"
 
 #for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
-for TYPE in special_chars_simplified obstruction language length boundary extra context; do
+for TYPE in spec_char language extra context; do
   OUT_JSON="$DATA_DIR/gsm8k/main_500_prxed_${TYPE}.json"
 
   echo "Processing GSM8K ($TYPE)..."
@@ -44,11 +44,12 @@ for TYPE in special_chars_simplified obstruction language length boundary extra 
   if ! cargo gen_phrx_skipfail \
       --version-set "$TYPE" \
       --model "gemini-2.5-flash-preview-05-20" \
+      --max-attempts 12 \
       "$IN_JSON" \
       "$OUT_JSON"; then
     echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - type $TYPE failed" >> "$WORKDIR/times.log"
   fi
 done
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx finished " >> "$WORKDIR/times.log"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_remain finished " >> "$WORKDIR/times.log"
 echo "All slices complete."

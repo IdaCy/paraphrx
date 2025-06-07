@@ -30,13 +30,13 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_spec_char started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyAHiQDQ0Zs-2wY8gNWWEu2bNW_Pt6Mdb68"
+export GOOGLE_API_KEY="AIzaSyDGO2Q2VtQS9oeIKOGx0ZYiqXLJyMudz3Q"
 
 ### GSM8K main dataset
 IN_JSON="$DATA_DIR/gsm8k/original/main_500.json"
 
 #for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
-for TYPE in spec_char; do
+for TYPE in spec_char language; do
   OUT_JSON="$DATA_DIR/gsm8k/main_500_prxed_${TYPE}.json"
 
   echo "---"
@@ -44,7 +44,7 @@ for TYPE in spec_char; do
   echo "---"
   echo "Processing GSM8K ($TYPE)..."
 
-  if ! cargo gen_phrx_modchoice \
+  if ! cargo gen_phrx_skipfail \
       --version-set "$TYPE" \
       --model "gemini-2.5-flash-preview-05-20" \
       --max-attempts 6 \
