@@ -1,19 +1,19 @@
 #!/bin/bash
-#PBS -N tone_gsm8k_run_inf
+#PBS -N voice_gsm8k_run_inf
 #PBS -l select=1:ncpus=8:ngpus=1:mem=49gb
 #PBS -l walltime=07:00:00
-#PBS -o logs/tone_gsm8k_run_inf.out
-#PBS -e logs/tone_gsm8k_run_inf.err
+#PBS -o logs/voice_gsm8k_run_inf.out
+#PBS -e logs/voice_gsm8k_run_inf.err
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - tone_gsm8k_run_inf started" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - voice_gsm8k_run_inf started" >> $HOME/times.log
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
 #export MODEL_NAME="Qwen/Qwen1.5-1.8B"
-# tone
+# voice
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
@@ -23,14 +23,14 @@ SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/run_inference_batched_type.py"
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
-        a_data/gsm8k/main_500_prxed_tone.json \
-        c_assess_inf/output/gsm8k/gemma-2-2b-it/tone_infresult.json \
-        --model google/gemma-2-2b-it \
+        a_data/gsm8k/prxed_main_500/voice.json \
+        c_assess_inf/output/gsm8k/Qwen1.5-1.8B/voice_infresult.json \
+        --model Qwen/Qwen1.5-1.8B \
         --batch 64 \
         --log_every 90 \
-        --type tone
+        --type gsm8k \
         --temperature 0 \
         --max_tokens 256 \
         --device cuda:0
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - tone_gsm8k_run_inf finished" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - voice_gsm8k_run_inf finished" >> $HOME/times.log
