@@ -337,3 +337,5 @@
 [ERROR] 2025-06-07 09:45:40 - type extra failed
 [ERROR] 2025-06-07 09:45:40 - type context failed
 2025-06-07 09:45:40 - gsm8k_prx_remain finished 
+[ERROR] 2025-06-07 10:01:40 - type context failed
+2025-06-07 10:01:40 - mmlu_prx_diff82_otherway finished 
