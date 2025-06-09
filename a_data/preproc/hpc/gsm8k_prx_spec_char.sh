@@ -30,7 +30,7 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_spec_char started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyDGO2Q2VtQS9oeIKOGx0ZYiqXLJyMudz3Q"
+export GOOGLE_API_KEY=""
 
 ### GSM8K main dataset
 IN_JSON="$DATA_DIR/gsm8k/original/main_500.json"

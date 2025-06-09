@@ -30,7 +30,7 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - mmlu_moral_bola started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
+export GOOGLE_API_KEY=""
 
 ### mmlu main dataset
 IN_JSON="$DATA_DIR/mmlu/selection_original/moral_scenarios_500.json"

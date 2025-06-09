@@ -97,7 +97,7 @@ static VERSION_SETS: phf::Map<&'static str, &'static [&'static str]> = phf::phf_
     ],
 
     // SPEC CHARACTERS & COMBINATIONS
-    "spec_char" => &[
+    "speci_char" => &[
         "instruct_emoji",
         "instruct_emoticon",
         "instruct_html_tags",

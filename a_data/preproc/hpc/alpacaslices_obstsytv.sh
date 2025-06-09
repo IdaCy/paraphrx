@@ -31,7 +31,7 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - alpacaslices_obstsytv started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
+export GOOGLE_API_KEY=""
 
 
 

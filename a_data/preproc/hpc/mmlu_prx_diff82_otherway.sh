@@ -30,12 +30,12 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - mmlu_prx_diff82_otherway started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyD7_c8jRdu8xwHxRTjjfJVU0slt7aAzGGI"
+export GOOGLE_API_KEY=""
 
 ### mmlu main dataset
 IN_JSON="$DATA_DIR/mmlu/selection_original/moral_scenarios_diff82_500.json"
 
-for TYPE in language context; do
+for TYPE in speci_char obstruction; do
   OUT_JSON="$DATA_DIR/mmlu/main_500_prxed_diff82_${TYPE}.json"
 
   echo "Processing mmlu ($TYPE)..."

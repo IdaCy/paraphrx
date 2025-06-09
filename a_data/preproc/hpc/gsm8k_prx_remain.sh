@@ -30,13 +30,13 @@ fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - gsm8k_prx_remain started" >> "$WORKDIR/times.log"
 
-export GOOGLE_API_KEY="AIzaSyDGO2Q2VtQS9oeIKOGx0ZYiqXLJyMudz3Q"
+export GOOGLE_API_KEY=""
 
 ### GSM8K main dataset
 IN_JSON="$DATA_DIR/gsm8k/original/main_500.json"
 
 #for TYPE in voice tone syntax style special_chars obstruction language length boundary extra context; do
-for TYPE in spec_char language extra context; do
+for TYPE in extra; do
   OUT_JSON="$DATA_DIR/gsm8k/main_500_prxed_${TYPE}.json"
 
   echo "Processing GSM8K ($TYPE)..."
