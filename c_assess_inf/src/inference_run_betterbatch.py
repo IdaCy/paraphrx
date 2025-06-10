@@ -18,41 +18,29 @@ Running:
 
 and then:
 
-python c_assess_inf/src/inference_run.py \
-       a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json \
-       c_assess_inf/output/alpaca_prx_style1_slice1.json \
-       --model google/gemma-2b-it \
-       --temperature 0 \
-       --max_tokens 256 \
-       --type style \
-       --n_samples 2
+chmod +x c_assess_inf/src/inference_run_betterbatch.py
+run_log=logs/$(basename "$0")_$(date +%Y%m%d_%H%M%S).out
+chmod +x run_inference.sh
+pgrep -af inference_run_betterbatch.py 
 
 
+./run_inference.sh \
+  a_data/alpaca/slice_100/speci_char_slice1.json \
+  c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice1.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --type speci_char &
+
+next:
 
 
+./run_inference.sh \
+  a_data/mmlu/prxed_moral_500/context.json \
+  c_assess_inf/output/mmlu/gemma-2-2b-it/context.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --type context &
 
-nohup python c_assess_inf/src/inference_run.py \
-      a_data/alpaca/slice_100/speci_char_slice1.json \
-      c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice1.json \
-      --model google/gemma-2-2b-it \
-      --batch 2048 \
-      --log_every 200 \
-      --type speci_char \
-      > logs/speci_char_console.out 2>&1 &
-
-nohup python c_assess_inf/src/inference_run.py \
-      a_data/mmlu/prxed_moral_500/context.json \
-      c_assess_inf/output/mmlu/gemma-2-2b-it/gemma-2-2b-it/context.json \
-      --model google/gemma-2-2b-it \
-      --batch 1024 \
-      --log_every 90 \
-      --type context \
-      > logs/context_console.out 2>&1 &
-
-
-
-# tail -f run_inf_128_google-gemma-2b-it_*.log
-# tail -f console.out
 """
 from __future__ import annotations
 
@@ -68,6 +56,7 @@ import torch
 from huggingface_hub import login as hf_login, HfApi
 from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 from tqdm import tqdm
+import gc
 
 
 # Helpers
@@ -88,17 +77,43 @@ def assert_model_access(model_id: str, token: Optional[str]) -> None:
         ) from e
 
 
-def iter_instruction_variants(item: Dict[str, str]) -> List[str]:
-    variants = [item["instruction_original"].strip()]
-    variants.extend(item[k].strip() for k in sorted(item) if k.startswith("instruct_"))
-    return variants
-
-
 def build_prompt(instruction: str, raw_input: str | None) -> str:
     if raw_input:
         return f"{instruction}\n\nInput:\n{raw_input.strip()}\n\nResponse:"
     return f"{instruction}\n\nResponse:"
 
+
+# Batching helpers
+
+def flatten_dataset(
+    data: List[Dict[str, str]]
+) -> tuple[list[tuple[str, str, str]], Dict[str, Dict[str, str]]]:
+    """
+    Return
+      • flat_queue – list of (prompt_id, key, prompt_text) tuples
+      • results_map – dict mapping prompt_id -> result-dict ready for completions
+    """
+    flat_queue: list[tuple[str, str, str]] = []
+    results_map: Dict[str, Dict[str, str]] = {}
+
+    for item in data:
+        prompt_id = item.get("prompt_id", "")
+        # Prepare per-item result shell
+        res_entry: Dict[str, str] = {"prompt_id": prompt_id}
+        if "prompt_count" in item:
+            res_entry["prompt_count"] = item["prompt_count"]
+        results_map[prompt_id] = res_entry
+
+        raw_input = item.get("input", "")
+        instruction_keys = ["instruction_original"] + [
+            k for k in sorted(item) if k.startswith("instruct_")
+        ]
+        for key in instruction_keys:
+            flat_queue.append(
+                (prompt_id, key, build_prompt(item[key].strip(), raw_input))
+            )
+
+    return flat_queue, results_map
 
 # Main                                                                         #
 
@@ -157,80 +172,66 @@ def main() -> None:
         args.model,
         trust_remote_code=True,
     )
+
+    torch.cuda.empty_cache()
+    torch.cuda.ipc_collect()
+    gc.collect()
+
     model = AutoModelForCausalLM.from_pretrained(
         args.model,
-        torch_dtype=torch.float16,
+        torch_dtype=torch.bfloat16,
         device_map=args.device,
-        trust_remote_code=True,
     )
     model.eval()
 
-    # Stream through dataset -> generate completions
+    # Stream through dataset → real batching across *all* items
     data: List[Dict[str, str]] = json.loads(Path(args.input_json).read_text())
     if args.n_samples is not None:
         data = data[: args.n_samples]
-    results: List[Dict[str, str]] = []
 
-    def batched(seq, n):
-        """Simple slicer → (seq[i : i+n] for i in range(0, len(seq), n))."""
-        for i in range(0, len(seq), n):
-            yield seq[i : i + n]
+    flat_queue, results_map = flatten_dataset(data)
 
-    for idx, item in enumerate(tqdm(data, desc="generating"), 1):
-        try:
-            prompt_id = item.get("prompt_id", "")
-            prompt_count = item.get("prompt_count")
-            raw_input = item.get("input", "")
+    for start in tqdm(range(0, len(flat_queue), args.batch), desc="generating"):
+        batch_slice = flat_queue[start : start + args.batch]
+        batch_ids, batch_keys, batch_texts = zip(*batch_slice)
 
-            prompt_result: Dict[str, str] = {"prompt_id": prompt_id}
-            if prompt_count is not None:
-                prompt_result["prompt_count"] = prompt_count
+        inputs = tokenizer(
+            list(batch_texts), return_tensors="pt", padding=True
+        ).to(model.device)
+        input_lens = inputs["attention_mask"].sum(dim=1)
 
-            instruction_keys = ["instruction_original"] + [
-                k for k in sorted(item) if k.startswith("instruct_")
-            ]
-            # Build (key, prompt_text) tuples once
-            variant_prompts = [
-                (key, build_prompt(item[key].strip(), raw_input))
-                for key in instruction_keys
-            ]
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_new_tokens=args.max_tokens,
+                temperature=args.temperature,
+                pad_token_id=tokenizer.eos_token_id,
+            )
 
-            # --- NEW: truly batched generation ---------------------------------
-            for batch in batched(variant_prompts, args.batch):
-                batch_keys, batch_texts = zip(*batch)
-                inputs = tokenizer(
-                    list(batch_texts), return_tensors="pt", padding=True
-                ).to(model.device)
-                input_lens = inputs["attention_mask"].sum(dim=1)
+        # Scatter completions back to their owning prompt-dict
+        for i in range(len(batch_slice)):
+            start_tok = int(input_lens[i])
+            completion_ids = outputs[i, start_tok:]
+            completion = tokenizer.decode(
+                completion_ids, skip_special_tokens=True
+            ).strip()
+            results_map[batch_ids[i]][batch_keys[i]] = completion
 
-                with torch.no_grad():
-                    outputs = model.generate(
-                        **inputs,
-                        max_new_tokens=args.max_tokens,
-                        temperature=args.temperature,
-                        pad_token_id=tokenizer.eos_token_id,
-                    )
+        # FREE GPU MEMORY AFTER THIS BATCH
+        del inputs, outputs                    # drop Tensor references
+        torch.cuda.empty_cache()               # return cached blocks
+        torch.cuda.ipc_collect()               # release CUDA IPC handles
+        gc.collect()                           # Python GC
 
-                for i, key in enumerate(batch_keys):
-                    start = int(input_lens[i])
-                    completion_ids = outputs[i, start:]
-                    prompt_result[key] = (
-                        tokenizer.decode(completion_ids, skip_special_tokens=True).strip()
-                    )
-            # --------------------------------------------------------------------
+        if (start + len(batch_slice)) % args.log_every == 0:
+            logging.info(
+                "Processed %d / %d prompts",
+                start + len(batch_slice),
+                len(flat_queue),
+            )
 
-            results.append(prompt_result)
-
-            if idx % args.log_every == 0:
-                logging.info(
-                    "Processed %d / %d prompts (last prompt_id=%s)",
-                    idx,
-                    len(data),
-                    prompt_id,
-                )
-        except Exception:  # noqa: BLE001
-            logging.exception("FAILED on prompt_id=%s  (index %d)", prompt_id, idx)
-            raise
+    # Collect final list in original order
+    results: List[Dict[str, str]] = list(results_map.values())
 
     # Persist
     Path(args.output_json).write_text(json.dumps(results, indent=2, ensure_ascii=False))
