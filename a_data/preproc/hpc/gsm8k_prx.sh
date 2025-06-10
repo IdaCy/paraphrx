@@ -44,6 +44,7 @@ for TYPE in language context; do
   if ! cargo gen_phrx_skipfail \
       --version-set "$TYPE" \
       --model "gemini-2.5-flash-preview-05-20" \
+      --max-attempts 12 \
       "$IN_JSON" \
       "$OUT_JSON"; then
     echo "[ERROR] $(date '+%Y-%m-%d %H:%M:%S') - type $TYPE failed" >> "$WORKDIR/times.log"
