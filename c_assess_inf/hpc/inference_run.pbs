@@ -17,8 +17,6 @@ nvidia-smi --query-gpu=name --format=csv,noheader
 # speci_char
 # ice3
 
-#done q: speci_char speci_char speci_char speci_char obxtruction,   queued spec, speci_char, speci_char
-
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
 SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run.py"
@@ -28,8 +26,8 @@ singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
         a_data/alpaca/slice_100/speci_char_slice3.json \
-        c_assess_inf/output/alpaca_newphras/gemma-2-9b-it/speci_char_slice3.json \
-        --model google/gemma-2-9b-it \
+        c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice3.json \
+        --model google/gemma-2-2b-it \
         --batch 32 \
         --log_every 90 \
         --type speci_char \
