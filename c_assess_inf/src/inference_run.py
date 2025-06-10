@@ -18,7 +18,7 @@ Running:
 
 and then:
 
-python c_assess_inf/src/run_inference_batched_type.py \
+python c_assess_inf/src/inference_run.py \
        a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json \
        c_assess_inf/output/alpaca_prx_style1_slice1.json \
        --model google/gemma-2b-it \
@@ -27,14 +27,66 @@ python c_assess_inf/src/run_inference_batched_type.py \
        --type style \
        --n_samples 2
 
-nohup python c_assess_inf/src/run_inference_batched_type.py \
-      a_data/alpaca/slice_100/style_slice1.json \
-      c_assess_inf/output/alpaca_newphras/Qwen1.5-1.8B/style_slice1_infresults.json \
+
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/alpaca/slice_100/context_slice1.json \
+      c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/context_slice1.json \
       --model Qwen/Qwen1.5-1.8B \
-      --batch 512 \
+      --batch 4096 \
       --log_every 90 \
-       --type style \
-      > logs/style_console.out 2>&1 &
+      --type context \
+      > logs/context_console.out 2>&1 &
+
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/gsm8k/prxed_main_500/context.json \
+      c_assess_inf/output/gsm8k/gemma-2-2b-it/context.json \
+      --model Qwen/google/gemma-2-2b-it \
+      --batch 2048 \
+      --log_every 90 \
+      --type context \
+      > logs/context_console.out 2>&1 &
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/gsm8k/prxed_main_500/language.json \
+      c_assess_inf/output/gsm8k/gemma-2-2b-it/language.json \
+      --model Qwen/google/gemma-2-2b-it \
+      --batch 1024 \
+      --log_every 90 \
+      --type language \
+      > logs/language_console.out 2>&1 &
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/gsm8k/prxed_main_500/language.json \
+      c_assess_inf/output/gsm8k/gemma-2-2b-it/language.json \
+      --model Qwen/google/gemma-2-2b-it \
+      --batch 1024 \
+      --log_every 90 \
+      --type language \
+      > logs/language_console.out 2>&1 &
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/gsm8k/prxed_main_500/obstruction.json \
+      c_assess_inf/output/gsm8k/gemma-2-2b-it/obstruction.json \
+      --model Qwen/google/gemma-2-2b-it \
+      --batch 1024 \
+      --log_every 90 \
+      --type obstruction \
+      > logs/obstruction_console.out 2>&1 &
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/gsm8k/prxed_main_500/extra.json \
+      c_assess_inf/output/gsm8k/gemma-2-2b-it/extra.json \
+      --model Qwen/google/gemma-2-2b-it \
+      --batch 1024 \
+      --log_every 90 \
+      --type extra \
+      > logs/extra_console.out 2>&1 &
+
+
+
+
 # tail -f run_inf_128_google-gemma-2b-it_*.log
 # tail -f console.out
 """
