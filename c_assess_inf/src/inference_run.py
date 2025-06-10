@@ -19,6 +19,7 @@ Running:
 and then:
 
 python c_assess_inf/src/inference_run.py \
+python c_assess_inf/src/inference_run.py \
        a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json \
        c_assess_inf/output/alpaca_prx_style1_slice1.json \
        --model google/gemma-2b-it \
@@ -27,6 +28,24 @@ python c_assess_inf/src/inference_run.py \
        --type style \
        --n_samples 2
 
+
+
+
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/alpaca/slice_100/speci_char_slice1.json \
+      c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice1.json \
+      --model google/gemma-2-2b-it \
+      --batch 2048 \
+      --log_every 200 \
+      --type speci_char \
+      > logs/speci_char_console.out 2>&1 &
+
+nohup python c_assess_inf/src/inference_run.py \
+      a_data/mmlu/prxed_moral_500/context.json \
+      c_assess_inf/output/mmlu/gemma-2-2b-it/gemma-2-2b-it/context.json \
+      --model google/gemma-2-2b-it \
+      --batch 1024 \
 
 
 nohup python c_assess_inf/src/inference_run.py \
@@ -81,6 +100,11 @@ nohup python c_assess_inf/src/inference_run.py \
       --model Qwen/google/gemma-2-2b-it \
       --batch 1024 \
       --log_every 90 \
+      --type context \
+      > logs/context_console.out 2>&1 &
+
+
+
       --type extra \
       > logs/extra_console.out 2>&1 &
 
