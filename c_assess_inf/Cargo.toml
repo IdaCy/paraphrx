@@ -5,22 +5,16 @@ edition = "2021"
 
 
 [[bin]]
-name = "assess_results"       # cargo run --bin assess_results
-path = "src/assess_results.rs"
-
-[[bin]]
-name = "assess_results_robust"
-path = "src/assess_results_robust.rs"
-#path = "src/assess_results.rs"
-
-[[bin]]
-name = "assess_results_robust_longinstruct"
-path = "src/assess_results_robust_longinstruct.rs"
+name = "results_assess"       # cargo run --bin results_assess
+path = "src/results_assess.rs"
 
 [[bin]]
 name = "summarise_scores"     # cargo run --bin summarise_scores
 path = "src/summarise_scores.rs"
 
+[[bin]]
+name = "merge_jsons"
+path = "src/merge_jsons.rs"
 
 # Shared dependencies for both binaries
 [dependencies]

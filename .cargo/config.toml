@@ -1,7 +1,5 @@
 [alias]
-assess  = "run -p c_assess_inf --bin assess_results"
-assess_robust  = "run -p c_assess_inf --bin assess_results_robust"
-assess_robust_longinstruct  = "run -p c_assess_inf --bin assess_results_robust_longinstruct"
+results_assess  = "run -p c_assess_inf --bin results_assess"
 summary = "run -p c_assess_inf --bin summarise_scores"
-gen_phrx_modchoice = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin generate_paraphrases_modelchoice --release --"
 gen_phrx_skipfail = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin generate_paraphrases_skipfail --release --"
+jsmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_jsons --release --"
