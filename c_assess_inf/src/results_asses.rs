@@ -4,9 +4,9 @@ cargo assess_robust \
   --release \
   -- \
   --model gemini-2.0-flash \
-  b_tests/data/alpaca_2_politeness.json \
-  b_tests/assess_inf/results_2.json \
-  b_tests/assess_inf/results_2_eval6.json
+  a_data/alpaca/merge_instructs/all.json \
+  c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all.json \
+  c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all_results.json
 */
 
 use anyhow::{anyhow, Context, Result};

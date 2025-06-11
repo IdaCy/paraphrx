@@ -32,6 +32,28 @@ cargo instructmerge \
     a_data/alpaca/slice_500/syntax.json \
     a_data/alpaca/slice_500/tone.json \
     a_data/alpaca/slice_500/voice.json
+
+
+
+cargo instructmerge \
+    -o a_data/alpaca/merge_instructs/coobsyvo.json \
+    -s input \
+    -s instruction_original \
+    -s output \
+    -s prompt_id \
+    a_data/alpaca/slice_500/context.json \
+    a_data/alpaca/slice_500/obstruction.json \
+    a_data/alpaca/slice_500/syntax.json \
+    a_data/alpaca/slice_500/voice.json
+
+
+cargo instructmerge \
+    -o c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/exlesp.json \
+    -s instruction_original \
+    -s prompt_id \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/extra.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/length.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/speci_char.json
 */
 
 use std::{collections::{HashMap, HashSet}, fs, path::PathBuf};
