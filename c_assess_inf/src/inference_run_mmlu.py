@@ -59,7 +59,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 from tqdm import tqdm
 import gc
 
-# Helpers                                                                     #
+# Helpers
 def ensure_hf_auth(token: Optional[str]) -> None:
     """Authenticate with the Hub *once* for the current process."""
     if token:
@@ -97,7 +97,7 @@ def build_prompt(
     return f"{instruction}\n\nResponse:"
 
 
-# Batching helpers                                                            #
+# Batching helpers
 def flatten_dataset(
     data: List[Dict[str, str]]
 ) -> tuple[list[tuple[str, str, str]], Dict[str, Dict[str, str]]]:
@@ -142,7 +142,7 @@ def flatten_dataset(
     return flat_queue, results_map
 
 
-# Main                                                                        #
+# Main
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run single-turn inference over an Alpaca paraphrase dataset."
