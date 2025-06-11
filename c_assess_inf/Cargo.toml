@@ -20,10 +20,6 @@ path = "src/merge_jsons.rs"
 name = "merge_instructs"
 path = "src/merge_instructs.rs"
 
-[[bin]]
-name = "add_scenarios"
-path = "src/add_scenarios.rs"
-
 # Shared dependencies for both binaries
 [dependencies]
 anyhow     = "1"
