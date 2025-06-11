@@ -31,15 +31,6 @@ pgrep -af inference_run_betterbatch.py
   --batch 256 \
   --type speci_char &
 
-
-next:
-./run_inference.sh \
-  a_data/mmlu/prxed_moral_500/context.json \
-  c_assess_inf/output/mmlu/gemma-2-2b-it/context.json \
-  --model google/gemma-2-2b-it \
-  --batch 256 \
-  --type context &
-
 """
 from __future__ import annotations
 

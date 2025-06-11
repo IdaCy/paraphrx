@@ -17,6 +17,10 @@ name = "merge_jsons"
 path = "src/merge_jsons.rs"
 
 [[bin]]
+name = "split_jsons"
+path = "src/split_jsons.rs"
+
+[[bin]]
 name = "merge_instructs"
 path = "src/merge_instructs.rs"
 
