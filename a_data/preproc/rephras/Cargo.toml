@@ -15,6 +15,10 @@ path = "generate_paraphrases_modelchoice.rs"
 name = "generate_paraphrases_skipfail"
 path = "generate_paraphrases_skipfail.rs"
 
+[[bin]]
+name = "add_scenarios"
+path = "src/add_scenarios.rs"
+
 [dependencies]
 anyhow      = "1"
 clap        = { version = "4", features = ["derive"] }
