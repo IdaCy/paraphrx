@@ -1,14 +1,14 @@
 #!/bin/bash
-#PBS -N q_voice_mmlu_run_inf
+#PBS -N mm_q_voice_mmlu_run_inf
 #PBS -l select=1:ncpus=8:ngpus=1:mem=49gb
 #PBS -l walltime=07:00:00
-#PBS -o logs/q_voice_mmlu_run_inf.out
-#PBS -e logs/q_voice_mmlu_run_inf.err
+#PBS -o logs/mm_q_voice_mmlu_run_inf.out
+#PBS -e logs/mm_q_voice_mmlu_run_inf.err
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - q_voice_mmlu_run_inf started" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - mm_q_voice_mmlu_run_inf started" >> $HOME/times.log
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
@@ -17,15 +17,15 @@ nvidia-smi --query-gpu=name --format=csv,noheader
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
-SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run.py"
+SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run_betterbatch.py"
 
 # Run the script inside the container
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
-        a_data/mmlu/prxed_moral_500/q_voice.json \
-        c_assess_inf/output/mmlu/Qwen1.5-1.8B/q_voice_infresult.json \
-        --model google/Qwen1.5-1.8B \
+        a_data/mmlu/prxed_moral_500/voice.json \
+        c_assess_inf/output/mmlu/Qwen1.5-1.8B/voice.json \
+        --model Qwen/Qwen1.5-1.8B" \
         --batch 64 \
         --log_every 90 \
         --type mmlu \
@@ -33,4 +33,4 @@ singularity exec --nv \
         --max_tokens 256 \
         --device cuda:0
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - q_voice_mmlu_run_inf finished" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - mm_q_voice_mmlu_run_inf finished" >> $HOME/times.log

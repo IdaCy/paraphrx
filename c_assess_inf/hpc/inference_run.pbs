@@ -19,7 +19,7 @@ nvidia-smi --query-gpu=name --format=csv,noheader
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
-SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run.py"
+SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run_betterbatch.py"
 
 # Run the script inside the container
 singularity exec --nv \

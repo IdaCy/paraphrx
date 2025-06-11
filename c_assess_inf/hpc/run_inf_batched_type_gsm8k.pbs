@@ -1,14 +1,14 @@
 #!/bin/bash
-#PBS -N g2_spec_char_gsm8k_run_inf
+#PBS -N g8k_q_spec_char_run_inf
 #PBS -l select=1:ncpus=8:ngpus=1:mem=49gb
 #PBS -l walltime=07:00:00
-#PBS -o logs/g2_spec_char_gsm8k_run_inf.out
-#PBS -e logs/g2_spec_char_gsm8k_run_inf.err
+#PBS -o logs/g8k_q_spec_char_run_inf.out
+#PBS -e logs/g8k_q_spec_char_run_inf.err
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - g2_spec_char_gsm8k_run_inf started" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - g8k_q_spec_char_run_inf started" >> $HOME/times.log
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
@@ -17,14 +17,14 @@ nvidia-smi --query-gpu=name --format=csv,noheader
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
-SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run.pyy"
+SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run_betterbatch.py"
 
 # Run the script inside the container
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
         a_data/gsm8k/prxed_main_500/spec_char.json \
-        c_assess_inf/output/gsm8k/gemma-2-2b-it/spec_char.json \
+        c_assess_inf/output/gsm8k/Qwen1.5-1.8B/spec_char.json \
         --model Qwen/Qwen1.5-1.8B"\
         --batch 64 \
         --log_every 90 \
@@ -33,4 +33,4 @@ singularity exec --nv \
         --max_tokens 256 \
         --device cuda:0
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - g2_spec_char_gsm8k_run_inf finished" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - g8k_q_spec_char_run_inf finished" >> $HOME/times.log
