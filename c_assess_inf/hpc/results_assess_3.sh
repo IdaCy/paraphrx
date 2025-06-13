@@ -6,7 +6,7 @@
 #   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_3.sh
 #
 #   # run only specific types
-#   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_3.sh extra length speci_char
+#   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_3.sh style syntax
 
 set -uo pipefail
 trap 'echo "› CTRL-C – stopping"; kill -TERM -- -$$' INT TERM

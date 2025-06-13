@@ -12,7 +12,7 @@
 #   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_1.sh
 #
 #   # run only specific types
-#   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_1.sh boundary language style tone
+#   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_1.sh extra_b
 
 set -uo pipefail
 trap 'echo "› CTRL-C – stopping"; kill -TERM -- -$$' INT TERM

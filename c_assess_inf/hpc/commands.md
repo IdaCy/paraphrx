@@ -6,7 +6,7 @@ chmod +x c_assess_inf/hpc/results_assess_1.sh
 done=$(grep -c '\[done\] .* fully processed' logs/boundary_results_gemini_2_5_flash_preview_05_20.logs)
 echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
 
-done=$(grep -c '\[done\] .* fully processed' logs/length_results_gemini_2_5_flash_preview_05_20.logs)
+done=$(grep -c '\[done\] .* fully processed' logs/obstruction_results_gemini_2_5_flash_preview_05_20.logs)
 echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
 
 # run all 11 types
@@ -28,4 +28,3 @@ for f in logs/*_results_gemini_2_5_flash_preview_05_20.logs(N); do
   percent=$(( done * 100 / 500 ))
   printf "%-12s %3d%%\n" "${${f:t}%_results*}" "$percent"
 done
-
