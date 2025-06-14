@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ps -o pid,pgid,comm,args -u "$USER" | egrep 'results_assess_[0-9].sh'
-# chmod +x c_assess_inf/hpc/results_assess_1.sh
+# ps -o pid,pgid,comm,args -u "$USER" | egrep 'results_q_assess_[0-9].sh'
+# chmod +x c_assess_inf/hpc/results_q_assess_2.sh
 #
 # done=$(grep -c '\[done\] .* fully processed' logs/boundary_results_gemini_2_5_flash_preview_05_20.logs)
 # echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
@@ -9,10 +9,10 @@
 # echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
 #
 #   # run all 11 types
-#   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_1.sh
+#   caffeinate -dimsu ./c_assess_inf/hpc/results_q_assess_2.sh
 #
 #   # run only specific types
-#   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_1.sh voice
+#   caffeinate -dimsu ./c_assess_inf/hpc/results_q_assess_2.sh extra_a extra_b tone voice
 
 set -uo pipefail
 trap 'echo "› CTRL-C – stopping"; kill -TERM -- -$$' INT TERM
@@ -20,10 +20,10 @@ set -m
 
 MODEL="gemini-2.5-flash-preview-05-20"
 INSTR_DIR="a_data/alpaca/slice_500"
-ANSW_DIR="c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged"
+ANSW_DIR="c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B"
 OUT_DIR="$ANSW_DIR"
 
-export GOOGLE_API_KEY="AIzaSyDGO2Q2VtQS9oeIKOGx0ZYiqXLJyMudz3Q"
+export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then
@@ -31,7 +31,7 @@ if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then
   nohup caffeinate -dimsu "$0" "$@" \
         </dev/null >/dev/null 2>&1 &          # background + keep-awake
   disown                                      # release from this shell
-  echo "results_assess batch detached → check logs/ directory for progress"
+  echo "results_q_assess batch detached → check logs/ directory for progress"
   exit 0                                      # give control back to the terminal
 fi
 
@@ -45,7 +45,7 @@ fi
 # ────────── create a single master log and redirect everything ────────────
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/bolastto_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/q2_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1          # ← nothing will hit the terminal now
 set -x                              # keep command echoing, goes to log
 
@@ -63,7 +63,7 @@ for TYPE in "${TYPES[@]}"; do
   fi
 
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/bolastto_${TYPE}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/q2__${TYPE}-${TS}.txt"
 
   echo "▶ $TYPE – starting $(date)  (log → $LOG_FILE)"
 
