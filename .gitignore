@@ -16,3 +16,4 @@ a_data/preproc/rephras/target
 a_data/mmlu/unselected
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all.json
 c_assess_inf/output/xmmlu/
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/extra.json
