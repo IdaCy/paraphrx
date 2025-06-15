@@ -9,6 +9,15 @@ echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
 done=$(grep -c '\[done\] .* fully processed' logs/obstruction_results_gemini_2_5_flash_preview_05_20.logs)
 echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
 
+
+# in logs/voice_results_gemini_2_5_flash_preview_05_20.logs
+ps -o pid,pgid,comm,args -u "$USER" | egrep 'results_q_assess_[0-9].sh'
+
+
+done=$(grep -c '\[done\] .* fully processed' logs/voice_results_gemini_2_5_flash_preview_05_20.logs)
+echo "$done / 500  ($(printf '%0.1f' "$(bc -l <<< "$done*100/500")") %)"
+
+
 # run all 11 types
   caffeinate -dimsu ./c_assess_inf/hpc/results_assess_1.sh
 

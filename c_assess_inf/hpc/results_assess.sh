@@ -19,7 +19,7 @@ ANSWERS="c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/bolastto
 OUTPUT="c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/bolastto_results_gem25flash52.json"
 
 # required environment
-export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
+export GOOGLE_API_KEY=""
 
 # logging
 TS="$(date '+%Y%m%d_%H%M%S')"

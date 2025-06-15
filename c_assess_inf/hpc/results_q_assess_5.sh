@@ -23,7 +23,7 @@ INSTR_DIR="a_data/alpaca/slice_500"
 ANSW_DIR="c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B"
 OUT_DIR="$ANSW_DIR"
 
-export GOOGLE_API_KEY="AIzaSyAHiQDQ0Zs-2wY8gNWWEu2bNW_Pt6Mdb68"
+export GOOGLE_API_KEY=""
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then

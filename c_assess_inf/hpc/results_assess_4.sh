@@ -17,7 +17,7 @@ INSTR_DIR="a_data/alpaca/slice_500"
 ANSW_DIR="c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged"
 OUT_DIR="$ANSW_DIR"
 
-export GOOGLE_API_KEY="AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc"
+export GOOGLE_API_KEY=""
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then
