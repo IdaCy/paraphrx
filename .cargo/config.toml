@@ -4,5 +4,6 @@ gen_phrx_skipfail = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin
 results_assess = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess --release --"
 jsmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_jsons --release --"
 jssplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_jsons --release --"
+countsplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_prompt_counts --release --"
 instructmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_instructs --release --"
 add_scenarios = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin add_scenarios --release --"

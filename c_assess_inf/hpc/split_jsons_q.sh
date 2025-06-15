@@ -1,7 +1,7 @@
 #!/opt/homebrew/bin/bash
 set -euo pipefail
 
-INPUT="c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/extra.json"
+INPUT="c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/obstruction.json"
 
 TOTAL=$(jq '.[0] | keys_unsorted | map(select(startswith("instruct_"))) | length' "$INPUT")
 HALF=$(( TOTAL / 2 ))
@@ -18,8 +18,8 @@ for k in "${KEEP[@]}"; do
 done
 
 cargo jssplit \
-    -i c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/extra.json \
-    -a c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/extra_a.json \
-    -b c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/extra_b.json \
+    -i c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/obstruction.json \
+    -a c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/split_answers/obstruction_a.json \
+    -b c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/split_answers/obstruction_b.json \
     -d prompt_count -d prompt_id -d instruction_original \
     $(printf -- '-k %s ' "${KEEP[@]}")
