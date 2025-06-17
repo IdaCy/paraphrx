@@ -45,7 +45,6 @@ impl Logger {
 // data structs  (unchanged)
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct Record {
-    prompt_id: String,
     prompt_count: u32,
     #[serde(alias = "instruction", alias = "instruction_original")]
     instruction_original: String,
@@ -109,8 +108,16 @@ async fn main() -> Result<()> {
     // global log directory
     let log_dir = Path::new("logs");
     fs::create_dir_all(log_dir)?;
-    let stem = cli.output.file_stem().unwrap_or_default();
-    let log_path = log_dir.join(stem).with_extension("logs");
+    let ts = Local::now().format("%Y%m%d-%H%M%S");
+
+    let stem = cli
+        .output
+        .file_stem()
+        .unwrap_or_default()
+        .to_string_lossy();
+
+    // logs/<stem>_<timestamp>.logs
+    let log_path = log_dir.join(format!("{stem}_{ts}.logs"));
 
     let mut logger = Logger::new(&log_path)?;
     logger.log(&format!("run started → model={} log={}", cli.model, log_path.display()));
@@ -275,7 +282,6 @@ async fn process_single(
     }
 
     let mut res_obj = JsonMap::new();
-    res_obj.insert("prompt_id".to_string(), Value::String(inst.prompt_id.clone()));
     res_obj.insert(
         "prompt_count".to_string(),
         serde_json::to_value(inst.prompt_count)?,

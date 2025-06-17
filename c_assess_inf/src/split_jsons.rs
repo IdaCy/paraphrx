@@ -5,19 +5,18 @@ HALF=$((TOTAL/2))
 
 # Build an array KEEP[] holding the first HALF instruct_* keys
 mapfile -t KEEP < <(
-  jq -r '.[0] | keys_unsorted[]' c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/extra.json |
+  jq -r '.[0] | keys_unsorted[]' a_data/alpaca/slice_100/extra_slice1.json |
   grep '^instruct_'
   sort
   head -n "$HALF"
 )
 
 cargo jssplit \
-    -i c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/extra.json \
-    -a c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/extra_a.json \
-    -b c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/extra_b.json \
+    -i a_data/alpaca/slice_100/extra_slice1.json \
+    -a a_data/alpaca/slice_100/extra_a_slice1.json \
+    -b a_data/alpaca/slice_100/extra_b_slice1.json \
     -d prompt_count -d prompt_id -d instruction_original \
     $(printf -- '-k %s ' "${KEEP[@]}")
-    
 */
 
 use std::{collections::HashSet, fs, path::PathBuf};

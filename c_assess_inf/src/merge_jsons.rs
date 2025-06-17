@@ -1,11 +1,13 @@
 /*
+voice
+
 cargo jsmerge \
-    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/context_slice1.json \
-    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/contextice2_infresult.json \
-    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/contextice3_infresult.json \
-    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/contextice4_infresult.json \
-    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/contextice5_infresult.json \
-    -o c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/contex.json
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_slice_100/voice_slice1.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_slice_100/voice_slice2.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_slice_100/voice_slice3.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_slice_100/voice_slice4.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_slice_100/voice_slice5.json \
+    -o c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores/voice.json
 */
 
 use std::fs;
