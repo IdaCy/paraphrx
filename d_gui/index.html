@@ -9,6 +9,12 @@
 
   <!-- simple charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-boxplot@4.3.0/dist/chartjs-chart-boxplot.umd.min.js"></script>
+<script>
+  // The UMD bundle exposes its bits on the global object 'chartjsChartBoxplot'
+  const { BoxPlotController, BoxPlotElement, BoxAndWhiskers } = chartjsChartBoxplot;
+  Chart.register(BoxPlotController, BoxPlotElement, BoxAndWhiskers);
+</script>
 </head>
 <body>
   <h1>LLM Paraphrase-Scoring Explorer</h1>
@@ -31,6 +37,7 @@
     </div>
 
     <canvas id="perModelChart"></canvas>
+    <canvas id="perModelBoxPlot"></canvas>
   </div>
 
   <!-- --- TAB 2 ------------------------ -->

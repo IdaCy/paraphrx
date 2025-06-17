@@ -1,9 +1,9 @@
 /* ------------------------------------------------------------------ CONFIG */
-const baseDir   = '../c_assess_inf/output/alpaca_scores';
-const models    = ['gemma-2-2b-it', 'Qwen1.5-1.8B'];
+const baseDir   = '../c_assess_inf/output/alpaca_answers_scores_500';
+const models    = ['gemma-2-2b-it', 'FAKE_Qwen1.5-1.8B'];
 const categories = [
-  'voice','tone','syntax','style','special_chars',
-  'obstruction','length','boundary','extra','language','context'
+  'voice','tone','syntax','style','speci_char',
+  'obstruction','length','boundary','extra_a', 'extra_b','language','context'
 ];
 
 const metricNames = [
@@ -14,9 +14,18 @@ const metricNames = [
   'Structure & UX',             'Creativity'
 ];
 
-/* ----------------------------------------------------------------- LOADING */
-const modelData = {};   // { model -> { version -> [10 averages] } }
+/* ------------- which instruction-type variants go into the box-plot */
+const boxPlotVariants = [
+  'instruction_original',
+  'instruct_apologetic',
+  'instruct_archaic'
+];
 
+/* -------------------------------------------------------------- DATA HOLDERS */
+const modelData      = {};   // → { model -> { version -> [10-metric avgs] } }
+const modelRawScores = {};   // → { model -> { version -> [ [10 raw scores] …] } }
+
+/* ----------------------------------------------------------------- LOADING */
 async function loadAll() {
   await Promise.all(models.map(loadModel));
   populateModelDropdown();
@@ -47,14 +56,15 @@ async function loadModel(model) {
     }
   }));
 
-  // average per paraphrase version
+  /* --- average per paraphrase version (unchanged) --- */
   const averages = {};
   Object.entries(buckets).forEach(([version, lists]) => {
     const sums = Array(10).fill(0);
     lists.forEach(scores => scores.forEach((v,i) => sums[i] += v));
     averages[version] = sums.map(s => s / lists.length);
   });
-  modelData[model] = averages;
+  modelData[model]      = averages;
+  modelRawScores[model] = buckets;   // NEW: keep raw scores for box-plot
 }
 
 /* --------------------------------------------------------- TABLE & CHARTS */
@@ -96,6 +106,7 @@ function renderTable(table, data) {
   });
 }
 
+/* --------------------------- RADAR (unchanged) --------------------------- */
 function buildRadarChart(ctx, data, title) {
   const entries = Object.entries(data).sort((a,b) => avg(b[1]) - avg(a[1])).slice(0,5);
   return new Chart(ctx, {
@@ -112,18 +123,68 @@ function buildRadarChart(ctx, data, title) {
   });
 }
 
+/* --------------------------- BOX-PLOT ----------------------------------- */
+function buildBoxPlot(ctx, rawBuckets, title) {
+  // Assemble data per variant (one box per label)
+  const labels   = [];
+  const boxData  = [];
+
+  boxPlotVariants.forEach(variant => {
+    labels.push(variant);
+    // one overall 0-10 score per prompt = mean of its 10 metrics
+    const scores = (rawBuckets[variant] || []).map(row => avg(row));
+    boxData.push(scores.length ? scores : [NaN]);   // keep plugin happy if empty
+  });
+
+  return new Chart(ctx, {
+    type  : 'boxplot',
+    data  : {
+      labels,
+      datasets: [{
+        label        : 'Overall prompt quality',
+        data         : boxData,     // <-- array-of-arrays, one per label
+        showMean     : true,        // dot for the mean (§ plugin option)
+        outlierColor : '#555'
+      }]
+    },
+    options : {
+      responsive : true,
+      plugins    : {
+        title  : { display:true, text:`Overall quality score distribution – ${title}` },
+        legend : { display:false }
+      },
+      scales : {
+        y : { suggestedMin:0, suggestedMax:10, ticks:{ stepSize:2 } }
+      }
+    }
+  });
+}
+
+
 /* -------------------------------------------------------------- PER MODEL */
-let perModelChart;
+let perModelChart, perModelBoxChart;
 function updatePerModel(model) {
-  const data = modelData[model];
-  const table = document.getElementById('perModelTable');
+  const data      = modelData[model];
+  const rawBucket = modelRawScores[model];
+  const table     = document.getElementById('perModelTable');
   renderTable(table, data);
 
+  /* radar (unchanged) */
   if (perModelChart) perModelChart.destroy();
   perModelChart = buildRadarChart(
     document.getElementById('perModelChart').getContext('2d'),
     data, model
   );
+
+  /* box-plot*/
+  if (perModelBoxChart) perModelBoxChart.destroy();
+
+  const canvas = document.getElementById('perModelBoxPlot');
+  if (!canvas) {
+    console.warn('perModelBoxPlot canvas not found in the DOM!');
+    return;
+  }
+  perModelBoxChart = buildBoxPlot(canvas.getContext('2d'), rawBucket, model);
 }
 
 /* --------------------------------------------------------- ACROSS MODELS */
