@@ -1,22 +1,46 @@
 /*
 cargo instructmerge \
-    -o c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all.json \
+    -o c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/all.json \
     -s instruction_original \
     -s prompt_id \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/boundary.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/context.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/extra.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/language.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/length.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/obstruction.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/speci_char.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/style.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/syntax.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/tone.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/merged/voice.json
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/boundary.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/context.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/extra_a.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/extra_b.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/language.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/length.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/obstruction.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/special_char.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/style.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/syntax.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/tone.json \
+    c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/voice.json
+
 
 cargo instructmerge \
-    -o a_data/alpaca/merge_instructs/all.json \
+    -o a_data/mmlu/prxed/all.json \
+    -s instruction_original \
+    -s output \
+    -s split \
+    -s scenarios \
+    -s subject \
+    -s choices \
+    a_data/mmlu/prxed_moral_500_scenarios/boundary.json \
+    a_data/mmlu/prxed_moral_500_scenarios/context.json \
+    a_data/mmlu/prxed_moral_500_scenarios/extra.json \
+    a_data/mmlu/prxed_moral_500_scenarios/language.json \
+    a_data/mmlu/prxed_moral_500_scenarios/length.json \
+    a_data/mmlu/prxed_moral_500_scenarios/obstruction.json \
+    a_data/mmlu/prxed_moral_500_scenarios/speci_char.json \
+    a_data/mmlu/prxed_moral_500_scenarios/style.json \
+    a_data/mmlu/prxed_moral_500_scenarios/syntax.json \
+    a_data/mmlu/prxed_moral_500_scenarios/tone.json \
+    a_data/mmlu/prxed_moral_500_scenarios/voice.json
+
+
+
+cargo instructmerge \
+    -o a_data/alpaca/prxed/all.json \
     -s input \
     -s instruction_original \
     -s output \
@@ -32,6 +56,8 @@ cargo instructmerge \
     a_data/alpaca/slice_500/syntax.json \
     a_data/alpaca/slice_500/tone.json \
     a_data/alpaca/slice_500/voice.json
+
+
 
 
 
@@ -61,7 +87,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use serde_json::{Map, Value};
 
-/// Merge instruction‑tuning JSON files by `prompt_count`.
+/// Merge instruction-tuning JSON files by `prompt_count`.
 #[derive(Parser, Debug)]
 #[command(author, version, about)]
 struct Args {
@@ -92,7 +118,12 @@ fn main() -> Result<()> {
 
         let mut map = HashMap::new();
         for obj in array {
-            let obj_map = obj.as_object().cloned().context("Expected JSON objects")?;
+            let mut obj_map = obj.as_object().cloned().context("Expected JSON objects")?;
+            if !obj_map.contains_key("style") {
+                if let Some(stem) = path.file_stem().and_then(|s| s.to_str()) {
+                    obj_map.insert("style".into(), Value::String(stem.to_string()));
+                }
+            }
             let prompt_count = obj_map.get("prompt_count")
                 .and_then(Value::as_i64)
                 .context("`prompt_count` must be an integer")?;
@@ -143,7 +174,7 @@ fn main() -> Result<()> {
                             combined.insert(k.clone(), v.clone());
                         }
                     } else {
-                        // Non‑shared keys: later files can overwrite earlier keys if duplicate
+                        // Non-shared keys: later files can overwrite earlier keys if duplicate
                         combined.insert(k.clone(), v.clone());
                     }
                 }
