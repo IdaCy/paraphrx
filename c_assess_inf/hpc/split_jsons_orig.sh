@@ -21,5 +21,5 @@ cargo jssplit \
     -i a_data/alpaca/slice_500/extra.json \
     -a a_data/alpaca/slice_500/extra_a.json \
     -b a_data/alpaca/slice_500/extra_b.json \
-    -d prompt_count -d prompt_id -d instruction_original \
+    -d prompt_count -d prompt_id -d instruction_original -d input -d output \
     $(printf -- '-k %s ' "${KEEP[@]}")
