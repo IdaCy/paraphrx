@@ -31,3 +31,8 @@ c_assess_inf/output/gsm8k/Qwen1.5-1.8B/slice_100
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_100
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/extra.json
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100
+a_data/sqlite
+a_data/alpaca/x*
+xd_gui
+c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/all.json
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/all.json
