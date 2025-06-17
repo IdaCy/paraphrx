@@ -17,3 +17,17 @@ a_data/mmlu/unselected
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all.json
 c_assess_inf/output/xmmlu/
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/extra.json
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_250
+d_gui_backup
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_slice_100
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/scores_issues
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100_wissues
+c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500_score_issues
+a_data/alpaca/slice_100/special_char_slice*.json
+a_data/alpaca/slice_500/special_char.json
+a_data/gsm8k/prxed_main_slice_100
+c_assess_inf/output/gsm8k/gemma-2-2b-it/slice_100
+c_assess_inf/output/gsm8k/Qwen1.5-1.8B/slice_100
+c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_100
+c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/extra.json
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100
