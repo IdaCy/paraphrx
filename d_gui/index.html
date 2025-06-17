@@ -1,58 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>LLM Paraphrase-Scoring Explorer</title>
-
-  <!-- layout / colours -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- simple charts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-boxplot@4.3.0/dist/chartjs-chart-boxplot.umd.min.js"></script>
-<script>
-  // The UMD bundle exposes its bits on the global object 'chartjsChartBoxplot'
-  const { BoxPlotController, BoxPlotElement, BoxAndWhiskers } = chartjsChartBoxplot;
-  Chart.register(BoxPlotController, BoxPlotElement, BoxAndWhiskers);
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParaphrAIx</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>LLM Paraphrase-Scoring Explorer</h1>
 
-  <div class="tabs">
-    <button class="tablink active" data-tab="perModelTab">Per Model</button>
-    <button class="tablink" data-tab="acrossModelsTab">Across Models</button>
-  </div>
+    <header>
+        <h1>ParaphrAIx</h1>
+        <div class="controls-container">
+            <div class="control-group">
+                <label for="dataset-select">Dataset:</label>
+                <select id="dataset-select">
+                    <option value="alpaca">Alpaca</option>
+                    <option value="gsm8k">GSM8K</option>
+                    <option value="mmlu">MMLU</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="model-select">Model:</label>
+                <select id="model-select">
+                    <option value="gemma-2-2b-it">Gemma-2-2B-IT</option>
+                    <option value="Qwen1.5-1.8B">Qwen1.5-1.8B</option>
+                </select>
+            </div>
+        </div>
+    </header>
 
-  <!-- --- TAB 1 ------------------------ -->
-  <div id="perModelTab" class="tab-content active">
-    <label for="modelSelect"><strong>Select model:</strong></label>
-    <select id="modelSelect"></select>
+    <nav>
+        <button id="nav-overview" class="nav-button active">Overview</button>
+        <button id="nav-ranking" class="nav-button">Ranking</button>
+        <button id="nav-search" class="nav-button">Search</button>
+    </nav>
 
-    <div class="table-wrapper">
-      <table id="perModelTable">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <main>
+        <div id="loader" class="loader">Loading Data...</div>
 
-    <canvas id="perModelChart"></canvas>
-    <canvas id="perModelBoxPlot"></canvas>
-  </div>
+        <div id="overview-page" class="page active-page">
+            <section class="card">
+                <h2>Performance Matrix</h2>
+                <p>Average scores for each paraphrase style across all metrics. Higher scores are greener.</p>
+                <div id="overview-table-container" class="table-container"></div>
+            </section>
+            <section class="card">
+                <h2>Visual Comparison</h2>
+                <div class="chart-wrapper">
+                    <div class="chart-container">
+                        <h3>Metric Profile (Spider Chart)</h3>
+                         <div id="spider-chart-controls">
+                            <label for="spider-select">Select paraphrase styles to compare:</label>
+                            <select id="spider-select" multiple size="5"></select>
+                            <button id="update-spider-chart">Update Chart</button>
+                        </div>
+                        <canvas id="spider-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Overall Score Comparison (Bar Chart)</h3>
+                         <div id="bar-chart-controls">
+                            <label for="bar-select">Select styles to compare:</label>
+                            <select id="bar-select" multiple size="5"></select>
+                            <button id="update-bar-chart">Update Chart</button>
+                        </div>
+                        <canvas id="bar-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-  <!-- --- TAB 2 ------------------------ -->
-  <div id="acrossModelsTab" class="tab-content">
-    <div class="table-wrapper">
-      <table id="acrossModelsTable">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
-    </div>
+        <div id="ranking-page" class="page">
+            <section class="card">
+                <h2>Paraphrase Style Ranking</h2>
+                <p>Rank paraphrase styles by their average score for a selected metric.</p>
+                <div class="control-group">
+                    <label for="ranking-metric-select">Rank by Metric:</label>
+                    <select id="ranking-metric-select"></select>
+                </div>
+                <div id="ranking-container"></div>
+            </section>
+        </div>
 
-    <canvas id="acrossModelsChart"></canvas>
-  </div>
+        <div id="search-page" class="page">
+             <section class="card">
+                <h2>Prompt Analyzer & Recommender</h2>
+                <p>Enter a prompt to analyze its potential performance and get recommendations.</p>
+                <div class="search-bar-container">
+                    <textarea id="search-input" placeholder="Enter your prompt here... e.g., 'Hark, I pray thee, explain the concept of photosynthesis.'"></textarea>
+                    <button id="search-button">Analyze Prompt</button>
+                </div>
+                <div id="search-results-container"></div>
+            </section>
+            <section class="card">
+                <h2>Top Performing Prompts</h2>
+                <p>Examples of prompts that scored highly. Frequently occurring words in successful prompts are <span class="highlight-example">highlighted</span>.</p>
+                <div id="best-prompts-container"></div>
+            </section>
+        </div>
 
-  <!-- behaviour -->
-  <script type="module" src="script.js"></script>
+    </main>
+
+    <footer>
+        <p>ParaphrAIx | AI-Powered Paraphrase Analysis</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
