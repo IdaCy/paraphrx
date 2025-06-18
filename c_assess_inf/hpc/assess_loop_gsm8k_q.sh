@@ -6,8 +6,8 @@ set -m
 
 MODEL="gemini-2.5-flash-preview-05-20"
 INSTR_DIR="a_data/gsm8k/prxed_main_slice_100"
-ANSW_DIR="c_assess_inf/output/gsm8k/Qwen1.5-1.8B/slice_100"
-OUT_DIR="c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores"
+ANSW_DIR="c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100"
+OUT_DIR="c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100_in_gen"
 
 #export GOOGLE_API_KEY=""
 # Default comes from env, but can be overridden with -k|--key

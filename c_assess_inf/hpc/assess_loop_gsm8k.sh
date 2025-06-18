@@ -39,7 +39,7 @@ if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then
   nohup caffeinate -dimsu "$0" "$@" \
         </dev/null >/dev/null 2>&1 &          # background + keep-awake
   disown                                      # release from this shell
-  echo "results_q_assess batch detached → check logs/ directory for progress"
+  echo "results_assess batch detached → check logs/ directory for progress"
   exit 0                                      # give control back to the terminal
 fi
 

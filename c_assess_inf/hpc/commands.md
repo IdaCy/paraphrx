@@ -78,6 +78,53 @@ pmset -g log | grep -e "Sleep" -e "Wake"
 
 ## new plan
 
+done gsm8k q: boundary length style syntax
+
+unpaid 1:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY 
+
+
+test 2 unpaid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyBXXuGjVs-oCv4HQ7eVDKMnUYC-j1Fk8ME 
+
+
+test 3 unpaid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyAHiQDQ0Zs-2wY8gNWWEu2bNW_Pt6Mdb68 
+
+
+test 4 unpaid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyB06EIgeIZ-W5gnKvVXOGKU7CUAjyxf5bI 
+
+
+test 5 unpaid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyDw-mbGFmFlYGqB_i2RYFL-KJ3wN10McJM tone 1 2 3 4 5
+
+
+
+paid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyBx1W8ovOHCOhfuuUcYJ-wquS_oDLxgMBc voice 1 2 3 4 5
+
+
+2nd paid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k.sh -k AIzaSyDGO2Q2VtQS9oeIKOGx0ZYiqXLJyMudz3Q
+
+
+3rd paid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k.sh -k AIzaSyD7_c8jRdu8xwHxRTjjfJVU0slt7aAzGGI
+
+
+4th paid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k.sh -k AIzaSyCkeYN7o2S8yZYaGt7-KifEiGejGvP1KmY
+
+
+5th paid:
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k.sh -k AIzaSyC67Z6W3XEf9wDV0qiVUjxpW4juDjNT3Xo
+
+
+
+
+## new plan
+
 unpaid 1:
 AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY
 caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k.sh -k AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY boundary 1 2 3 4 5
