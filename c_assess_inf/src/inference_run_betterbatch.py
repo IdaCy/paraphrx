@@ -13,6 +13,10 @@ Each JSON needed like:
   ...
 ]
 
+needed:
+gsm8k
+context exta_a extra_b language obstruction spec_char
+
 Running:
     export HF_TOKEN="..."
 
@@ -20,16 +24,74 @@ and then:
 
 chmod +x c_assess_inf/src/inference_run_betterbatch.py
 run_log=logs/$(basename "$0")_$(date +%Y%m%d_%H%M%S).out
-chmod +x run_inference.sh
+chmod +x c_assess_inf/hpc/run_inference.sh
 pgrep -af inference_run_betterbatch.py 
 
-
-./run_inference.sh \
-  a_data/alpaca/slice_100/speci_char_slice1.json \
-  c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice1.json \
+./c_assess_inf/hpc/run_inference.sh \
+  a_data/gsm8k/prxed_main_500/context.json \
+  c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_vast/context.json \
   --model google/gemma-2-2b-it \
   --batch 256 \
-  --type speci_char &
+  --log_every 120 \
+  --type context \
+  --temperature 0 \
+  --max_tokens 256 \
+  --device cuda:0 &
+
+./c_assess_inf/hpc/run_inference.sh \
+  a_data/gsm8k/prxed_main_500/extra_a.json \
+  c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_vast/extra_a.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --log_every 120 \
+  --type extra_a \
+  --temperature 0 \
+  --max_tokens 256 \
+  --device cuda:0 &
+
+./c_assess_inf/hpc/run_inference.sh \
+  a_data/gsm8k/prxed_main_500/extra_b.json \
+  c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_vast/extra_b.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --log_every 120 \
+  --type extra_b \
+  --temperature 0 \
+  --max_tokens 256 \
+  --device cuda:0 &
+
+./c_assess_inf/hpc/run_inference.sh \
+  a_data/gsm8k/prxed_main_500/language.json \
+  c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_vast/language.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --log_every 120 \
+  --type language \
+  --temperature 0 \
+  --max_tokens 256 \
+  --device cuda:0 &
+
+./c_assess_inf/hpc/run_inference.sh \
+  a_data/gsm8k/prxed_main_500/obstruction.json \
+  c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_vast/obstruction.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --log_every 120 \
+  --type obstruction \
+  --temperature 0 \
+  --max_tokens 256 \
+  --device cuda:0 &
+
+./c_assess_inf/hpc/run_inference.sh \
+  a_data/gsm8k/prxed_main_500/spec_char.json \
+  c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_vast/spec_char.json \
+  --model google/gemma-2-2b-it \
+  --batch 256 \
+  --log_every 120 \
+  --type spec_char \
+  --temperature 0 \
+  --max_tokens 256 \
+  --device cuda:0 &
 
 """
 from __future__ import annotations

@@ -2,6 +2,8 @@
 # Wrapper that launches inference_run_betterbatch.py
 # and writes stdout/stderr to a unique log file.
 
+mkdir -p logs 
+
 # find the value that follows --type (if any)
 type_tag=""
 for (( i=1; i<=$#; i++ )); do
