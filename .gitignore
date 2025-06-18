@@ -36,3 +36,11 @@ a_data/alpaca/x*
 xd_gui
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/all.json
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/all.json
+c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_some
+c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_issues
+c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_slice_100
+c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_issues
+c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores
+c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100
+c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100
+c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100

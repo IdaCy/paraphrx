@@ -110,11 +110,10 @@ def flatten_dataset(
     results_map: Dict[str, Dict[str, str]] = {}
 
     for item in data:
-        prompt_id = item.get("prompt_id", "")
-        # Prepare per-item result shell
-        res_entry: Dict[str, str] = {"prompt_id": prompt_id}
-        if "prompt_count" in item:
-            res_entry["prompt_count"] = item["prompt_count"]
+        # Use prompt_count as the sole primary key
+        prompt_id = str(item["prompt_count"])
+        # Prepare per-item result shell (prompt_id field intentionally dropped)
+        res_entry: Dict[str, str] = {"prompt_count": item["prompt_count"]}
         results_map[prompt_id] = res_entry
 
         raw_input = item.get("input", "")

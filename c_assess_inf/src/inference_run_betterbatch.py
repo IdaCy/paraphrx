@@ -87,9 +87,12 @@ def flatten_dataset(
     results_map: Dict[str, Dict[str, str]] = {}
 
     for item in data:
-        prompt_id = item.get("prompt_id", "")
-        # Prepare per-item result shell
-        res_entry: Dict[str, str] = {"prompt_id": prompt_id}
+        # use prompt_count as the unique key – drop prompt_id entirely
+        prompt_id = str(item["prompt_count"])
+        res_entry: Dict[str, str] = {"prompt_count": item["prompt_count"]}
+    #    prompt_id = item.get("prompt_id", "")
+    #    # Prepare per-item result shell
+    #    res_entry: Dict[str, str] = {"prompt_id": prompt_id}
         if "prompt_count" in item:
             res_entry["prompt_count"] = item["prompt_count"]
         results_map[prompt_id] = res_entry
