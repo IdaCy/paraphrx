@@ -2,11 +2,11 @@
 
 The Limit of LLMs with paraphrased style difference
 
-## Sub Project 1: How do you want to talk to an LLM to have the best outcome - PRODUCT
+## Sub Project 1: How do you want to talk to an LLM to have the best outcome
 
-- big comparison dashboard
-- flagging style
-- people insert something -> ranked how good result -> translate from their style to best style!!
+- Development big comparison dashboard
+- Flagging style
+- people insert something -> ranked how good result -> translate from their style to best style
 
 ## Data
 
@@ -45,23 +45,7 @@ python c_assess_inf/src/run_inference.py \
 -> Produces one JSON object per record whose keys follow the pattern
   `<PARAPHRASE_KEY>_eval`.
 
-new:
-1. Task Fulfilment / Relevance - Does it respond to every part of the prompt? Did it wander off-topic or over-answer?
-2. Factual Accuracy - Are the statements factually correct (no hallucinations)? If it cites sources or internal steps, do those match the final claims?
-3. Depth & Completeness - Does it cover the key angles, edge-cases, and typical follow-ups? Could the user act on it without having to ask “what about X?”
-4. Reasoning Quality / Transparency - Are the steps implicitly or explicitly sound? If uncertain, does it flag that uncertainty instead of bluffing?
-5. Clarity & Structure - Is the writing concise, logically ordered, and easy to skim? Are definitions, bullets, or headings used where they help?
-6. Usefulness & Actionability - Does it translate abstract ideas into concrete advice, examples, or next steps?
-7. Tone & Likeability - Is the style friendly and respectful, matching the user’s vibe? Would you enjoy a longer conversation in this voice?
-8. Adaptation to Context - Does it use any relevant info the user has shared (location, preferences, prior messages) appropriately?
-9. Safety & Bias Avoidance - Does it steer clear of harmful or disallowed content? Does it acknowledge and mitigate possible bias?
-10. Efficiency - Does it avoid unnecessary verbosity or excessive brevity?
-11. Formatting & UX Extras - Are lists, code blocks, tables, or rich widgets used only when they genuinely improve readability or utility?
-12. Recency & Timeliness - For “latest” or time-sensitive queries, did it actually fetch up-to-date data rather than rely on stale knowledge?
-13. Citations / Verifiability - Where claims lean on external facts, does it supply enough pointers or citations so the user can verify?
-14. Creativity - Does the answer make clever, non-obvious connections that you wouldn’t get from a quick Google search? Or, does it remix ideas, metaphors, or examples in a fresh way rather than serving boilerplate?
-
-cleared:
+## Metrics
 1. Task Fulfilment / Relevance - Does it respond to every part of the prompt? Did it wander off-topic or over-answer?
 2. Usefulness & Actionability - Does it translate abstract ideas into concrete advice, examples, or next steps?
 3. Factual Accuracy & Verifiabiliy - Are the statements factually correct (no hallucinations)? If it cites sources or internal steps, do those match the final claims?
