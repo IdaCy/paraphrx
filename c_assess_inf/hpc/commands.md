@@ -81,7 +81,7 @@ pmset -g log | grep -e "Sleep" -e "Wake"
 done gsm8k q: boundary length style syntax
 
 unpaid 1:
-caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k_q.sh -k AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY 
+caffeinate -dimsu ./c_assess_inf/hpc/assess_loop_gsm8k.sh -k AIzaSyCQkDVEvgQofmpkmVAbbPwOR2m6SX6wYsY context 1 2 3 4 5
 
 
 test 2 unpaid:
