@@ -68,6 +68,5 @@ a_data/mmlu/prxed_moral_500
 a_data/mmlu/prxed_moral_500_scenarios
 a_data/gsm8k/original
 a_data/gsm8k/prxed
-a_data/gsm8k/prxed_main_500
 a_data/gsm8k/prxed_main_slice_100
 ya_data
