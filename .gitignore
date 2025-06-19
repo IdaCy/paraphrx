@@ -44,3 +44,8 @@ c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100
 c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100
+
+c_assess_inf/hpc/commands.md
+
+c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/xanswers_slice_500
+c_assess_inf/hpc/xcommands.md
