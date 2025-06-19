@@ -25,7 +25,6 @@ c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100_wissues
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500_score_issues
 a_data/alpaca/slice_100/special_char_slice*.json
 a_data/alpaca/slice_500/special_char.json
-a_data/gsm8k/prxed_main_slice_100
 c_assess_inf/output/gsm8k/gemma-2-2b-it/slice_100
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/slice_100
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_100
@@ -55,6 +54,10 @@ c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers
 
 c_assess_inf/output
 a_data/alpaca
-a_data/gsm8k
 a_data/mmlu
 a_data/preproc/alpaca_sanity
+
+a_data/gsm8k/original
+a_data/gsm8k/prxed
+a_data/gsm8k/prxed_main_500
+a_data/gsm8k/prxed_main_slice_100
