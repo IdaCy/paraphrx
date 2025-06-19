@@ -51,4 +51,7 @@ c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500
 c_assess_inf/hpc/xcommands.md
 hpcnotes
 envs
-c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/xanswers
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers
+
+c_assess_inf/output
+xa_data
