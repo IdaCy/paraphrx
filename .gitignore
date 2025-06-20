@@ -74,3 +74,9 @@ c_assess_inf/hpc/xcommands.md
 
 hpcnotes
 envs
+
+hf_cache/
+output_bckp/
+pip_cache/
+venv/
+xdg_cache/
