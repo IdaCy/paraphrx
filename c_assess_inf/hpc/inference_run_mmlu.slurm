@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=mm_gk_boundary_mmlu_inf
+#SBATCH --job-name=mm_g2_boundary_mmlu_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -7,12 +7,12 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
-#SBATCH --time=10:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_gk_boundary_mmlu_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_gk_boundary_mmlu_inf.err
+#SBATCH --time=08:00:00
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g2_boundary_mmlu_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g2_boundary_mmlu_inf.err
 set -euo pipefail
 
-echo "$(date) – mm_gk_boundary_mmlu_inf job started on $(hostname)"
+echo "$(date) – mm_g2_boundary_mmlu_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -43,10 +43,10 @@ python -m pip install huggingface_hub sentencepiece "protobuf==3.20.*" hf_transf
 echo "Packages ready."
 
 # Hugging Face token
-source ~/.hf_token
+source /scratch_dgxl/ifc24/.hf_token
 
 # Paths & arguments
-RUN_SCRIPT="c_assess_inf/src/inference_run_betterbatch.py"
+RUN_SCRIPT="c_assess_inf/src/inference_run_mmlu.py"
 INPUT_JSON="a_data/mmlu/prxed_moral_500_scenarios/boundary.json"
 #MODEL_NAME="Qwen1.5-1.8B"
 MODEL_NAME="gemma-2-2b-it"
@@ -60,11 +60,11 @@ srun python "$RUN_SCRIPT" \
      "$INPUT_JSON" \
      "$OUTPUT_JSON" \
      --model "$MODEL_ID" \
-     --batch 32 \
+     --batch 16 \
      --log_every 120 \
      --type boundary \
      --temperature 0 \
      --max_tokens 256 \
      --device cuda:0
 
-echo "$(date) – mm_gk_boundary_mmlu_inf job finished OK"
+echo "$(date) – mm_g2_boundary_mmlu_inf job finished OK"
