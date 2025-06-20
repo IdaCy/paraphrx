@@ -1,40 +1,39 @@
 *target
 *.lock
+*.sif
 notes*
 zz_archive
-!b_tests/data/*
-!c_assess_inf/output/*
-!a_data/alpaca/slice_100/alpaca_prx_style1_slice1.json
-!a_data/alpaca/slice_100/*
-*.sif
 logs
+
 b_tests/data/*
-a_data/mmlu/all.json
+
 a_data/alpaca/original
 a_data/alpaca/slice_1k
 a_data/preproc/rephras/target
-a_data/mmlu/unselected
+a_data/preproc/alpaca_sanity
 a_data/sqlite
-a_data/alpaca/x*
 
+a_data/alpaca/x*
 a_data/alpaca/merge_instructs
 a_data/alpaca/original
 a_data/alpaca/prxed
 a_data/alpaca/slice_100
 a_data/alpaca/un_prxed
 a_data/alpaca/slice_500
-a_data/mmlu/moral_scenarios_prxed_500
+a_data/alpaca/slice_100/special_char_slice*.json
 
-a_data/preproc/alpaca_sanity
+a_data/gsm8k/original
+a_data/gsm8k/prxed
+a_data/gsm8k/prxed_main_slice_100
+
+a_data/mmlu/unselected
+a_data/mmlu/all.json
+a_data/mmlu/moral_scenarios_prxed_500
 a_data/mmlu/prxed
 a_data/mmlu/prxed_moral_only82
 a_data/mmlu/selection_original
 a_data/mmlu/prxed_moral_500
-a_data/gsm8k/original
-a_data/gsm8k/prxed
-a_data/gsm8k/prxed_main_slice_100
-a_data/alpaca/slice_100/special_char_slice*.json
-ya_data
+a_data/mmlu/prxed_moral_500_scenarios_slice_100
 
 
 d_gui_backup
@@ -68,6 +67,10 @@ c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100
 
+c_assess_inf/output/mmlu/gemma-2-2b-it/answers
+c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100
+c_assess_inf/output/mmlu/gemma-2-2b-it/scores_slice_100
+c_assess_inf/output/mmlu/unspec_gemma-2-2b-it
 
 c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
