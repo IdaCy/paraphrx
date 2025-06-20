@@ -80,6 +80,9 @@ function setupEventListeners() {
 
     // Search button
     document.getElementById('search-button').addEventListener('click', handleSearch);
+
+    document.getElementById('metric-select')
+            .addEventListener('change', renderBarChart);
 }
 
 /**
@@ -93,6 +96,15 @@ function populateStaticElements() {
         option.textContent = metric;
         rankingSelect.appendChild(option);
     });
+
+    const metricSelect = document.getElementById('metric-select');
+    if (metricSelect) {
+        METRICS.forEach((metric, idx) => {
+            const opt = new Option(metric, idx);
+            metricSelect.appendChild(opt);
+        });
+        metricSelect.selectedIndex = 0;          // default = first metric
+    }
 }
 
 
@@ -464,48 +476,77 @@ function renderSpiderChart() {
 }
 
 /**
- * Renders the bar chart on the Overview page.
- * This chart shows the overall average score for selected paraphrase styles.
+ * Renders a box‑plot showing the distribution of a single metric
+ * for the selected paraphrase styles.
  */
-function renderBarChart() {
+function renderBarChart() {          // ← keep the old name: no other code breaks
     const ctx = document.getElementById('bar-chart').getContext('2d');
-    const selectedOptions = Array.from(document.getElementById('bar-select').selectedOptions).map(opt => opt.value);
 
-    const labels = selectedOptions;
-    const dataPoints = selectedOptions.map(key => state.aggregatedData[key].overallAverage);
-    const backgroundColors = dataPoints.map(score => scoreToColor(score, 0.8)); // 80% opacity
-    const borderColors = dataPoints.map(score => scoreToColor(score, 1.0)); // Full opacity
+    // Selected metric & styles
+    const metricIdx = Number(document.getElementById('metric-select').value);
+    const styles     = Array.from(document.getElementById('bar-select').selectedOptions)
+                            .map(o => o.value);
+
+    // Build data arrays for each style
+    const labels = [];
+    const datasetsData = [];
+    const bgColors = [];
+
+    styles.forEach((style, i) => {
+        const rawScores = state.aggregatedData?.[style]?.scores?.[metricIdx] || [];
+        if (rawScores.length === 0) return;     // skip empty ones
+
+        labels.push(style);
+        datasetsData.push(rawScores);           // plugin calculates quartiles itself
+        bgColors.push(`hsl(${(i * 75) % 360}, 60%, 70%)`);
+    });
 
     if (state.barChart) state.barChart.destroy();
 
     state.barChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'boxplot',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Overall Average Score',
-                data: dataPoints,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
-                borderWidth: 1
+                label: METRICS[metricIdx],
+                data: datasetsData,
+                backgroundColor: bgColors,
+                borderColor: bgColors,
+                borderWidth: 1,
+                // nice extras
+                outlierColor: '#666',
+                padding: 10,
+                itemRadius: 0,
+                showMean: true,
+                meanColor: '#000'
             }]
         },
         options: {
-            indexAxis: 'y', // Horizontal bars
             responsive: true,
-            maintainAspectRatio: true,
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    max: 10
-                }
-            },
             plugins: {
-                legend: { display: false }
+                legend: { display: false },
+                tooltip: { callbacks: {
+                    // pretty tooltip: show the five‑number summary + mean
+                    label(ctx) {
+                        const v = ctx.raw;
+                        return [
+                            `min: ${v.min}`,
+                            `Q1 : ${v.q1}`,
+                            `median: ${v.median}`,
+                            `Q3 : ${v.q3}`,
+                            `max: ${v.max}`,
+                            `mean: ${v.mean.toFixed(2)}`
+                        ];
+                    }
+                }}
+            },
+            scales: {
+                y: { beginAtZero: true, max: 10 }
             }
         }
     });
 }
+
 
 
 // -----------------------------------------------------------------------------
