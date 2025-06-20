@@ -1,31 +1,31 @@
 /*
 cargo countsplit \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/obstruction.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_slice1.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest1.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers/extra_a.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_slice1.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest1.json \
     100
 
 cargo countsplit \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest1.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_slice2.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest2.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest1.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_slice2.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest2.json \
     200
 
 cargo countsplit \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest2.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_slice3.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest3.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest2.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_slice3.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest3.json \
     300
 
 cargo countsplit \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest3.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_slice4.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_slice5.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest3.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_slice4.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_slice5.json \
     400
 
-rm c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest1.json
-rm c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest2.json
-rm c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/obstruction_rest3.json
+rm c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest1.json
+rm c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest2.json
+rm c_assess_inf/output/gsm8k/gemma-2-2b-it/answers_slice_100/extra_a_rest3.json
 */
 
 use std::{
