@@ -1,12 +1,12 @@
 /*syntax
 
 cargo jsmerge \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/syntax_slice1.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/syntax_slice2.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/syntax_slice3.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/syntax_slice4.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/syntax_slice5.json \
-    -o c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores/syntax.json
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice1.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice2.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice3.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice4.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice5.json \
+    -o c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores/voice.json
 */
 
 use std::fs;
