@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=gk_q_voice_gemma_gsm8k_inf
+#SBATCH --job-name=mm_q_voice_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,11 +8,11 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_q_voice_gemma_gsm8k_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_q_voice_gemma_gsm8k_inf.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_q_voice_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_q_voice_inf.err
 set -euo pipefail
 
-echo "$(date) – gk_q_voice_gemma_gsm8k_inf job started on $(hostname)"
+echo "$(date) – mm_q_voice_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -43,11 +43,11 @@ python -m pip install huggingface_hub sentencepiece "protobuf==3.20.*" hf_transf
 echo "Packages ready."
 
 # Hugging Face token
-source ~/.hf_token
+source /scratch_dgxl/ifc24/.hf_token
 
 # Paths & arguments
 RUN_SCRIPT="c_assess_inf/src/inference_run_betterbatch.py"
-INPUT_JSON="a_data/gsm8k/prxed_main_500/voice.json"
+INPUT_JSON="a_data/mmlu/prxed_moral_500_scenarios/voice.json"
 MODEL_NAME="Qwen1.5-1.8B"
 MODEL_OWNER="Qwen"
 MODEL_ID=${MODEL_OWNER}/${MODEL_NAME}
@@ -66,4 +66,4 @@ srun python "$RUN_SCRIPT" \
      --max_tokens 256 \
      --device cuda:0
 
-echo "$(date) – gk_q_voice_gemma_gsm8k_inf job finished OK"
+echo "$(date) – mm_q_voice_inf job finished OK"

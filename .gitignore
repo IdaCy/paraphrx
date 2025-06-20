@@ -80,3 +80,4 @@ output_bckp/
 pip_cache/
 venv/
 xdg_cache/
+tmp/
