@@ -6,6 +6,8 @@
     <title>ParaphrAIx</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4.4.4/build/index.umd.min.js"></script>
 </head>
 <body>
 
@@ -49,7 +51,7 @@
                 <h2>Visual Comparison</h2>
                 <div class="chart-wrapper">
                     <div class="chart-container">
-                        <h3>Metric Profile (Spider Chart)</h3>
+                        <h3>Metric Profile/h3>
                          <div id="spider-chart-controls">
                             <label for="spider-select">Select paraphrase styles to compare:</label>
                             <select id="spider-select" multiple size="5"></select>
@@ -58,10 +60,13 @@
                         <canvas id="spider-chart"></canvas>
                     </div>
                     <div class="chart-container">
-                        <h3>Overall Score Comparison (Bar Chart)</h3>
+                        <h3>Overall Score Comparison</h3>
                          <div id="bar-chart-controls">
                             <label for="bar-select">Select styles to compare:</label>
                             <select id="bar-select" multiple size="5"></select>
+
+                            <label for="metric-select" style="margin-top:.8rem;">Metric:</label>
+                            <select id="metric-select"></select>
                             <button id="update-bar-chart">Update Chart</button>
                         </div>
                         <canvas id="bar-chart"></canvas>
