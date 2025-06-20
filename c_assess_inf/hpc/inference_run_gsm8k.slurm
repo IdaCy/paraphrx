@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=g8k_g2_spec_char_gemma_gsm8k_inf
+#SBATCH --job-name=g8k_g2_obstruction_gsm8k_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,11 +8,11 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_g8k_g2_obstruction_gsm8k_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_g8k_g2_obstruction_gsm8k_inf.err
 set -euo pipefail
 
-echo "$(date) – g8k_g2_spec_char_gemma_gsm8k_inf job started on $(hostname)"
+echo "$(date) – g8k_g2_obstruction_gsm8k_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -43,15 +43,15 @@ python -m pip install huggingface_hub sentencepiece "protobuf==3.20.*" hf_transf
 echo "Packages ready."
 
 # Hugging Face token
-export HF_TOKEN=""
+source ~/.hf_token
 
 # Paths & arguments
 RUN_SCRIPT=c_assess_inf/src/inference_run_betterbatch.py
-INPUT_JSON=a_data/gsm8k/prxed_500_missing/spec_char.json
+INPUT_JSON=a_data/gsm8k/prxed_main_500/obstruction.json
 MODEL_NAME=gemma-2-2b-it
 MODEL_OWNER=google
 MODEL_ID=${MODEL_OWNER}/${MODEL_NAME}
-OUTPUT_JSON=c_assess_inf/output/gsm8k/${MODEL_NAME}/spec_char.json
+OUTPUT_JSON=c_assess_inf/output/gsm8k/${MODEL_NAME}/obstruction.json
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # Run
@@ -59,11 +59,11 @@ srun python "$RUN_SCRIPT" \
      "$INPUT_JSON" \
      "$OUTPUT_JSON" \
      --model "$MODEL_ID" \
-     --batch 32 \
+     --batch 16 \
      --log_every 120 \
-     --type spec_char \
+     --type obstruction \
      --temperature 0 \
      --max_tokens 256 \
      --device cuda:0
 
-echo "$(date) – g8k_g2_spec_char_gemma_gsm8k_inf job finished OK"
+echo "$(date) – g8k_g2_obstruction_gsm8k_inf job finished OK"
