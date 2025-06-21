@@ -1,6 +1,10 @@
 [alias]
-summary = "run -p c_assess_inf --bin summarise_scores"
+# a_data
+add_scenarios = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin add_scenarios --release --"
 gen_phrx_skipfail = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin generate_paraphrases_skipfail --release --"
+
+# c_assess_inf
+summary = "run -p c_assess_inf --bin summarise_scores"
 results_assess = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess --release --"
 results_assess_noID = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_noID --release --"
 results_assess_mmlu = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_mmlu --release --"
@@ -8,4 +12,8 @@ jsmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_jsons --relea
 jssplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_jsons --release --"
 countsplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_prompt_counts --release --"
 instructmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_instructs --release --"
-add_scenarios = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin add_scenarios --release --"
+
+# e_eval
+compose_top_prompts = "run --manifest-path e_eval/Cargo.toml --bin compose_top_prompts --release --"
+compose_top_occurences = "run --manifest-path e_eval/Cargo.toml --bin compose_top_occurences --release --"
+compose_top_occurences_across_metrics = "run --manifest-path e_eval/Cargo.toml --bin compose_top_occurences_across_metrics --release --"
