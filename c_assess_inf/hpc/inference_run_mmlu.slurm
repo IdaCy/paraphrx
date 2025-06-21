@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=mm_g2_boundary_mmlu_inf
+#SBATCH --job-name=mm_g9_voice_mmlu_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -7,12 +7,12 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
-#SBATCH --time=08:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g2_boundary_mmlu_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g2_boundary_mmlu_inf.err
+#SBATCH --time=05:00:00
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g9_voice_mmlu_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g9_voice_mmlu_inf.err
 set -euo pipefail
 
-echo "$(date) – mm_g2_boundary_mmlu_inf job started on $(hostname)"
+echo "$(date) – mm_g9_voice_mmlu_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -47,12 +47,12 @@ source /scratch_dgxl/ifc24/.hf_token
 
 # Paths & arguments
 RUN_SCRIPT="c_assess_inf/src/inference_run_mmlu.py"
-INPUT_JSON="a_data/mmlu/prxed_moral_500_scenarios/boundary.json"
+INPUT_JSON="a_data/mmlu/prxed_moral_500_scenarios/voice.json"
 #MODEL_NAME="Qwen1.5-1.8B"
-MODEL_NAME="gemma-2-2b-it"
+MODEL_NAME="gemma-2-9b-it"
 MODEL_OWNER="google"
 MODEL_ID=${MODEL_OWNER}/${MODEL_NAME}
-OUTPUT_JSON=c_assess_inf/output/mmlu/${MODEL_NAME}/boundary.json
+OUTPUT_JSON=c_assess_inf/output/mmlu/${MODEL_NAME}/voice.json
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # Run
@@ -60,11 +60,11 @@ srun python "$RUN_SCRIPT" \
      "$INPUT_JSON" \
      "$OUTPUT_JSON" \
      --model "$MODEL_ID" \
-     --batch 16 \
-     --log_every 120 \
-     --type boundary \
+     --batch 4 \
+     --log_every 180 \
+     --type mmlu_g9_voice \
      --temperature 0 \
      --max_tokens 256 \
      --device cuda:0
 
-echo "$(date) – mm_g2_boundary_mmlu_inf job finished OK"
+echo "$(date) – mm_g9_voice_mmlu_inf job finished OK"
