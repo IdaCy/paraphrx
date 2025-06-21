@@ -1,20 +1,20 @@
 #!/bin/bash
-#PBS -N g2_speci_charice3_run_inf
-#PBS -l select=1:ncpus=8:ngpus=1:mem=39gb
-#PBS -l walltime=05:00:00
-#PBS -o logs/g2_speci_charice3_run_inf.out
-#PBS -e logs/g2_speci_charice3_run_inf.err
+#PBS -N a_g9_extra_b_run_inf
+#PBS -l select=1:ncpus=8:ngpus=1:mem=79gb
+#PBS -l walltime=06:00:00
+#PBS -o logs/a_g9_extra_b_run_inf.out
+#PBS -e logs/a_g9_extra_b_run_inf.err
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - g2_speci_charice3_run_inf started" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - a_g9_extra_b_run_inf started" >> $HOME/times.log
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
 #export MODEL_NAME="google/gemma-2-9b-it"
 #export MODEL_NAME="Qwen/Qwen1.5-1.8B"
-# speci_char
+# extra_b
 # ice3
 
 # Paths
@@ -25,14 +25,14 @@ SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run_betterbatch.py"
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
-        a_data/alpaca/slice_100/speci_char_slice3.json \
-        c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice3.json \
-        --model google/gemma-2-2b-it \
-        --batch 32 \
-        --log_every 90 \
-        --type speci_char \
+        a_data/alpaca/slice_500/extra_b.json \
+        c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/extra_b.json \
+        --model google/gemma-2-9b-it \
+        --batch 8 \
+        --log_every 200 \
+        --type extra_b \
         --temperature 0 \
         --max_tokens 256 \
         --device cuda:0
 
-echo "$(date "+%Y-%m-%d %H:%M:%S") - g2_speci_charice3_run_inf finished" >> $HOME/times.log
+echo "$(date "+%Y-%m-%d %H:%M:%S") - a_g9_extra_b_run_inf finished" >> $HOME/times.log
