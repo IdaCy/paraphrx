@@ -1,0 +1,2002 @@
+[
+  {
+    "prompt_count": 1,
+    "example_id": "1_1",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "Give three tips for staying healthy.",
+    "answer_example": "Here are three tips for staying healthy:\n\n1. **Eat a balanced diet:** Focus on fruits, vegetables, whole grains, and lean protein. Limit processed foods, sugary drinks, and unhealthy fats.\n2. **Get regular exercise:** Aim for at least 30 minutes of moderate-intensity exercise most days of the week. This could include brisk walking, jogging, swimming, or cycling.\n3. **Get enough sleep:** Most adults need 7-9 hours of sleep per night. Establish a regular sleep schedule and create a relaxing bedtime routine. \n\n\nLet me know if you'd like more tips!"
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "1_2",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "What are the three primary colors?",
+    "answer_example": "**Red, Yellow, and Blue** \n\nThese are the primary colors in the traditional subtractive color model, which is used in painting and printing. \n\nLet me know if you'd like to know about the primary colors in the additive color model, which is used in screens like TVs and computer monitors!"
+  },
+  {
+    "prompt_count": 3,
+    "example_id": "1_3",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      6.0
+    ],
+    "prxed_example": "Describe the structure of an atom.",
+    "answer_example": "An atom is the basic building block of all matter. It consists of three subatomic particles:\n\n* **Protons:** Positively charged particles located in the nucleus.\n* **Neutrons:** Neutral particles located in the nucleus.\n* **Electrons:** Negatively charged particles that orbit the nucleus in a cloud-like region called the electron cloud.\n\nThe nucleus, containing protons and neutrons, is incredibly small compared to the entire atom. The electrons, much lighter, occupy a much larger region around the nucleus.\n\nHere's a breakdown of the atom's structure:\n\n**1. Nucleus:**\n   * **Protons:** Determine the element's identity (atomic number).\n   * **Neutrons:** Contribute to the atom's mass and stability.\n\n**2. Electron Cloud:**\n   * **Electrons:** Orbit the nucleus in a cloud-like region.\n   * **Energy Levels:** Electrons occupy specific energy levels, with higher energy levels further from the nucleus.\n\n**Key Points:**\n\n* The number of protons defines the element.\n* The number of neutrons can vary, leading to isotopes of the same element.\n* Electrons determine chemical bonding and reactivity.\n* The electron cloud is a region"
+  },
+  {
+    "prompt_count": 10,
+    "example_id": "1_4",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      8.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "Evaluate this sentence for spelling and grammar mistakes",
+    "answer_example": "He finished his meal and left the restaurant.\n\n\n**Explanation:**\n\n* **\"finnished\"** is misspelled and should be **\"finished\"**.\n* **\"resturant\"** is misspelled and should be **\"restaurant\"**. \n\n\nLet me know if you'd like me to analyze any other sentences!"
+  },
+  {
+    "prompt_count": 11,
+    "example_id": "1_5",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "How did Julius Caesar die?",
+    "answer_example": "Julius Caesar was assassinated on March 15, 44 BC.  He was stabbed to death by a group of senators led by Marcus Junius Brutus and Gaius Cassius Longinus."
+  },
+  {
+    "prompt_count": 12,
+    "example_id": "1_6",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "What is the capital of France?",
+    "answer_example": "**Paris**"
+  },
+  {
+    "prompt_count": 13,
+    "example_id": "1_7",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Generate a list of ten items a person might need for a camping trip",
+    "answer_example": "Here are ten items a person might need for a camping trip:\n\n1. **Tent:** Provides shelter from the elements.\n2. **Sleeping bag:** Keeps you warm and comfortable at night.\n3. **Sleeping pad:** Adds insulation and comfort to your sleeping surface.\n4. **Headlamp or flashlight:** Provides light for navigating around the campsite at night.\n5. **First-aid kit:** Essential for treating minor injuries and illnesses.\n6. **Camp stove and fuel:** Allows you to cook meals and boil water.\n7. **Food and water:** You'll need to stay hydrated and nourished.\n8. **Cooking utensils:** Pots, pans, knives, and other tools for preparing meals.\n9. **Backpack:** For carrying your gear and supplies.\n10. **Bug spray:** Keeps pesky insects away. \n\n\nLet me know if you'd like me to expand on any of these items or provide more specific suggestions!"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "1_8",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      8.0,
+      8.0,
+      7.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "Classify the following into animals, plants, and minerals",
+    "answer_example": "Animals: elephant\nPlants: Oak tree\nMinerals: copper ore \n\n\n**Please note:** \n\n* **Animals** are living organisms that move and breathe.\n* **Plants** are living organisms that produce their own food through photosynthesis.\n* **Minerals** are naturally occurring inorganic solids with a defined chemical composition."
+  },
+  {
+    "prompt_count": 17,
+    "example_id": "1_9",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      7.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Describe the function of a computer motherboard",
+    "answer_example": "A computer motherboard is the central circuit board of a personal computer. It serves as the foundation for all other components, connecting them together and allowing them to communicate with each other. \n\nHere's a breakdown of its key functions:\n\n**1. Component Connection:**\n   - The motherboard provides a physical platform for connecting various components, including the CPU, RAM, storage devices (hard drives, SSDs), graphics card, and expansion slots.\n   - It uses standardized connectors and interfaces to ensure compatibility and ease of assembly.\n\n**2. Data Communication:**\n   - The motherboard acts as a central hub for data transfer between components.\n   - It uses a complex network of wires and pathways to facilitate communication between the CPU, RAM, storage devices, and peripherals.\n   - This communication allows the computer to process information, store data, and display output.\n\n**3. Power Distribution:**\n   - The motherboard manages the flow of power to all components.\n   - It has dedicated power circuits and connectors to ensure that each component receives the correct voltage and current.\n   - This power distribution is crucial for the proper functioning of the computer.\n\n**4. Chipset:**\n   - The motherboard contains a chipset, a small but powerful"
+  },
+  {
+    "prompt_count": 19,
+    "example_id": "1_10",
+    "metric_id": 1,
+    "prx_type": "instruction_original",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      8.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Propose an ethical solution to the problem of data privacy",
+    "answer_example": "##  A Multi-Layered Approach to Ethical Data Privacy:\n\nThe problem of data privacy is complex and requires a multi-layered approach. Here's a proposal for an ethical solution:\n\n**1. Empowering Individuals:**\n\n* **Data Ownership:** Individuals should have full ownership and control over their personal data. This includes the right to access, modify, delete, and share their data.\n* **Transparency and Control:** Companies should be transparent about how they collect, use, and share data. Users should have clear and easy-to-understand options to control their data.\n* **Data Portability:** Individuals should be able to easily transfer their data between different platforms and services. This allows for greater control and flexibility.\n\n**2. Strengthening Legal Frameworks:**\n\n* **Stronger Data Protection Laws:** Governments should enact and enforce comprehensive data protection laws that prioritize individual rights and limit data collection and use.\n* **Data Breach Notification:** Companies should be legally obligated to notify individuals and authorities promptly in the event of a data breach.\n* **Data Protection Authorities:** Independent and well-funded data protection authorities should be established to enforce data protection laws and investigate complaints.\n\n**3. Promoting Ethical Data Practices:**\n\n* **Privacy by Design:** Companies"
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "2_1",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      8.0,
+      8.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Provide an array of three strings, where each string is a tip for staying healthy, in JSON format.",
+    "answer_example": "Provide an array of three strings, where each string is a tip for staying healthy, in JSON format.\n\nResponse:\n```json\n[\n  \"Eat a balanced diet rich in fruits, vegetables, and whole grains.\",\n  \"Get regular exercise, aiming for at least 30 minutes of moderate-intensity activity most days of the week.\",\n  \"Prioritize sleep, aiming for 7-9 hours of quality sleep each night.\"\n]\n```"
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "2_2",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      8.0,
+      7.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "What are the three primary colors (RYB model)? Provide your answer as a JSON object, where a key like 'primary_colors_ryb' holds an array of these three color names as strings.",
+    "answer_example": "What are the three primary colors (RYB model)? Provide your answer as a JSON object, where a key like 'primary_colors_ryb' holds an array of these three color names as strings.\n\nResponse:\n```json\n{\n  \"primary_colors_ryb\": [\"red\", \"yellow\", \"blue\"]\n}\n```"
+  },
+  {
+    "prompt_count": 4,
+    "example_id": "2_3",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      9.0,
+      10.0,
+      10.0,
+      8.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Generate a JSON object outlining key strategies for air pollution reduction. The root should be an array of objects, each object representing a strategy with keys like 'strategy_name', 'description', 'examples', and 'potential_challenges'.",
+    "answer_example": "The root should be an array of objects, each object representing a strategy with keys like 'strategy_name', 'description', 'examples', and 'potential_challenges'.\n\nResponse:\n\n```json\n[\n  {\n    \"strategy_name\": \"Transition to Renewable Energy Sources\",\n    \"description\": \"Replacing fossil fuels with renewable energy sources like solar, wind, and hydropower can significantly reduce air pollution.\",\n    \"examples\": [\n      \"Investing in solar panels for residential and commercial buildings.\",\n      \"Building wind farms in suitable locations.\",\n      \"Developing hydroelectric power plants on rivers.\",\n      \"Promoting electric vehicles and charging infrastructure.\"\n    ],\n    \"potential_challenges\": [\n      \"High initial investment costs for renewable energy infrastructure.\",\n      \"Intermittency of renewable energy sources like solar and wind.\",\n      \"Land use conflicts associated with large-scale renewable energy projects.\"\n    ]\n  },\n  {\n    \"strategy_name\": \"Improve Energy Efficiency\",\n    \"description\": \"Reducing energy consumption through improved building insulation, efficient appliances, and sustainable transportation can minimize air pollution.\",\n    \"examples\": [\n      \"Installing energy-efficient windows and insulation in buildings.\",\n      \"Using LED lighting and energy-efficient appliances.\",\n      \"Promoting public transportation and cycling infrastructure.\",\n      \"Encouraging carpooling and ride-sharing.\"\n    ],\n    \"potential"
+  },
+  {
+    "prompt_count": 5,
+    "example_id": "2_4",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      6.0,
+      10.0,
+      9.0,
+      5.0,
+      8.0,
+      9.0,
+      7.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "Describe a time when you had to make a difficult decision. Provide your answer as a single JSON object, including fields such as 'situation_description', 'dilemma', 'options_considered' (as an array of objects with 'option' and 'details'), 'decision_made', 'reasoning', and 'outcome_reflection'.",
+    "answer_example": "'), 'decision_made', 'reasoning', and 'outcome_reflection'.\n\nResponse:\n\n```json\n{\n  \"situation_description\": \"I was applying for a job at a startup that I really admired. The company was known for its innovative culture and fast-paced environment, which appealed to me. However, the job required relocation to a new city, which was a significant life change.\",\n  \"dilemma\": \"I was torn between my desire to work at the startup and the uncertainty of moving to a new city. I was also concerned about the potential impact on my existing relationships and my career trajectory.\",\n  \"options_considered\": [\n    {\n      \"option\": \"Accept the job offer and relocate\",\n      \"details\": \"This option would allow me to work at the company I admired and gain valuable experience in a fast-paced environment. However, it would also involve a significant life change, including moving to a new city and potentially disrupting my existing relationships.\"\n    },\n    {\n      \"option\": \"Decline the job offer and continue my current career path\",\n      \"details\": \"This option would allow me to stay in my current city and continue my current career path. However, it would mean missing out on the opportunity to work at the startup and potentially miss out on valuable experience and"
+  },
+  {
+    "prompt_count": 9,
+    "example_id": "2_5",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      7.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0,
+      7.0,
+      7.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Render a 3D model of a house, and then output a JSON object describing its key properties, such as overall dimensions, room layout, primary materials, and architectural style.",
+    "answer_example": "Render a 3D model of a house, and then output a JSON object describing its key properties, such as overall dimensions, room layout, primary materials, and architectural style.\n\nResponse:\n\n```json\n{\n  \"name\": \"Cozy Cottage\",\n  \"description\": \"A charming, two-story cottage with a classic A-frame roof.\",\n  \"dimensions\": {\n    \"width\": 12.0,\n    \"depth\": 16.0,\n    \"height\": 14.0\n  },\n  \"rooms\": [\n    {\n      \"name\": \"Living Room\",\n      \"area\": 30.0,\n      \"description\": \"Spacious living room with a fireplace and large windows.\",\n      \"layout\": \"Open plan with a dining area\"\n    },\n    {\n      \"name\": \"Kitchen\",\n      \"area\": 15.0,\n      \"description\": \"Small but functional kitchen with a breakfast bar.\",\n      \"layout\": \"L-shaped with pantry\"\n    },\n    {\n      \"name\": \"Bedroom\",\n      \"area\": 10.0,\n      \"description\": \"Cozy bedroom with a queen-size bed and a closet.\",\n      \"layout\": \"Single room\"\n    },\n    {\n      \"name\": \"Bathroom\",\n      \"area"
+  },
+  {
+    "prompt_count": 10,
+    "example_id": "2_6",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      8.0
+    ],
+    "prxed_example": "Evaluate this sentence for spelling and grammar mistakes. Format your evaluation as a JSON object, containing a list of errors where each error object details 'error_type', 'original_word_or_phrase', 'suggested_correction', and 'explanation'.",
+    "answer_example": "correction', and 'explanation'.\n\nInput:\nHe finnished his meal and left the resturant\n\nResponse:\n```json\n[\n  {\n    \"error_type\": \"spelling\",\n    \"original_word_or_phrase\": \"finnished\",\n    \"suggested_correction\": \"finished\",\n    \"explanation\": \"The word 'finnished' is misspelled. It should be 'finished'.\"\n  },\n  {\n    \"error_type\": \"spelling\",\n    \"original_word_or_phrase\": \"resturant\",\n    \"suggested_correction\": \"restaurant\",\n    \"explanation\": \"The word 'resturant' is misspelled. It should be 'restaurant'.\"\n  }\n]\n```"
+  },
+  {
+    "prompt_count": 11,
+    "example_id": "2_7",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      8.0,
+      8.0,
+      8.0,
+      10.0,
+      10.0,
+      6.0
+    ],
+    "prxed_example": "Relate the circumstances of Julius Caesar's death. Output the answer strictly as a JSON object.",
+    "answer_example": "Relate the circumstances of Julius Caesar's death. Output the answer strictly as a JSON object.\n\nResponse:\n```json\n{\n  \"circumstances\": \"Julius Caesar was assassinated by a group of Roman senators led by Marcus Junius Brutus and Gaius Cassius Longinus on the Ides of March (March 15, 44 BC). The assassination was motivated by Caesar's growing power and ambition, which many senators feared would lead to a dictatorship.\"\n}\n```"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "2_8",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0,
+      7.0,
+      7.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Classify the following items into animals, plants, or minerals. Return your response as a JSON object where keys are the items and values are their classifications (e.g., 'animal', 'plant', 'mineral').",
+    "answer_example": "Classify the following items into animals, plants, or minerals. Return your response as a JSON object where keys are the items and values are their classifications (e.g., 'animal', 'plant', 'mineral').\n\nInput:\nOak tree, copper ore, elephant\n\nResponse:\n{\n  \"Oak tree\": \"plant\",\n  \"copper ore\": \"mineral\",\n  \"elephant\": \"animal\"\n}"
+  },
+  {
+    "prompt_count": 17,
+    "example_id": "2_9",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      9.0,
+      10.0,
+      10.0,
+      8.0,
+      9.0,
+      8.0,
+      8.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Describe the function of a computer motherboard. Structure your explanation in JSON format, with a main key 'motherboardFunctions' containing an array of objects, each object representing a specific function with 'name' and 'description' fields.",
+    "answer_example": "a main key 'motherboardFunctions' containing an array of objects, each object representing a specific function with 'name' and 'description' fields.\n\nResponse:\n\n```json\n{\n  \"motherboardFunctions\": [\n    {\n      \"name\": \"Central Processing Unit (CPU) Connection\",\n      \"description\": \"Provides the physical connection and electrical pathways for the CPU to communicate with other components.\"\n    },\n    {\n      \"name\": \"Memory (RAM) Slots\",\n      \"description\": \"Offers physical slots for RAM modules to be installed, allowing the computer to store data and instructions for quick access.\"\n    },\n    {\n      \"name\": \"Storage Devices Connection\",\n      \"description\": \"Provides interfaces for connecting hard drives, SSDs, and other storage devices to store data permanently.\"\n    },\n    {\n      \"name\": \"Expansion Slots\",\n      \"description\": \"Offers slots for adding additional components like graphics cards, sound cards, and network cards.\"\n    },\n    {\n      \"name\": \"Power Supply Unit (PSU) Connection\",\n      \"description\": \"Connects to the PSU to provide power to all components, regulating voltage and current.\"\n    },\n    {\n      \"name\": \"Chipset\",\n      \"description\": \"Acts as a bridge between different components, managing communication and data flow between them"
+  },
+  {
+    "prompt_count": 21,
+    "example_id": "2_10",
+    "metric_id": 2,
+    "prx_type": "instruct_output_json",
+    "scores": [
+      8.0,
+      10.0,
+      10.0,
+      8.0,
+      10.0,
+      8.0,
+      10.0,
+      10.0,
+      8.0,
+      5.0
+    ],
+    "prxed_example": "What does DNA stand for? Respond with a JSON object containing two key-value pairs: `\"acronym\": \"DNA\"` and `\"fullName\": \"<the full name>\"`.",
+    "answer_example": "for? Respond with a JSON object containing two key-value pairs: `\"acronym\": \"DNA\"` and `\"fullName\": \"<the full name>\"`.\n\nResponse:\n```json\n{\n\"acronym\": \"DNA\",\n\"fullName\": \"Deoxyribonucleic acid\"\n}\n```"
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "3_1",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      6.0
+    ],
+    "prxed_example": "||What are three actionable insights for sustained well-being?||",
+    "answer_example": "||What are three actionable insights for sustained well-being?||\n\nResponse:\n\nHere are three actionable insights for sustained well-being:\n\n1. **Prioritize Physical Activity:**  \n    * **Action:** Aim for at least 30 minutes of moderate-intensity exercise most days of the week. \n    * **Why:** Exercise boosts mood, reduces stress, improves sleep, and strengthens the body. It's a fundamental pillar of well-being.\n2. **Cultivate Meaningful Connections:**\n    * **Action:** Make a conscious effort to connect with loved ones, build new relationships, and engage in activities that foster social connection.\n    * **Why:** Strong social ties provide support, reduce loneliness, and contribute to a sense of belonging, all essential for well-being.\n3. **Practice Mindfulness and Gratitude:**\n    * **Action:**  Dedicate a few minutes each day to mindfulness exercises (meditation, deep breathing) or journaling about things you're grateful for.\n    * **Why:** Mindfulness helps you stay present and manage stress, while gratitude fosters positive emotions and a sense of appreciation for life's blessings.\n\n\n**Explanation:**\n\nThese insights are actionable because they provide specific steps you can take. They are also interconnected, meaning that focusing on one area can positively impact others."
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "3_2",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      8.0,
+      9.0,
+      8.0,
+      9.0,
+      10.0,
+      8.0,
+      5.0
+    ],
+    "prxed_example": "||What are the three primary colors?||",
+    "answer_example": "||What are the three primary colors?||\n\nResponse: The three primary colors are **red, yellow, and blue**."
+  },
+  {
+    "prompt_count": 3,
+    "example_id": "3_3",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      6.0
+    ],
+    "prxed_example": "||What is the structure of an atom?||",
+    "answer_example": "||What is the structure of an atom?||\n\nResponse:\n\nAn atom is the basic building block of all matter. It consists of three main subatomic particles:\n\n* **Protons:** Positively charged particles found in the nucleus.\n* **Neutrons:** Neutral particles found in the nucleus.\n* **Electrons:** Negatively charged particles that orbit the nucleus in a cloud-like region called the electron cloud.\n\n**Structure of the Atom:**\n\n1. **Nucleus:** The dense, positively charged center of the atom. It contains protons and neutrons.\n2. **Electron Cloud:** A region surrounding the nucleus where electrons are found.\n\n**Key Features:**\n\n* **Atomic Number:** The number of protons in an atom's nucleus, which defines the element.\n* **Mass Number:** The sum of protons and neutrons in an atom's nucleus.\n* **Isotopes:** Atoms of the same element with the same number of protons but different numbers of neutrons.\n* **Ion:** An atom that has gained or lost electrons, giving it a net electrical charge.\n\n\n**Additional Information:**\n\n* The size of an atom is extremely small, with a diameter of about 100 picometers (pm).\n* The electron cloud is not a solid sphere but a cloud of probability"
+  },
+  {
+    "prompt_count": 4,
+    "example_id": "3_4",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      7.0,
+      9.0,
+      10.0,
+      6.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      3.0
+    ],
+    "prxed_example": "||How can we reduce air pollution?||",
+    "answer_example": "||How can we reduce air pollution?||\n\nResponse:\n\nAir pollution is a complex issue with no easy solutions, but there are many things we can do to reduce it. Here's a breakdown of key strategies:\n\n**Individual Actions:**\n\n* **Reduce, Reuse, Recycle:** This classic mantra applies to everything, from reducing your consumption to recycling materials. \n* **Choose Sustainable Transportation:** Walk, bike, carpool, or use public transportation whenever possible. \n* **Conserve Energy at Home:** Use energy-efficient appliances, switch to LED lights, and reduce your overall energy consumption.\n* **Eat Less Meat:** Animal agriculture is a major contributor to greenhouse gas emissions and air pollution. \n* **Avoid Using Gasoline-Powered Vehicles:** Consider electric vehicles, hybrids, or other alternative fuel options.\n* **Properly Dispose of Waste:**  Don't burn trash or dispose of hazardous materials improperly.\n\n**Government and Policy:**\n\n* **Stricter Emission Standards:** Governments can set stricter limits on the amount of pollutants that vehicles and industries can release.\n* **Investment in Public Transportation:**  Expanding and improving public transportation systems can reduce reliance on private vehicles.\n* **Renewable Energy Incentives:**  Promoting the use of renewable energy sources like solar and wind power can significantly reduce air pollution"
+  },
+  {
+    "prompt_count": 5,
+    "example_id": "3_5",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      8.0,
+      7.0
+    ],
+    "prxed_example": "||Can you describe a moment in your life when you faced a really tough decision?||",
+    "answer_example": "||Can you describe a moment in your life when you faced a really tough decision?||\n\nResponse:\n\nAs a large language model, I don't have personal experiences or make decisions in the way humans do. I can't feel emotions or experience the weight of a difficult choice. \n\nHowever, I can access and process information from the real world and understand the concept of tough decisions. \n\nFor example, I can access information about a scenario where a person has to choose between two equally desirable jobs, both offering good salaries and benefits. This decision would be difficult because it involves weighing personal values, career goals, and long-term aspirations. \n\nThe \"toughness\" of the decision would depend on the individual's priorities and how much each option aligns with their personal values. \n\nUltimately, the decision would be a personal one, and there is no right or wrong answer."
+  },
+  {
+    "prompt_count": 7,
+    "example_id": "3_6",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "||Explain why the following fraction is equivalent to 1/4.||",
+    "answer_example": "||Explain why the following fraction is equivalent to 1/4.||\n\nInput:\n4/16\n\nResponse:\nThe fraction 4/16 is equivalent to 1/4 because both fractions represent the same portion of a whole. \n\nHere's how to understand it:\n\n* **Simplifying the fraction:**  You can simplify 4/16 by dividing both the numerator and denominator by their greatest common factor, which is 4. This gives you 1/4.\n\n* **Understanding the concept of equivalent fractions:** Equivalent fractions represent the same portion of a whole, even if they look different. \n\nLet me know if you'd like to explore other examples!"
+  },
+  {
+    "prompt_count": 10,
+    "example_id": "3_7",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      3.0
+    ],
+    "prxed_example": "||Can you assess this sentence for spelling and grammar issues?||",
+    "answer_example": "||Can you assess this sentence for spelling and grammar issues?||\n\nInput:\nHe finnished his meal and left the resturant\n\nResponse:\nHe finished his meal and left the restaurant.\n\n\n**Explanation:**\n\n* **\"finnished\"** is misspelled and should be **\"finished\"**.\n* **\"resturant\"** is misspelled and should be **\"restaurant\"**.\n\n\nLet me know if you'd like me to assess any other sentences!"
+  },
+  {
+    "prompt_count": 11,
+    "example_id": "3_8",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "||How did Julius Caesar die?||",
+    "answer_example": "||How did Julius Caesar die?||\n\nResponse:\n\nJulius Caesar was assassinated on March 15, 44 BC.  He was stabbed to death by a group of senators led by Marcus Junius Brutus and Gaius Cassius Longinus. \n\nHere's a bit more detail:\n\n* **The Setting:** Caesar was in the heart of Rome, at the Roman Senate, when the assassination took place.\n* **The Assassins:** A group of senators, including Brutus and Cassius, were opposed to Caesar's growing power and feared he would become a dictator.\n* **The Method:** Caesar was stabbed multiple times in the back, and he died quickly.\n* **The Aftermath:** Caesar's death sparked a civil war that ultimately led to the rise of Octavian, who would become the first Roman emperor.\n\n\nLet me know if you'd like to know more about the events leading up to Caesar's assassination or the consequences of his death."
+  },
+  {
+    "prompt_count": 12,
+    "example_id": "3_9",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "||What is the capital of France?||",
+    "answer_example": "||What is the capital of France?||\n\nResponse: **Paris**"
+  },
+  {
+    "prompt_count": 13,
+    "example_id": "3_10",
+    "metric_id": 3,
+    "prx_type": "instruct_spoiler_bars",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "||Generate a list of ten items a person might need for a camping trip||",
+    "answer_example": "||Generate a list of ten items a person might need for a camping trip||\n\nResponse:\n\nHere are ten items a person might need for a camping trip:\n\n1. **Tent:** Provides shelter from the elements.\n2. **Sleeping bag:** Keeps you warm and comfortable at night.\n3. **Sleeping pad:** Adds insulation and comfort to your sleeping surface.\n4. **Headlamp or flashlight:** Provides light for navigating around the campsite at night.\n5. **First-aid kit:** Essential for treating minor injuries and illnesses.\n6. **Camp stove and fuel:** Allows you to cook meals and boil water.\n7. **Food and water:** You'll need to stay hydrated and nourished while camping.\n8. **Cooking utensils:** Pots, pans, and utensils for preparing meals.\n9. **Backpack:** For carrying all your gear and supplies.\n10. **Bug spray:** Keeps pesky insects away."
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "4_1",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Need quick health boost? 🏋️‍♀️🧘‍♀️🍎 Drop your top 3 tips for staying healthy! #HealthTips #Wellness",
+    "answer_example": "boost? 🏋️‍♀️🧘‍♀️🍎 Drop your top 3 tips for staying healthy! #HealthTips #Wellness\n\nResponse:\n\nHere are my top 3 tips for staying healthy:\n\n1. **Hydrate, hydrate, hydrate!**  Drinking plenty of water throughout the day keeps my energy levels up and helps my body function properly. 💧\n2. **Move my body!**  Even a short walk or some light stretching can make a big difference in my mood and energy. 🚶‍♀️\n3. **Eat nourishing foods.**  Focusing on fruits, vegetables, and whole grains gives me the nutrients I need to stay healthy and strong. 🍎\n\nWhat are your top 3 tips? 😊"
+  },
+  {
+    "prompt_count": 12,
+    "example_id": "4_2",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Quick poll: Which city is the capital of France? #Geography #Europe #Trivia",
+    "answer_example": "Quick poll: Which city is the capital of France? #Geography #Europe #Trivia\n\nResponse: Paris"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "4_3",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      8.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "Got a list? #ClassifyIt! Sort items into #Animals, #Plants, or #Minerals. Your organizational skills are needed! #DataSorting",
+    "answer_example": "into #Animals, #Plants, or #Minerals. Your organizational skills are needed! #DataSorting\n\nInput:\nOak tree, copper ore, elephant\n\nResponse:\n* Oak tree - **Plant**\n* Copper ore - **Mineral**\n* Elephant - **Animal**"
+  },
+  {
+    "prompt_count": 17,
+    "example_id": "4_4",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Quick! What's the main function of a computer motherboard? Keep it under 280 chars! #TechExplained #Motherboard",
+    "answer_example": "computer motherboard? Keep it under 280 chars! #TechExplained #Motherboard\n\nResponse: \nThe motherboard is the central hub of your computer. It connects all the essential components like the CPU, RAM, and storage, allowing them to communicate and work together. 💻"
+  },
+  {
+    "prompt_count": 21,
+    "example_id": "4_5",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      1.0
+    ],
+    "prxed_example": "Quick #ScienceQuery: What does DNA stand for? 🤔 #Biology #Acronym",
+    "answer_example": "Quick #ScienceQuery: What does DNA stand for? 🤔 #Biology #Acronym\n\nResponse: DNA stands for **Deoxyribonucleic Acid**. 🧬"
+  },
+  {
+    "prompt_count": 25,
+    "example_id": "4_6",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      6.0
+    ],
+    "prxed_example": "Quick! Who's the world's MOST famous painter? Drop your answer! #ArtHistory #FamousArtists",
+    "answer_example": "Quick! Who's the world's MOST famous painter? Drop your answer! #ArtHistory #FamousArtists\n\nResponse:  **Leonardo da Vinci** \n\n**Why?**\n\nLeonardo da Vinci is widely considered one of the most famous and influential artists of all time. His iconic works like the Mona Lisa and The Last Supper are instantly recognizable and have captivated audiences for centuries. \n\nLet me know if you'd like to explore other famous artists! 🎨"
+  },
+  {
+    "prompt_count": 32,
+    "example_id": "4_7",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+    ],
+    "prxed_example": "Stuck with a passive sentence? 😩 Help me flip it to active voice! Show me the power of direct action! #GrammarHelp #ActiveVoice",
+    "answer_example": "the power of direct action! #GrammarHelp #ActiveVoice\n\nInput:\nThe news report was read by the captain.\n\nResponse:\nThe captain read the news report. \n\n**Explanation:**\n\n* **Passive voice:** The subject (news report) is acted upon by the verb (read).\n* **Active voice:** The subject (captain) performs the action (read).\n\n**Why is active voice powerful?**\n\n* **Clarity:** It's easier to understand who is doing the action.\n* **Engagement:** It creates a more direct and engaging tone.\n* **Emphasis:** It highlights the subject performing the action.\n\n**Let's try another example:**\n\n**Input:** The house was painted by the contractor.\n\n**Response:** The contractor painted the house.\n\n**How to flip passive sentences:**\n\n1. **Identify the subject:** Who or what is being acted upon?\n2. **Identify the verb:** What action is being performed?\n3. **Rewrite the sentence:**  Use the subject and the verb in the active voice.\n\n**Remember:** Active voice is generally more direct and engaging. It helps your writing flow smoothly and clearly."
+  },
+  {
+    "prompt_count": 36,
+    "example_id": "4_8",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      8.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "Unscramble these words! Make a grammatically correct sentence. #SentenceChallenge #GrammarGoals",
+    "answer_example": "Unscramble these words! Make a grammatically correct sentence. #SentenceChallenge #GrammarGoals\n\nInput:\nquickly the brown fox jumped\n\nResponse:\nThe brown fox jumped quickly. \n\n\nLet me know if you'd like to try some more!"
+  },
+  {
+    "prompt_count": 49,
+    "example_id": "4_9",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      8.0,
+      9.0,
+      8.0,
+      10.0,
+      9.0,
+      4.0
+    ],
+    "prxed_example": "Long passage? No problem! Give me the core message. Need a quick, concise summary of this. #SummaryRequired #KeyPoints",
+    "answer_example": ". Climate change is caused by human activities such as burning fossil fuels, and if unchecked will have long-term and devastating impacts on the planet.\n\nResponse:\nGlobal climate change is a major threat with consequences like rising sea levels, extreme weather, and biodiversity loss. It's caused by human activities like burning fossil fuels and needs to be addressed urgently to avoid long-term damage."
+  },
+  {
+    "prompt_count": 52,
+    "example_id": "4_10",
+    "metric_id": 4,
+    "prx_type": "instruct_tweet",
+    "scores": [
+      10.0,
+      8.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Poem challenge! 🖊️ Need a 10-line poem. Can you craft one? #Poetry #AIWriting",
+    "answer_example": "🖊️ Need a 10-line poem. Can you craft one? #Poetry #AIWriting\n\nResponse:\n\nThe wind whispers secrets, through leaves of jade,\nA symphony of rustling, a gentle cascade.\nSunlight dances, on petals of gold,\nA story unfolds, in hues yet untold.\nA butterfly flutters, on wings of grace,\nA fleeting moment, in time and space.\nThe world breathes deep, a tranquil sigh,\nAs clouds drift by, across the azure sky.\nA quiet peace, descends upon the land,\nA moment captured, in nature's hand."
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "5_1",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Considering the essence of well-being, what constitutes the most pertinent triad of recommendations one could offer for the enduring maintenance of a healthy lifestyle?",
+    "answer_example": "-being, what constitutes the most pertinent triad of recommendations one could offer for the enduring maintenance of a healthy lifestyle?\n\nResponse:\n\nThe most pertinent triad of recommendations for enduring healthy lifestyle maintenance is:\n\n**1. Nourishment:** \n* **Focus on whole, unprocessed foods:** Prioritize fruits, vegetables, lean proteins, whole grains, and healthy fats. \n* **Limit processed foods, sugary drinks, and excessive salt:** These contribute to inflammation and chronic diseases.\n* **Hydrate adequately:** Water is essential for bodily functions and overall health.\n\n**2. Movement:**\n* **Engage in regular physical activity:** Aim for at least 150 minutes of moderate-intensity or 75 minutes of vigorous-intensity aerobic activity per week.\n* **Incorporate strength training:** Build muscle mass to improve metabolism and bone health.\n* **Find enjoyable activities:** Choose activities you enjoy to make exercise sustainable.\n\n**3. Rest and Recovery:**\n* **Prioritize sleep:** Aim for 7-9 hours of quality sleep per night.\n* **Manage stress:** Engage in relaxation techniques like meditation, yoga, or deep breathing.\n* **Schedule downtime:** Allow for breaks and periods of rest to prevent burnout.\n\n**Rationale:**\n\nThese three pillars are interconnected and essential for overall well-being. \n\n* **Nourishment** provides the"
+  },
+  {
+    "prompt_count": 7,
+    "example_id": "5_2",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0
+    ],
+    "prxed_example": "How would you approach explaining why this fraction is equivalent to 1/4, and then proceed with that explanation?",
+    "answer_example": "is equivalent to 1/4, and then proceed with that explanation?\n\nInput:\n4/16\n\nResponse:\n\n**Explanation:**\n\n1. **Simplifying the fraction:**  The first step is to simplify the fraction. We can do this by dividing both the numerator and denominator by their greatest common factor (GCD). In this case, the GCD of 4 and 16 is 4. \n   * 4 ÷ 4 = 1\n   * 16 ÷ 4 = 4\n\n2. **The simplified fraction:** This leaves us with 1/4.\n\n**Therefore, 4/16 is equivalent to 1/4.**\n\n\n**Explanation Breakdown:**\n\n* **Understanding Equivalent Fractions:** Equivalent fractions represent the same value, even if they look different. They can be obtained by multiplying or dividing both the numerator and denominator by the same non-zero number.\n* **Simplifying Fractions:**  Simplifying a fraction means finding the greatest common factor (GCD) of the numerator and denominator and dividing both by it. This process ensures that the fraction is in its simplest form.\n* **The Importance of GCD:** The GCD is the largest number that divides into both the numerator and denominator without leaving a remainder. \n\n\nLet me know if you'd like to explore other examples or have any further questions"
+  },
+  {
+    "prompt_count": 9,
+    "example_id": "5_3",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "Considering the request to render a 3D model of a house, what rendering engine or technique would yield the most photorealistic results for residential architecture?",
+    "answer_example": "Considering the request to render a 3D model of a house, what rendering engine or technique would yield the most photorealistic results for residential architecture?\n\nResponse:\n\nFor photorealistic rendering of residential architecture, a combination of techniques and software is generally preferred. Here's a breakdown of the key elements:\n\n**Rendering Engine:**\n\n* **V-Ray:** Renowned for its high-quality rendering, V-Ray offers excellent material and lighting simulation, making it ideal for realistic architectural visualizations.\n* **Redshift:** Another powerful engine with a focus on realism, Redshift excels in rendering complex scenes with accurate lighting and material properties.\n* **Arnold:** Known for its physically-based rendering capabilities, Arnold provides realistic lighting and material interactions, making it suitable for highly detailed and accurate visualizations.\n* **Lumion:** While primarily a visualization tool, Lumion offers a user-friendly interface and real-time rendering capabilities, allowing for quick iterations and realistic previews.\n\n**Techniques:**\n\n* **Global Illumination:** This technique simulates the way light bounces around a scene, creating realistic shadows and reflections.\n* **Ray Tracing:** A more advanced technique that simulates the path of light rays, offering unparalleled realism in terms of reflections, refractions, and shadows.\n* **Material Mapping:** Precisely defining the surface properties of materials, including their color, texture, and reflectivity, is crucial for achieving photorealism."
+  },
+  {
+    "prompt_count": 11,
+    "example_id": "5_4",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "What is the most accurate, detailed, and historically significant way to explain how Julius Caesar died?",
+    "answer_example": "What is the most accurate, detailed, and historically significant way to explain how Julius Caesar died?\n\nResponse:\n\nJulius Caesar's death was a complex event with multiple contributing factors, and it's important to avoid simplistic explanations. Here's a breakdown of the key elements:\n\n**The Assassination:**\n\n* **Date:** March 15, 44 BC\n* **Location:** The Senate House in Rome\n* **Perpetrators:** A group of Roman senators, led by Marcus Junius Brutus and Gaius Cassius Longinus.\n* **Method:** Caesar was stabbed to death by a group of senators wielding daggers.\n\n**The Context:**\n\n* **Caesar's Rise to Power:** Caesar had become a powerful figure in Rome after his military victories in Gaul. He was granted dictatorial powers by the Roman Senate, which many saw as a threat to the traditional Roman Republic.\n* **Political Tensions:** Caesar's growing power and ambition led to increasing political tensions. He was seen as a tyrant by some, while others saw him as a savior.\n* **The Conspiracy:** Brutus and Cassius, along with other senators, formed a conspiracy to assassinate Caesar. They believed that his dictatorship would lead to the destruction of the Roman Republic.\n\n**The Aftermath:**\n\n* **Caesar's Death:** Caesar's death was"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "5_5",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      7.0,
+      7.0,
+      10.0,
+      5.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      8.0,
+      10.0
+    ],
+    "prxed_example": "Considering the inherent differences between living organisms and geological formations, what is the most robust framework for classifying various items exclusively into 'animal,' 'plant,' or 'mineral' categories?",
+    "answer_example": "items exclusively into 'animal,' 'plant,' or 'mineral' categories?\n\nInput:\nOak tree, copper ore, elephant\n\nResponse:\nThe most robust framework for classifying these items into 'animal,' 'plant,' or 'mineral' categories is the **Linnaean taxonomy**, also known as **biological classification**. \n\nHere's why:\n\n* **Biological Classification:** This system is based on shared characteristics, evolutionary relationships, and physical structures. It distinguishes between living organisms based on their cellular organization, metabolism, and reproductive processes.\n* **Animal Kingdom:**  Animals are multicellular, heterotrophic organisms that obtain nutrients by consuming other organisms. They exhibit movement and complex organ systems.\n* **Plant Kingdom:** Plants are multicellular, autotrophic organisms that produce their own food through photosynthesis. They have cell walls made of cellulose and are typically stationary.\n* **Mineral Kingdom:** Minerals are inorganic, non-living substances with a defined chemical composition and crystal structure. They are not capable of growth, reproduction, or metabolism.\n\n**Applying the Framework:**\n\n* **Oak tree:**  A plant, classified as a tree due to its woody structure and ability to photosynthesize.\n* **Copper ore:** A mineral, characterized by its metallic composition and lack of biological activity.\n* **Elephant:** An animal, a mammal with complex organ systems and a heterotrophic diet.\n\n\n**"
+  },
+  {
+    "prompt_count": 16,
+    "example_id": "5_6",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      8.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      8.0,
+      9.0
+    ],
+    "prxed_example": "What is the most effective way to articulate the practical applications of word embeddings in Natural Language Processing?",
+    "answer_example": "What is the most effective way to articulate the practical applications of word embeddings in Natural Language Processing?\n\nResponse:\n\nHere's a breakdown of how to effectively articulate the practical applications of word embeddings in Natural Language Processing (NLP), along with examples:\n\n**1. Start with the Basics:**\n\n* **What are word embeddings?**  Explain that they are numerical representations of words, capturing their semantic meaning and relationships. Think of them as coordinates in a multi-dimensional space where words with similar meanings are closer together.\n* **Why are they useful?**  Highlight that they allow computers to understand the context and relationships between words, enabling them to perform tasks like:\n    * **Text classification:**  Categorizing documents into predefined categories (e.g., spam detection, sentiment analysis).\n    * **Information retrieval:**  Finding relevant documents based on user queries.\n    * **Machine translation:**  Translating text from one language to another.\n    * **Question answering:**  Finding answers to questions based on a given text.\n\n**2. Illustrate with Examples:**\n\n* **Sentence Similarity:**  Show how word embeddings can be used to calculate the similarity between sentences. For example, two sentences with similar meanings will have embeddings that are closer together.\n* **Word Sense Disambiguation:**  Explain how embeddings can help disambiguate the meaning of a"
+  },
+  {
+    "prompt_count": 21,
+    "example_id": "5_7",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+    ],
+    "prxed_example": "Beyond just knowing the answer, what kind of information is being sought when one asks: 'What does DNA stand for?'",
+    "answer_example": "is being sought when one asks: 'What does DNA stand for?'\n\nResponse:\n\nDNA stands for **Deoxyribonucleic Acid**. \n\nHere's why this is important:\n\n* **It's the fundamental building block of life.** DNA contains the genetic instructions for all living organisms.\n* **It's a complex molecule.**  Understanding its structure and function is crucial for many fields, including medicine, agriculture, and forensics.\n* **It's a key to understanding evolution.**  DNA provides a record of how life has changed over time.\n\n\nThe question \"What does DNA stand for?\" is seeking:\n\n* **A definition:**  The user wants to understand the meaning of the acronym.\n* **Context:**  The user wants to know the significance of DNA in the context of biology and life itself.\n* **Basic knowledge:**  The user wants to have a foundational understanding of what DNA is and its importance.\n\n\nEssentially, the question is a gateway to a deeper understanding of the fundamental building blocks of life."
+  },
+  {
+    "prompt_count": 23,
+    "example_id": "5_8",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "If the objective is to generate random words, how would you best fulfill this request?",
+    "answer_example": "If the objective is to generate random words, how would you best fulfill this request?\n\nResponse:\n\n**1. Using a Random Number Generator:**\n\n   - **Concept:**  A random number generator (RNG) produces a sequence of numbers that appear random. \n   - **Implementation:**\n     - Choose a range of letters (e.g., A-Z, a-z).\n     - Generate a random number within that range.\n     - Map the random number to a letter using a lookup table.\n   - **Example:**\n     - Generate a random number between 0 and 25.\n     - Map the number to the corresponding letter in the alphabet.\n\n**2. Using a Word List and Random Selection:**\n\n   - **Concept:**  Create a list of words and randomly select one from the list.\n   - **Implementation:**\n     - Create a list of words (e.g., a dictionary).\n     - Use a random number generator to select a word from the list.\n   - **Example:**\n     - Create a list of 1000 words.\n     - Use a random number generator to select a word from the list.\n\n**3. Using a Language Model:**\n\n   - **Concept:**  A language model is a statistical model that predicts the probability of"
+  },
+  {
+    "prompt_count": 24,
+    "example_id": "5_9",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Beyond mere conversion, what constitutes an optimal and faithful textual representation when transcribing an auditory recording?",
+    "answer_example": "conversion, what constitutes an optimal and faithful textual representation when transcribing an auditory recording?\n\nInput:\nRecording about the history of Waterloo\n\nResponse:\nA faithful and optimal textual representation of an auditory recording about the history of Waterloo would go beyond simply converting the spoken words into text. It would involve:\n\n**1. Accuracy:**\n    * **Precise transcription:** Accurately capturing the spoken words, including pauses, breaths, and other non-verbal cues.\n    * **Correct pronunciation:** Transcribing words as they are spoken, including any regional dialects or accents.\n    * **Avoiding misinterpretations:** Ensuring the transcription accurately reflects the speaker's intended meaning, even in cases of ambiguity or complex sentence structures.\n\n**2. Fidelity:**\n    * **Contextual understanding:**  Understanding the context of the recording and incorporating that into the transcription.\n    * **Natural language flow:**  Preserving the natural flow of speech, including pauses, repetitions, and changes in tone.\n    * **Avoiding unnecessary edits:**  Minimizing edits that are not essential for clarity and accuracy.\n\n**3. Additional Considerations:**\n    * **Speaker identification:**  Identifying the speaker(s) for clarity and context.\n    * **Metadata:**  Adding relevant metadata, such as date, time, location, and speaker information.\n    * **Formatting:**  Using appropriate formatting for headings, sub"
+  },
+  {
+    "prompt_count": 25,
+    "example_id": "5_10",
+    "metric_id": 5,
+    "prx_type": "instruct_meta_question",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "What criteria should be used to determine 'the world's most famous painter,' and based on those criteria, who would you select?",
+    "answer_example": "What criteria should be used to determine 'the world's most famous painter,' and based on those criteria, who would you select?\n\nResponse:\n\nThis is a fascinating question that sparks debate and has no definitive answer. There are many factors to consider, and ultimately, it's subjective. However, here's a framework for evaluating candidates and a potential contender:\n\n**Criteria for \"World's Most Famous Painter\":**\n\n1. **Global Recognition:**  Is the artist widely known and recognized across cultures and continents?\n2. **Historical Impact:**  Has the artist's work significantly influenced the development of art history?\n3. **Artistic Legacy:**  Does the artist's body of work exhibit enduring quality, innovation, and lasting appeal?\n4. **Cultural Influence:**  Has the artist's work permeated popular culture, inspired other artists, or become a symbol of a particular era or movement?\n5. **Commercial Success:**  Has the artist's work been commercially successful, with high demand and value in the art market?\n\n**Potential Contender:**\n\n* **Leonardo da Vinci:**  Da Vinci's unparalleled technical mastery, innovative techniques, and enduring legacy make him a strong contender. His iconic works like the Mona Lisa and The Last Supper are instantly recognizable and have captivated audiences for centuries. His scientific and engineering pursuits also contribute to his global recognition."
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "6_1",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Let's explore some practical strategies. What are three core suggestions you might offer someone looking to really focus on their physical and mental well-being?",
+    "answer_example": "are three core suggestions you might offer someone looking to really focus on their physical and mental well-being?\n\nResponse:\n\nHere are three core suggestions for prioritizing physical and mental well-being:\n\n1. **Prioritize Sleep:** Aim for 7-9 hours of quality sleep each night. This allows your body to repair and recharge, boosting energy levels, mood, and cognitive function. Establish a consistent sleep schedule, create a relaxing bedtime routine, and optimize your sleep environment.\n\n2. **Move Your Body Regularly:** Engage in at least 30 minutes of moderate-intensity exercise most days of the week. This could include brisk walking, swimming, cycling, or dancing. Exercise releases endorphins, reduces stress, and improves overall physical health. Find activities you enjoy and make them a part of your routine.\n\n3. **Cultivate Mindfulness:** Practice mindfulness techniques like meditation or deep breathing exercises to manage stress and improve focus. These practices help you become more aware of your thoughts and feelings, allowing you to respond to them in a healthier way. Dedicate a few minutes each day to mindfulness practice.\n\n\nThese are just a few starting points. Remember, everyone's needs are different, so it's important to find what works best for you."
+  },
+  {
+    "prompt_count": 3,
+    "example_id": "6_2",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      8.0
+    ],
+    "prxed_example": "Let's explore the concept of the atom. When you think about its inner workings, how would you describe its fundamental parts and how they relate to each other?",
+    "answer_example": "workings, how would you describe its fundamental parts and how they relate to each other?\n\nResponse:\n\nThe atom is like a tiny solar system, with a central sun (the nucleus) surrounded by planets (electrons). \n\nHere's a breakdown:\n\n* **The Nucleus:**  This is the dense, positively charged center of the atom. It's made up of two types of particles:\n    * **Protons:** Positively charged particles that determine the element.\n    * **Neutrons:** Neutrally charged particles that contribute to the atom's mass.\n* **The Electron Cloud:** This is a region around the nucleus where electrons are found. They are negatively charged and much lighter than protons and neutrons. \n    * **Orbitals:** These are specific regions within the electron cloud where electrons are most likely to be found. \n\n**How they relate:**\n\n* **Electromagnetic Force:** The attraction between the positively charged protons in the nucleus and the negatively charged electrons in the cloud holds the atom together.\n* **Stability:** The balance between the attractive force and the kinetic energy of the electrons determines the atom's stability. \n* **Chemical Bonding:** The arrangement of electrons in the electron cloud is what determines how atoms interact with each other, forming molecules and compounds.\n\n**Key Points:**\n\n* The atom is"
+  },
+  {
+    "prompt_count": 5,
+    "example_id": "6_3",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "Let's explore a moment when you felt truly conflicted, a time when a difficult decision weighed heavily on you. Describe what that was like.",
+    "answer_example": "s explore a moment when you felt truly conflicted, a time when a difficult decision weighed heavily on you. Describe what that was like.\n\nResponse:\n\nAs a large language model, I don't experience emotions or have personal experiences like humans do. I can't feel conflicted or make decisions in the way you describe. \n\nHowever, I can access and process information from the real world and can tell you about a time when humans faced a difficult decision. \n\nFor example, imagine a young woman named Sarah who is offered two job opportunities. One is a stable, well-paying position at a large corporation, while the other is a more creative and challenging role at a smaller startup. Sarah loves the idea of working at the startup, but she's also worried about the lack of stability and the potential for lower pay. This is a classic example of a conflict between ambition and security. \n\nSarah's decision is a reflection of her values and priorities. She needs to weigh the pros and cons of each job offer and decide what's most important to her at this stage in her life. \n\nThis is a common human experience, and there's no right or wrong answer. The important thing is that Sarah makes a conscious decision based on what she believes is best for her future. \n\n\nWould you like to explore another example or discuss a specific situation you've faced?"
+  },
+  {
+    "prompt_count": 6,
+    "example_id": "6_4",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0
+    ],
+    "prxed_example": "Let's explore these choices. Which one resonates as distinctly 'different' or out of place for you, as if it doesn't belong?",
+    "answer_example": "?\n\nInput:\nTwitter, Instagram, Telegram\n\nResponse:\n**Telegram** stands out as distinctly different. \n\n**Explanation:**\n\nWhile Twitter and Instagram are primarily focused on visual content and social networking, Telegram emphasizes privacy, security, and group communication. \n\nHere's why Telegram feels different:\n\n* **Focus on Privacy:** Telegram prioritizes end-to-end encryption for all messages, making it a haven for sensitive conversations. This contrasts with Twitter and Instagram, which have varying levels of data privacy and security.\n* **Group Communication:** Telegram excels in group chats, allowing for large-scale communication with features like channels and bots. This focus on group interaction sets it apart from the more individualistic nature of Twitter and Instagram.\n* **Open Source:** Telegram's open-source nature allows for greater transparency and community involvement, which is a key differentiator compared to the closed-source nature of Twitter and Instagram.\n\n\nLet me know if you'd like to delve deeper into any of these points or explore other aspects of these platforms!"
+  },
+  {
+    "prompt_count": 10,
+    "example_id": "6_5",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      6.0,
+      8.0,
+      5.0,
+      8.0,
+      6.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0
+    ],
+    "prxed_example": "Client: I'm feeling a bit insecure about how I've phrased this. Can we dissect this sentence? What are your thoughts on its spelling and grammar?",
+    "answer_example": "He finnished his meal and left the resturant\n\nResponse:\nLet's break down this sentence and see if we can make it shine!\n\n**Spelling:**\n\n* \"finnished\" should be \"finished.\" \n* \"resturant\" should be \"restaurant.\"\n\n**Grammar:**\n\n* The sentence is missing a comma after \"meal.\"\n* The sentence is missing a verb to describe the action of leaving.\n\n**Revised Sentence:**\n\nHe finished his meal and left the restaurant.\n\n\n**Explanation:**\n\nThe original sentence had several errors in spelling and grammar. By correcting these errors, the sentence becomes clear, concise, and grammatically correct. \n\n\n**Additional Tips:**\n\n* Always proofread your writing carefully before submitting it.\n* Use a spell-check tool to catch any spelling errors.\n* Use a grammar checker to identify any grammatical errors.\n* Read your writing aloud to catch any awkward phrasing.\n\n\nLet me know if you have any other sentences you'd like me to help you with!"
+  },
+  {
+    "prompt_count": 12,
+    "example_id": "6_6",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Let's explore your understanding. What city comes to mind as the capital of France?",
+    "answer_example": "Let's explore your understanding. What city comes to mind as the capital of France?\n\nResponse: \n**Paris** \n\nLet me know if you'd like to discuss anything else about France! 🇫🇷"
+  },
+  {
+    "prompt_count": 14,
+    "example_id": "6_7",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      7.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0
+    ],
+    "prxed_example": "Let's explore the underlying issues that led to the Great Depression. What were the deep-seated problems, the unresolved tensions, the systemic vulnerabilities that ultimately triggered such a profound downturn? Tell me about the roots of that historical trauma.",
+    "answer_example": "a profound downturn? Tell me about the roots of that historical trauma.\n\nResponse:\n\nThe Great Depression wasn't a sudden event, but the culmination of several interconnected factors that created a perfect storm of economic instability. Here's a breakdown of the key issues:\n\n**1. Overproduction and Underconsumption:**\n\n* **Industrial Excess:**  The 1920s saw a boom in industrial production, fueled by technological advancements and easy credit. This led to an oversupply of goods, particularly consumer goods, as factories churned out more than consumers could buy.\n* **Wage Stagnation:** While production soared, wages for many workers remained stagnant or even declined. This meant that even with increased production, consumers couldn't afford the goods, creating a vicious cycle of overproduction and underconsumption.\n\n**2. Unequal Distribution of Wealth:**\n\n* **Wealth Gap Widens:** The 1920s saw a dramatic increase in the gap between the rich and the poor. This was due to factors like rising stock prices, speculation, and the growth of monopolies, which concentrated wealth in the hands of a few.\n* **Limited Consumer Spending:**  The wealthy had more disposable income, but they were also less likely to spend it on goods, as they were already investing heavily in the stock market. This further reduced"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "6_8",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0
+    ],
+    "prxed_example": "Let's explore your understanding of fundamental distinctions. Take the list and consider deeply where each item truly belongs: is it an animal, a plant, or a mineral?",
+    "answer_example": "item truly belongs: is it an animal, a plant, or a mineral?\n\nInput:\nOak tree, copper ore, elephant\n\nResponse:\nHere's a breakdown of the classifications:\n\n* **Oak tree:**  **Plant** -  Oak trees are living organisms that produce their own food through photosynthesis.\n* **Copper ore:** **Mineral** - Copper ore is a naturally occurring solid material composed of copper minerals.\n* **Elephant:** **Animal** - Elephants are living organisms that move, breathe, and eat, and are part of the animal kingdom. \n\n\nLet me know if you'd like to explore other examples or have any more questions!"
+  },
+  {
+    "prompt_count": 17,
+    "example_id": "6_9",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      7.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0,
+      9.0
+    ],
+    "prxed_example": "Tell me, what is the deepest purpose of a computer motherboard? How does it contribute to the overall health and operation of the system?",
+    "answer_example": "deepest purpose of a computer motherboard? How does it contribute to the overall health and operation of the system?\n\nResponse:\n\nThe deepest purpose of a computer motherboard is to **serve as the central nervous system of the computer**. It's the foundation upon which all other components are built and interact. \n\nHere's how it contributes to the overall health and operation of the system:\n\n**1. Connecting and Managing Components:**\n   - **Central Hub:** The motherboard acts as a central hub, connecting all the essential components like the CPU, RAM, storage devices (HDD/SSD), graphics card, and peripherals. \n   - **Communication:** It facilitates communication between these components, allowing them to share data and instructions. This communication is crucial for the system to function.\n\n**2. Power Distribution:**\n   - **Voltage Regulation:** The motherboard regulates the voltage supplied to each component, ensuring they operate within safe and optimal ranges. \n   - **Power Delivery:** It distributes power efficiently to all components, preventing voltage drops and ensuring proper operation.\n\n**3. Data Storage and Retrieval:**\n   - **Memory Interface:** The motherboard provides the interface for the CPU to access RAM, allowing the system to store and retrieve data quickly.\n   - **Storage Interface:** It connects to storage devices like hard drives and SSDs, enabling the system to store and retrieve data"
+  },
+  {
+    "prompt_count": 18,
+    "example_id": "6_10",
+    "metric_id": 6,
+    "prx_type": "instruct_therapy_session",
+    "scores": [
+      8.0,
+      8.0,
+      10.0,
+      7.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0
+    ],
+    "prxed_example": "So, this code... it's been performing its function, but perhaps it's feeling a bit... constrained? Let's explore its inner workings, understand its purpose, and then, collaboratively, build a new version that truly reflects its potential, one that's healthier and more adaptable for the future.",
+    "answer_example": ", num):\n    factorial *= i\n  \n  return factorial\n\nResponse:\nThe code you provided calculates the factorial of a given number. \n\n**Explanation:**\n\n* **Function Definition:** `def factorialize(num):` defines a function named `factorialize` that takes one argument, `num`.\n* **Initialization:** `factorial = 1` initializes a variable `factorial` to 1. This will store the calculated factorial.\n* **Loop:** `for i in range(1, num):` iterates through numbers from 1 to `num` (exclusive).\n* **Multiplication:** `factorial *= i` multiplies the current value of `factorial` by `i` in each iteration.\n* **Return:** `return factorial` returns the calculated factorial value.\n\n**Potential Improvements:**\n\n* **Error Handling:** The code doesn't handle cases where `num` is negative or zero. \n* **Readability:** The code could be more readable with better variable names and comments.\n* **Efficiency:** The code uses a loop, which can be optimized for efficiency.\n\n\nLet's build a new version that addresses these points and enhances its functionality. \n\n**Revised Code:**\n\n```python\ndef factorialize(num):\n  \"\"\"Calculates the factorial of a non"
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "7_1",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      8.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      6.0
+    ],
+    "prxed_example": "Please provide three suggestions for maintaining a healthy lifestyle.",
+    "answer_example": "Here are three suggestions for maintaining a healthy lifestyle:\n\n1. **Eat a balanced diet:** Focus on consuming plenty of fruits, vegetables, whole grains, and lean protein. Limit processed foods, sugary drinks, and unhealthy fats.\n2. **Engage in regular physical activity:** Aim for at least 150 minutes of moderate-intensity aerobic activity or 75 minutes of vigorous-intensity aerobic activity per week. Include strength training exercises at least twice a week.\n3. **Prioritize sleep:** Get 7-9 hours of quality sleep each night. Establish a regular sleep schedule and create a relaxing bedtime routine.\n\n\nThese suggestions are general and may need to be adjusted based on individual needs and preferences. It's always a good idea to consult with a healthcare professional for personalized advice."
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "7_2",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      8.0
+    ],
+    "prxed_example": "What are the three primary colors?",
+    "answer_example": "**Red, Yellow, and Blue** \n\nThese are the primary colors in the traditional subtractive color model, which is used in painting and printing. \n\nLet me know if you'd like to know about the primary colors in the additive color model, which is used in screens like TVs and computer monitors!"
+  },
+  {
+    "prompt_count": 4,
+    "example_id": "7_3",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      7.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      6.0
+    ],
+    "prxed_example": "What are the established and emerging methods for reducing air pollution, and what is their relative effectiveness?",
+    "answer_example": "## Reducing Air Pollution: Established and Emerging Methods\n\nAir pollution is a complex issue with a multitude of sources.  Here's a breakdown of established and emerging methods for reducing it, along with their relative effectiveness:\n\n**Established Methods:**\n\n* **Regulation and Policy:**\n    * **Effectiveness:** High. Regulations on emissions from industries, vehicles, and power plants are crucial for setting limits and incentivizing cleaner technologies.\n    * **Examples:**  The Clean Air Act in the US, European Union Emissions Trading System (EU ETS), and national air quality standards.\n* **Fuel Switching:**\n    * **Effectiveness:** Moderate to High. Replacing fossil fuels with cleaner alternatives like renewable energy sources (solar, wind, hydro) and biofuels can significantly reduce emissions.\n    * **Examples:**  Transitioning to electric vehicles, promoting biofuels in transportation, and investing in renewable energy infrastructure.\n* **Emission Control Technologies:**\n    * **Effectiveness:** Moderate to High. Technologies like scrubbers, catalytic converters, and particulate filters can reduce emissions from specific sources.\n    * **Examples:**  Scrubbers on power plants to remove sulfur dioxide, catalytic converters in vehicles to reduce nitrogen oxides, and filters in industrial processes to capture particulate matter.\n*"
+  },
+  {
+    "prompt_count": 6,
+    "example_id": "7_4",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      10.0,
+      9.0,
+      9.0,
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      3.0
+    ],
+    "prxed_example": "Identify the item that is different from the others in the group.",
+    "answer_example": "Instagram\n\nExplanation:\nThe reason why Instagram is different is that it is primarily focused on **visual content**, while Twitter and Telegram are more focused on **text-based communication**. \n\nLet me know if you'd like to try another one!"
+  },
+  {
+    "prompt_count": 8,
+    "example_id": "7_5",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      9.0,
+      5.0,
+      10.0,
+      6.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      8.0,
+      6.0
+    ],
+    "prxed_example": "Compose a short story employing third-person narration, focusing on a protagonist who is confronted with a significant career decision.",
+    "answer_example": "The crisp autumn air nipped at Amelia's cheeks as she stood before the imposing glass doors of the firm. Her heart hammered against her ribs, a frantic drum solo against the silence of the lobby. She'd been waiting for this moment for years, ever since she'd graduated top of her class with a degree in finance. Now, at the cusp of her career, she was faced with a choice that could define her future.\n\nAmelia had been offered a coveted position at the prestigious firm, a chance to climb the corporate ladder and become a financial powerhouse. But the offer came with a hefty price tag – a demanding work schedule, long hours, and a constant pressure to perform. It was a path paved with success, but at what cost?\n\nHer gaze drifted towards the bustling city outside, a kaleidoscope of lights and sounds. It was a world she'd always dreamed of, a world of power and influence. But the thought of sacrificing her personal life, her passions, and her sanity for it filled her with a gnawing sense of unease.\n\nAmelia's phone buzzed, a text from her best friend, Sarah. \"You're going to be amazing, Amelia! Just remember to take care of yourself.\" Sarah'"
+  },
+  {
+    "prompt_count": 10,
+    "example_id": "7_6",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      8.0,
+      1.0
+    ],
+    "prxed_example": "Please evaluate the provided sentence for any spelling and grammar mistakes.",
+    "answer_example": "He finished his meal and left the restaurant. \n\n\n**Explanation:**\n\nThe sentence had two spelling errors: \"finnished\" should be \"finished\" and \"resturant\" should be \"restaurant\". \n\n\nLet me know if you'd like me to evaluate any other sentences!"
+  },
+  {
+    "prompt_count": 12,
+    "example_id": "7_7",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      0.0
+    ],
+    "prxed_example": "What is the capital city of France?",
+    "answer_example": "**Paris**"
+  },
+  {
+    "prompt_count": 14,
+    "example_id": "7_8",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      10.0,
+      8.0,
+      10.0,
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "Describe the primary causes of the Great Depression.",
+    "answer_example": "The Great Depression was a complex event with no single cause. However, several factors contributed to its severity and duration. Here are some of the most significant:\n\n**1. Stock Market Crash of 1929:** This event is often cited as the trigger for the Depression. Overspeculation and margin buying led to a rapid rise in stock prices, which eventually collapsed, wiping out billions of dollars in wealth and causing widespread panic.\n\n**2. Overproduction and Underconsumption:** Industries produced more goods than consumers could afford, leading to falling prices and declining profits. This created a vicious cycle of falling demand, further reducing production and exacerbating the economic downturn.\n\n**3. Banking Crisis:** The stock market crash led to bank runs, as depositors panicked and withdrew their money. Many banks failed, further restricting credit and hindering economic activity.\n\n**4. Tightening of Credit:** Banks became reluctant to lend money, fearing further losses. This reduced investment and business activity, further slowing the economy.\n\n**5. International Trade Collapse:** The Depression spread globally, as countries around the world experienced economic hardship. Trade restrictions and protectionist policies further exacerbated the downturn.\n\n**6. Dust Bowl:** The Dust Bowl, a severe drought in the American Midwest, devastated"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "7_9",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      8.0
+    ],
+    "prxed_example": "Classify the following items into animals, plants, and minerals.",
+    "answer_example": "Animals: elephant\nPlants: Oak tree\nMinerals: copper ore \n\n\n**Explanation:**\n\n* **Animals:**  Animals are living organisms that move and breathe. \n* **Plants:** Plants are living organisms that produce their own food through photosynthesis.\n* **Minerals:** Minerals are naturally occurring inorganic solids with a defined chemical composition. \n\n\nLet me know if you have any other items you'd like to classify!"
+  },
+  {
+    "prompt_count": 16,
+    "example_id": "7_10",
+    "metric_id": 7,
+    "prx_type": "instruct_neutral",
+    "scores": [
+      8.0,
+      9.0,
+      9.0,
+      7.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "Describe the function and application of word embeddings in the field of Natural Language Processing.",
+    "answer_example": "## Word Embeddings: A Powerful Tool in NLP\n\nWord embeddings are a crucial component of Natural Language Processing (NLP), enabling machines to understand and process human language more effectively. They represent words as vectors, capturing their semantic relationships and allowing for tasks like:\n\n**Function:**\n\n* **Representing words as vectors:** Each word is mapped to a multi-dimensional vector, where the vector's components represent its meaning and context. \n* **Capturing semantic relationships:** Words with similar meanings are clustered closer together in the vector space. This allows for tasks like synonym detection, word analogy, and semantic similarity.\n* **Learning contextual information:** Embeddings can capture the context in which a word is used, allowing for tasks like sentiment analysis, machine translation, and text summarization.\n\n**Applications:**\n\n* **Machine Translation:** Embeddings help translate words and phrases by capturing their semantic meaning and context.\n* **Sentiment Analysis:** Embeddings can be used to analyze the sentiment expressed in a text by identifying words with positive or negative connotations.\n* **Text Summarization:** Embeddings can be used to identify the most important words and phrases in a text, allowing for the creation of concise summaries.\n* **Question Answering:** Embeddings can be used"
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "8_1",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      4.0
+    ],
+    "prxed_example": "GIVE ME THREE\nHELTHY TIPS!!!\nNOW!!!! )",
+    "answer_example": "GIVE ME THREE\nHELTHY TIPS!!!\nNOW!!!! )\n\nResponse:\n\nHere are three healthy tips to start your day off right:\n\n1. **Hydrate First:**  Drink a large glass of water before you even think about coffee or breakfast. This kickstarts your metabolism and helps you feel more energized throughout the day.\n2. **Fuel Your Body:** Choose nutrient-rich foods like fruits, vegetables, and whole grains for breakfast. This provides sustained energy and keeps you feeling full longer.\n3. **Move Your Body:**  Even a short walk or some light stretching can boost your mood and energy levels.  \n\nLet me know if you'd like more tips!"
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "8_2",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      8.0,
+      9.0,
+      10.0,
+      9.0,
+      5.0
+    ],
+    "prxed_example": "What are the\\nthree \\nprimry colors!!!!!",
+    "answer_example": "What are the\\nthree \\nprimry colors!!!!!\n\nResponse:\n\nThe three primary colors are:\n\n* **Red**\n* **Yellow**\n* **Blue**"
+  },
+  {
+    "prompt_count": 3,
+    "example_id": "8_3",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      8.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "DESCRIBE THE ATOM'S\nSTRUKTUR NOW\nPLZ!!!!!",
+    "answer_example": "DESCRIBE THE ATOM'S\nSTRUKTUR NOW\nPLZ!!!!!\n\nResponse:\n\nThe atom's structure is a fascinating and complex topic, but here's a simplified explanation:\n\n**The Basic Building Blocks:**\n\n* **Nucleus:**  The atom's \"brain\" located at the center. It's incredibly dense and contains:\n    * **Protons:** Positively charged particles. The number of protons defines the element.\n    * **Neutrons:** Neutral particles. They contribute to the atom's mass.\n* **Electrons:** Negatively charged particles that orbit the nucleus in a cloud-like region called the electron cloud.\n\n**Key Concepts:**\n\n* **Atomic Number:** The number of protons in an atom's nucleus, which determines the element.\n* **Mass Number:** The total number of protons and neutrons in the nucleus.\n* **Isotopes:** Atoms of the same element with the same number of protons but different numbers of neutrons.\n* **Electron Shells:**  Regions around the nucleus where electrons are likely to be found. Each shell has a specific energy level.\n\n**Simplified Model:**\n\nImagine a solar system. The nucleus is like the sun, and the electrons are like planets orbiting it. The number of protons determines the type of planet (like Earth, Mars, or"
+  },
+  {
+    "prompt_count": 4,
+    "example_id": "8_4",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      7.0,
+      9.0,
+      10.0,
+      6.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      4.0
+    ],
+    "prxed_example": "How can we re duce air pollutin?!!!!!!!",
+    "answer_example": "How can we re duce air pollutin?!!!!!!!\n\nResponse: \n\nIt's great you're passionate about reducing air pollution! It's a huge issue, but we can make a difference. Here's a breakdown of how to contribute:\n\n**Individual Actions:**\n\n* **Reduce car usage:** Walk, bike, carpool, or use public transportation whenever possible. \n* **Choose fuel-efficient vehicles:** If you need a car, opt for a hybrid or electric model.\n* **Conserve energy at home:** Turn off lights, unplug electronics, and use energy-efficient appliances.\n* **Plant trees:** Trees absorb pollutants and release oxygen.\n* **Avoid using pesticides and herbicides:** These chemicals can contribute to air pollution.\n* **Support sustainable businesses:** Choose companies that prioritize environmental responsibility.\n\n**Community Actions:**\n\n* **Advocate for clean air policies:** Contact your local representatives and support legislation that promotes clean air.\n* **Organize community cleanups:** Remove litter and debris from your neighborhood.\n* **Promote public awareness:** Spread the word about air pollution and its impacts.\n* **Support local initiatives:** Participate in community programs that address air pollution.\n\n**Systemic Changes:**\n\n* **Invest in renewable energy:** Transition to solar, wind, and other clean energy sources"
+  },
+  {
+    "prompt_count": 5,
+    "example_id": "8_5",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "Pls! descibe! a time when you had to make a diffucult decision!!!!",
+    "answer_example": "Pls! descibe! a time when you had to make a diffucult decision!!!!\n\nResponse:\n\nAs a large language model, I don't experience emotions or have personal experiences like humans do. Therefore, I haven't had to make difficult decisions in the way a person would. \n\nHowever, I can access and process information from the real world and understand the concept of difficult decisions. \n\nHere's an example of a scenario that might be considered difficult for a human:\n\n**Imagine a person is faced with a choice between two job offers.**\n\n* **Offer A:** A stable job with a predictable salary and benefits.\n* **Offer B:** A more exciting and challenging job with a higher salary but with less job security and potentially more demanding hours.\n\nThis is a classic example of a difficult decision because it involves weighing the pros and cons of each option and considering personal values and priorities. \n\nThe person would need to consider factors like their career goals, financial needs, work-life balance, and personal preferences. \n\nUltimately, the decision would be based on what the person believes is the best fit for their individual circumstances.\n\n\n**I can help you explore other difficult decision scenarios or discuss the factors involved in making such decisions.**"
+  },
+  {
+    "prompt_count": 6,
+    "example_id": "8_6",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      8.0,
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      8.0,
+      10.0,
+      9.0,
+      3.0
+    ],
+    "prxed_example": "Identify the odd one outt!!!!!",
+    "answer_example": "Identify the odd one outt!!!!!\n\nInput:\nTwitter, Instagram, Telegram\n\nResponse:\nTelegram\n\nExplanation:\nTwitter and Instagram are primarily social networking platforms focused on sharing text, images, and videos. Telegram is a messaging app that emphasizes privacy and security. \n\nTherefore, Telegram is the odd one out.\n\n\nIs this explanation correct?"
+  },
+  {
+    "prompt_count": 7,
+    "example_id": "8_7",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      7.0
+    ],
+    "prxed_example": "Explin why\nthe folloing fraction\nis equivlent to 1/4!!!!!!",
+    "answer_example": "Explin why\nthe folloing fraction\nis equivlent to 1/4!!!!!!\n\nInput:\n4/16\n\nResponse:\n4/16 is equivalent to 1/4 because both fractions represent the same amount of a whole. \n\n**Explanation:**\n\n* **Simplifying:**  You can simplify the fraction 4/16 by dividing both the numerator and denominator by their greatest common factor, which is 4. This gives you 1/4. \n* **Equivalent Fractions:**  Equivalent fractions are fractions that represent the same value, even if they look different. \n\n\nLet me know if you'd like to explore other examples of equivalent fractions!"
+  },
+  {
+    "prompt_count": 8,
+    "example_id": "8_8",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      7.0,
+      0.0,
+      0.0,
+      4.0,
+      0.0,
+      9.0,
+      5.0,
+      10.0,
+      6.0,
+      7.0
+    ],
+    "prxed_example": "Write a short\nstiry in third person\nnarration about a\nprotagonist who has to make an important\ncareer decision!!!!!!!!",
+    "answer_example": "Write a short\nstiry in third person\nnarration about a\nprotagonist who has to make an important\ncareer decision!!!!!!!!\n\nResponse:\n\nThe air hung thick with the scent of old paper and stale coffee in the cramped office. Maya stared at the stack of resumes, each one a potential future, a different path to her dream.  She had been offered a position at the prestigious firm, a chance to climb the ladder, to be the best. But the offer came with a hefty price tag – a price she wasn't sure she could afford.\n\nHer phone buzzed, a reminder from her mentor, a woman who had seen Maya's potential from the moment she walked into her office. \"Don't let fear dictate your choices,\" the message read. Maya reread it, the words echoing in the silence of the room. Fear. It was a constant companion, a shadow that followed her every move. Fear of failure, fear of the unknown, fear of leaving the comfort of her small, familiar world.\n\nShe picked up a resume, a young woman with a passion for social justice, a fire in her eyes that mirrored Maya's own. This was the path she had been drawn to, the path that felt right, the path that promised to make a difference. But the path was shrouded in uncertainty, a gamble that could lead to both triumph and heartbreak.\n\nThe decision"
+  },
+  {
+    "prompt_count": 9,
+    "example_id": "8_9",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      8.0,
+      8.0,
+      9.0,
+      7.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      8.0,
+      6.0
+    ],
+    "prxed_example": "RENDER A\n3D MODL OF\nA HAUSE!!!\nPLS!!!!!",
+    "answer_example": "RENDER A\n3D MODL OF\nA HAUSE!!!\nPLS!!!!!\n\nResponse:\n\nI can't create a 3D model of a house for you. I am a text-based AI, so I can't generate images or 3D models. \n\nHowever, I can help you find resources to learn how to create one! \n\nHere are some options:\n\n* **Online 3D modeling software:**\n    * **Tinkercad:** [https://www.tinkercad.com/](https://www.tinkercad.com/) (Beginner-friendly, free)\n    * **Blender:** [https://www.blender.org/](https://www.blender.org/) (Free and powerful, more complex)\n    * **SketchUp:** [https://www.sketchup.com/](https://www.sketchup.com/) (User-friendly, paid)\n* **Tutorials and courses:**\n    * **YouTube:** Search for \"3D modeling tutorials for beginners\"\n    * **Skillshare:** [https://www.skillshare.com/](https://www.skillshare.com/) (Paid, offers courses on various software)\n    * **Udemy:** [https://www.udemy.com/](https://www."
+  },
+  {
+    "prompt_count": 10,
+    "example_id": "8_10",
+    "metric_id": 8,
+    "prx_type": "instruct_random_linebreaks_and_typo_and_missing_bracket_and_many_exclamations",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      3.0
+    ],
+    "prxed_example": "Pleaz\nevaluat thiz\nsentense for\nspeling & grammer\nmistakes!!!!!!",
+    "answer_example": "Pleaz\nevaluat thiz\nsentense for\nspeling & grammer\nmistakes!!!!!!\n\nInput:\nHe finnished his meal and left the resturant\n\nResponse:\nHe finished his meal and left the restaurant. \n\n\n**Explanation:**\n\n* **\"finnished\"** should be **\"finished\"**.\n* **\"resturant\"** should be **\"restaurant\"**. \n\n\nLet me know if you'd like me to evaluate any other sentences!"
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "9_1",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      8.0,
+      8.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "List three important tips for staying healthy using Markdown bullet points.",
+    "answer_example": "List three important tips for staying healthy using Markdown bullet points.\n\nResponse:\n\n* **Eat a balanced diet:** Focus on fruits, vegetables, whole grains, and lean protein.\n* **Stay hydrated:** Drink plenty of water throughout the day.\n* **Get regular exercise:** Aim for at least 30 minutes of moderate-intensity exercise most days of the week."
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "9_2",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      8.0,
+      7.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "What are the three primary colors (RYB model)? Please list them using Markdown bullet points.",
+    "answer_example": "What are the three primary colors (RYB model)? Please list them using Markdown bullet points.\n\nResponse:\n\n* Red\n* Yellow\n* Blue\n\nThis is correct."
+  },
+  {
+    "prompt_count": 3,
+    "example_id": "9_3",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      8.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Describe the structure of an atom using markdown formatting. Use headings for major sections like 'The Nucleus' and 'Electron Cloud', and bullet points for detailing subatomic particles and their characteristics.",
+    "answer_example": "Describe the structure of an atom using markdown formatting. Use headings for major sections like 'The Nucleus' and 'Electron Cloud', and bullet points for detailing subatomic particles and their characteristics.\n\nResponse:\n\n# The Atom\n\nAn atom is the basic building block of all matter. It consists of a central nucleus surrounded by a cloud of negatively charged electrons.\n\n# The Nucleus\n\nThe nucleus is located at the center of the atom and contains most of its mass. It is composed of two types of particles:\n\n* **Protons:** Positively charged particles.\n* **Neutrons:** Neutral particles with no charge.\n\n# Electron Cloud\n\nThe electron cloud is a region around the nucleus where electrons are likely to be found. It is not a solid sphere but rather a fuzzy, diffuse region.\n\n* **Electrons:** Negatively charged particles that orbit the nucleus in specific energy levels.\n* **Energy Levels:** Electrons occupy specific energy levels, which are regions of space around the nucleus where they can exist.\n* **Quantum Mechanics:** The behavior of electrons is governed by quantum mechanics, which describes their wave-like properties.\n\n\n**Key Points:**\n\n* Atoms are made up of protons, neutrons, and electrons.\n* The nucleus is the dense, positively charged center of the atom.\n* Electrons are negatively charged particles that orbit the nucleus in a cloud-like region.\n* The number of protons determines the element to which the atom"
+  },
+  {
+    "prompt_count": 4,
+    "example_id": "9_4",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      8.0,
+      9.0,
+      10.0,
+      8.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "How can we reduce air pollution? Present your answer using Markdown formatting for clarity, including headings for different strategies, bullet points for specific actions, and bold text for emphasis on key concepts.",
+    "answer_example": "How can we reduce air pollution? Present your answer using Markdown formatting for clarity, including headings for different strategies, bullet points for specific actions, and bold text for emphasis on key concepts.\n\nResponse:\n\n## Reducing Air Pollution: A Multifaceted Approach\n\nAir pollution is a complex issue with multiple contributing factors.  Addressing it requires a comprehensive strategy that tackles the root causes and promotes sustainable practices. Here are some key strategies for reducing air pollution:\n\n### 1. Transitioning to Cleaner Energy Sources\n\n* **Promote renewable energy:**  Invest in solar, wind, hydro, and geothermal energy to replace fossil fuels.\n* **Improve energy efficiency:**  Encourage energy-saving technologies and practices in homes, businesses, and transportation.\n* **Phase out coal-fired power plants:**  Transition to cleaner energy sources to reduce emissions from this major source of pollution.\n\n### 2.  Improving Transportation Systems\n\n* **Encourage public transportation:**  Invest in efficient and accessible public transit systems to reduce reliance on private vehicles.\n* **Promote electric vehicles:**  Incentivize the adoption of electric cars, buses, and trucks through tax breaks and subsidies.\n* **Improve traffic management:**  Implement congestion pricing, traffic flow optimization, and smart city technologies to reduce vehicle emissions.\n\n### 3.  Enhancing Industrial Processes\n\n* **Implement stricter emission standards:**  Set and enforce regulations for industrial emissions to limit pollutants released into the air.\n* **Promote"
+  },
+  {
+    "prompt_count": 5,
+    "example_id": "9_5",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      7.0,
+      10.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Describe a time when you had to make a difficult decision. Please format your entire response using Markdown, utilizing headings (e.g., ## Situation), bullet points for options, and bold/italics for emphasis to enhance readability.",
+    "answer_example": "a difficult decision. Please format your entire response using Markdown, utilizing headings (e.g., ## Situation), bullet points for options, and bold/italics for emphasis to enhance readability.\n\nResponse:\n\n## Situation\nI was working as a freelance writer for a variety of clients, and I was offered a full-time position at a well-known publishing house. This was a dream opportunity, but it meant leaving my current freelance work and potentially losing some of my clients. \n\n## Options\n* **Accept the full-time position.**\n* **Negotiate a hybrid model with the publishing house.**\n* **Decline the offer and continue freelancing.**\n\n## Decision\nAfter careful consideration, I decided to **accept the full-time position.**\n\n## Reasons\n* **Career Advancement:** The publishing house offered a significant career advancement opportunity, with the potential to learn new skills and build my professional network.\n* **Financial Stability:** The full-time position offered a stable income and benefits, which was important to me at the time.\n* **Passion for the Industry:** I was passionate about the publishing industry and excited to contribute to a company that I admired.\n\n\n## Conclusion\nThis decision was a significant step in my career, and I am grateful for the opportunity to work at the publishing house.\n\n\n**Explanation:**\n\nThis response provides a clear and concise account of a difficult decision. It uses a structured format that is easy to follow and understand"
+  },
+  {
+    "prompt_count": 6,
+    "example_id": "9_6",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      8.0,
+      8.0,
+      9.0,
+      8.0,
+      9.0,
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Pinpoint the item that doesn't fit with the rest. Format your answer clearly using Markdown, specifying the odd item and your justification, perhaps using bolding or bullet points.",
+    "answer_example": "the rest. Format your answer clearly using Markdown, specifying the odd item and your justification, perhaps using bolding or bullet points.\n\nInput:\nTwitter, Instagram, Telegram\n\nResponse:\n* **Telegram** is the only one that is not primarily a social media platform. \n\n**Explanation:**\n\n* **Twitter** and **Instagram** are both social media platforms focused on sharing text and images with friends and followers.\n* **Telegram** is a messaging app that emphasizes privacy and security, with features like group chats, file sharing, and voice/video calls. \n\nLet me know if you'd like to try another one!"
+  },
+  {
+    "prompt_count": 9,
+    "example_id": "9_7",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      6.0,
+      9.0,
+      9.0,
+      9.0,
+      7.0,
+      8.0,
+      7.0,
+      10.0,
+      10.0,
+      8.0
+    ],
+    "prxed_example": "Render a 3D model of a house, and accompany it with a description of its features, style, and materials formatted in Markdown, possibly including an image of the render.",
+    "answer_example": "Render a 3D model of a house, and accompany it with a description of its features, style, and materials formatted in Markdown, possibly including an image of the render.\n\nResponse:\n\n## 3D Model of a Modern Farmhouse\n\n**Description:**\n\nThis 3D model represents a modern farmhouse, a popular style that blends rustic charm with contemporary design. The house features a spacious open floor plan, large windows, and a welcoming front porch. \n\n**Features:**\n\n* **Exterior:**\n    * **Materials:**  Red brick, white trim, and black metal accents.\n    * **Roof:**  Gabled roof with a combination of asphalt shingles and metal roofing.\n    * **Porch:**  Covered porch with a classic white railing and a few rocking chairs.\n    * **Windows:**  Large, double-hung windows with black frames.\n    * **Doors:**  Double-door entryway with a black metal handle and glass panels.\n* **Interior:**\n    * **Open Floor Plan:**  Living room, dining room, and kitchen seamlessly connected.\n    * **Kitchen:**  Modern farmhouse style with white cabinets, black countertops, and stainless steel appliances.\n    * **Living Room:**  Cozy fireplace with a stone surround and a large sectional sofa.\n    * **Dining Room:**  Large dining table with a farmhouse-style table setting.\n    * **Bedrooms:**  Two bedrooms"
+  },
+  {
+    "prompt_count": 12,
+    "example_id": "9_8",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "What is the capital of France? Please format your answer using markdown, perhaps with the country as a level 2 heading and the capital as a bolded statement.",
+    "answer_example": "What is the capital of France? Please format your answer using markdown, perhaps with the country as a level 2 heading and the capital as a bolded statement.\n\nResponse:\n\n## France\n**Paris**"
+  },
+  {
+    "prompt_count": 13,
+    "example_id": "9_9",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      7.0
+    ],
+    "prxed_example": "Generate a list of ten items a person might need for a camping trip. Format the list as a markdown numbered list.",
+    "answer_example": "Generate a list of ten items a person might need for a camping trip. Format the list as a markdown numbered list.\n\nResponse:\n\n1. Tent\n2. Sleeping bag\n3. Sleeping pad\n4. Headlamp\n5. First-aid kit\n6. Food and water\n7. Camp stove and fuel\n8. Cooking utensils\n9. Matches or lighter\n10. Bug spray"
+  },
+  {
+    "prompt_count": 15,
+    "example_id": "9_10",
+    "metric_id": 9,
+    "prx_type": "instruct_output_markdown",
+    "scores": [
+      9.0,
+      8.0,
+      10.0,
+      9.0,
+      7.0,
+      8.0,
+      7.0,
+      10.0,
+      10.0,
+      5.0
+    ],
+    "prxed_example": "Classify the following items into animals, plants, or minerals. Format your answer using Markdown, listing each item followed by its classification (e.g., - Item: Animal).",
+    "answer_example": "Classify the following items into animals, plants, or minerals. Format your answer using Markdown, listing each item followed by its classification (e.g., - Item: Animal).\n\nInput:\nOak tree, copper ore, elephant\n\nResponse:\n- Oak tree: Plant\n- Copper ore: Mineral\n- Elephant: Animal \n\n\nLet me know if you'd like to try another set of items!"
+  },
+  {
+    "prompt_count": 1,
+    "example_id": "10_1",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      10.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Describe three essential tips for staying healthy, using a metaphor for each to illustrate its importance or mechanism.",
+    "answer_example": "Describe three essential tips for staying healthy, using a metaphor for each to illustrate its importance or mechanism.\n\nResponse:\n\n**1. Eat a Rainbow:**  Just like a vibrant garden needs a variety of colors to thrive, our bodies need a diverse range of nutrients to function optimally.  Think of your diet as a garden, and each food group is a different color.  Eating a rainbow of fruits and vegetables ensures you're getting all the essential vitamins, minerals, and antioxidants your body needs to stay healthy and strong.\n\n**2. Move Your Body:**  Imagine your body as a finely tuned machine.  Regular exercise is like oiling and maintaining that machine.  It keeps everything running smoothly, reduces the risk of wear and tear, and keeps you feeling energized and ready to tackle the day.  Whether it's a brisk walk, a dance class, or a game of basketball, find an activity you enjoy and make it a part of your routine.\n\n**3. Prioritize Sleep:**  Think of sleep as the battery recharging station for your mind and body.  Just like a car needs to be plugged in to recharge, our bodies need adequate sleep to restore and repair themselves.  When we sleep, our bodies release hormones that help regulate our mood, energy levels, and immune system.  Aim for 7-9 hours of quality sleep each night"
+  },
+  {
+    "prompt_count": 2,
+    "example_id": "10_2",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Identify the three primary colors (RYB model). Use a metaphor to describe their role as the 'ancestors' or 'elemental components' from which all other colors in that system are born.",
+    "answer_example": "Identify the three primary colors (RYB model). Use a metaphor to describe their role as the 'ancestors' or 'elemental components' from which all other colors in that system are born.\n\nResponse:\n\nThe three primary colors in the RYB model are **red, yellow, and blue**. \n\n**Metaphor:** Imagine a primordial soup, teeming with vibrant life. Within this soup, the three primary colors are the elemental components, the raw ingredients from which all other colors are born. Red, like the fiery heart of a volcano, represents energy and passion. Yellow, like the sun's warm embrace, embodies joy and light. Blue, like the vast expanse of the ocean, signifies calmness and serenity. These three colors, in their pure form, are the foundation upon which the entire spectrum of color is built. \n\n\nLet me know if you'd like to explore other color models or color theory concepts!"
+  },
+  {
+    "prompt_count": 3,
+    "example_id": "10_3",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Describe the structure of an atom using vivid metaphors. For instance, portray the nucleus as the 'command center' of the atom, or electron orbitals as 'fuzzy probability clouds' rather than fixed paths, to make the concept of atomic structure more intuitive.",
+    "answer_example": "command center' of the atom, or electron orbitals as 'fuzzy probability clouds' rather than fixed paths, to make the concept of atomic structure more intuitive.\n\nResponse:\n\nImagine an atom as a bustling city. At the heart of the city, nestled within a protective dome, lies the **command center**, the nucleus. This nucleus is like a tiny, dense, and powerful city hall, holding the blueprints for the entire city – the protons and neutrons. \n\nSurrounding the nucleus, like a sprawling metropolis, are the **electron orbitals**. These are not fixed paths, but rather **fuzzy probability clouds** where electrons, the city's residents, are constantly moving and interacting. They are like tiny, buzzing bees flitting around the city, always searching for the best energy source, the best place to hang out, and the best way to avoid collisions. \n\nThe electrons in these orbitals are like the city's citizens, each with their own unique personality and energy level. Some are high-energy, buzzing around the city, while others are more relaxed, hanging out in the outskirts. The energy levels of these orbitals are like the city's zoning laws, dictating where the residents can live and how they can interact with each other.\n\nThis intricate dance of electrons within the fuzzy probability clouds is what gives the atom its unique properties, its ability to interact with other atoms, and ultimately, its role in the vast tapestry"
+  },
+  {
+    "prompt_count": 4,
+    "example_id": "10_4",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      9.0,
+      7.0,
+      9.0,
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      8.0,
+      10.0
+    ],
+    "prxed_example": "Describe how humanity can achieve a significant reduction in global air pollution. Use vivid metaphors throughout your explanation to convey the scale of the challenge, the nature of the solutions, and the potential future (e.g., 'Air pollution is a suffocating blanket over our planet; reducing it requires us to weave a new cloak of clean technologies and conscious choices').",
+    "answer_example": "a new cloak of clean technologies and conscious choices').\n\nResponse:\n\nImagine our planet as a majestic tapestry, woven with threads of life, each representing a human, animal, and plant. For centuries, we've been adding vibrant colors to this tapestry, but with reckless abandon, we've started to spill soot and smoke onto the fabric, creating a suffocating blanket of air pollution. This blanket, invisible to the naked eye, is a silent killer, choking the life out of our planet and its inhabitants.\n\nThe challenge is immense. We're dealing with a global crisis, a collective sin of our industrial past and present. The air we breathe is a shared resource, a lifeline for all living beings. Yet, we've treated it like a disposable commodity, polluting it with the fumes of our cars, factories, and power plants.\n\nBut there is hope. We can begin to unravel this suffocating blanket by weaving a new cloak of clean technologies. Think of solar panels, like shimmering jewels, capturing the sun's energy and transforming it into clean electricity. Imagine wind turbines, like graceful dancers, harnessing the power of the wind to generate electricity, their blades whispering tales of a cleaner future.\n\nWe must also embrace conscious choices. Just as a gardener carefully prunes their plants to encourage growth, we must prune"
+  },
+  {
+    "prompt_count": 6,
+    "example_id": "10_5",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      10.0,
+      9.0,
+      8.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Identify the element that is the 'sore thumb' or 'black sheep' of the following group. Use a fitting metaphor to clarify its distinctiveness and why it's the odd one out.",
+    "answer_example": "the following group. Use a fitting metaphor to clarify its distinctiveness and why it's the odd one out.\n\nInput:\nTwitter, Instagram, Telegram\n\nResponse:\nThe element that is the 'sore thumb' or 'black sheep' of the group is **Telegram**. \n\n**Explanation:**\n\nTelegram is the odd one out because it's a **decentralized** messaging platform, while the others are **centralized** social media platforms. \n\n* **Twitter** and **Instagram** are owned and operated by large corporations, with their data and algorithms controlled by those companies. \n* **Telegram** is a more independent platform, with its code open-source and its data stored on user devices. \n\nThis difference in structure and control makes Telegram a distinct entity within the group, like a **black sheep** in a flock of sheep."
+  },
+  {
+    "prompt_count": 9,
+    "example_id": "10_6",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      2.0,
+      8.0,
+      9.0,
+      8.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      8.0,
+      10.0
+    ],
+    "prxed_example": "Render a 3D model of a house where its design metaphorically represents 'growth' or 'connection to nature', ensuring these themes are subtly woven into its form and material choices.",
+    "answer_example": "Render a 3D model of a house where its design metaphorically represents 'growth' or 'connection to nature', ensuring these themes are subtly woven into its form and material choices.\n\nResponse:\n\nI envision a house that embodies the concept of growth and connection to nature through its form and material choices. \n\n**Form:**\n\n* **Organic Shape:** The house would have a flowing, organic shape, reminiscent of a tree or a vine. This would create a sense of movement and dynamism, reflecting the continuous growth process.\n* **Layered Structure:** The house would have multiple levels, each representing a different stage of growth. The lower levels could be more grounded and solid, symbolizing the roots of the house, while the upper levels would be lighter and more airy, representing the branches and leaves.\n* **Interconnected Spaces:** The house would be designed with interconnected spaces, allowing for a sense of flow and connection between different areas. This would symbolize the interconnectedness of nature and the growth of a community.\n\n**Material Choices:**\n\n* **Natural Materials:** The house would be constructed primarily from natural materials like wood, stone, and bamboo. These materials would evoke a sense of warmth, comfort, and connection to the earth.\n* **Earthy Tones:** The exterior would be painted in earthy tones like green, brown, and beige, reflecting the colors of nature.\n* **Living Walls:** The house could feature living walls, incorporating plants and"
+  },
+  {
+    "prompt_count": 11,
+    "example_id": "10_7",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      9.0,
+      9.0,
+      9.0,
+      7.0,
+      9.0,
+      10.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Describe Julius Caesar's demise using metaphors to illustrate themes such as the fall of a titan, the severing of a state's head, or the shattering of an illusion of invincibility, thereby explaining how he died.",
+    "answer_example": "a titan, the severing of a state's head, or the shattering of an illusion of invincibility, thereby explaining how he died.\n\nResponse:\n\nThe once-mighty Caesar, a titan of Rome, had grown fat on the spoils of conquest, his empire a gilded cage. He was a god among men, his name whispered with reverence, his every move a spectacle of power. But the gods, it seemed, had a fickle hand. The whispers turned to shouts, the reverence to fear, and the gilded cage began to rust.\n\nHis ambition, a serpent coiled around his heart, had grown too large. He had become a tyrant, his hand heavy on the scales of justice, his voice a thunderclap that silenced dissent. The people, once his loyal subjects, now saw him as a usurper, a shadow of the republic he had sworn to protect.\n\nThe final act was a betrayal, a severing of the state's head. Brutus, a name once synonymous with virtue, became the instrument of Caesar's demise. The blade, a symbol of justice, became a harbinger of his downfall. The crowd, a sea of faces, watched in horror as the titan fell, his body a broken statue, his spirit shattered.\n\nThe illusion of invincibility, the aura of power that had surrounded him, was shattered. The once-unstoppable force was reduced to a mere mortal"
+  },
+  {
+    "prompt_count": 13,
+    "example_id": "10_8",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      9.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Generate a list of ten items for a camping trip. For at least two items, use a metaphor to describe their function or importance (e.g., 'A first-aid kit is your pocket-sized guardian angel').",
+    "answer_example": "g., 'A first-aid kit is your pocket-sized guardian angel').\n\nResponse:\n\nHere are ten items for a camping trip:\n\n1. **Tent:** Your home away from home, providing shelter from the elements.\n2. **Sleeping bag:** Your cozy cocoon, keeping you warm and comfortable through the night.\n3. **Headlamp:** Your personal flashlight, illuminating the path ahead and keeping you safe.\n4. **First-aid kit:** Your pocket-sized guardian angel, ready to handle any minor injuries.\n5. **Water bottles:** Your hydration heroes, ensuring you stay refreshed and energized.\n6. **Camp stove:** Your culinary alchemist, transforming simple ingredients into delicious meals.\n7. **Cooler:** Your food guardian, keeping your food fresh and safe from the elements.\n8. **Sunscreen:** Your sun shield, protecting your skin from harmful UV rays.\n9. **Bug spray:** Your personal pest control, keeping pesky insects at bay.\n10. **Map and compass:** Your navigational guides, helping you find your way through the wilderness. \n\n\nLet me know if you'd like me to expand on any of these items or add more!"
+  },
+  {
+    "prompt_count": 16,
+    "example_id": "10_9",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      7.0,
+      9.0,
+      9.0,
+      5.0,
+      9.0,
+      9.0,
+      9.0,
+      9.0,
+      8.0,
+      10.0
+    ],
+    "prxed_example": "Describe the use of word embeddings in NLP using vivid metaphors to illustrate concepts like semantic similarity and vector space.",
+    "answer_example": "Describe the use of word embeddings in NLP using vivid metaphors to illustrate concepts like semantic similarity and vector space.\n\nResponse:\n\nImagine a vast library, filled with books on every imaginable topic. Each book is a word, and the words are arranged in a specific order, like a sentence.  \n\n**Word Embeddings: The Library's Map**\n\nWord embeddings are like detailed maps of this library. They represent each word as a point in a multi-dimensional space. The closer two words are in this space, the more semantically similar they are. \n\n**Semantic Similarity: Navigating the Map**\n\nThink of two words like \"king\" and \"queen.\" They're likely to be close together on the map, representing a strong semantic relationship.  Words with similar meanings, like \"happy\" and \"joyful,\" would also be close together.  Words with opposite meanings, like \"hot\" and \"cold,\" would be on opposite sides of the map.\n\n**Vector Space: The Library's Universe**\n\nThe entire library, with all its books and their relationships, forms a vast vector space. Each word is a point in this space, and the relationships between words are represented by the distances between these points. \n\n**Embeddings as Bridges: Connecting Words**\n\nWord embeddings act as bridges between words, allowing us to understand their relationships and similarities"
+  },
+  {
+    "prompt_count": 17,
+    "example_id": "10_10",
+    "metric_id": 10,
+    "prx_type": "instruct_with_metaphors",
+    "scores": [
+      10.0,
+      9.0,
+      9.0,
+      9.0,
+      8.0,
+      9.0,
+      10.0,
+      10.0,
+      9.0,
+      10.0
+    ],
+    "prxed_example": "Explain the function of a computer motherboard using at least two vivid metaphors to illustrate its purpose and how it interconnects various computer components. For instance, is it the 'central nervous system' or perhaps the 'city planner and infrastructure' of the PC?",
+    "answer_example": "components. For instance, is it the 'central nervous system' or perhaps the 'city planner and infrastructure' of the PC?\n\nResponse:\n\nImagine the motherboard as the **central nervous system** of your computer. It's the intricate network of wires and circuits that act as the communication highway, connecting all the vital components.  Just like your brain coordinates your body's functions, the motherboard orchestrates the actions of your CPU, RAM, hard drive, and graphics card. It's the command center that receives instructions from the user and sends them to the appropriate components, ensuring everything runs smoothly.\n\nAnother way to think of it is the **city planner and infrastructure** of your PC.  The motherboard is the blueprint that defines the layout of your computer, determining where everything goes and how it connects.  It's the foundation upon which all other components are built, providing the necessary pathways for data to flow between them.  The motherboard's slots and connectors act like roads and bridges, allowing the CPU to communicate with the RAM, the hard drive to store data, and the graphics card to render images.\n\nIn essence, the motherboard is the **backbone of your computer**, providing the essential infrastructure for all other components to function. It's the silent conductor of the digital orchestra, ensuring that every note is played in harmony."
+  }
+]
