@@ -1,0 +1,3002 @@
+[
+  {
+    "frequency": 2238,
+    "metric_id": 1,
+    "word": "what",
+    "word_id": "1_1"
+  },
+  {
+    "frequency": 1713,
+    "metric_id": 1,
+    "word": "list",
+    "word_id": "1_2"
+  },
+  {
+    "frequency": 1620,
+    "metric_id": 1,
+    "word": "provide",
+    "word_id": "1_3"
+  },
+  {
+    "frequency": 1599,
+    "metric_id": 1,
+    "word": "following",
+    "word_id": "1_4"
+  },
+  {
+    "frequency": 1549,
+    "metric_id": 1,
+    "word": "sentence",
+    "word_id": "1_5"
+  },
+  {
+    "frequency": 1440,
+    "metric_id": 1,
+    "word": "given",
+    "word_id": "1_6"
+  },
+  {
+    "frequency": 1428,
+    "metric_id": 1,
+    "word": "please",
+    "word_id": "1_7"
+  },
+  {
+    "frequency": 978,
+    "metric_id": 1,
+    "word": "then",
+    "word_id": "1_8"
+  },
+  {
+    "frequency": 976,
+    "metric_id": 1,
+    "word": "could",
+    "word_id": "1_9"
+  },
+  {
+    "frequency": 940,
+    "metric_id": 1,
+    "word": "examples",
+    "word_id": "1_10"
+  },
+  {
+    "frequency": 914,
+    "metric_id": 1,
+    "word": "generate",
+    "word_id": "1_11"
+  },
+  {
+    "frequency": 887,
+    "metric_id": 1,
+    "word": "into",
+    "word_id": "1_12"
+  },
+  {
+    "frequency": 867,
+    "metric_id": 1,
+    "word": "explain",
+    "word_id": "1_13"
+  },
+  {
+    "frequency": 856,
+    "metric_id": 1,
+    "word": "each",
+    "word_id": "1_14"
+  },
+  {
+    "frequency": 848,
+    "metric_id": 1,
+    "word": "data",
+    "word_id": "1_15"
+  },
+  {
+    "frequency": 835,
+    "metric_id": 1,
+    "word": "value",
+    "word_id": "1_16"
+  },
+  {
+    "frequency": 827,
+    "metric_id": 1,
+    "word": "voice",
+    "word_id": "1_17"
+  },
+  {
+    "frequency": 824,
+    "metric_id": 1,
+    "word": "text",
+    "word_id": "1_18"
+  },
+  {
+    "frequency": 808,
+    "metric_id": 1,
+    "word": "construct",
+    "word_id": "1_19"
+  },
+  {
+    "frequency": 772,
+    "metric_id": 1,
+    "word": "product",
+    "word_id": "1_20"
+  },
+  {
+    "frequency": 772,
+    "metric_id": 1,
+    "word": "using",
+    "word_id": "1_21"
+  },
+  {
+    "frequency": 764,
+    "metric_id": 1,
+    "word": "example",
+    "word_id": "1_22"
+  },
+  {
+    "frequency": 741,
+    "metric_id": 1,
+    "word": "poem",
+    "word_id": "1_23"
+  },
+  {
+    "frequency": 731,
+    "metric_id": 1,
+    "word": "summary",
+    "word_id": "1_24"
+  },
+  {
+    "frequency": 706,
+    "metric_id": 1,
+    "word": "area",
+    "word_id": "1_25"
+  },
+  {
+    "frequency": 700,
+    "metric_id": 1,
+    "word": "provided",
+    "word_id": "1_26"
+  },
+  {
+    "frequency": 684,
+    "metric_id": 1,
+    "word": "tone",
+    "word_id": "1_27"
+  },
+  {
+    "frequency": 673,
+    "metric_id": 1,
+    "word": "would",
+    "word_id": "1_28"
+  },
+  {
+    "frequency": 670,
+    "metric_id": 1,
+    "word": "three",
+    "word_id": "1_29"
+  },
+  {
+    "frequency": 665,
+    "metric_id": 1,
+    "word": "paragraph",
+    "word_id": "1_30"
+  },
+  {
+    "frequency": 664,
+    "metric_id": 1,
+    "word": "idea",
+    "word_id": "1_31"
+  },
+  {
+    "frequency": 663,
+    "metric_id": 1,
+    "word": "find",
+    "word_id": "1_32"
+  },
+  {
+    "frequency": 628,
+    "metric_id": 1,
+    "word": "describe",
+    "word_id": "1_33"
+  },
+  {
+    "frequency": 613,
+    "metric_id": 1,
+    "word": "identify",
+    "word_id": "1_34"
+  },
+  {
+    "frequency": 600,
+    "metric_id": 1,
+    "word": "passage",
+    "word_id": "1_35"
+  },
+  {
+    "frequency": 599,
+    "metric_id": 1,
+    "word": "breach",
+    "word_id": "1_36"
+  },
+  {
+    "frequency": 573,
+    "metric_id": 1,
+    "word": "task",
+    "word_id": "1_37"
+  },
+  {
+    "frequency": 572,
+    "metric_id": 1,
+    "word": "about",
+    "word_id": "1_38"
+  },
+  {
+    "frequency": 561,
+    "metric_id": 1,
+    "word": "numbers",
+    "word_id": "1_39"
+  },
+  {
+    "frequency": 561,
+    "metric_id": 1,
+    "word": "should",
+    "word_id": "1_40"
+  },
+  {
+    "frequency": 557,
+    "metric_id": 1,
+    "word": "problem",
+    "word_id": "1_41"
+  },
+  {
+    "frequency": 552,
+    "metric_id": 1,
+    "word": "need",
+    "word_id": "1_42"
+  },
+  {
+    "frequency": 546,
+    "metric_id": 1,
+    "word": "primary",
+    "word_id": "1_43"
+  },
+  {
+    "frequency": 545,
+    "metric_id": 1,
+    "word": "like",
+    "word_id": "1_44"
+  },
+  {
+    "frequency": 545,
+    "metric_id": 1,
+    "word": "their",
+    "word_id": "1_45"
+  },
+  {
+    "frequency": 535,
+    "metric_id": 1,
+    "word": "explanation",
+    "word_id": "1_46"
+  },
+  {
+    "frequency": 528,
+    "metric_id": 1,
+    "word": "just",
+    "word_id": "1_47"
+  },
+  {
+    "frequency": 520,
+    "metric_id": 1,
+    "word": "specific",
+    "word_id": "1_48"
+  },
+  {
+    "frequency": 502,
+    "metric_id": 1,
+    "word": "active",
+    "word_id": "1_49"
+  },
+  {
+    "frequency": 501,
+    "metric_id": 1,
+    "word": "items",
+    "word_id": "1_50"
+  },
+  {
+    "frequency": 3474,
+    "metric_id": 2,
+    "word": "sentence",
+    "word_id": "2_1"
+  },
+  {
+    "frequency": 2727,
+    "metric_id": 2,
+    "word": "what",
+    "word_id": "2_2"
+  },
+  {
+    "frequency": 1533,
+    "metric_id": 2,
+    "word": "given",
+    "word_id": "2_3"
+  },
+  {
+    "frequency": 1442,
+    "metric_id": 2,
+    "word": "list",
+    "word_id": "2_4"
+  },
+  {
+    "frequency": 1434,
+    "metric_id": 2,
+    "word": "provide",
+    "word_id": "2_5"
+  },
+  {
+    "frequency": 1358,
+    "metric_id": 2,
+    "word": "following",
+    "word_id": "2_6"
+  },
+  {
+    "frequency": 1346,
+    "metric_id": 2,
+    "word": "please",
+    "word_id": "2_7"
+  },
+  {
+    "frequency": 1186,
+    "metric_id": 2,
+    "word": "data",
+    "word_id": "2_8"
+  },
+  {
+    "frequency": 1140,
+    "metric_id": 2,
+    "word": "identify",
+    "word_id": "2_9"
+  },
+  {
+    "frequency": 1062,
+    "metric_id": 2,
+    "word": "person",
+    "word_id": "2_10"
+  },
+  {
+    "frequency": 1061,
+    "metric_id": 2,
+    "word": "into",
+    "word_id": "2_11"
+  },
+  {
+    "frequency": 971,
+    "metric_id": 2,
+    "word": "word",
+    "word_id": "2_12"
+  },
+  {
+    "frequency": 856,
+    "metric_id": 2,
+    "word": "generate",
+    "word_id": "2_13"
+  },
+  {
+    "frequency": 850,
+    "metric_id": 2,
+    "word": "find",
+    "word_id": "2_14"
+  },
+  {
+    "frequency": 845,
+    "metric_id": 2,
+    "word": "then",
+    "word_id": "2_15"
+  },
+  {
+    "frequency": 842,
+    "metric_id": 2,
+    "word": "could",
+    "word_id": "2_16"
+  },
+  {
+    "frequency": 806,
+    "metric_id": 2,
+    "word": "would",
+    "word_id": "2_17"
+  },
+  {
+    "frequency": 783,
+    "metric_id": 2,
+    "word": "median",
+    "word_id": "2_18"
+  },
+  {
+    "frequency": 781,
+    "metric_id": 2,
+    "word": "text",
+    "word_id": "2_19"
+  },
+  {
+    "frequency": 768,
+    "metric_id": 2,
+    "word": "product",
+    "word_id": "2_20"
+  },
+  {
+    "frequency": 763,
+    "metric_id": 2,
+    "word": "main",
+    "word_id": "2_21"
+  },
+  {
+    "frequency": 761,
+    "metric_id": 2,
+    "word": "calculate",
+    "word_id": "2_22"
+  },
+  {
+    "frequency": 737,
+    "metric_id": 2,
+    "word": "first",
+    "word_id": "2_23"
+  },
+  {
+    "frequency": 731,
+    "metric_id": 2,
+    "word": "provided",
+    "word_id": "2_24"
+  },
+  {
+    "frequency": 725,
+    "metric_id": 2,
+    "word": "number",
+    "word_id": "2_25"
+  },
+  {
+    "frequency": 715,
+    "metric_id": 2,
+    "word": "area",
+    "word_id": "2_26"
+  },
+  {
+    "frequency": 690,
+    "metric_id": 2,
+    "word": "present",
+    "word_id": "2_27"
+  },
+  {
+    "frequency": 690,
+    "metric_id": 2,
+    "word": "convert",
+    "word_id": "2_28"
+  },
+  {
+    "frequency": 673,
+    "metric_id": 2,
+    "word": "capital",
+    "word_id": "2_29"
+  },
+  {
+    "frequency": 666,
+    "metric_id": 2,
+    "word": "using",
+    "word_id": "2_30"
+  },
+  {
+    "frequency": 658,
+    "metric_id": 2,
+    "word": "each",
+    "word_id": "2_31"
+  },
+  {
+    "frequency": 655,
+    "metric_id": 2,
+    "word": "states",
+    "word_id": "2_32"
+  },
+  {
+    "frequency": 653,
+    "metric_id": 2,
+    "word": "poem",
+    "word_id": "2_33"
+  },
+  {
+    "frequency": 647,
+    "metric_id": 2,
+    "word": "point",
+    "word_id": "2_34"
+  },
+  {
+    "frequency": 638,
+    "metric_id": 2,
+    "word": "task",
+    "word_id": "2_35"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 2,
+    "word": "fruit",
+    "word_id": "2_36"
+  },
+  {
+    "frequency": 601,
+    "metric_id": 2,
+    "word": "numbers",
+    "word_id": "2_37"
+  },
+  {
+    "frequency": 599,
+    "metric_id": 2,
+    "word": "following sentence",
+    "word_id": "2_38"
+  },
+  {
+    "frequency": 595,
+    "metric_id": 2,
+    "word": "summary",
+    "word_id": "2_39"
+  },
+  {
+    "frequency": 588,
+    "metric_id": 2,
+    "word": "problem",
+    "word_id": "2_40"
+  },
+  {
+    "frequency": 587,
+    "metric_id": 2,
+    "word": "customer",
+    "word_id": "2_41"
+  },
+  {
+    "frequency": 569,
+    "metric_id": 2,
+    "word": "examples",
+    "word_id": "2_42"
+  },
+  {
+    "frequency": 567,
+    "metric_id": 2,
+    "word": "need",
+    "word_id": "2_43"
+  },
+  {
+    "frequency": 565,
+    "metric_id": 2,
+    "word": "words",
+    "word_id": "2_44"
+  },
+  {
+    "frequency": 546,
+    "metric_id": 2,
+    "word": "construct",
+    "word_id": "2_45"
+  },
+  {
+    "frequency": 518,
+    "metric_id": 2,
+    "word": "just",
+    "word_id": "2_46"
+  },
+  {
+    "frequency": 516,
+    "metric_id": 2,
+    "word": "should",
+    "word_id": "2_47"
+  },
+  {
+    "frequency": 515,
+    "metric_id": 2,
+    "word": "question",
+    "word_id": "2_48"
+  },
+  {
+    "frequency": 514,
+    "metric_id": 2,
+    "word": "rewrite",
+    "word_id": "2_49"
+  },
+  {
+    "frequency": 513,
+    "metric_id": 2,
+    "word": "name",
+    "word_id": "2_50"
+  },
+  {
+    "frequency": 2748,
+    "metric_id": 3,
+    "word": "sentence",
+    "word_id": "3_1"
+  },
+  {
+    "frequency": 2272,
+    "metric_id": 3,
+    "word": "what",
+    "word_id": "3_2"
+  },
+  {
+    "frequency": 1657,
+    "metric_id": 3,
+    "word": "provide",
+    "word_id": "3_3"
+  },
+  {
+    "frequency": 1589,
+    "metric_id": 3,
+    "word": "given",
+    "word_id": "3_4"
+  },
+  {
+    "frequency": 1469,
+    "metric_id": 3,
+    "word": "please",
+    "word_id": "3_5"
+  },
+  {
+    "frequency": 1407,
+    "metric_id": 3,
+    "word": "list",
+    "word_id": "3_6"
+  },
+  {
+    "frequency": 1392,
+    "metric_id": 3,
+    "word": "following",
+    "word_id": "3_7"
+  },
+  {
+    "frequency": 1366,
+    "metric_id": 3,
+    "word": "into",
+    "word_id": "3_8"
+  },
+  {
+    "frequency": 1175,
+    "metric_id": 3,
+    "word": "voice",
+    "word_id": "3_9"
+  },
+  {
+    "frequency": 1003,
+    "metric_id": 3,
+    "word": "paragraph",
+    "word_id": "3_10"
+  },
+  {
+    "frequency": 995,
+    "metric_id": 3,
+    "word": "could",
+    "word_id": "3_11"
+  },
+  {
+    "frequency": 970,
+    "metric_id": 3,
+    "word": "then",
+    "word_id": "3_12"
+  },
+  {
+    "frequency": 938,
+    "metric_id": 3,
+    "word": "examples",
+    "word_id": "3_13"
+  },
+  {
+    "frequency": 873,
+    "metric_id": 3,
+    "word": "each",
+    "word_id": "3_14"
+  },
+  {
+    "frequency": 846,
+    "metric_id": 3,
+    "word": "text",
+    "word_id": "3_15"
+  },
+  {
+    "frequency": 836,
+    "metric_id": 3,
+    "word": "passive",
+    "word_id": "3_16"
+  },
+  {
+    "frequency": 834,
+    "metric_id": 3,
+    "word": "data",
+    "word_id": "3_17"
+  },
+  {
+    "frequency": 811,
+    "metric_id": 3,
+    "word": "present",
+    "word_id": "3_18"
+  },
+  {
+    "frequency": 802,
+    "metric_id": 3,
+    "word": "value",
+    "word_id": "3_19"
+  },
+  {
+    "frequency": 770,
+    "metric_id": 3,
+    "word": "example",
+    "word_id": "3_20"
+  },
+  {
+    "frequency": 761,
+    "metric_id": 3,
+    "word": "using",
+    "word_id": "3_21"
+  },
+  {
+    "frequency": 758,
+    "metric_id": 3,
+    "word": "provided",
+    "word_id": "3_22"
+  },
+  {
+    "frequency": 727,
+    "metric_id": 3,
+    "word": "generate",
+    "word_id": "3_23"
+  },
+  {
+    "frequency": 725,
+    "metric_id": 3,
+    "word": "explain",
+    "word_id": "3_24"
+  },
+  {
+    "frequency": 718,
+    "metric_id": 3,
+    "word": "summary",
+    "word_id": "3_25"
+  },
+  {
+    "frequency": 708,
+    "metric_id": 3,
+    "word": "area",
+    "word_id": "3_26"
+  },
+  {
+    "frequency": 707,
+    "metric_id": 3,
+    "word": "three",
+    "word_id": "3_27"
+  },
+  {
+    "frequency": 700,
+    "metric_id": 3,
+    "word": "about",
+    "word_id": "3_28"
+  },
+  {
+    "frequency": 692,
+    "metric_id": 3,
+    "word": "find",
+    "word_id": "3_29"
+  },
+  {
+    "frequency": 657,
+    "metric_id": 3,
+    "word": "would",
+    "word_id": "3_30"
+  },
+  {
+    "frequency": 652,
+    "metric_id": 3,
+    "word": "design",
+    "word_id": "3_31"
+  },
+  {
+    "frequency": 651,
+    "metric_id": 3,
+    "word": "delivery",
+    "word_id": "3_32"
+  },
+  {
+    "frequency": 639,
+    "metric_id": 3,
+    "word": "identify",
+    "word_id": "3_33"
+  },
+  {
+    "frequency": 627,
+    "metric_id": 3,
+    "word": "passive voice",
+    "word_id": "3_34"
+  },
+  {
+    "frequency": 621,
+    "metric_id": 3,
+    "word": "water",
+    "word_id": "3_35"
+  },
+  {
+    "frequency": 618,
+    "metric_id": 3,
+    "word": "describe",
+    "word_id": "3_36"
+  },
+  {
+    "frequency": 611,
+    "metric_id": 3,
+    "word": "following sentence",
+    "word_id": "3_37"
+  },
+  {
+    "frequency": 606,
+    "metric_id": 3,
+    "word": "their",
+    "word_id": "3_38"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 3,
+    "word": "passage",
+    "word_id": "3_39"
+  },
+  {
+    "frequency": 585,
+    "metric_id": 3,
+    "word": "primary",
+    "word_id": "3_40"
+  },
+  {
+    "frequency": 580,
+    "metric_id": 3,
+    "word": "pollution",
+    "word_id": "3_41"
+  },
+  {
+    "frequency": 568,
+    "metric_id": 3,
+    "word": "task",
+    "word_id": "3_42"
+  },
+  {
+    "frequency": 566,
+    "metric_id": 3,
+    "word": "words",
+    "word_id": "3_43"
+  },
+  {
+    "frequency": 564,
+    "metric_id": 3,
+    "word": "active",
+    "word_id": "3_44"
+  },
+  {
+    "frequency": 563,
+    "metric_id": 3,
+    "word": "should",
+    "word_id": "3_45"
+  },
+  {
+    "frequency": 560,
+    "metric_id": 3,
+    "word": "problem",
+    "word_id": "3_46"
+  },
+  {
+    "frequency": 554,
+    "metric_id": 3,
+    "word": "numbers",
+    "word_id": "3_47"
+  },
+  {
+    "frequency": 553,
+    "metric_id": 3,
+    "word": "specific",
+    "word_id": "3_48"
+  },
+  {
+    "frequency": 550,
+    "metric_id": 3,
+    "word": "like",
+    "word_id": "3_49"
+  },
+  {
+    "frequency": 541,
+    "metric_id": 3,
+    "word": "convert",
+    "word_id": "3_50"
+  },
+  {
+    "frequency": 3413,
+    "metric_id": 4,
+    "word": "sentence",
+    "word_id": "4_1"
+  },
+  {
+    "frequency": 2773,
+    "metric_id": 4,
+    "word": "what",
+    "word_id": "4_2"
+  },
+  {
+    "frequency": 1662,
+    "metric_id": 4,
+    "word": "provide",
+    "word_id": "4_3"
+  },
+  {
+    "frequency": 1382,
+    "metric_id": 4,
+    "word": "please",
+    "word_id": "4_4"
+  },
+  {
+    "frequency": 1340,
+    "metric_id": 4,
+    "word": "list",
+    "word_id": "4_5"
+  },
+  {
+    "frequency": 1249,
+    "metric_id": 4,
+    "word": "into",
+    "word_id": "4_6"
+  },
+  {
+    "frequency": 1179,
+    "metric_id": 4,
+    "word": "data",
+    "word_id": "4_7"
+  },
+  {
+    "frequency": 1142,
+    "metric_id": 4,
+    "word": "example",
+    "word_id": "4_8"
+  },
+  {
+    "frequency": 1109,
+    "metric_id": 4,
+    "word": "given",
+    "word_id": "4_9"
+  },
+  {
+    "frequency": 1069,
+    "metric_id": 4,
+    "word": "following",
+    "word_id": "4_10"
+  },
+  {
+    "frequency": 979,
+    "metric_id": 4,
+    "word": "identify",
+    "word_id": "4_11"
+  },
+  {
+    "frequency": 887,
+    "metric_id": 4,
+    "word": "generate",
+    "word_id": "4_12"
+  },
+  {
+    "frequency": 865,
+    "metric_id": 4,
+    "word": "could",
+    "word_id": "4_13"
+  },
+  {
+    "frequency": 827,
+    "metric_id": 4,
+    "word": "name",
+    "word_id": "4_14"
+  },
+  {
+    "frequency": 796,
+    "metric_id": 4,
+    "word": "phrase",
+    "word_id": "4_15"
+  },
+  {
+    "frequency": 790,
+    "metric_id": 4,
+    "word": "haiku",
+    "word_id": "4_16"
+  },
+  {
+    "frequency": 785,
+    "metric_id": 4,
+    "word": "then",
+    "word_id": "4_17"
+  },
+  {
+    "frequency": 783,
+    "metric_id": 4,
+    "word": "median",
+    "word_id": "4_18"
+  },
+  {
+    "frequency": 776,
+    "metric_id": 4,
+    "word": "question",
+    "word_id": "4_19"
+  },
+  {
+    "frequency": 762,
+    "metric_id": 4,
+    "word": "word",
+    "word_id": "4_20"
+  },
+  {
+    "frequency": 756,
+    "metric_id": 4,
+    "word": "text",
+    "word_id": "4_21"
+  },
+  {
+    "frequency": 731,
+    "metric_id": 4,
+    "word": "present",
+    "word_id": "4_22"
+  },
+  {
+    "frequency": 726,
+    "metric_id": 4,
+    "word": "would",
+    "word_id": "4_23"
+  },
+  {
+    "frequency": 724,
+    "metric_id": 4,
+    "word": "first",
+    "word_id": "4_24"
+  },
+  {
+    "frequency": 719,
+    "metric_id": 4,
+    "word": "poem",
+    "word_id": "4_25"
+  },
+  {
+    "frequency": 682,
+    "metric_id": 4,
+    "word": "provided",
+    "word_id": "4_26"
+  },
+  {
+    "frequency": 670,
+    "metric_id": 4,
+    "word": "capital",
+    "word_id": "4_27"
+  },
+  {
+    "frequency": 658,
+    "metric_id": 4,
+    "word": "states",
+    "word_id": "4_28"
+  },
+  {
+    "frequency": 641,
+    "metric_id": 4,
+    "word": "value",
+    "word_id": "4_29"
+  },
+  {
+    "frequency": 640,
+    "metric_id": 4,
+    "word": "find",
+    "word_id": "4_30"
+  },
+  {
+    "frequency": 606,
+    "metric_id": 4,
+    "word": "just",
+    "word_id": "4_31"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 4,
+    "word": "fruit",
+    "word_id": "4_32"
+  },
+  {
+    "frequency": 600,
+    "metric_id": 4,
+    "word": "breach",
+    "word_id": "4_33"
+  },
+  {
+    "frequency": 587,
+    "metric_id": 4,
+    "word": "each",
+    "word_id": "4_34"
+  },
+  {
+    "frequency": 586,
+    "metric_id": 4,
+    "word": "summary",
+    "word_id": "4_35"
+  },
+  {
+    "frequency": 586,
+    "metric_id": 4,
+    "word": "customer",
+    "word_id": "4_36"
+  },
+  {
+    "frequency": 585,
+    "metric_id": 4,
+    "word": "task",
+    "word_id": "4_37"
+  },
+  {
+    "frequency": 565,
+    "metric_id": 4,
+    "word": "examples",
+    "word_id": "4_38"
+  },
+  {
+    "frequency": 565,
+    "metric_id": 4,
+    "word": "convert",
+    "word_id": "4_39"
+  },
+  {
+    "frequency": 559,
+    "metric_id": 4,
+    "word": "main",
+    "word_id": "4_40"
+  },
+  {
+    "frequency": 550,
+    "metric_id": 4,
+    "word": "about",
+    "word_id": "4_41"
+  },
+  {
+    "frequency": 516,
+    "metric_id": 4,
+    "word": "numbers",
+    "word_id": "4_42"
+  },
+  {
+    "frequency": 501,
+    "metric_id": 4,
+    "word": "number",
+    "word_id": "4_43"
+  },
+  {
+    "frequency": 501,
+    "metric_id": 4,
+    "word": "specific",
+    "word_id": "4_44"
+  },
+  {
+    "frequency": 498,
+    "metric_id": 4,
+    "word": "calculate",
+    "word_id": "4_45"
+  },
+  {
+    "frequency": 497,
+    "metric_id": 4,
+    "word": "based",
+    "word_id": "4_46"
+  },
+  {
+    "frequency": 495,
+    "metric_id": 4,
+    "word": "should",
+    "word_id": "4_47"
+  },
+  {
+    "frequency": 484,
+    "metric_id": 4,
+    "word": "following sentence",
+    "word_id": "4_48"
+  },
+  {
+    "frequency": 482,
+    "metric_id": 4,
+    "word": "using",
+    "word_id": "4_49"
+  },
+  {
+    "frequency": 481,
+    "metric_id": 4,
+    "word": "sentence into",
+    "word_id": "4_50"
+  },
+  {
+    "frequency": 4268,
+    "metric_id": 5,
+    "word": "sentence",
+    "word_id": "5_1"
+  },
+  {
+    "frequency": 2341,
+    "metric_id": 5,
+    "word": "what",
+    "word_id": "5_2"
+  },
+  {
+    "frequency": 1601,
+    "metric_id": 5,
+    "word": "given",
+    "word_id": "5_3"
+  },
+  {
+    "frequency": 1561,
+    "metric_id": 5,
+    "word": "provide",
+    "word_id": "5_4"
+  },
+  {
+    "frequency": 1387,
+    "metric_id": 5,
+    "word": "following",
+    "word_id": "5_5"
+  },
+  {
+    "frequency": 1310,
+    "metric_id": 5,
+    "word": "please",
+    "word_id": "5_6"
+  },
+  {
+    "frequency": 1252,
+    "metric_id": 5,
+    "word": "into",
+    "word_id": "5_7"
+  },
+  {
+    "frequency": 1121,
+    "metric_id": 5,
+    "word": "data",
+    "word_id": "5_8"
+  },
+  {
+    "frequency": 1086,
+    "metric_id": 5,
+    "word": "convert",
+    "word_id": "5_9"
+  },
+  {
+    "frequency": 880,
+    "metric_id": 5,
+    "word": "then",
+    "word_id": "5_10"
+  },
+  {
+    "frequency": 877,
+    "metric_id": 5,
+    "word": "rewrite",
+    "word_id": "5_11"
+  },
+  {
+    "frequency": 832,
+    "metric_id": 5,
+    "word": "voice",
+    "word_id": "5_12"
+  },
+  {
+    "frequency": 825,
+    "metric_id": 5,
+    "word": "following sentence",
+    "word_id": "5_13"
+  },
+  {
+    "frequency": 791,
+    "metric_id": 5,
+    "word": "could",
+    "word_id": "5_14"
+  },
+  {
+    "frequency": 783,
+    "metric_id": 5,
+    "word": "median",
+    "word_id": "5_15"
+  },
+  {
+    "frequency": 778,
+    "metric_id": 5,
+    "word": "text",
+    "word_id": "5_16"
+  },
+  {
+    "frequency": 754,
+    "metric_id": 5,
+    "word": "summary",
+    "word_id": "5_17"
+  },
+  {
+    "frequency": 739,
+    "metric_id": 5,
+    "word": "concise",
+    "word_id": "5_18"
+  },
+  {
+    "frequency": 734,
+    "metric_id": 5,
+    "word": "present",
+    "word_id": "5_19"
+  },
+  {
+    "frequency": 730,
+    "metric_id": 5,
+    "word": "provided",
+    "word_id": "5_20"
+  },
+  {
+    "frequency": 704,
+    "metric_id": 5,
+    "word": "using",
+    "word_id": "5_21"
+  },
+  {
+    "frequency": 684,
+    "metric_id": 5,
+    "word": "would",
+    "word_id": "5_22"
+  },
+  {
+    "frequency": 680,
+    "metric_id": 5,
+    "word": "person",
+    "word_id": "5_23"
+  },
+  {
+    "frequency": 679,
+    "metric_id": 5,
+    "word": "tense",
+    "word_id": "5_24"
+  },
+  {
+    "frequency": 678,
+    "metric_id": 5,
+    "word": "list",
+    "word_id": "5_25"
+  },
+  {
+    "frequency": 673,
+    "metric_id": 5,
+    "word": "poem",
+    "word_id": "5_26"
+  },
+  {
+    "frequency": 673,
+    "metric_id": 5,
+    "word": "capital",
+    "word_id": "5_27"
+  },
+  {
+    "frequency": 664,
+    "metric_id": 5,
+    "word": "number",
+    "word_id": "5_28"
+  },
+  {
+    "frequency": 657,
+    "metric_id": 5,
+    "word": "states",
+    "word_id": "5_29"
+  },
+  {
+    "frequency": 651,
+    "metric_id": 5,
+    "word": "calculate",
+    "word_id": "5_30"
+  },
+  {
+    "frequency": 648,
+    "metric_id": 5,
+    "word": "celsius",
+    "word_id": "5_31"
+  },
+  {
+    "frequency": 646,
+    "metric_id": 5,
+    "word": "more",
+    "word_id": "5_32"
+  },
+  {
+    "frequency": 625,
+    "metric_id": 5,
+    "word": "example",
+    "word_id": "5_33"
+  },
+  {
+    "frequency": 620,
+    "metric_id": 5,
+    "word": "fahrenheit",
+    "word_id": "5_34"
+  },
+  {
+    "frequency": 618,
+    "metric_id": 5,
+    "word": "main",
+    "word_id": "5_35"
+  },
+  {
+    "frequency": 614,
+    "metric_id": 5,
+    "word": "examples",
+    "word_id": "5_36"
+  },
+  {
+    "frequency": 608,
+    "metric_id": 5,
+    "word": "their",
+    "word_id": "5_37"
+  },
+  {
+    "frequency": 605,
+    "metric_id": 5,
+    "word": "process",
+    "word_id": "5_38"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 5,
+    "word": "make",
+    "word_id": "5_39"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 5,
+    "word": "identify",
+    "word_id": "5_40"
+  },
+  {
+    "frequency": 585,
+    "metric_id": 5,
+    "word": "task",
+    "word_id": "5_41"
+  },
+  {
+    "frequency": 568,
+    "metric_id": 5,
+    "word": "output",
+    "word_id": "5_42"
+  },
+  {
+    "frequency": 566,
+    "metric_id": 5,
+    "word": "value",
+    "word_id": "5_43"
+  },
+  {
+    "frequency": 555,
+    "metric_id": 5,
+    "word": "demand",
+    "word_id": "5_44"
+  },
+  {
+    "frequency": 542,
+    "metric_id": 5,
+    "word": "words",
+    "word_id": "5_45"
+  },
+  {
+    "frequency": 530,
+    "metric_id": 5,
+    "word": "name",
+    "word_id": "5_46"
+  },
+  {
+    "frequency": 528,
+    "metric_id": 5,
+    "word": "about",
+    "word_id": "5_47"
+  },
+  {
+    "frequency": 517,
+    "metric_id": 5,
+    "word": "just",
+    "word_id": "5_48"
+  },
+  {
+    "frequency": 511,
+    "metric_id": 5,
+    "word": "should",
+    "word_id": "5_49"
+  },
+  {
+    "frequency": 510,
+    "metric_id": 5,
+    "word": "synonyms",
+    "word_id": "5_50"
+  },
+  {
+    "frequency": 2556,
+    "metric_id": 6,
+    "word": "sentence",
+    "word_id": "6_1"
+  },
+  {
+    "frequency": 2098,
+    "metric_id": 6,
+    "word": "what",
+    "word_id": "6_2"
+  },
+  {
+    "frequency": 1906,
+    "metric_id": 6,
+    "word": "list",
+    "word_id": "6_3"
+  },
+  {
+    "frequency": 1679,
+    "metric_id": 6,
+    "word": "provide",
+    "word_id": "6_4"
+  },
+  {
+    "frequency": 1369,
+    "metric_id": 6,
+    "word": "given",
+    "word_id": "6_5"
+  },
+  {
+    "frequency": 1351,
+    "metric_id": 6,
+    "word": "please",
+    "word_id": "6_6"
+  },
+  {
+    "frequency": 1275,
+    "metric_id": 6,
+    "word": "generate",
+    "word_id": "6_7"
+  },
+  {
+    "frequency": 1107,
+    "metric_id": 6,
+    "word": "data",
+    "word_id": "6_8"
+  },
+  {
+    "frequency": 1097,
+    "metric_id": 6,
+    "word": "explain",
+    "word_id": "6_9"
+  },
+  {
+    "frequency": 1057,
+    "metric_id": 6,
+    "word": "three",
+    "word_id": "6_10"
+  },
+  {
+    "frequency": 1022,
+    "metric_id": 6,
+    "word": "following",
+    "word_id": "6_11"
+  },
+  {
+    "frequency": 960,
+    "metric_id": 6,
+    "word": "then",
+    "word_id": "6_12"
+  },
+  {
+    "frequency": 922,
+    "metric_id": 6,
+    "word": "could",
+    "word_id": "6_13"
+  },
+  {
+    "frequency": 910,
+    "metric_id": 6,
+    "word": "describe",
+    "word_id": "6_14"
+  },
+  {
+    "frequency": 896,
+    "metric_id": 6,
+    "word": "into",
+    "word_id": "6_15"
+  },
+  {
+    "frequency": 832,
+    "metric_id": 6,
+    "word": "about",
+    "word_id": "6_16"
+  },
+  {
+    "frequency": 815,
+    "metric_id": 6,
+    "word": "voice",
+    "word_id": "6_17"
+  },
+  {
+    "frequency": 781,
+    "metric_id": 6,
+    "word": "median",
+    "word_id": "6_18"
+  },
+  {
+    "frequency": 755,
+    "metric_id": 6,
+    "word": "product",
+    "word_id": "6_19"
+  },
+  {
+    "frequency": 736,
+    "metric_id": 6,
+    "word": "present",
+    "word_id": "6_20"
+  },
+  {
+    "frequency": 718,
+    "metric_id": 6,
+    "word": "area",
+    "word_id": "6_21"
+  },
+  {
+    "frequency": 698,
+    "metric_id": 6,
+    "word": "each",
+    "word_id": "6_22"
+  },
+  {
+    "frequency": 697,
+    "metric_id": 6,
+    "word": "tweet",
+    "word_id": "6_23"
+  },
+  {
+    "frequency": 681,
+    "metric_id": 6,
+    "word": "tense",
+    "word_id": "6_24"
+  },
+  {
+    "frequency": 669,
+    "metric_id": 6,
+    "word": "capital",
+    "word_id": "6_25"
+  },
+  {
+    "frequency": 655,
+    "metric_id": 6,
+    "word": "examples",
+    "word_id": "6_26"
+  },
+  {
+    "frequency": 640,
+    "metric_id": 6,
+    "word": "their",
+    "word_id": "6_27"
+  },
+  {
+    "frequency": 634,
+    "metric_id": 6,
+    "word": "explanation",
+    "word_id": "6_28"
+  },
+  {
+    "frequency": 632,
+    "metric_id": 6,
+    "word": "person",
+    "word_id": "6_29"
+  },
+  {
+    "frequency": 626,
+    "metric_id": 6,
+    "word": "provided",
+    "word_id": "6_30"
+  },
+  {
+    "frequency": 613,
+    "metric_id": 6,
+    "word": "function",
+    "word_id": "6_31"
+  },
+  {
+    "frequency": 605,
+    "metric_id": 6,
+    "word": "summary",
+    "word_id": "6_32"
+  },
+  {
+    "frequency": 601,
+    "metric_id": 6,
+    "word": "should",
+    "word_id": "6_33"
+  },
+  {
+    "frequency": 583,
+    "metric_id": 6,
+    "word": "would",
+    "word_id": "6_34"
+  },
+  {
+    "frequency": 546,
+    "metric_id": 6,
+    "word": "example",
+    "word_id": "6_35"
+  },
+  {
+    "frequency": 544,
+    "metric_id": 6,
+    "word": "like",
+    "word_id": "6_36"
+  },
+  {
+    "frequency": 539,
+    "metric_id": 6,
+    "word": "poem",
+    "word_id": "6_37"
+  },
+  {
+    "frequency": 536,
+    "metric_id": 6,
+    "word": "primary",
+    "word_id": "6_38"
+  },
+  {
+    "frequency": 534,
+    "metric_id": 6,
+    "word": "using",
+    "word_id": "6_39"
+  },
+  {
+    "frequency": 531,
+    "metric_id": 6,
+    "word": "value",
+    "word_id": "6_40"
+  },
+  {
+    "frequency": 508,
+    "metric_id": 6,
+    "word": "need",
+    "word_id": "6_41"
+  },
+  {
+    "frequency": 505,
+    "metric_id": 6,
+    "word": "active",
+    "word_id": "6_42"
+  },
+  {
+    "frequency": 499,
+    "metric_id": 6,
+    "word": "just",
+    "word_id": "6_43"
+  },
+  {
+    "frequency": 495,
+    "metric_id": 6,
+    "word": "five",
+    "word_id": "6_44"
+  },
+  {
+    "frequency": 493,
+    "metric_id": 6,
+    "word": "find",
+    "word_id": "6_45"
+  },
+  {
+    "frequency": 492,
+    "metric_id": 6,
+    "word": "explanations",
+    "word_id": "6_46"
+  },
+  {
+    "frequency": 489,
+    "metric_id": 6,
+    "word": "structure",
+    "word_id": "6_47"
+  },
+  {
+    "frequency": 486,
+    "metric_id": 6,
+    "word": "specific",
+    "word_id": "6_48"
+  },
+  {
+    "frequency": 482,
+    "metric_id": 6,
+    "word": "task",
+    "word_id": "6_49"
+  },
+  {
+    "frequency": 464,
+    "metric_id": 6,
+    "word": "passive",
+    "word_id": "6_50"
+  },
+  {
+    "frequency": 3152,
+    "metric_id": 7,
+    "word": "sentence",
+    "word_id": "7_1"
+  },
+  {
+    "frequency": 2272,
+    "metric_id": 7,
+    "word": "what",
+    "word_id": "7_2"
+  },
+  {
+    "frequency": 1623,
+    "metric_id": 7,
+    "word": "given",
+    "word_id": "7_3"
+  },
+  {
+    "frequency": 1539,
+    "metric_id": 7,
+    "word": "provide",
+    "word_id": "7_4"
+  },
+  {
+    "frequency": 1495,
+    "metric_id": 7,
+    "word": "list",
+    "word_id": "7_5"
+  },
+  {
+    "frequency": 1411,
+    "metric_id": 7,
+    "word": "please",
+    "word_id": "7_6"
+  },
+  {
+    "frequency": 1364,
+    "metric_id": 7,
+    "word": "following",
+    "word_id": "7_7"
+  },
+  {
+    "frequency": 1088,
+    "metric_id": 7,
+    "word": "into",
+    "word_id": "7_8"
+  },
+  {
+    "frequency": 968,
+    "metric_id": 7,
+    "word": "paragraph",
+    "word_id": "7_9"
+  },
+  {
+    "frequency": 920,
+    "metric_id": 7,
+    "word": "identify",
+    "word_id": "7_10"
+  },
+  {
+    "frequency": 912,
+    "metric_id": 7,
+    "word": "could",
+    "word_id": "7_11"
+  },
+  {
+    "frequency": 903,
+    "metric_id": 7,
+    "word": "text",
+    "word_id": "7_12"
+  },
+  {
+    "frequency": 868,
+    "metric_id": 7,
+    "word": "then",
+    "word_id": "7_13"
+  },
+  {
+    "frequency": 860,
+    "metric_id": 7,
+    "word": "word",
+    "word_id": "7_14"
+  },
+  {
+    "frequency": 858,
+    "metric_id": 7,
+    "word": "each",
+    "word_id": "7_15"
+  },
+  {
+    "frequency": 853,
+    "metric_id": 7,
+    "word": "generate",
+    "word_id": "7_16"
+  },
+  {
+    "frequency": 836,
+    "metric_id": 7,
+    "word": "person",
+    "word_id": "7_17"
+  },
+  {
+    "frequency": 775,
+    "metric_id": 7,
+    "word": "summary",
+    "word_id": "7_18"
+  },
+  {
+    "frequency": 771,
+    "metric_id": 7,
+    "word": "main",
+    "word_id": "7_19"
+  },
+  {
+    "frequency": 768,
+    "metric_id": 7,
+    "word": "provided",
+    "word_id": "7_20"
+  },
+  {
+    "frequency": 741,
+    "metric_id": 7,
+    "word": "poem",
+    "word_id": "7_21"
+  },
+  {
+    "frequency": 734,
+    "metric_id": 7,
+    "word": "find",
+    "word_id": "7_22"
+  },
+  {
+    "frequency": 714,
+    "metric_id": 7,
+    "word": "present",
+    "word_id": "7_23"
+  },
+  {
+    "frequency": 709,
+    "metric_id": 7,
+    "word": "numbers",
+    "word_id": "7_24"
+  },
+  {
+    "frequency": 702,
+    "metric_id": 7,
+    "word": "calculate",
+    "word_id": "7_25"
+  },
+  {
+    "frequency": 694,
+    "metric_id": 7,
+    "word": "idea",
+    "word_id": "7_26"
+  },
+  {
+    "frequency": 691,
+    "metric_id": 7,
+    "word": "point",
+    "word_id": "7_27"
+  },
+  {
+    "frequency": 683,
+    "metric_id": 7,
+    "word": "tense",
+    "word_id": "7_28"
+  },
+  {
+    "frequency": 680,
+    "metric_id": 7,
+    "word": "examples",
+    "word_id": "7_29"
+  },
+  {
+    "frequency": 677,
+    "metric_id": 7,
+    "word": "three",
+    "word_id": "7_30"
+  },
+  {
+    "frequency": 672,
+    "metric_id": 7,
+    "word": "capital",
+    "word_id": "7_31"
+  },
+  {
+    "frequency": 657,
+    "metric_id": 7,
+    "word": "data",
+    "word_id": "7_32"
+  },
+  {
+    "frequency": 647,
+    "metric_id": 7,
+    "word": "would",
+    "word_id": "7_33"
+  },
+  {
+    "frequency": 646,
+    "metric_id": 7,
+    "word": "explain",
+    "word_id": "7_34"
+  },
+  {
+    "frequency": 636,
+    "metric_id": 7,
+    "word": "about",
+    "word_id": "7_35"
+  },
+  {
+    "frequency": 617,
+    "metric_id": 7,
+    "word": "using",
+    "word_id": "7_36"
+  },
+  {
+    "frequency": 617,
+    "metric_id": 7,
+    "word": "algorithm",
+    "word_id": "7_37"
+  },
+  {
+    "frequency": 606,
+    "metric_id": 7,
+    "word": "number",
+    "word_id": "7_38"
+  },
+  {
+    "frequency": 599,
+    "metric_id": 7,
+    "word": "passage",
+    "word_id": "7_39"
+  },
+  {
+    "frequency": 573,
+    "metric_id": 7,
+    "word": "describe",
+    "word_id": "7_40"
+  },
+  {
+    "frequency": 564,
+    "metric_id": 7,
+    "word": "construct",
+    "word_id": "7_41"
+  },
+  {
+    "frequency": 561,
+    "metric_id": 7,
+    "word": "task",
+    "word_id": "7_42"
+  },
+  {
+    "frequency": 552,
+    "metric_id": 7,
+    "word": "need",
+    "word_id": "7_43"
+  },
+  {
+    "frequency": 531,
+    "metric_id": 7,
+    "word": "explanations",
+    "word_id": "7_44"
+  },
+  {
+    "frequency": 524,
+    "metric_id": 7,
+    "word": "like",
+    "word_id": "7_45"
+  },
+  {
+    "frequency": 522,
+    "metric_id": 7,
+    "word": "main idea",
+    "word_id": "7_46"
+  },
+  {
+    "frequency": 512,
+    "metric_id": 7,
+    "word": "their",
+    "word_id": "7_47"
+  },
+  {
+    "frequency": 509,
+    "metric_id": 7,
+    "word": "just",
+    "word_id": "7_48"
+  },
+  {
+    "frequency": 506,
+    "metric_id": 7,
+    "word": "should",
+    "word_id": "7_49"
+  },
+  {
+    "frequency": 497,
+    "metric_id": 7,
+    "word": "input",
+    "word_id": "7_50"
+  },
+  {
+    "frequency": 2027,
+    "metric_id": 8,
+    "word": "what",
+    "word_id": "8_1"
+  },
+  {
+    "frequency": 1647,
+    "metric_id": 8,
+    "word": "given",
+    "word_id": "8_2"
+  },
+  {
+    "frequency": 1622,
+    "metric_id": 8,
+    "word": "provide",
+    "word_id": "8_3"
+  },
+  {
+    "frequency": 1431,
+    "metric_id": 8,
+    "word": "list",
+    "word_id": "8_4"
+  },
+  {
+    "frequency": 1399,
+    "metric_id": 8,
+    "word": "please",
+    "word_id": "8_5"
+  },
+  {
+    "frequency": 1316,
+    "metric_id": 8,
+    "word": "explain",
+    "word_id": "8_6"
+  },
+  {
+    "frequency": 1277,
+    "metric_id": 8,
+    "word": "sentence",
+    "word_id": "8_7"
+  },
+  {
+    "frequency": 1033,
+    "metric_id": 8,
+    "word": "into",
+    "word_id": "8_8"
+  },
+  {
+    "frequency": 1024,
+    "metric_id": 8,
+    "word": "three",
+    "word_id": "8_9"
+  },
+  {
+    "frequency": 1002,
+    "metric_id": 8,
+    "word": "paragraph",
+    "word_id": "8_10"
+  },
+  {
+    "frequency": 989,
+    "metric_id": 8,
+    "word": "then",
+    "word_id": "8_11"
+  },
+  {
+    "frequency": 965,
+    "metric_id": 8,
+    "word": "could",
+    "word_id": "8_12"
+  },
+  {
+    "frequency": 963,
+    "metric_id": 8,
+    "word": "about",
+    "word_id": "8_13"
+  },
+  {
+    "frequency": 918,
+    "metric_id": 8,
+    "word": "generate",
+    "word_id": "8_14"
+  },
+  {
+    "frequency": 872,
+    "metric_id": 8,
+    "word": "describe",
+    "word_id": "8_15"
+  },
+  {
+    "frequency": 866,
+    "metric_id": 8,
+    "word": "each",
+    "word_id": "8_16"
+  },
+  {
+    "frequency": 857,
+    "metric_id": 8,
+    "word": "words",
+    "word_id": "8_17"
+  },
+  {
+    "frequency": 841,
+    "metric_id": 8,
+    "word": "data",
+    "word_id": "8_18"
+  },
+  {
+    "frequency": 808,
+    "metric_id": 8,
+    "word": "text",
+    "word_id": "8_19"
+  },
+  {
+    "frequency": 795,
+    "metric_id": 8,
+    "word": "summary",
+    "word_id": "8_20"
+  },
+  {
+    "frequency": 771,
+    "metric_id": 8,
+    "word": "examples",
+    "word_id": "8_21"
+  },
+  {
+    "frequency": 747,
+    "metric_id": 8,
+    "word": "their",
+    "word_id": "8_22"
+  },
+  {
+    "frequency": 728,
+    "metric_id": 8,
+    "word": "explanation",
+    "word_id": "8_23"
+  },
+  {
+    "frequency": 714,
+    "metric_id": 8,
+    "word": "make",
+    "word_id": "8_24"
+  },
+  {
+    "frequency": 702,
+    "metric_id": 8,
+    "word": "design",
+    "word_id": "8_25"
+  },
+  {
+    "frequency": 694,
+    "metric_id": 8,
+    "word": "person",
+    "word_id": "8_26"
+  },
+  {
+    "frequency": 694,
+    "metric_id": 8,
+    "word": "identify",
+    "word_id": "8_27"
+  },
+  {
+    "frequency": 654,
+    "metric_id": 8,
+    "word": "provided",
+    "word_id": "8_28"
+  },
+  {
+    "frequency": 630,
+    "metric_id": 8,
+    "word": "following",
+    "word_id": "8_29"
+  },
+  {
+    "frequency": 627,
+    "metric_id": 8,
+    "word": "specific",
+    "word_id": "8_30"
+  },
+  {
+    "frequency": 624,
+    "metric_id": 8,
+    "word": "like",
+    "word_id": "8_31"
+  },
+  {
+    "frequency": 616,
+    "metric_id": 8,
+    "word": "water",
+    "word_id": "8_32"
+  },
+  {
+    "frequency": 606,
+    "metric_id": 8,
+    "word": "would",
+    "word_id": "8_33"
+  },
+  {
+    "frequency": 597,
+    "metric_id": 8,
+    "word": "using",
+    "word_id": "8_34"
+  },
+  {
+    "frequency": 587,
+    "metric_id": 8,
+    "word": "primary",
+    "word_id": "8_35"
+  },
+  {
+    "frequency": 580,
+    "metric_id": 8,
+    "word": "pollution",
+    "word_id": "8_36"
+  },
+  {
+    "frequency": 572,
+    "metric_id": 8,
+    "word": "should",
+    "word_id": "8_37"
+  },
+  {
+    "frequency": 570,
+    "metric_id": 8,
+    "word": "decision",
+    "word_id": "8_38"
+  },
+  {
+    "frequency": 560,
+    "metric_id": 8,
+    "word": "explanations",
+    "word_id": "8_39"
+  },
+  {
+    "frequency": 557,
+    "metric_id": 8,
+    "word": "short",
+    "word_id": "8_40"
+  },
+  {
+    "frequency": 552,
+    "metric_id": 8,
+    "word": "process",
+    "word_id": "8_41"
+  },
+  {
+    "frequency": 547,
+    "metric_id": 8,
+    "word": "items",
+    "word_id": "8_42"
+  },
+  {
+    "frequency": 526,
+    "metric_id": 8,
+    "word": "detailed",
+    "word_id": "8_43"
+  },
+  {
+    "frequency": 517,
+    "metric_id": 8,
+    "word": "task",
+    "word_id": "8_44"
+  },
+  {
+    "frequency": 511,
+    "metric_id": 8,
+    "word": "equation",
+    "word_id": "8_45"
+  },
+  {
+    "frequency": 507,
+    "metric_id": 8,
+    "word": "comprehensive",
+    "word_id": "8_46"
+  },
+  {
+    "frequency": 504,
+    "metric_id": 8,
+    "word": "need",
+    "word_id": "8_47"
+  },
+  {
+    "frequency": 499,
+    "metric_id": 8,
+    "word": "most",
+    "word_id": "8_48"
+  },
+  {
+    "frequency": 497,
+    "metric_id": 8,
+    "word": "reduce",
+    "word_id": "8_49"
+  },
+  {
+    "frequency": 482,
+    "metric_id": 8,
+    "word": "just",
+    "word_id": "8_50"
+  },
+  {
+    "frequency": 2406,
+    "metric_id": 9,
+    "word": "what",
+    "word_id": "9_1"
+  },
+  {
+    "frequency": 2167,
+    "metric_id": 9,
+    "word": "list",
+    "word_id": "9_2"
+  },
+  {
+    "frequency": 1531,
+    "metric_id": 9,
+    "word": "provide",
+    "word_id": "9_3"
+  },
+  {
+    "frequency": 1420,
+    "metric_id": 9,
+    "word": "given",
+    "word_id": "9_4"
+  },
+  {
+    "frequency": 1222,
+    "metric_id": 9,
+    "word": "generate",
+    "word_id": "9_5"
+  },
+  {
+    "frequency": 1214,
+    "metric_id": 9,
+    "word": "data",
+    "word_id": "9_6"
+  },
+  {
+    "frequency": 1188,
+    "metric_id": 9,
+    "word": "please",
+    "word_id": "9_7"
+  },
+  {
+    "frequency": 1092,
+    "metric_id": 9,
+    "word": "sentence",
+    "word_id": "9_8"
+  },
+  {
+    "frequency": 1060,
+    "metric_id": 9,
+    "word": "product",
+    "word_id": "9_9"
+  },
+  {
+    "frequency": 1058,
+    "metric_id": 9,
+    "word": "following",
+    "word_id": "9_10"
+  },
+  {
+    "frequency": 1026,
+    "metric_id": 9,
+    "word": "into",
+    "word_id": "9_11"
+  },
+  {
+    "frequency": 957,
+    "metric_id": 9,
+    "word": "explain",
+    "word_id": "9_12"
+  },
+  {
+    "frequency": 906,
+    "metric_id": 9,
+    "word": "about",
+    "word_id": "9_13"
+  },
+  {
+    "frequency": 838,
+    "metric_id": 9,
+    "word": "name",
+    "word_id": "9_14"
+  },
+  {
+    "frequency": 833,
+    "metric_id": 9,
+    "word": "could",
+    "word_id": "9_15"
+  },
+  {
+    "frequency": 814,
+    "metric_id": 9,
+    "word": "would",
+    "word_id": "9_16"
+  },
+  {
+    "frequency": 807,
+    "metric_id": 9,
+    "word": "then",
+    "word_id": "9_17"
+  },
+  {
+    "frequency": 793,
+    "metric_id": 9,
+    "word": "haiku",
+    "word_id": "9_18"
+  },
+  {
+    "frequency": 783,
+    "metric_id": 9,
+    "word": "median",
+    "word_id": "9_19"
+  },
+  {
+    "frequency": 782,
+    "metric_id": 9,
+    "word": "explanation",
+    "word_id": "9_20"
+  },
+  {
+    "frequency": 740,
+    "metric_id": 9,
+    "word": "describe",
+    "word_id": "9_21"
+  },
+  {
+    "frequency": 737,
+    "metric_id": 9,
+    "word": "five",
+    "word_id": "9_22"
+  },
+  {
+    "frequency": 732,
+    "metric_id": 9,
+    "word": "number",
+    "word_id": "9_23"
+  },
+  {
+    "frequency": 679,
+    "metric_id": 9,
+    "word": "examples",
+    "word_id": "9_24"
+  },
+  {
+    "frequency": 677,
+    "metric_id": 9,
+    "word": "first",
+    "word_id": "9_25"
+  },
+  {
+    "frequency": 668,
+    "metric_id": 9,
+    "word": "each",
+    "word_id": "9_26"
+  },
+  {
+    "frequency": 660,
+    "metric_id": 9,
+    "word": "text",
+    "word_id": "9_27"
+  },
+  {
+    "frequency": 655,
+    "metric_id": 9,
+    "word": "quote",
+    "word_id": "9_28"
+  },
+  {
+    "frequency": 650,
+    "metric_id": 9,
+    "word": "states",
+    "word_id": "9_29"
+  },
+  {
+    "frequency": 624,
+    "metric_id": 9,
+    "word": "function",
+    "word_id": "9_30"
+  },
+  {
+    "frequency": 619,
+    "metric_id": 9,
+    "word": "camping",
+    "word_id": "9_31"
+  },
+  {
+    "frequency": 607,
+    "metric_id": 9,
+    "word": "summary",
+    "word_id": "9_32"
+  },
+  {
+    "frequency": 607,
+    "metric_id": 9,
+    "word": "items",
+    "word_id": "9_33"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 9,
+    "word": "fruit",
+    "word_id": "9_34"
+  },
+  {
+    "frequency": 599,
+    "metric_id": 9,
+    "word": "breach",
+    "word_id": "9_35"
+  },
+  {
+    "frequency": 569,
+    "metric_id": 9,
+    "word": "just",
+    "word_id": "9_36"
+  },
+  {
+    "frequency": 567,
+    "metric_id": 9,
+    "word": "should",
+    "word_id": "9_37"
+  },
+  {
+    "frequency": 544,
+    "metric_id": 9,
+    "word": "provided",
+    "word_id": "9_38"
+  },
+  {
+    "frequency": 532,
+    "metric_id": 9,
+    "word": "creative",
+    "word_id": "9_39"
+  },
+  {
+    "frequency": 524,
+    "metric_id": 9,
+    "word": "explanations",
+    "word_id": "9_40"
+  },
+  {
+    "frequency": 520,
+    "metric_id": 9,
+    "word": "calculate",
+    "word_id": "9_41"
+  },
+  {
+    "frequency": 517,
+    "metric_id": 9,
+    "word": "primary",
+    "word_id": "9_42"
+  },
+  {
+    "frequency": 516,
+    "metric_id": 9,
+    "word": "their",
+    "word_id": "9_43"
+  },
+  {
+    "frequency": 513,
+    "metric_id": 9,
+    "word": "need",
+    "word_id": "9_44"
+  },
+  {
+    "frequency": 509,
+    "metric_id": 9,
+    "word": "convert",
+    "word_id": "9_45"
+  },
+  {
+    "frequency": 490,
+    "metric_id": 9,
+    "word": "risks",
+    "word_id": "9_46"
+  },
+  {
+    "frequency": 486,
+    "metric_id": 9,
+    "word": "between",
+    "word_id": "9_47"
+  },
+  {
+    "frequency": 484,
+    "metric_id": 9,
+    "word": "task",
+    "word_id": "9_48"
+  },
+  {
+    "frequency": 484,
+    "metric_id": 9,
+    "word": "common",
+    "word_id": "9_49"
+  },
+  {
+    "frequency": 478,
+    "metric_id": 9,
+    "word": "like",
+    "word_id": "9_50"
+  },
+  {
+    "frequency": 3879,
+    "metric_id": 10,
+    "word": "sentence",
+    "word_id": "10_1"
+  },
+  {
+    "frequency": 1849,
+    "metric_id": 10,
+    "word": "what",
+    "word_id": "10_2"
+  },
+  {
+    "frequency": 1819,
+    "metric_id": 10,
+    "word": "generate",
+    "word_id": "10_3"
+  },
+  {
+    "frequency": 1539,
+    "metric_id": 10,
+    "word": "following",
+    "word_id": "10_4"
+  },
+  {
+    "frequency": 1258,
+    "metric_id": 10,
+    "word": "poem",
+    "word_id": "10_5"
+  },
+  {
+    "frequency": 1173,
+    "metric_id": 10,
+    "word": "provide",
+    "word_id": "10_6"
+  },
+  {
+    "frequency": 1134,
+    "metric_id": 10,
+    "word": "please",
+    "word_id": "10_7"
+  },
+  {
+    "frequency": 1057,
+    "metric_id": 10,
+    "word": "slogan",
+    "word_id": "10_8"
+  },
+  {
+    "frequency": 1035,
+    "metric_id": 10,
+    "word": "product",
+    "word_id": "10_9"
+  },
+  {
+    "frequency": 947,
+    "metric_id": 10,
+    "word": "describe",
+    "word_id": "10_10"
+  },
+  {
+    "frequency": 897,
+    "metric_id": 10,
+    "word": "about",
+    "word_id": "10_11"
+  },
+  {
+    "frequency": 852,
+    "metric_id": 10,
+    "word": "creative",
+    "word_id": "10_12"
+  },
+  {
+    "frequency": 819,
+    "metric_id": 10,
+    "word": "given",
+    "word_id": "10_13"
+  },
+  {
+    "frequency": 814,
+    "metric_id": 10,
+    "word": "primary",
+    "word_id": "10_14"
+  },
+  {
+    "frequency": 805,
+    "metric_id": 10,
+    "word": "following sentence",
+    "word_id": "10_15"
+  },
+  {
+    "frequency": 747,
+    "metric_id": 10,
+    "word": "could",
+    "word_id": "10_16"
+  },
+  {
+    "frequency": 732,
+    "metric_id": 10,
+    "word": "would",
+    "word_id": "10_17"
+  },
+  {
+    "frequency": 723,
+    "metric_id": 10,
+    "word": "make",
+    "word_id": "10_18"
+  },
+  {
+    "frequency": 713,
+    "metric_id": 10,
+    "word": "then",
+    "word_id": "10_19"
+  },
+  {
+    "frequency": 709,
+    "metric_id": 10,
+    "word": "tweet",
+    "word_id": "10_20"
+  },
+  {
+    "frequency": 706,
+    "metric_id": 10,
+    "word": "into",
+    "word_id": "10_21"
+  },
+  {
+    "frequency": 701,
+    "metric_id": 10,
+    "word": "examples",
+    "word_id": "10_22"
+  },
+  {
+    "frequency": 692,
+    "metric_id": 10,
+    "word": "create",
+    "word_id": "10_23"
+  },
+  {
+    "frequency": 690,
+    "metric_id": 10,
+    "word": "present",
+    "word_id": "10_24"
+  },
+  {
+    "frequency": 671,
+    "metric_id": 10,
+    "word": "story",
+    "word_id": "10_25"
+  },
+  {
+    "frequency": 654,
+    "metric_id": 10,
+    "word": "design",
+    "word_id": "10_26"
+  },
+  {
+    "frequency": 648,
+    "metric_id": 10,
+    "word": "media",
+    "word_id": "10_27"
+  },
+  {
+    "frequency": 621,
+    "metric_id": 10,
+    "word": "social",
+    "word_id": "10_28"
+  },
+  {
+    "frequency": 607,
+    "metric_id": 10,
+    "word": "social media",
+    "word_id": "10_29"
+  },
+  {
+    "frequency": 604,
+    "metric_id": 10,
+    "word": "fruit",
+    "word_id": "10_30"
+  },
+  {
+    "frequency": 594,
+    "metric_id": 10,
+    "word": "just",
+    "word_id": "10_31"
+  },
+  {
+    "frequency": 593,
+    "metric_id": 10,
+    "word": "name",
+    "word_id": "10_32"
+  },
+  {
+    "frequency": 591,
+    "metric_id": 10,
+    "word": "should",
+    "word_id": "10_33"
+  },
+  {
+    "frequency": 576,
+    "metric_id": 10,
+    "word": "summary",
+    "word_id": "10_34"
+  },
+  {
+    "frequency": 574,
+    "metric_id": 10,
+    "word": "description",
+    "word_id": "10_35"
+  },
+  {
+    "frequency": 564,
+    "metric_id": 10,
+    "word": "words",
+    "word_id": "10_36"
+  },
+  {
+    "frequency": 562,
+    "metric_id": 10,
+    "word": "identify",
+    "word_id": "10_37"
+  },
+  {
+    "frequency": 556,
+    "metric_id": 10,
+    "word": "list",
+    "word_id": "10_38"
+  },
+  {
+    "frequency": 555,
+    "metric_id": 10,
+    "word": "using",
+    "word_id": "10_39"
+  },
+  {
+    "frequency": 543,
+    "metric_id": 10,
+    "word": "ideas",
+    "word_id": "10_40"
+  },
+  {
+    "frequency": 536,
+    "metric_id": 10,
+    "word": "explain",
+    "word_id": "10_41"
+  },
+  {
+    "frequency": 533,
+    "metric_id": 10,
+    "word": "specific",
+    "word_id": "10_42"
+  },
+  {
+    "frequency": 527,
+    "metric_id": 10,
+    "word": "concept",
+    "word_id": "10_43"
+  },
+  {
+    "frequency": 517,
+    "metric_id": 10,
+    "word": "three",
+    "word_id": "10_44"
+  },
+  {
+    "frequency": 513,
+    "metric_id": 10,
+    "word": "explanations",
+    "word_id": "10_45"
+  },
+  {
+    "frequency": 511,
+    "metric_id": 10,
+    "word": "must",
+    "word_id": "10_46"
+  },
+  {
+    "frequency": 509,
+    "metric_id": 10,
+    "word": "like",
+    "word_id": "10_47"
+  },
+  {
+    "frequency": 508,
+    "metric_id": 10,
+    "word": "task",
+    "word_id": "10_48"
+  },
+  {
+    "frequency": 500,
+    "metric_id": 10,
+    "word": "good",
+    "word_id": "10_49"
+  },
+  {
+    "frequency": 492,
+    "metric_id": 10,
+    "word": "person",
+    "word_id": "10_50"
+  }
+]
