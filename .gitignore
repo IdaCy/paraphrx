@@ -53,6 +53,7 @@ c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/all.json
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers
 
+c_assess_inf/output/gsm8k_answer_scores/gemma-2-2b-it/all.json
 c_assess_inf/output/gsm8k/gemma-2-2b-it/answers
 c_assess_inf/output/gsm8k/gemma-2-2b-it/scores
 c_assess_inf/output/gsm8k/gemma-2-2b-it/slice_100
