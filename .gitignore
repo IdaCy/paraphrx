@@ -39,8 +39,8 @@ a_data/mmlu/prxed_moral_500_scenarios_slice_100
 d_gui_backup
 xd_gui
 
-c_assess_inf/output/alpaca_answer_scores_500/gemma-2-2b-it
-c_assess_inf/output/alpaca_answer_scores_500/Qwen1.5-1.8B
+c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it
+c_assess_inf/output/alpaca_answer_scores/Qwen1.5-1.8B
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it
 
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100_in_gen
