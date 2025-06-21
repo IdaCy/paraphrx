@@ -22,25 +22,25 @@ use std::{
     path::PathBuf,
 };
 
-/// Analyse Alpaca-style prompt files and emit top n-gram statistics.
+// Analyse Alpaca-style prompt files and emit top n-gram statistics.
 #[derive(Parser, Debug)]
 #[command(author, version, about)]
 struct Cli {
-    /// Path to a_data/alpaca/prxed/all.json
+    // Path to a_data/alpaca/prxed/all.json
     #[arg(long)]
     paraphrases: PathBuf,
 
-    /// Path to ONE scores JSON
-    /// e.g. c_assess_inf/output/alpaca_answer_scores_500/gemma-2-2b-it.json
+    // Path to ONE scores JSON
+    // e.g. c_assess_inf/output/alpaca_answer_scores_500/gemma-2-2b-it.json
     #[arg(long)]
     scores: PathBuf,
 
-    /// Where to write the resulting JSON (stdout if omitted)
+    // Where to write the resulting JSON (stdout if omitted)
     #[arg(long)]
     output: Option<PathBuf>,
 }
 
-// ----------------------- constants ---------------------------
+// constants
 
 const METRIC_COUNT: usize = 10;
 const TOP_PCT: f64 = 0.10;
@@ -56,12 +56,12 @@ fn stop_words() -> HashSet<&'static str> {
     .collect()
 }
 
-// ---------------------- main logic ---------------------------
+// main logic
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    // ---------- load paraphrases ----------
+    // load paraphrases
     let paraphrase_text = fs::read_to_string(&cli.paraphrases)
         .with_context(|| format!("Reading {}", cli.paraphrases.display()))?;
     let paraphrase_json: Vec<Value> = serde_json::from_str(&paraphrase_text)?;
@@ -87,7 +87,7 @@ fn main() -> Result<()> {
         prompt_to_texts.insert(pc, texts);
     }
 
-    // ---------- load scores ----------
+    // load scores
     let scores_text = fs::read_to_string(&cli.scores)
         .with_context(|| format!("Reading {}", cli.scores.display()))?;
     let scores_json: Vec<Value> = serde_json::from_str(&scores_text)?;
@@ -101,7 +101,7 @@ fn main() -> Result<()> {
             .and_then(Value::as_u64)
             .context("score entry missing prompt_count")?;
 
-        // We use the scores attached to "instruction_original"
+        // Using the scores attached to "instruction_original"
         let Some(scores_arr) = obj.get("instruction_original").and_then(Value::as_array) else {
             continue; // nothing to score
         };
@@ -119,14 +119,14 @@ fn main() -> Result<()> {
     let stop_words = stop_words();
     let mut final_rows = Vec::new();
 
-    // ---------- iterate over each metric ----------
+    // iterate over each metric
     for (metric_idx, mut entries) in per_metric.into_iter().enumerate() {
         // rank desc
         entries.sort_by_key(|&(_, s)| std::cmp::Reverse(s));
         let keep = ((entries.len() as f64 * TOP_PCT).ceil() as usize).max(1);
         let top_prompts: Vec<u64> = entries.iter().take(keep).map(|&(pc, _)| pc).collect();
 
-        // ------- n-gram counting -------
+        // n-gram counting
         let mut counts: HashMap<String, usize> = HashMap::new();
         for pc in &top_prompts {
             if let Some(texts) = prompt_to_texts.get(pc) {
@@ -164,14 +164,14 @@ fn main() -> Result<()> {
         // take top-50 terms
         let top_terms = counts
             .into_iter()
-            .filter(|(_, c)| *c > 1) // optional: skip hapax legomena
+            .filter(|(_, c)| *c > 1) // extra- skip hapax legomena
             .sorted_by_key(|&(_, c)| std::cmp::Reverse(c))
             .take(TOP_N_TERMS)
             .collect_vec();
 
         // build result rows
         for (rank, (term, freq)) in top_terms.into_iter().enumerate() {
-            let metric_id = metric_idx + 1; // 1-based like your spec
+            let metric_id = metric_idx + 1; // 1-based
             final_rows.push(json!({
                 "metric_id": metric_id,
                 "word_id": format!("{}_{}", metric_id, rank + 1),
@@ -181,7 +181,7 @@ fn main() -> Result<()> {
         }
     }
 
-    // ----------- output ------------
+    // output
     let output_json = Value::Array(final_rows);
     match cli.output {
         Some(p) => fs::write(&p, serde_json::to_string_pretty(&output_json)?)?,

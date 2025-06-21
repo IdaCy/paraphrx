@@ -1,0 +1,302 @@
+[
+  {
+    "frequency": 2489,
+    "metric_id": 0,
+    "word": "sentence",
+    "word_id": "0_1"
+  },
+  {
+    "frequency": 2224,
+    "metric_id": 0,
+    "word": "what",
+    "word_id": "0_2"
+  },
+  {
+    "frequency": 1731,
+    "metric_id": 0,
+    "word": "list",
+    "word_id": "0_3"
+  },
+  {
+    "frequency": 1498,
+    "metric_id": 0,
+    "word": "generate",
+    "word_id": "0_4"
+  },
+  {
+    "frequency": 1474,
+    "metric_id": 0,
+    "word": "provide",
+    "word_id": "0_5"
+  },
+  {
+    "frequency": 1305,
+    "metric_id": 0,
+    "word": "given",
+    "word_id": "0_6"
+  },
+  {
+    "frequency": 1255,
+    "metric_id": 0,
+    "word": "please",
+    "word_id": "0_7"
+  },
+  {
+    "frequency": 1066,
+    "metric_id": 0,
+    "word": "product",
+    "word_id": "0_8"
+  },
+  {
+    "frequency": 1041,
+    "metric_id": 0,
+    "word": "following",
+    "word_id": "0_9"
+  },
+  {
+    "frequency": 904,
+    "metric_id": 0,
+    "word": "poem",
+    "word_id": "0_10"
+  },
+  {
+    "frequency": 891,
+    "metric_id": 0,
+    "word": "states",
+    "word_id": "0_11"
+  },
+  {
+    "frequency": 885,
+    "metric_id": 0,
+    "word": "name",
+    "word_id": "0_12"
+  },
+  {
+    "frequency": 851,
+    "metric_id": 0,
+    "word": "phrase",
+    "word_id": "0_13"
+  },
+  {
+    "frequency": 835,
+    "metric_id": 0,
+    "word": "into",
+    "word_id": "0_14"
+  },
+  {
+    "frequency": 829,
+    "metric_id": 0,
+    "word": "could",
+    "word_id": "0_15"
+  },
+  {
+    "frequency": 827,
+    "metric_id": 0,
+    "word": "summary",
+    "word_id": "0_16"
+  },
+  {
+    "frequency": 819,
+    "metric_id": 0,
+    "word": "data",
+    "word_id": "0_17"
+  },
+  {
+    "frequency": 793,
+    "metric_id": 0,
+    "word": "passage",
+    "word_id": "0_18"
+  },
+  {
+    "frequency": 787,
+    "metric_id": 0,
+    "word": "then",
+    "word_id": "0_19"
+  },
+  {
+    "frequency": 735,
+    "metric_id": 0,
+    "word": "explain",
+    "word_id": "0_20"
+  },
+  {
+    "frequency": 717,
+    "metric_id": 0,
+    "word": "three",
+    "word_id": "0_21"
+  },
+  {
+    "frequency": 703,
+    "metric_id": 0,
+    "word": "would",
+    "word_id": "0_22"
+  },
+  {
+    "frequency": 693,
+    "metric_id": 0,
+    "word": "present",
+    "word_id": "0_23"
+  },
+  {
+    "frequency": 692,
+    "metric_id": 0,
+    "word": "square",
+    "word_id": "0_24"
+  },
+  {
+    "frequency": 664,
+    "metric_id": 0,
+    "word": "about",
+    "word_id": "0_25"
+  },
+  {
+    "frequency": 646,
+    "metric_id": 0,
+    "word": "line",
+    "word_id": "0_26"
+  },
+  {
+    "frequency": 644,
+    "metric_id": 0,
+    "word": "examples",
+    "word_id": "0_27"
+  },
+  {
+    "frequency": 635,
+    "metric_id": 0,
+    "word": "identify",
+    "word_id": "0_28"
+  },
+  {
+    "frequency": 620,
+    "metric_id": 0,
+    "word": "each",
+    "word_id": "0_29"
+  },
+  {
+    "frequency": 615,
+    "metric_id": 0,
+    "word": "words",
+    "word_id": "0_30"
+  },
+  {
+    "frequency": 613,
+    "metric_id": 0,
+    "word": "explanation",
+    "word_id": "0_31"
+  },
+  {
+    "frequency": 605,
+    "metric_id": 0,
+    "word": "fruit",
+    "word_id": "0_32"
+  },
+  {
+    "frequency": 596,
+    "metric_id": 0,
+    "word": "concise",
+    "word_id": "0_33"
+  },
+  {
+    "frequency": 589,
+    "metric_id": 0,
+    "word": "main",
+    "word_id": "0_34"
+  },
+  {
+    "frequency": 588,
+    "metric_id": 0,
+    "word": "customer",
+    "word_id": "0_35"
+  },
+  {
+    "frequency": 585,
+    "metric_id": 0,
+    "word": "provided",
+    "word_id": "0_36"
+  },
+  {
+    "frequency": 573,
+    "metric_id": 0,
+    "word": "just",
+    "word_id": "0_37"
+  },
+  {
+    "frequency": 539,
+    "metric_id": 0,
+    "word": "creative",
+    "word_id": "0_38"
+  },
+  {
+    "frequency": 528,
+    "metric_id": 0,
+    "word": "following sentence",
+    "word_id": "0_39"
+  },
+  {
+    "frequency": 526,
+    "metric_id": 0,
+    "word": "should",
+    "word_id": "0_40"
+  },
+  {
+    "frequency": 517,
+    "metric_id": 0,
+    "word": "make",
+    "word_id": "0_41"
+  },
+  {
+    "frequency": 514,
+    "metric_id": 0,
+    "word": "explanations",
+    "word_id": "0_42"
+  },
+  {
+    "frequency": 511,
+    "metric_id": 0,
+    "word": "task",
+    "word_id": "0_43"
+  },
+  {
+    "frequency": 508,
+    "metric_id": 0,
+    "word": "primary",
+    "word_id": "0_44"
+  },
+  {
+    "frequency": 504,
+    "metric_id": 0,
+    "word": "united",
+    "word_id": "0_45"
+  },
+  {
+    "frequency": 503,
+    "metric_id": 0,
+    "word": "united states",
+    "word_id": "0_46"
+  },
+  {
+    "frequency": 498,
+    "metric_id": 0,
+    "word": "word",
+    "word_id": "0_47"
+  },
+  {
+    "frequency": 497,
+    "metric_id": 0,
+    "word": "question",
+    "word_id": "0_48"
+  },
+  {
+    "frequency": 495,
+    "metric_id": 0,
+    "word": "example",
+    "word_id": "0_49"
+  },
+  {
+    "frequency": 493,
+    "metric_id": 0,
+    "word": "calculate",
+    "word_id": "0_50"
+  }
+]

@@ -1,0 +1,302 @@
+[
+  {
+    "frequency": 345,
+    "metric_id": 0,
+    "word": "area",
+    "word_id": "0_1"
+  },
+  {
+    "frequency": 295,
+    "metric_id": 0,
+    "word": "rectangle",
+    "word_id": "0_2"
+  },
+  {
+    "frequency": 279,
+    "metric_id": 0,
+    "word": "10cm",
+    "word_id": "0_3"
+  },
+  {
+    "frequency": 242,
+    "metric_id": 0,
+    "word": "length",
+    "word_id": "0_4"
+  },
+  {
+    "frequency": 240,
+    "metric_id": 0,
+    "word": "width",
+    "word_id": "0_5"
+  },
+  {
+    "frequency": 179,
+    "metric_id": 0,
+    "word": "length 10cm",
+    "word_id": "0_6"
+  },
+  {
+    "frequency": 178,
+    "metric_id": 0,
+    "word": "10cm width",
+    "word_id": "0_7"
+  },
+  {
+    "frequency": 173,
+    "metric_id": 0,
+    "word": "length 10cm width",
+    "word_id": "0_8"
+  },
+  {
+    "frequency": 173,
+    "metric_id": 0,
+    "word": "area rectangle",
+    "word_id": "0_9"
+  },
+  {
+    "frequency": 151,
+    "metric_id": 0,
+    "word": "rectangle length",
+    "word_id": "0_10"
+  },
+  {
+    "frequency": 141,
+    "metric_id": 0,
+    "word": "rectangle length 10cm",
+    "word_id": "0_11"
+  },
+  {
+    "frequency": 130,
+    "metric_id": 0,
+    "word": "compute",
+    "word_id": "0_12"
+  },
+  {
+    "frequency": 120,
+    "metric_id": 0,
+    "word": "area rectangle length",
+    "word_id": "0_13"
+  },
+  {
+    "frequency": 109,
+    "metric_id": 0,
+    "word": "compute area",
+    "word_id": "0_14"
+  },
+  {
+    "frequency": 84,
+    "metric_id": 0,
+    "word": "compute area rectangle",
+    "word_id": "0_15"
+  },
+  {
+    "frequency": 53,
+    "metric_id": 0,
+    "word": "what",
+    "word_id": "0_16"
+  },
+  {
+    "frequency": 51,
+    "metric_id": 0,
+    "word": "calculation",
+    "word_id": "0_17"
+  },
+  {
+    "frequency": 50,
+    "metric_id": 0,
+    "word": "calculate",
+    "word_id": "0_18"
+  },
+  {
+    "frequency": 37,
+    "metric_id": 0,
+    "word": "length width",
+    "word_id": "0_19"
+  },
+  {
+    "frequency": 37,
+    "metric_id": 0,
+    "word": "long",
+    "word_id": "0_20"
+  },
+  {
+    "frequency": 36,
+    "metric_id": 0,
+    "word": "provide",
+    "word_id": "0_21"
+  },
+  {
+    "frequency": 36,
+    "metric_id": 0,
+    "word": "centimeters",
+    "word_id": "0_22"
+  },
+  {
+    "frequency": 35,
+    "metric_id": 0,
+    "word": "wide",
+    "word_id": "0_23"
+  },
+  {
+    "frequency": 33,
+    "metric_id": 0,
+    "word": "calculate area",
+    "word_id": "0_24"
+  },
+  {
+    "frequency": 29,
+    "metric_id": 0,
+    "word": "10cm long",
+    "word_id": "0_25"
+  },
+  {
+    "frequency": 28,
+    "metric_id": 0,
+    "word": "long wide",
+    "word_id": "0_26"
+  },
+  {
+    "frequency": 28,
+    "metric_id": 0,
+    "word": "rectangle 10cm",
+    "word_id": "0_27"
+  },
+  {
+    "frequency": 26,
+    "metric_id": 0,
+    "word": "10cm long wide",
+    "word_id": "0_28"
+  },
+  {
+    "frequency": 25,
+    "metric_id": 0,
+    "word": "result",
+    "word_id": "0_29"
+  },
+  {
+    "frequency": 25,
+    "metric_id": 0,
+    "word": "please",
+    "word_id": "0_30"
+  },
+  {
+    "frequency": 22,
+    "metric_id": 0,
+    "word": "calculate area rectangle",
+    "word_id": "0_31"
+  },
+  {
+    "frequency": 22,
+    "metric_id": 0,
+    "word": "dimensions",
+    "word_id": "0_32"
+  },
+  {
+    "frequency": 21,
+    "metric_id": 0,
+    "word": "then",
+    "word_id": "0_33"
+  },
+  {
+    "frequency": 21,
+    "metric_id": 0,
+    "word": "10cm rectangle",
+    "word_id": "0_34"
+  },
+  {
+    "frequency": 20,
+    "metric_id": 0,
+    "word": "answer",
+    "word_id": "0_35"
+  },
+  {
+    "frequency": 20,
+    "metric_id": 0,
+    "word": "what area",
+    "word_id": "0_36"
+  },
+  {
+    "frequency": 20,
+    "metric_id": 0,
+    "word": "rectangle 10cm long",
+    "word_id": "0_37"
+  },
+  {
+    "frequency": 20,
+    "metric_id": 0,
+    "word": "area rectangle 10cm",
+    "word_id": "0_38"
+  },
+  {
+    "frequency": 19,
+    "metric_id": 0,
+    "word": "arrea",
+    "word_id": "0_39"
+  },
+  {
+    "frequency": 19,
+    "metric_id": 0,
+    "word": "geometric",
+    "word_id": "0_40"
+  },
+  {
+    "frequency": 18,
+    "metric_id": 0,
+    "word": "formula",
+    "word_id": "0_41"
+  },
+  {
+    "frequency": 18,
+    "metric_id": 0,
+    "word": "figure",
+    "word_id": "0_42"
+  },
+  {
+    "frequency": 17,
+    "metric_id": 0,
+    "word": "shape",
+    "word_id": "0_43"
+  },
+  {
+    "frequency": 17,
+    "metric_id": 0,
+    "word": "arrea rectangle",
+    "word_id": "0_44"
+  },
+  {
+    "frequency": 16,
+    "metric_id": 0,
+    "word": "area 10cm",
+    "word_id": "0_45"
+  },
+  {
+    "frequency": 16,
+    "metric_id": 0,
+    "word": "state",
+    "word_id": "0_46"
+  },
+  {
+    "frequency": 16,
+    "metric_id": 0,
+    "word": "determine",
+    "word_id": "0_47"
+  },
+  {
+    "frequency": 16,
+    "metric_id": 0,
+    "word": "task",
+    "word_id": "0_48"
+  },
+  {
+    "frequency": 16,
+    "metric_id": 0,
+    "word": "geometry",
+    "word_id": "0_49"
+  },
+  {
+    "frequency": 15,
+    "metric_id": 0,
+    "word": "given",
+    "word_id": "0_50"
+  }
+]
