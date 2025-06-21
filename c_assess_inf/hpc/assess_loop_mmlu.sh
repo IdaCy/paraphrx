@@ -63,7 +63,7 @@ SLICES=("$@")
 # create a single master log and redirect everything
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/g2_mm_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/mm_g2_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1
 set -x
 
@@ -83,11 +83,11 @@ for SLICE in "${SLICES[@]}"; do
   fi
 
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/g2_mm__${SLICE_TAG}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/mm_g2__${SLICE_TAG}-${TS}.txt"
   echo "▶ $SLICE_TAG – starting $(date)  (log → $LOG_FILE)"
 
   {
-    cargo results_assess_noID \
+    cargo results_assess_mmlu \
       --model "$MODEL" \
       --api-key "$GOOGLE_API_KEY" \
       "$INSTRUCTIONS" "$ANSWERS" "$OUTPUT"
