@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=mm_g2_voice_mmlu_inf
+#SBATCH --job-name=gk_g9_obstruction_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,11 +8,11 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g2_voice_mmlu_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g2_voice_mmlu_inf.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_g9_obstruction_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_g9_obstruction_inf.err
 set -euo pipefail
 
-echo "$(date) – mm_g2_voice_mmlu_inf job started on $(hostname)"
+echo "$(date) – gk_g9_obstruction_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -47,12 +47,12 @@ echo "Packages ready."
 source /scratch_dgxl/ifc24/.hf_token
 
 # Paths & arguments
-RUN_SCRIPT=c_assess_inf/src/inference_run_betterbatch.py
-INPUT_JSON=a_data/mmlu/prxed_moral_500_scenarios/voice.json
-MODEL_NAME=gemma-2-2b-it
+RUN_SCRIPT="c_assess_inf/src/inference_run_betterbatch.py"
+INPUT_JSON="a_data/gsm8k/prxed_main_500/obstruction.json"
+MODEL_NAME=gemma-2-9b-it
 MODEL_OWNER=google
 MODEL_ID=${MODEL_OWNER}/${MODEL_NAME}
-OUTPUT_JSON=c_assess_inf/output/mmlu/${MODEL_NAME}/voice.json
+OUTPUT_JSON=c_assess_inf/output/gsm8k/${MODEL_NAME}/obstruction.json
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # Run
@@ -60,11 +60,11 @@ srun python "$RUN_SCRIPT" \
      "$INPUT_JSON" \
      "$OUTPUT_JSON" \
      --model "$MODEL_ID" \
-     --batch 32 \
-     --log_every 120 \
-     --type voice \
+     --batch 2 \
+     --log_every 200 \
+     --type gsm8k_obstruction \
      --temperature 0 \
      --max_tokens 256 \
      --device cuda:0
 
-echo "$(date) – mm_g2_voice_mmlu_inf job finished OK"
+echo "$(date) – gk_g9_obstruction_inf job finished OK"
