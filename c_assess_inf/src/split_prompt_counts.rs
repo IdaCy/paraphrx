@@ -1,31 +1,31 @@
 /*
 cargo countsplit \
-    a_data/mmlu/prxed_moral_500_scenarios/voice.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_slice1.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest1.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers/spec_char.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_slice1.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest1.json \
     100
 
 cargo countsplit \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest1.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_slice2.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest2.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest1.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_slice2.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest2.json \
     200
 
 cargo countsplit \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest2.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_slice3.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest3.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest2.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_slice3.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest3.json \
     300
 
 cargo countsplit \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest3.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_slice4.json \
-    a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_slice5.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest3.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_slice4.json \
+    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_slice5.json \
     400
 
-rm a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest1.json
-rm a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest2.json
-rm a_data/mmlu/prxed_moral_500_scenarios_slice_100/voice_rest3.json
+rm c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest1.json
+rm c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest2.json
+rm c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100/spec_char_rest3.json
 */
 
 use std::{

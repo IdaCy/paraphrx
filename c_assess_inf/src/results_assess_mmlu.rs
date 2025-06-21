@@ -49,7 +49,7 @@ struct Record {
     #[serde(alias = "instruction", alias = "instruction_original")]
     instruction_original: String,
     #[serde(default)]
-    output: Option<Value>,           // ← changed: allow string OR integer
+    output: Option<Value>,
     #[serde(flatten)]
     extra: JsonMap<String, Value>,
 }
@@ -94,7 +94,7 @@ fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
             logger.log(&format!(
                 "[fatal-but-skipped] could not parse {}: {e}", path.display()
             ));
-            HashMap::new()                      // empty → loop simply skips
+            HashMap::new()
         }
     }
 }
@@ -117,7 +117,8 @@ async fn main() -> Result<()> {
         .to_string_lossy();
 
     // logs/<stem>_<timestamp>.logs
-    let log_path = log_dir.join(format!("{stem}_{ts}.logs"));
+    //let log_path = log_dir.join(format!("{stem}_{ts}.logs"));
+    let log_path = log_dir.join(format!("mmlu_{stem}_{ts}.logs"));
 
     let mut logger = Logger::new(&log_path)?;
     logger.log(&format!("run started → model={} log={}", cli.model, log_path.display()));
@@ -139,7 +140,7 @@ async fn main() -> Result<()> {
         .context("provide --api-key or set GOOGLE_API_KEY")?;
     let client  = build_client()?;
 
-    // ─── sort so we run strictly in prompt_count order ────────────────
+    // sort to run strictly in prompt_count order
     let mut instr_sorted: Vec<(&String, &Record)> = instr_map.iter().collect();
     instr_sorted.sort_by_key(|(_, r)| r.prompt_count);
 
@@ -218,7 +219,7 @@ async fn process_single(
 
     let mut section = String::new();
 
-    /* ── NEW: bring in scenarios, choices, and ground-truth label ─────────── */
+    // bring in scenarios, choices, and ground-truth label
     if let Some(scenarios) = inst.extra.get("scenarios").and_then(Value::as_str) {
         section.push_str("## Scenarios\n");
         section.push_str(scenarios);
@@ -250,7 +251,6 @@ async fn process_single(
             other => section.push_str(&format!("## Correct answer = {other}\n\n")),
         }
     }
-    /* ─────────────────────────────────────────────────────────────────────── */
 
     for key in &keys {
         let instr = inst

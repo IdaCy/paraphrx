@@ -1,12 +1,12 @@
 /*syntax
 
 cargo jsmerge \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice1.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice2.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice3.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice4.json \
-    c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100/voice_slice5.json \
-    -o c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores/voice.json
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_slice_100/spec_char_slice1.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_slice_100/spec_char_slice2.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_slice_100/spec_char_slice3.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_slice_100/spec_char_slice4.json \
+    c_assess_inf/output/gsm8k/gemma-2-2b-it/scores_slice_100/spec_char_slice5.json \
+    -o c_assess_inf/output/gsm8k/gemma-2-2b-it/scores/spec_char.json
 */
 
 use std::fs;

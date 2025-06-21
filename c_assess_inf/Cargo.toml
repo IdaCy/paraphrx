@@ -13,6 +13,10 @@ name = "results_assess_noID"       # cargo run --bin results_assess_noID
 path = "src/results_assess_noID.rs"
 
 [[bin]]
+name = "results_assess_mmlu"       # cargo run --bin results_assess_mmlu
+path = "src/results_assess_mmlu.rs"
+
+[[bin]]
 name = "summarise_scores"     # cargo run --bin summarise_scores
 path = "src/summarise_scores.rs"
 
