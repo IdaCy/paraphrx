@@ -25,7 +25,7 @@ const METRICS = [
 // File paths are structured for easy extension with new datasets/models.
 const DATA_PATHS = {
     instructions: (dataset) => `../a_data/${dataset}/prxed/all.json`,
-    scores: (dataset, model) => `../c_assess_inf/output/${dataset}_answer_scores_500/${model}.json`,
+    scores: (dataset, model) => `../c_assess_inf/output/${dataset}_answer_scores/${model}.json`,
     originalInstructions: (dataset) => `../a_data/${dataset}/prxed/all.json`
 };
 
