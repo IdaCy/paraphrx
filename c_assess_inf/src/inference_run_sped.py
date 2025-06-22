@@ -8,41 +8,12 @@ Each JSON needed like:
     "input": "",  # optional – may be empty or missing
     "instruct_apologetic": "I'm sorry to ask, but could you perhaps...",
     "instruct_archaic": "Pray tell, reveal unto me...",
-    ...,
-    "scenarios": "Scenario 1...",
     ...
   },
   ...
 ]
-
-Running:
-    export HF_TOKEN="..."
-
-and then:
-
-chmod +x c_assess_inf/src/inference_run_betterbatch.py
-run_log=logs/$(basename "$0")_$(date +%Y%m%d_%H%M%S).out
-chmod +x run_inference.sh
-pgrep -af inference_run_betterbatch.py 
-
-
-./run_inference.sh \
-  a_data/alpaca/slice_100/speci_char_slice1.json \
-  c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/speci_char_slice1.json \
-  --model google/gemma-2-2b-it \
-  --batch 256 \
-  --type speci_char &
-
-
-next:
-./run_inference.sh \
-  a_data/mmlu/prxed_moral_500/context.json \
-  c_assess_inf/output/mmlu/gemma-2-2b-it/context.json \
-  --model google/gemma-2-2b-it \
-  --batch 256 \
-  --type context &
-
 """
+
 from __future__ import annotations
 
 import argparse
@@ -62,7 +33,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 from tqdm import tqdm
 import gc
 
-# imports / feature flags
+# Optional imports / feature flags
 try:
     from transformers import BitsAndBytesConfig  # type: ignore
     _BITSANDBYTES_OK = True
@@ -73,9 +44,9 @@ except (ImportError, AttributeError):
 try:
     import importlib
     import flash_attn                           # noqa: F401
-    importlib.import_module("flash_attn.flash_attn_interface")  # fully load CUDA ext
+    importlib.import_module("flash_attn.flash_attn_interface")  # force-load CUDA ext
     _FLASH2_OK = True
-except Exception:                              # any error -> disable
+except Exception:                               # any error -> disable
     _FLASH2_OK = False
 
 _INFER_CTX = getattr(torch, "inference_mode", torch.no_grad)
@@ -90,7 +61,7 @@ if torch.cuda.is_available():
     ):
         try:
             getattr(torch.backends.cuda, _fn)(True)
-        except Exception:  # covers AttributeError & any other edge-case
+        except Exception:  # covers AttributeError & other edge-cases
             pass
 
 
@@ -109,13 +80,7 @@ def assert_model_access(model_id: str, token: Optional[str]) -> None:
         ) from e
 
 
-def build_prompt(
-    instruction: str,
-    raw_input: str | None,
-    scenario_text: str | None = None,
-) -> str:
-    if scenario_text and "scenario 1" not in instruction.lower():
-        instruction = f"{instruction.rstrip()}\n\n{scenario_text.strip()}"
+def build_prompt(instruction: str, raw_input: str | None) -> str:
     if raw_input:
         return f"{instruction}\n\nInput:\n{raw_input.strip()}\n\nResponse:"
     return f"{instruction}\n\nResponse:"
@@ -134,14 +99,13 @@ def flatten_dataset(
         results_map[prompt_id] = res_entry
 
         raw_input = item.get("input", "")
-        scenario_text: str = item.get("scenarios") or item.get("scenario") or ""
-
         instruction_keys = ["instruction_original"] + [
             k for k in sorted(item) if k.startswith("instruct_")
         ]
         for key in instruction_keys:
-            prompt_text = build_prompt(item[key].strip(), raw_input, scenario_text)
-            flat_queue.append((prompt_id, key, prompt_text))
+            flat_queue.append(
+                (prompt_id, key, build_prompt(item[key].strip(), raw_input))
+            )
 
     return flat_queue, results_map
 
@@ -156,7 +120,7 @@ def main() -> None:
     parser.add_argument(
         "--model",
         default="google/gemma-2b-it",
-        help="Model repository name on Hugging Face (default: google/gemma-2b-it)",
+        help="Model repository name on Hugging Face",
     )
     parser.add_argument("--hf_token", default=os.getenv("HF_TOKEN"))
     parser.add_argument("--max_tokens", type=int, default=128)
@@ -167,7 +131,7 @@ def main() -> None:
         "--quant",
         choices=["none", "8bit", "4bit"],
         default="none",
-        help="Load model with 8- or 4-bit NF4 quantisation via bitsandbytes",
+        help="8-/4-bit NF4 quantisation via bitsandbytes",
     )
     parser.add_argument("--n_samples", type=int, default=None)
     parser.add_argument("--log_every", type=int, default=100)
@@ -233,9 +197,7 @@ def main() -> None:
             )
             model_kwargs["quantization_config"] = bnb_cfg
         except Exception as e:  # noqa: BLE001
-            logging.warning(
-                "Could not create BitsAndBytesConfig (%s) – falling back to bf16", e
-            )
+            logging.warning("BitsAndBytesConfig failed (%s) – falling back to bf16", e)
             args.quant = "none"
             model_kwargs["torch_dtype"] = torch.bfloat16
 
@@ -261,12 +223,11 @@ def main() -> None:
             raise
     model.eval()
 
-    # Optional torch.compile (only if bf16)
-    if args.quant == "none":
-        try:
-            model = torch.compile(model)
-        except Exception:  # pragma: no cover
-            pass
+    #  Optional torch.compile
+    try:
+        model = torch.compile(model)
+    except Exception:  # pragma: no cover
+        pass
 
     # Dataset
     data: List[Dict[str, str]] = json.loads(Path(args.input_json).read_text())
@@ -290,7 +251,10 @@ def main() -> None:
         except Exception as e:  # noqa: BLE001
             logging.warning("Could not load existing output (%s) – starting fresh", e)
 
-    flat_queue = [t for t in flat_queue if (t[0], t[1]) not in completed_pairs]
+    # Remove already-done work
+    flat_queue = [
+        t for t in flat_queue if (t[0], t[1]) not in completed_pairs
+    ]
     flat_queue.sort(key=lambda t: len(tokenizer(t[2]).input_ids))
 
     # Graceful shutdown & partial save
@@ -345,12 +309,14 @@ def main() -> None:
                 "Processed %d / %d prompts", start + len(batch_slice), len(flat_queue)
             )
 
-    # Persist outputs
+    # Persist
     Path(args.output_json).write_text(
         json.dumps(list(results_map.values()), indent=2, ensure_ascii=False)
     )
     print(f"Saved {len(results_map)} generations → {args.output_json}\nDone!")
-    logging.info("Finished OK – wrote %d items to %s", len(results_map), args.output_json)
+    logging.info(
+        "Finished OK – wrote %d items to %s", len(results_map), args.output_json
+    )
 
 
 if __name__ == "__main__":
