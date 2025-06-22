@@ -60,7 +60,8 @@ srun python "$RUN_SCRIPT" \
      "$INPUT_JSON" \
      "$OUTPUT_JSON" \
      --model "$MODEL_ID" \
-     --batch 16 \
+     --batch 4 \
+     --quant 4bit \
      --log_every 120 \
      --type mmlu_obstruction \
      --temperature 0 \

@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=gk_g9_obstruction_inf
+#SBATCH --job-name=gk_g9_context_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -7,12 +7,12 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
-#SBATCH --time=10:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_g9_obstruction_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_g9_obstruction_inf.err
+#SBATCH --time=09:00:00
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_g9_context_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_gk_g9_context_inf.err
 set -euo pipefail
 
-echo "$(date) – gk_g9_obstruction_inf job started on $(hostname)"
+echo "$(date) – gk_g9_context_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -36,23 +36,29 @@ if [ ! -d venv ]; then
 fi
 source venv/bin/activate
 python -m pip install --upgrade pip --quiet
+python -m pip install wheel --quiet
 python -m pip install torch torchvision torchaudio \
                        --index-url https://download.pytorch.org/whl/cu121 --quiet
 python -m pip install "transformers>=4.40.0" accelerate tqdm --quiet
 python -m pip install huggingface_hub sentencepiece "protobuf==3.20.*" hf_transfer --quiet
+python -m pip install bitsandbytes --quiet
+python -m pip uninstall -y flash-attn >/dev/null 2>&1 || true
 echo "Packages ready."
+
+# Speedier model downloads when the cache is cold
+export HF_HUB_ENABLE_HF_TRANSFER=1
 
 # Hugging Face token
 #source ~/.hf_token
 source /scratch_dgxl/ifc24/.hf_token
 
 # Paths & arguments
-RUN_SCRIPT="c_assess_inf/src/inference_run_betterbatch.py"
-INPUT_JSON="a_data/gsm8k/prxed_main_500/obstruction.json"
+RUN_SCRIPT="c_assess_inf/src/inference_run_sped.py"
+INPUT_JSON="a_data/gsm8k/prxed_main_500/context.json"
 MODEL_NAME=gemma-2-9b-it
 MODEL_OWNER=google
 MODEL_ID=${MODEL_OWNER}/${MODEL_NAME}
-OUTPUT_JSON=c_assess_inf/output/gsm8k/${MODEL_NAME}/obstruction.json
+OUTPUT_JSON=c_assess_inf/output/gsm8k/${MODEL_NAME}/context.json
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # Run
@@ -60,11 +66,12 @@ srun python "$RUN_SCRIPT" \
      "$INPUT_JSON" \
      "$OUTPUT_JSON" \
      --model "$MODEL_ID" \
-     --batch 2 \
+     --batch 16 \
+     --quant 4bit \
      --log_every 200 \
-     --type gsm8k_obstruction \
+     --type gsm8k_context \
      --temperature 0 \
-     --max_tokens 256 \
+     --max_tokens 128 \
      --device cuda:0
 
-echo "$(date) – gk_g9_obstruction_inf job finished OK"
+echo "$(date) – gk_g9_context_inf job finished OK"
