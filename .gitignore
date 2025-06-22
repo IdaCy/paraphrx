@@ -42,6 +42,7 @@ xd_gui
 c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it
 c_assess_inf/output/alpaca_answer_scores/Qwen1.5-1.8B
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it
+c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers
 
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100_in_gen
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/extra.json
@@ -54,7 +55,7 @@ c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/all.json
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers
 
 c_assess_inf/output/gsm8k_answer_scores/gemma-2-2b-it/all.json
-c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers
+c_assess_inf/output/gsm8k/gemma-2-9b-it/answers
 c_assess_inf/output/gsm8k/gemma-2-2b-it/answers
 c_assess_inf/output/gsm8k/gemma-2-2b-it/scores
 c_assess_inf/output/gsm8k/gemma-2-2b-it/slice_100
