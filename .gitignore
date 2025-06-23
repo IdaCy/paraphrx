@@ -1,7 +1,9 @@
 *target
 *.lock
 *.sif
+notes
 notes*
+*_bckp
 zz_archive
 logs
 
