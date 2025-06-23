@@ -159,19 +159,31 @@ nav {
 
 #overview-table th {
     background-color: var(--secondary-bg-color);
-    /* ↓ let long metric names wrap on several lines */
     white-space: normal;
     word-break: break-word;
 }
 
+/* wrap long paraphrase names */
+/* - summary/family rows stay on a single line */
+.summary-row td:first-child {
+    white-space: nowrap;
+}
+/* - detail/indivdual rows may wrap + break long tokens */
+.detail-row td:first-child {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 16rem;
+}
+
 /* Make expandable summary rows feel clickable */
 .summary-row {
-    cursor: pointer;                 /* pointer cursor */
-    transition: background 0.15s;    /* subtle feedback */
+    cursor: pointer;
+    transition: background 0.15s;
 }
 
 .summary-row:hover {
-    background-color: #eef4ff;       /* light highlight on hover */
+    background-color: #eef4ff;
 }
 
 /* hide the detail rows until a user clicks the summary */
