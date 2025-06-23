@@ -268,6 +268,23 @@ const PARAPHRASE_FAMILIES = {
   ]
 };
 
+/**
+ * Converts internal paraphrase keys like 'instruct_aave' to readable labels like 'AAVE'.
+ * @param {string} styleKey
+ * @returns {string}
+ */
+function formatParaphraseStyle(styleKey) {
+    if (styleKey === 'instruction_original') return 'Original';
+
+    return styleKey
+        .replace(/^instruct_/, '')         // remove prefix
+        .split('_')                        // split by underscore
+        .map(word =>
+            /^[A-Z0-9]+$/.test(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)
+        )
+        .join(' ');
+}
+
 
 // -----------------------------------------------------------------------------
 // 2. INITIALIZATION
@@ -494,8 +511,8 @@ function renderOverviewTable() {
 
         // hidden detail rows
         presentStyles.forEach(style => {
-            html += `<tr class="detail-row" data-family="${family}">
-                        <td style="padding-left:2rem;">${style}</td>`;
+                html += `<tr class="detail-row" data-family="${family}">
+                            <td style="padding-left:2rem;">${formatParaphraseStyle(style)}</td>`;
             state.aggregatedData[style].averages.forEach(a =>
                 html += `<td style="background:${scoreToColor(a)}">${a.toFixed(2)}</td>`
             );
@@ -536,7 +553,7 @@ function renderRankingList() {
         const barWidth = (score / 10) * 100;
         listHtml += `
             <div class="ranking-item">
-                <div class="ranking-label">${key}</div>
+                <div class="ranking-label">${formatParaphraseStyle(key)}</div>
                 <div class="ranking-bar-container">
                     <div class="ranking-bar" style="width: ${barWidth}%;">${score.toFixed(2)}</div>
                 </div>
@@ -694,7 +711,7 @@ function renderSpiderChart() {
     const datasets = selectedOptions.map((key, index) => {
         const color = `hsl(${(index * 100) % 360}, 70%, 50%)`;
         return {
-            label: key,
+            label: formatParaphraseStyle(key),
             data: state.aggregatedData[key].averages,
             borderColor: color,
             backgroundColor: `${color}33`, // semi-transparent fill
@@ -850,8 +867,8 @@ function analyzeAndDisplaySearch(query) {
 
     // Get score for matched style IF the topic matches the current dataset
     let resultHTML = `<p><strong>Analysis Results:</strong></p>`;
-    resultHTML += `<p>Detected Prompt Style: <strong>${bestStyleMatch}</strong></p>`;
-    resultHTML += `<p>Detected Topic: <strong>${bestTopicMatch}</strong> (Current dataset: ${state.currentDataset})</p>`;
+    resultHTML += `<p>Detected Prompt Style: <strong>${formatParaphraseStyle(bestStyleMatch)}</strong></p>`;
+    resultHTML += `<p>Detected Topic: <strong>${bestTopicMatch}<strong>'${formatParaphraseStyle(bestStyleForTopic)}'</strong></p>`;
     
     if (bestTopicMatch !== state.currentDataset) {
         resultHTML += `<p style="color:orange;">Warning: Prompt topic may not match the currently loaded '${state.currentDataset}' dataset. Performance prediction might be inaccurate. Please switch datasets for a better prediction.</p>`;
