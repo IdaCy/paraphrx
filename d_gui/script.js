@@ -685,7 +685,7 @@ function populateChartSelectors() {
 
     sortedStyles.forEach(key => {
         if (state.aggregatedData[key].count > 0) {
-            const option = new Option(key, key);
+            const option = new Option(formatParaphraseStyle(key), key);
             spiderSelect.add(option.cloneNode(true));
             barSelect.add(option);
         }
@@ -771,7 +771,7 @@ function renderBarChart() {          // ← keep the old name: no other code bre
         const rawScores = state.aggregatedData?.[style]?.scores?.[metricIdx] || [];
         if (rawScores.length === 0) return;     // skip empty ones
 
-        labels.push(style);
+        labels.push(formatParaphraseStyle(style));
         datasetsData.push(rawScores);           // plugin calculates quartiles itself
         bgColors.push(`hsl(${(i * 75) % 360}, 60%, 70%)`);
     });
@@ -868,7 +868,8 @@ function analyzeAndDisplaySearch(query) {
     // Get score for matched style IF the topic matches the current dataset
     let resultHTML = `<p><strong>Analysis Results:</strong></p>`;
     resultHTML += `<p>Detected Prompt Style: <strong>${formatParaphraseStyle(bestStyleMatch)}</strong></p>`;
-    resultHTML += `<p>Detected Topic: <strong>${bestTopicMatch}<strong>'${formatParaphraseStyle(bestStyleForTopic)}'</strong></p>`;
+    //resultHTML += `<p>Detected Topic: <strong>${bestTopicMatch}<strong>'${formatParaphraseStyle(bestStyleForTopic)}'</strong></p>`;
+    resultHTML += `<p>Detected Topic: <strong>${bestTopicMatch}</strong></p>`;
     
     if (bestTopicMatch !== state.currentDataset) {
         resultHTML += `<p style="color:orange;">Warning: Prompt topic may not match the currently loaded '${state.currentDataset}' dataset. Performance prediction might be inaccurate. Please switch datasets for a better prediction.</p>`;
@@ -886,7 +887,7 @@ function analyzeAndDisplaySearch(query) {
     const recommendedWords = getKeywordsForStyle(bestStyleForTopic);
 
     resultHTML += `<hr><p><strong>Recommendation:</strong></p>`;
-    resultHTML += `<p>For the '${state.currentDataset}' dataset, the best performing style is <strong>'${bestStyleForTopic}'</strong>.</p>`;
+    resultHTML += `<p>For the '${state.currentDataset}' dataset, the best performing style is <strong>${formatParaphraseStyle(bestStyleForTopic)}</strong>.</p>`;
     if (recommendedWords) {
         resultHTML += `<p>Consider using words like: <em>${recommendedWords}</em></p>`;
     }
