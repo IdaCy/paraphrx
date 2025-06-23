@@ -1,0 +1,13 @@
+Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+Loading tokenizer & model – first run may download several GB …
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:03<00:09,  3.32s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:08<00:08,  4.12s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:12<00:04,  4.52s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:16<00:00,  4.15s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:16<00:00,  4.15s/it]
+Traceback (most recent call last):
+  File "/root/paraphrx/c_assess_inf/src/inference_run_sped_3.py", line 327, in <module>
+    main()
+  File "/root/paraphrx/c_assess_inf/src/inference_run_sped_3.py", line 237, in main
+    data: List[Dict[str, str]] = json.loads(Path(args.input_json).read_text())
+  File "/usr/lib/python3.10/pathlib.py", line 1134, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: 'a_data/alpaca/slice_500/extra_a.json'

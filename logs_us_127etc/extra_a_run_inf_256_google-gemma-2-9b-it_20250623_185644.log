@@ -1,0 +1,5 @@
+2025-06-23 18:56:44,981  INFO  ==== run started ====
+2025-06-23 18:56:44,981  INFO  input=a_data/alpaca/slice_500/extra_a.json  output=c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/extra_a.json  model=google/gemma-2-9b-it  batch=256  max_tokens=128  temp=0.0  quant=4bit
+2025-06-23 18:56:45,085  WARNING  Note: Environment variable`HF_TOKEN` is set and is the current active token independently from the token you've just configured.
+2025-06-23 18:56:46,609  INFO  Flash-Attention 2 not found → using standard attention
+2025-06-23 18:56:47,732  INFO  We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
