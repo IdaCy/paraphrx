@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=mm_g9_obstruction_mmlu_inf
+#SBATCH --job-name=mm_g9_obstruction_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,11 +8,11 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=08:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g9_obstruction_mmlu_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g9_obstruction_mmlu_inf.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g9_obstruction_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_mm_g9_obstruction_inf.err
 set -euo pipefail
 
-echo "$(date) – mm_g9_obstruction_mmlu_inf job started on $(hostname)"
+echo "$(date) – mm_g9_obstruction_inf job started on $(hostname)"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -73,4 +73,4 @@ srun python "$RUN_SCRIPT" \
      --max_tokens 128 \
      --device cuda:0
 
-echo "$(date) – mm_g9_obstruction_mmlu_inf job finished OK"
+echo "$(date) – mm_g9_obstruction_inf job finished OK"
