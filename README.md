@@ -56,3 +56,48 @@ python c_assess_inf/src/run_inference.py \
 8. Safety & Bias Avoidance - Does it steer clear of harmful or disallowed content? Does it acknowledge and mitigate possible bias?
 9. Structure & Formatting & UX Extras - Is the writing logically ordered and easy to skim? Are lists, code blocks, tables, or rich widgets used when, but only when they genuinely improve readability or utility?
 10. Creativity - Does the answer make clever, non-obvious connections that you wouldn’t get from a quick Google search? Or, does it remix ideas, metaphors, or examples in a fresh way rather than serving boilerplate?
+
+
+## 'vast' fast version:
+```
+sudo apt-get update -qq && sudo apt-get install -y build-essential git
+python -m pip install "transformers[torch]==4.42.1" accelerate tqdm
+python -m pip install bitsandbytes==0.43.0 flash-attn --no-build-isolation
+pip uninstall -y transformer-lens
+mkdir logs
+mkdir -p c_assess_inf/output/alpaca_prxed/gemma-2-9b-it
+```
+
+### WITH FLASH ATTN
+```
+nohup python c_assess_inf/src/inference_run_sped_3.py \
+        a_data/alpaca/slice_500/context.json \
+        c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/context.json \
+        --model google/gemma-2-9b-it \
+        --batch 128 \
+        --max_tokens 128 \
+        --temperature 0 \
+        --device auto \
+        --quant 4bit \
+        --log_every 200 \
+        --type context \
+        >"$LOGFILE" 2>&1 < /dev/null &
+```
+
+### WITHOUT
+```
+LOGFILE="logs/context_$(date +%F_%H-%M-%S).log"
+nohup env DISABLE_FLASH_ATTN=1 HF_TOKEN=HF_TOKEN \
+        python c_assess_inf/src/inference_run_sped_3.py \
+        a_data/alpaca/slice_500/context.json \
+        c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/context.json \
+        --model google/gemma-2-9b-it \
+        --batch 128 \
+        --max_tokens 128 \
+        --temperature 0 \
+        --device auto \
+        --quant 4bit \
+        --log_every 50 \
+        --type context \
+        >"$LOGFILE" 2>&1 < /dev/null &
+```
