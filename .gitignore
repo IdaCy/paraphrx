@@ -4,6 +4,8 @@
 notes*
 zz_archive
 logs
+*/__pycache__
+h_internals/src/__pycache__
 
 b_tests/data/*
 
