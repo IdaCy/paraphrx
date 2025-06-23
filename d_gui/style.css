@@ -159,7 +159,24 @@ nav {
 
 #overview-table th {
     background-color: var(--secondary-bg-color);
-    white-space: nowrap;
+    /* ↓ let long metric names wrap on several lines */
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* Make expandable summary rows feel clickable */
+.summary-row {
+    cursor: pointer;                 /* pointer cursor */
+    transition: background 0.15s;    /* subtle feedback */
+}
+
+.summary-row:hover {
+    background-color: #eef4ff;       /* light highlight on hover */
+}
+
+/* hide the detail rows until a user clicks the summary */
+.detail-row {
+    display: none;
 }
 
 #overview-table tbody tr:hover {

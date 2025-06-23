@@ -41,6 +41,34 @@ let state = {
     isLoading: true,
 };
 
+// Which fine-grained paraphrases belong to which family row
+const PARAPHRASE_FAMILIES = {
+    language: [
+        'instruct_american_english',
+        'instruct_australian_english',
+        'instruct_british_english'
+    ],
+    informal: [
+        'instruct_gamer_slang',
+        'instruct_gaming_jargon',
+        'instruct_insulting'
+    ],
+    original: ['instruction_original'],
+    typo: [
+        'instruct_misplaced_commas',
+        'instruct_missing_bracket',
+        'instruct_missing_bracket_and_quote',
+        'instruct_missing_quote',
+        'instruct_one_typo_punctuation',
+        'instruct_typo_adjacent'
+    ],
+    code: [
+        'instruct_morse_code',
+        'instruct_base64'
+    ]
+    // not done! add!
+};
+
 
 // -----------------------------------------------------------------------------
 // 2. INITIALIZATION
@@ -242,21 +270,52 @@ function renderSearchPage() {
  */
 function renderOverviewTable() {
     const container = document.getElementById('overview-table-container');
-    let tableHtml = '<table id="overview-table"><thead><tr><th>Paraphrase Style</th>';
-    METRICS.forEach(metric => tableHtml += `<th>${metric}</th>`);
-    tableHtml += '</tr></thead><tbody>';
+    let html = '<table id="overview-table"><thead><tr><th>Paraphrase&nbsp;Style</th>';
+    METRICS.forEach(m => html += `<th>${m}</th>`);
+    html += '</tr></thead><tbody>';
 
-    for (const key in state.aggregatedData) {
-        if (state.aggregatedData[key].count > 0) {
-            tableHtml += `<tr><td><strong>${key}</strong></td>`;
-            state.aggregatedData[key].averages.forEach(avg => {
-                tableHtml += `<td style="background-color: ${scoreToColor(avg)}">${avg.toFixed(2)}</td>`;
-            });
-            tableHtml += '</tr>';
-        }
+    // build one summary row per family
+    for (const [family, styleList] of Object.entries(PARAPHRASE_FAMILIES)) {
+        // collect metric averages of every member style that actually exists
+        const presentStyles = styleList.filter(s => state.aggregatedData[s]);
+        if (presentStyles.length === 0) continue;
+
+        const familyMeans = METRICS.map((_, idx) =>
+            calculateAverage(
+                presentStyles.map(s => state.aggregatedData[s].averages[idx])
+            )
+        );
+
+        html += `<tr class="summary-row" data-family="${family}">
+                   <td><strong>${family}</strong></td>`;
+        familyMeans.forEach(avg =>
+            html += `<td style="background:${scoreToColor(avg)}">${avg.toFixed(2)}</td>`
+        );
+        html += '</tr>';
+
+        // hidden detail rows
+        presentStyles.forEach(style => {
+            html += `<tr class="detail-row" data-family="${family}">
+                        <td style="padding-left:2rem;">${style}</td>`;
+            state.aggregatedData[style].averages.forEach(a =>
+                html += `<td style="background:${scoreToColor(a)}">${a.toFixed(2)}</td>`
+            );
+            html += '</tr>';
+        });
     }
-    tableHtml += '</tbody></table>';
-    container.innerHTML = tableHtml;
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+
+    // click-handler: toggle visibility of the family’s detail rows
+    document.querySelectorAll('.summary-row').forEach(row => {
+        row.addEventListener('click', () => {
+            const fam = row.dataset.family;
+            document
+              .querySelectorAll(`.detail-row[data-family="${fam}"]`)
+              .forEach(d => d.style.display = d.style.display === 'table-row' ? 'none' : 'table-row');
+        });
+    });
 }
 
 /**
