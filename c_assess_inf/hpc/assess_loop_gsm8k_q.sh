@@ -63,7 +63,7 @@ SLICES=("$@")
 # create a single master log and redirect everything
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/q1_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/gsm8k_q1_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1
 set -x
 
@@ -83,7 +83,7 @@ for SLICE in "${SLICES[@]}"; do
   fi
 
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/q1__${SLICE_TAG}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/gsm8k_q1__${SLICE_TAG}-${TS}.txt"
   echo "▶ $SLICE_TAG – starting $(date)  (log → $LOG_FILE)"
 
   {

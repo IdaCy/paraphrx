@@ -6,8 +6,8 @@ set -m
 
 MODEL="gemini-2.5-flash-preview-05-20"
 INSTR_DIR="a_data/alpaca/slice_100"
-ANSW_DIR="c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100"
-OUT_DIR="$ANSW_DIR"
+ANSW_DIR="c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100"
+OUT_DIR="c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/scores_slice_100"
 
 #export GOOGLE_API_KEY=""
 # Default comes from env, but can be overridden with -k|--key
@@ -39,7 +39,7 @@ if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then
   nohup caffeinate -dimsu "$0" "$@" \
         </dev/null >/dev/null 2>&1 &          # background + keep-awake
   disown                                      # release from this shell
-  echo "results_q_assess batch detached → check logs/ directory for progress"
+  echo "results_assess batch detached → check logs/ directory for progress"
   exit 0                                      # give control back to the terminal
 fi
 
@@ -63,7 +63,7 @@ SLICES=("$@")
 # create a single master log and redirect everything
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/q1_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/a_g2_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1
 set -x
 
@@ -83,11 +83,11 @@ for SLICE in "${SLICES[@]}"; do
   fi
 
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/q1__${SLICE_TAG}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/a_g2__${SLICE_TAG}-${TS}.txt"
   echo "▶ $SLICE_TAG – starting $(date)  (log → $LOG_FILE)"
 
   {
-    cargo results_assess \
+    cargo results_assess_noID \
       --model "$MODEL" \
       --api-key "$GOOGLE_API_KEY" \
       "$INSTRUCTIONS" "$ANSWERS" "$OUTPUT"
