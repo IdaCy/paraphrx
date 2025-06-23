@@ -1,31 +1,31 @@
 /*
 cargo countsplit \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers/speci_char.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_slice1.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest1.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers/boundary.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_slice1.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest1.json \
     100
 
 cargo countsplit \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest1.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_slice2.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest2.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest1.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_slice2.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest2.json \
     200
 
 cargo countsplit \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest2.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_slice3.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest3.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest2.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_slice3.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest3.json \
     300
 
 cargo countsplit \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest3.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_slice4.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_slice5.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest3.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_slice4.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_slice5.json \
     400
 
-rm c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest1.json
-rm c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest2.json
-rm c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100/speci_char_rest3.json
+rm c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest1.json
+rm c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest2.json
+rm c_assess_inf/output/mmlu/Qwen1.5-1.8B/answers_slice_100/boundary_rest3.json
 */
 
 use std::{
