@@ -23,8 +23,8 @@ a_data/alpaca/original
 a_data/alpaca/prxed
 a_data/alpaca/slice_100
 a_data/alpaca/un_prxed
-a_data/alpaca/slice_500
 a_data/alpaca/slice_100/special_char_slice*.json
+a_data/alpaca/slice_500
 
 a_data/gsm8k/original
 a_data/gsm8k/prxed
@@ -43,10 +43,14 @@ a_data/mmlu/prxed_moral_500_scenarios_slice_100
 d_gui_backup
 xd_gui
 
+c_assess_inf/output/gsm8k_answer_scores
+c_assess_inf/output/mmlu_answer_scores
+
 c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it
 c_assess_inf/output/alpaca_answer_scores/Qwen1.5-1.8B
 c_assess_inf/output/alpaca_prxed/gemma-2-2b-it
 c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers
+c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/scores*
 
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100_in_gen
 c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100
@@ -59,6 +63,7 @@ c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100_wissues
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers_slice_100
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/all.json
 c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers
+c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B
 
 c_assess_inf/output/gsm8k_answer_scores/gemma-2-2b-it/all.json
 c_assess_inf/output/gsm8k/gemma-2-9b-it/answers
@@ -85,6 +90,8 @@ c_assess_inf/output/mmlu/gemma-2-9b-it/answers
 c_assess_inf/output/mmlu/gemma-2-9b-it/answers_slice_100
 c_assess_inf/output/mmlu/unspec_gemma-2-2b-it
 c_assess_inf/output/mmlu/Qwen1.5-1.8B
+c_assess_inf/output/mmlu/gemma-2-2b-it/scores
+c_assess_inf/output/mmlu/gemma-2-2b-it/scores_slice_100_issues
 
 c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
