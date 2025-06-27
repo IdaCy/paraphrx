@@ -116,7 +116,6 @@ tmp/
 
 c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/
 c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/
-c_assess_inf/output/mmlu/
 c_assess_inf/src/results_assess_mmlu_waits.rs
 e_eval/src/perplexity.rs
 f_finetune/
