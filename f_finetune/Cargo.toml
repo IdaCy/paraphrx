@@ -1,0 +1,14 @@
+[package]
+name    = "gemma_downloader"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+hf-hub = "0.4"                       # ← current API
+clap    = { version = "4.5", features = ["derive", "env"] }
+
+
+[[bin]]
+name = "gemma_download"
+path = "src/gemma_download.rs"

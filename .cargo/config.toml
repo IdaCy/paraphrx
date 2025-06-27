@@ -18,4 +18,7 @@ instructmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_instruc
 compose_top_prompts = "run --manifest-path e_eval/Cargo.toml --bin compose_top_prompts --release --"
 compose_top_occurences = "run --manifest-path e_eval/Cargo.toml --bin compose_top_occurences --release --"
 compose_top_occurences_across_metrics = "run --manifest-path e_eval/Cargo.toml --bin compose_top_occurences_across_metrics --release --"
+
+# f_finetune
+gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download --release --"
 perplexity = "run --manifest-path e_eval/Cargo.toml --bin perplexity --release --"
