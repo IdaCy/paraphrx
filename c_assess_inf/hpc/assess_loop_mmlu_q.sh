@@ -87,7 +87,7 @@ for SLICE in "${SLICES[@]}"; do
   echo "▶ $SLICE_TAG – starting $(date)  (log → $LOG_FILE)"
 
   {
-    cargo results_assess_mmlu \
+    cargo results_assess_mmlu_waits \
       --model "$MODEL" \
       --api-key "$GOOGLE_API_KEY" \
       "$INSTRUCTIONS" "$ANSWERS" "$OUTPUT"

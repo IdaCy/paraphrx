@@ -5,9 +5,9 @@ trap 'echo "› CTRL-C – stopping"; kill -TERM -- -$$' INT TERM
 set -m
 
 MODEL="gemini-2.5-flash-preview-05-20"
-INSTR_DIR="a_data/mmlu/prxed_moral_500_scenarios_slice_100"
-ANSW_DIR="c_assess_inf/output/mmlu/gemma-2-9b-it/answers_slice_100"
-OUT_DIR="c_assess_inf/output/mmlu/gemma-2-9b-it/scores_slice_100"
+INSTR_DIR="a_data/gsm8k/prxed_main_slice_100"
+ANSW_DIR="c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100"
+OUT_DIR="c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100"
 
 #export GOOGLE_API_KEY=""
 # Default comes from env, but can be overridden with -k|--key
@@ -39,7 +39,7 @@ if [[ -z "${DETACHED_RESULTS_ASSESS:-}" ]]; then
   nohup caffeinate -dimsu "$0" "$@" \
         </dev/null >/dev/null 2>&1 &          # background + keep-awake
   disown                                      # release from this shell
-  echo "results_assess batch detached → check logs/ directory for progress"
+  echo "results_q_assess batch detached → check logs/ directory for progress"
   exit 0                                      # give control back to the terminal
 fi
 
@@ -63,12 +63,12 @@ SLICES=("$@")
 # create a single master log and redirect everything
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/mm_g9_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/gsm8k_g9_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1
 set -x
 
 TS_START=$(date '+%Y-%m-%d %H:%M:%S')
-echo "$TS_START – mmlu g9 batch run started" >>"$HOME/times.log"
+echo "$TS_START – batch run started" >>"$HOME/times.log"
 
 for SLICE in "${SLICES[@]}"; do
   SLICE_TAG="${TYPE}_slice${SLICE}"
@@ -83,11 +83,11 @@ for SLICE in "${SLICES[@]}"; do
   fi
 
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/mm_g9__${SLICE_TAG}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/gsm8k_g9__${SLICE_TAG}-${TS}.txt"
   echo "▶ $SLICE_TAG – starting $(date)  (log → $LOG_FILE)"
 
   {
-    cargo results_assess_mmlu_waits \
+    cargo results_assess_noID \
       --model "$MODEL" \
       --api-key "$GOOGLE_API_KEY" \
       "$INSTRUCTIONS" "$ANSWERS" "$OUTPUT"
@@ -102,5 +102,5 @@ for SLICE in "${SLICES[@]}"; do
 done
 
 TS_END=$(date '+%Y-%m-%d %H:%M:%S')
-echo "$TS_END – mmlu g9 batch run finished" >>"$HOME/times.log"
+echo "$TS_END – batch run finished" >>"$HOME/times.log"
 exit 0
