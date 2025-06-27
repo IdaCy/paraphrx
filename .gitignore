@@ -19,7 +19,9 @@ a_data/preproc/alpaca_sanity
 a_data/sqlite
 
 a_data/alpaca/x*
-a_data/alpaca/merge_instructs
+a_data/alpaca/merge_instructs/bolastto.json
+a_data/alpaca/merge_instructs/coobsyvo.json
+a_data/alpaca/merge_instructs/exlesp.json
 a_data/alpaca/original
 a_data/alpaca/prxed
 a_data/alpaca/slice_100
@@ -106,3 +108,11 @@ pip_cache/
 venv/
 xdg_cache/
 tmp/
+
+
+c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/
+c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/
+c_assess_inf/output/mmlu/
+c_assess_inf/src/results_assess_mmlu_waits.rs
+e_eval/src/perplexity.rs
+f_finetune/

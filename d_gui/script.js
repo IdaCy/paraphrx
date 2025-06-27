@@ -940,16 +940,16 @@ function scoreToColor(score, opacity = 0.45) {
 
   if (score <= 7.3) {
     const t = score / 7.3;
-    lightness  = 95 - 5*t;
+    lightness  = 95 - 5 * t;
     saturation = 20 * t;
   } else if (score <= 8.4) {
-    const t = (score - 7.3) / 0.9;
-    lightness  = 70 - 30*t;
-    saturation = 30 + 60*t;
+    const t = (score - 7.3) / 1.1;
+    lightness  = 90 - 45 * t;
+    saturation = 20 + 70 * t;
   } else {
     const t = (score - 8.4) / 1.6;
-    lightness  = 55 - 5*t;
-    saturation = 80 + 5*t; 
+    lightness  = 45 - 10 * t;
+    saturation = 90 + 10 * t;
   }
 
   return `hsla(120, ${saturation}%, ${lightness}%, ${opacity})`;

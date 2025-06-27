@@ -8,6 +8,7 @@ summary = "run -p c_assess_inf --bin summarise_scores"
 results_assess = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess --release --"
 results_assess_noID = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_noID --release --"
 results_assess_mmlu = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_mmlu --release --"
+results_assess_mmlu_waits = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_mmlu_waits --release --"
 jsmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_jsons --release --"
 jssplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_jsons --release --"
 countsplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_prompt_counts --release --"
@@ -20,3 +21,4 @@ compose_top_occurences_across_metrics = "run --manifest-path e_eval/Cargo.toml -
 
 # f_finetune
 gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download --release --"
+perplexity = "run --manifest-path e_eval/Cargo.toml --bin perplexity --release --"
