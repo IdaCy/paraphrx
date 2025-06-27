@@ -128,7 +128,7 @@ def main() -> None:
     )
     parser.add_argument("--hf_token", default=os.getenv("HF_TOKEN"))
     parser.add_argument("--max_tokens", type=int, default=128)
-    parser.add_argument("--temperature", type=float, default=0.2)
+    parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--batch", type=int, default=1)
     parser.add_argument(
@@ -287,12 +287,20 @@ def main() -> None:
         input_lens = inputs["attention_mask"].sum(dim=1)
 
         with _INFER_CTX():
-            outputs = model.generate(
-                **inputs,
+            # build kwargs so that temperature ≤ 0 ⇒ greedy decoding
+            gen_kwargs = dict(
                 max_new_tokens=args.max_tokens,
-                temperature=args.temperature,
                 pad_token_id=tokenizer.eos_token_id,
             )
+            if args.temperature > 0:
+                gen_kwargs.update(
+                    temperature=args.temperature,
+                    do_sample=True,          # stochastic
+                )
+            else:
+                gen_kwargs["do_sample"] = False  # deterministic
+
+            outputs = model.generate(**inputs, **gen_kwargs)
 
         for i in range(len(batch_slice)):
             start_tok = int(input_lens[i])

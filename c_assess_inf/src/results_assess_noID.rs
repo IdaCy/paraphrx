@@ -69,6 +69,10 @@ struct Cli {
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
 
+    // Milliseconds to wait after every successful request (avoid 429s)
+    #[arg(long = "delay-ms", default_value_t = 200)]
+    delay_ms: u64,
+
     // Google API key (overrides $GOOGLE_API_KEY)
     #[arg(long = "api-key", value_name = "KEY")]
     api_key: Option<String>,
@@ -124,11 +128,6 @@ async fn main() -> Result<()> {
 
     // I/O
     logger.log("reading json files");
-    //let instr_map: HashMap<String, Record> = serde_json::from_str::<Vec<Record>>(&fs::read_to_string(&cli.instructions)?)?
-    //    .into_iter().map(|r|(r.prompt_count.to_string(),r)).collect();
-    //let ans_map: HashMap<String, Record> = serde_json::from_str::<Vec<Record>>(&fs::read_to_string(&cli.answers)?)?
-    //    .into_iter().map(|r|(r.prompt_count.to_string(),r)).collect();
-
     let instr_map = read_records(&cli.instructions, &mut logger);
     let ans_map   = read_records(&cli.answers,     &mut logger);
 
@@ -155,14 +154,23 @@ async fn main() -> Result<()> {
 
     for (id, inst) in instr_sorted {
         logger.log(&format!("▶ id {id}"));
-        if let Err(e) = process_single(
+        let attempts = match process_single(
             id, inst, &ans_map, &client, &api_key, &cli.model,
             cli.max_attempts, &mut logger, &mut results, &mut issues,
         ).await {
-            logger.log(&format!("[error] id {id}: {e}"));
-            issues.push(format!("id {id}: {e}"));
-        }
+            Ok(n) => n,             // number of tries actually used
+            Err(e) => {
+                logger.log(&format!("[error] id {id}: {e}"));
+                issues.push(format!("id {id}: {e}"));
+                cli.max_attempts     // treat as “slow” so we skip sleep
+            }
+        };
         bar.inc(1);
+        // Global rate-limit pause (configurable via --delay-ms)
+        // Pause only if it flew through on the first go
+        if cli.delay_ms > 0 && attempts == 1 {
+            sleep(Duration::from_millis(cli.delay_ms)).await;
+        }
     }
     bar.finish_with_message("done");
 
@@ -196,12 +204,12 @@ async fn process_single(
     logger: &mut Logger,
     results: &mut Vec<Value>,
     issues: &mut Vec<String>,
-) -> Result<()> {
+) -> Result<u8> {
     let ans = match ans_map.get(id) {
         Some(a) => a,
         None => {
             issues.push(format!("answers missing id {id}"));
-            return Ok(());
+            return Ok(max_attempts);
         }
     };
     let mut keys = vec!["instruction_original".to_string()];
@@ -234,13 +242,14 @@ async fn process_single(
     }
     if section.len() > 95_000 {
         issues.push(format!("id {id}: prompt too large"));
-        return Ok(());
+        return Ok(max_attempts);
     }
 
     let schema = schema_for_keys(&keys);
     let prompt = build_eval_prompt(&section);
     let mut success = false;
     let mut eval_json = JsonMap::new();
+    let mut attempts_used = max_attempts;
     for attempt in 1..=max_attempts {
         logger.log(&format!(
             "[call] id {id} attempt {attempt}/{max_attempts}"
@@ -254,11 +263,10 @@ async fn process_single(
 
                 eval_json = obj;
                 success = true;
+                attempts_used = attempt;
                 break;
             }
             Err(e) if attempt < max_attempts => {
-                //let wait = 500u64 * 2u64.pow(attempt as u32) + fastrand::u64(..300);
-                
                 let wait = 500u64 * 2u64.pow(attempt as u32)
                     + (SystemTime::now()
                         .duration_since(SystemTime::UNIX_EPOCH)
@@ -272,13 +280,13 @@ async fn process_single(
             }
             Err(e) => {
                 issues.push(format!("id {id}: {e}"));
-                return Ok(());
+                return Ok(max_attempts);
             }
         }
     }
     if !success {
         issues.push(format!("id {id}: all attempts failed"));
-        return Ok(());
+        return Ok(max_attempts);
     }
 
     let mut res_obj = JsonMap::new();
@@ -295,7 +303,7 @@ async fn process_single(
     }
     results.push(Value::Object(res_obj));
     logger.log(&format!("[done] id {id} fully processed"));
-    Ok(())
+    Ok(attempts_used)
 }
 
 fn build_client() -> Result<reqwest::Client> {

@@ -17,20 +17,20 @@ cargo instructmerge \
     c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/voice.json
 
 cargo instructmerge \
-    -o c_assess_inf/output/mmlu_answer_scores/gemma-2-2b-it.json \
+    -o c_assess_inf/output/mmlu_answer_scores/Qwen1.5-1.8B.json \
     -s instruction_original \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/boundary.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/context.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/extra_a.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/extra_b.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/language.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/length.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/obstruction.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/speci_char.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/style.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/syntax.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/tone.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/voice.json
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/boundary.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/context.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/extra_a.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/extra_b.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/language.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/length.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/obstruction.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/speci_char.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/style.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/syntax.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/tone.json \
+    c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/voice.json
 
 
 cargo instructmerge \
