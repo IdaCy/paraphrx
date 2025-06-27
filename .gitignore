@@ -84,6 +84,7 @@ c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_issues
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/scores_slice_100
 c_assess_inf/output/gsm8k/Qwen1.5-1.8B/answers_slice_100
+c_assess_inf/output/gsm8k/Qwen2.5-3B-Instruct/answers
 
 c_assess_inf/output/mmlu/gemma-2-2b-it/answers
 c_assess_inf/output/mmlu/gemma-2-2b-it/answers_slice_100
