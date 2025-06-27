@@ -1,6 +1,6 @@
 /*
 cargo gemma_download \
-    --token 
+    --token xxx
 */
 
 use anyhow::Result;
@@ -11,16 +11,16 @@ use std::path::PathBuf;
 #[derive(Parser)]
 #[command(author, version, about)]
 struct Args {
-    /// Hub repository ID
+    // Hub repository ID
     #[arg(long, default_value = "google/gemma-2-2b-it")]
     repo: String,
 
-    /// Destination directory
+    // Destination directory
     #[arg(long, value_name = "DIR",
           default_value = "f_finetune/models/gemma-2-2b-it")]
     dst: PathBuf,
 
-    /// HF access token (falls back to cached creds)
+    // HF access token (falls back to cached creds)
     #[arg(long, env = "HF_TOKEN")]
     token: Option<String>,
 }
@@ -38,14 +38,14 @@ fn main() -> Result<()> {
 
     println!("⇣  Pulling {} → {:?}", args.repo, args.dst);
 
-    // 1) fetch metadata → list of files (siblings)
+    // fetch metadata → list of files (siblings)
     for sib in handle.info()?.siblings {          // RepoInfo::siblings :contentReference[oaicite:0]{index=0}
         let remote = sib.rfilename;               // Siblings::rfilename :contentReference[oaicite:1]{index=1}
 
-        // 2) download each file into the HF cache (or reuse it)
+        // download each file into the HF cache (or reuse it)
         let cached = handle.get(&remote)?;        // ApiRepo::get :contentReference[oaicite:2]{index=2}
 
-        // 3) hard-link (or copy) into your target tree
+        // hard-link (/ copy) into target tree
         let local = args.dst.join(&remote);
         if let Some(parent) = local.parent() {
             std::fs::create_dir_all(parent)?;
