@@ -18,7 +18,9 @@ a_data/preproc/alpaca_sanity
 a_data/sqlite
 
 a_data/alpaca/x*
-a_data/alpaca/merge_instructs
+a_data/alpaca/merge_instructs/bolastto.json
+a_data/alpaca/merge_instructs/coobsyvo.json
+a_data/alpaca/merge_instructs/exlesp.json
 a_data/alpaca/original
 a_data/alpaca/prxed
 a_data/alpaca/slice_100
