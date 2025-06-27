@@ -99,6 +99,8 @@ c_assess_inf/output/mmlu/gemma-2-2b-it/scores_slice_100_issues
 c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
 
+f_finetune/model
+
 hpcnotes
 envs
 
