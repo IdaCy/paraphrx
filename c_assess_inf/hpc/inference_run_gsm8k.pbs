@@ -32,7 +32,6 @@ singularity exec --nv \
         --log_every 150 \
         --type voice \
         --temperature 0 \
-        --max_tokens 256 \
-        --device cuda:0
+        --max_tokens 256
 
 echo "$(date "+%Y-%m-%d %H:%M:%S") - gs_g9_voice_run_inf finished" >> $HOME/times.log

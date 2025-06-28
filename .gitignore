@@ -57,6 +57,7 @@ xd_gui
 c_assess_inf/output/gsm8k_answer_scores
 c_assess_inf/output/mmlu_answer_scores
 
+<<<<<<< HEAD
 # alpaca
 c_assess_inf/output/alpaca/gemma-2-2b-it/answers*
 c_assess_inf/output/alpaca/gemma-2-2b-it/scores*
@@ -69,6 +70,22 @@ c_assess_inf/output/alpaca/Qwen1.5-1.8B/answers*
 c_assess_inf/output/alpaca/Qwen1.5-1.8B/scores*
 c_assess_inf/output/alpaca/Qwen1.5-1.8B/all.json
 
+=======
+c_assess_inf/output
+
+# alpaca
+c_assess_inf/output/alpaca/gemma-2-2b-it/answers*
+c_assess_inf/output/alpaca/gemma-2-2b-it/scores*
+c_assess_inf/output/alpaca/gemma-2-2b-it/all.json
+c_assess_inf/output/alpaca/gemma-2-9b-it/answers*
+c_assess_inf/output/alpaca/gemma-2-9b-it/scores*
+c_assess_inf/output/alpaca/gemma-2-9b-it/x*
+
+c_assess_inf/output/alpaca/Qwen1.5-1.8B/answers*
+c_assess_inf/output/alpaca/Qwen1.5-1.8B/scores*
+c_assess_inf/output/alpaca/Qwen1.5-1.8B/all.json
+
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21
 c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/answers*
 c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/scores*
 c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/all.json
@@ -114,6 +131,11 @@ c_assess_inf/hpc/xcommands.md
 f_finetune/model
 f_finetune/data/alpaca_gemma-2-2b-it.json
 
+<<<<<<< HEAD
+=======
+h_internals
+
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21
 hpcnotes
 envs
 
