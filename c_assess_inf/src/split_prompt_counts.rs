@@ -28,6 +28,14 @@ rm c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest
 rm c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest3.json
 */
 
+/*
+cargo countsplit \
+    a_data/alpaca/merge_instructs/all.json \
+    a_data/alpaca/merge_instructs/first300.json \
+    a_data/alpaca/merge_instructs/last200.json \
+    300
+*/
+
 use std::{
     env,
     fs::File,
