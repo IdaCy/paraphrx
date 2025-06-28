@@ -57,6 +57,8 @@ xd_gui
 c_assess_inf/output/gsm8k_answer_scores
 c_assess_inf/output/mmlu_answer_scores
 
+c_assess_inf/output
+
 # alpaca
 c_assess_inf/output/alpaca/gemma-2-2b-it/answers*
 c_assess_inf/output/alpaca/gemma-2-2b-it/scores*
@@ -114,6 +116,8 @@ c_assess_inf/hpc/xcommands.md
 f_finetune/model
 f_finetune/data/alpaca_gemma-2-2b-it.json
 
+h_internals
+
 hpcnotes
 envs
 
@@ -123,5 +127,3 @@ pip_cache/
 venv/
 xdg_cache/
 tmp/
-
-c_assess_inf/output/
