@@ -16,6 +16,10 @@ name = "compose_top_occurences_across_metrics"
 path = "src/compose_top_occurences_across_metrics.rs"
 
 [[bin]]
+name = "check_scores"
+path = "src/check_scores.rs"
+
+[[bin]]
 name = "perplexity"
 path = "src/perplexity.rs"
 
