@@ -1,22 +1,38 @@
 #!/bin/bash
+<<<<<<< HEAD
 #PBS -N mm_q2_boundary_run_inf
 #PBS -l select=1:ncpus=8:ngpus=1:mem=40gb
 #PBS -l walltime=10:00:00
 #PBS -o logs/mm_q2_boundary_run_inf.out
 #PBS -e logs/mm_q2_boundary_run_inf.err
+=======
+#PBS -N mm_q2_obstruction_run_inf
+#PBS -l select=1:ncpus=8:ngpus=1:mem=60gb
+#PBS -l walltime=10:00:00
+#PBS -o logs/mm_q2_obstruction_run_inf.out
+#PBS -e logs/mm_q2_obstruction_run_inf.err
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21
 
 # Move to the directory from which job submitted
 cd $PBS_O_WORKDIR
 
+<<<<<<< HEAD
 echo "$(date "+%Y-%m-%d %H:%M:%S") - mm_q2_boundary_run_inf started" >> $HOME/times.log
+=======
+echo "$(date "+%Y-%m-%d %H:%M:%S") - mm_q2_obstruction_run_inf started" >> $HOME/times.log
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21
 nvidia-smi --query-gpu=name --format=csv,noheader
 
 #export MODEL_NAME="google/gemma-2-2b-it"
 #export MODEL_NAME="google/gemma-2-9b-it"
 #export MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
+<<<<<<< HEAD
+=======
+#export MODEL_NAME="Qwen/Qwen2.5-3B-Instruct"
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21
 #export MODEL_NAME="Qwen/Qwen1.5-1.8B"
 
-# boundary
+# obstruction
 
 # Paths
 CONTAINER_PATH="$PBS_O_WORKDIR/containers/hf_cont.sif"
@@ -26,14 +42,22 @@ SCRIPT_PATH="$PBS_O_WORKDIR/c_assess_inf/src/inference_run_mmlu.py"
 singularity exec --nv \
     "$CONTAINER_PATH" \
     python "$SCRIPT_PATH" \
+<<<<<<< HEAD
         a_data/mmlu/prxed_moral_500_scenarios/boundary.json \
         c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/boundary.json \
+=======
+        a_data/mmlu/prxed_moral_500_scenarios/obstruction.json \
+        c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/obstruction.json \
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21
         --model Qwen/Qwen2.5-3B-Instruct \
         --batch 16 \
         --log_every 90 \
-        --type boundary \
+        --type obstruction \
         --temperature 0 \
-        --max_tokens 256 \
-        --device cuda:0
+        --max_tokens 256
 
+<<<<<<< HEAD
 echo "$(date "+%Y-%m-%d %H:%M:%S") - mm_q2_boundary_run_inf finished" >> $HOME/times.log
+=======
+echo "$(date "+%Y-%m-%d %H:%M:%S") - mm_q2_obstruction_run_inf finished" >> $HOME/times.log
+>>>>>>> 02a3776dc3b1c689619c10b878b7d022bc22db21

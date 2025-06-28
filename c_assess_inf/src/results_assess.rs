@@ -42,7 +42,7 @@ impl Logger {
     }
 }
 
-// data structs  (unchanged)
+// data structs
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct Record {
     prompt_id: String,
@@ -55,7 +55,7 @@ struct Record {
     extra: JsonMap<String, Value>,
 }
 
-// CLI  (unchanged)
+// CLI
 #[derive(Parser, Debug)]
 #[command(version, author, about = "Assess paraphrase answers with Gemini")]
 struct Cli {
@@ -132,7 +132,7 @@ async fn main() -> Result<()> {
         .context("provide --api-key or set GOOGLE_API_KEY")?;
     let client  = build_client()?;
 
-    // ─── sort so we run strictly in prompt_count order ────────────────
+    // sort so we run strictly in prompt_count order
     let mut instr_sorted: Vec<(&String, &Record)> = instr_map.iter().collect();
     instr_sorted.sort_by_key(|(_, r)| r.prompt_count);
 

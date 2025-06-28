@@ -42,7 +42,7 @@ impl Logger {
     }
 }
 
-// data structs  (unchanged)
+// data structs
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct Record {
     prompt_count: u32,
@@ -54,7 +54,7 @@ struct Record {
     extra: JsonMap<String, Value>,
 }
 
-// CLI  (unchanged)
+// CLI
 #[derive(Parser, Debug)]
 #[command(version, author, about = "Assess paraphrase answers with Gemini")]
 struct Cli {
