@@ -1,31 +1,31 @@
 /*
 cargo countsplit \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers/context.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_slice1.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest1.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers/voice.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_slice1.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest1.json \
     100
 
 cargo countsplit \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest1.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_slice2.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest2.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest1.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_slice2.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest2.json \
     200
 
 cargo countsplit \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest2.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_slice3.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest3.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest2.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_slice3.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest3.json \
     300
 
 cargo countsplit \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest3.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_slice4.json \
-    c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_slice5.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest3.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_slice4.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_slice5.json \
     400
 
-rm c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest1.json
-rm c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest2.json
-rm c_assess_inf/output/alpaca_prxed/gemma-2-9b-it/answers_slice_100/context_rest3.json
+rm c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest1.json
+rm c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest2.json
+rm c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100/voice_rest3.json
 */
 
 /*

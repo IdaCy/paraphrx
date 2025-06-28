@@ -17,20 +17,20 @@ cargo instructmerge \
     c_assess_inf/output/alpaca_prxed/Qwen1.5-1.8B/answers/voice.json
 
 cargo instructmerge \
-    -o c_assess_inf/output/mmlu_answer_scores/gemma-2-2b-it.json \
+    -o c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/all.json \
     -s instruction_original \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/boundary.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/context.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/extra_a.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/extra_b.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/language.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/length.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/obstruction.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/speci_char.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/style.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/syntax.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/tone.json \
-    c_assess_inf/output/mmlu/gemma-2-2b-it/scores/voice.json
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/boundary.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/context.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/extra_a.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/extra_b.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/language.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/length.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/obstruction.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/speci_char.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/style.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/syntax.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/tone.json \
+    c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/answers_slice_500/voice.json
 
 
 cargo instructmerge \

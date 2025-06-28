@@ -13,6 +13,7 @@
 set -euo pipefail
 
 echo "$(date) – mm_q_obstruction_mmlu_inf job started on $(hostname)"
+echo "$(date) – mm_q_obstruction_mmlu_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -69,3 +70,4 @@ srun python "$RUN_SCRIPT" \
      --device cuda:0
 
 echo "$(date) – mm_q_obstruction_mmlu_inf job finished OK"
+echo "$(date) – mm_q_obstruction_mmlu_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
