@@ -5,7 +5,7 @@ trap 'echo "› CTRL-C – stopping"; kill -TERM -- -$$' INT TERM
 set -m
 
 MODEL="gemini-2.5-flash-preview-05-20"
-INSTR_DIR="a_data/gsm8k/prxed_main_slice_100"
+INSTR_DIR="a_data/gsm8k/paraphrases_sliced_100"
 ANSW_DIR="c_assess_inf/output/gsm8k/gemma-2-9b-it/answers_slice_100"
 OUT_DIR="c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100"
 
