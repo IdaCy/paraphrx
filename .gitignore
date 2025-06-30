@@ -115,8 +115,7 @@ c_assess_inf/hpc/xcommands.md
 
 f_finetune/model
 f_finetune/data/alpaca_gemma-2-2b-it.json
-f_finetune/outputs
-f_finetune/outputs_bkts2
+f_finetune/outputs*
 
 hpcnotes
 envs
