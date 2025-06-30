@@ -5,8 +5,8 @@ cargo results_find_issues \
     --last-prompt-count 500
 
 cargo results_find_issues \
-    --in-dir c_assess_inf/output/alpaca/gemma-2-9b-it/scores_500 \
-    --out-dir c_assess_inf/output/alpaca/gemma-2-9b-it/scores_issues_500 \
+    --in-dir c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_500 \
+    --out-dir c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_issues_500 \
     --last-prompt-count 500
 */
 

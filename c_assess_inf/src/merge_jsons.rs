@@ -7,6 +7,14 @@ cargo jsmerge \
     c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores_slice_100/voice_slice4.json \
     c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores_slice_100/voice_slice5.json \
     -o c_assess_inf/output/mmlu/Qwen1.5-1.8B/scores/voice.json
+
+cargo jsmerge \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/style_slice1_results_gemini_2_5_flash_preview_05_20.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/style_slice2_results_gemini_2_5_flash_preview_05_20.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/style_slice3_results_gemini_2_5_flash_preview_05_20.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/style_slice4_results_gemini_2_5_flash_preview_05_20.json \
+    c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_slice_100/style_slice5_results_gemini_2_5_flash_preview_05_20.json \
+    -o c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_500/style.json
 */
 
 use std::fs;
