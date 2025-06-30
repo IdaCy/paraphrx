@@ -24,7 +24,7 @@ const METRICS = [
 
 // File paths are structured for easy extension with new datasets/models.
 const DATA_PATHS = {
-    instructions: (dataset) => `../a_data/${dataset}/prxed/all.json`,
+    instructions: (dataset) => `../a_data/${dataset}/paraphrases_500.json`,
     scores: (dataset, model) => `../c_assess_inf/output/${dataset}_answer_scores/${model}.json`,
     originalInstructions: (dataset) => `../a_data/${dataset}/prxed/all.json`
 };
@@ -285,6 +285,12 @@ function formatParaphraseStyle(styleKey) {
         .join(' ');
 }
 
+function formatFamilyLabel(famKey) {
+  return famKey
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
 
 // -----------------------------------------------------------------------------
 // 2. INITIALIZATION
@@ -503,7 +509,7 @@ function renderOverviewTable() {
         );
 
         html += `<tr class="summary-row" data-family="${family}">
-                   <td><strong>${family}</strong></td>`;
+            <td><strong>${formatFamilyLabel(family)}</strong></td>`;
         familyMeans.forEach(avg =>
             html += `<td style="background:${scoreToColor(avg)}">${avg.toFixed(2)}</td>`
         );
@@ -798,6 +804,7 @@ function renderBarChart() {          // ← keep the old name: no other code bre
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,   // let CSS decide the height
             plugins: {
                 legend: { display: false },
                 tooltip: { callbacks: {
@@ -816,7 +823,19 @@ function renderBarChart() {          // ← keep the old name: no other code bre
                 }}
             },
             scales: {
-                y: { beginAtZero: true, max: 10 }
+                y: { beginAtZero: true, max: 10 },
+                            x : {
+                ticks : {
+                    font  : {
+                        size  : 14,
+                        weight: '500'         // 400=normal, 600=semibold, 700=bold
+                    },
+                    color : '#222',           // darker text
+                    padding : 4,              // little breathing room above axis
+                    maxRotation : 90,         // angle if names are long
+                    minRotation : 45
+                }
+            }
             }
         }
     });

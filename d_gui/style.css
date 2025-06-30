@@ -223,6 +223,10 @@ nav {
     cursor: pointer;
 }
 
+#bar-chart {
+    height: 520px !important;
+}
+
 
 /* --- Ranking Page --- */
 #ranking-metric-select {
