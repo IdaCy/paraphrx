@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-$ python check_inf.py \
+python check_inf.py \
       --model_dir  f_finetune/model \
       --lora_dir   f_finetune/outputs_bkt1_2/final \
       --data_json  f_finetune/data/alpaca_gemma-2-2b-it.json \
@@ -38,7 +38,7 @@ def parse_spec(spec):
     return sorted(res)
 
 def alpaca_prompt(item):
-    head = f"### Instruction:\n{item['instruction']}\n\n"
+    head = f"### Instruction:\n{item['instruction_original']}\n\n"
     if item.get("input"): head += f"### Input:\n{item['input']}\n\n"
     return head + "### Response:\n"
 
