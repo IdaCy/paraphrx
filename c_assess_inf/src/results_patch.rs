@@ -26,6 +26,7 @@ use std::{
 use tokio::time::sleep;
 use regex::Regex;
 use std::ffi::OsStr;
+use std::process;
 //use std::borrow::Cow;
 
 // tiny rolling logger
@@ -48,7 +49,7 @@ impl Logger {
     }
 }
 
-/// Re-score only the prompt-IDs that appear in <issues-dir>/<TYPE>_issues.json
+// Re-score only the prompt-IDs that appear in <issues-dir>/<TYPE>_issues.json
 async fn process_set(
     typ: &str,
     cli: &Cli,
@@ -63,7 +64,11 @@ async fn process_set(
     let issues_path = cli.issues_dir.join(format!("{typ}_issues.json"));
 
     // load JSON files we already have
-    let repair_log_path = Path::new("logs").join(format!("{typ}_repair.log"));
+    let pid = process::id();
+    let timestamp  = Local::now().format("%Y%m%d-%H%M%S");
+    let repair_log_path = Path::new("logs")
+        .join(format!("{typ}_repair_{timestamp}_{pid}.log"));
+    //let repair_log_path = Path::new("logs").join(format!("{typ}_repair.log"));
     let mut logger = Logger::new(&repair_log_path)?;
     logger.log("loading files");
 
@@ -195,24 +200,24 @@ struct Record {
     about = "Re-score failed items for one or more prompt sets"
 )]
 struct Cli {
-    /// Folder that holds <TYPE>.json with the paraphrased instructions
+    // Folder that holds <TYPE>.json with the paraphrased instructions
     #[arg(long = "instructions-dir")]
     instructions_dir: PathBuf,
 
-    /// Folder that holds <TYPE>.json with the model answers
+    // Folder that holds <TYPE>.json with the model answers
     #[arg(long = "answers-dir")]
     answers_dir: PathBuf,
 
-    /// Folder that holds <TYPE>.json with the numeric scores
+    // Folder that holds <TYPE>.json with the numeric scores
     #[arg(long = "scores-dir")]
     scores_dir: PathBuf,
 
-    /// Folder that holds <TYPE>_issues.json produced by the previous run
+    // Folder that holds <TYPE>_issues.json produced by the previous run
     #[arg(long = "issues-dir")]
     issues_dir: PathBuf,
 
-    /// Which prompt sets to repair.  May be given several times:
-    ///     --type style --type tone
+    // Which prompt sets to repair.  May be given several times:
+    //     --type style --type tone
     #[arg(long = "type", required = true, num_args = 1..)]
     types: Vec<String>,
 
