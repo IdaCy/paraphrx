@@ -6,11 +6,11 @@
 
 ###  Overview
 
-run **five independent LoRA fine-tunes** (buckets 1, 1-2, 1-3, 1-4, 1-5) on your paraphrase-annotated Alpaca/GSM8K/MMLU JSON files
+run **five independent LoRA fine-tunes** (buckets 1, 1-2, 1-3, 1-4, 1-5) on paraphrase-annotated Alpaca/GSM8K/MMLU JSON files
 
 teach a base instruction-tuned model (`gemma-2-2b-it`) to **stay consistent across diverse paraphrase styles**
 
-([github.com][1])
+([github.com/tloen/alpaca-lora][1])
 
 ---
 
@@ -37,11 +37,11 @@ Each JSON **list element** represents one original instruction plus *all* its pa
 
 | Key                    | Type       | Notes                                                                                                                                                                                                      |
 | ---------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prompt_count`         | int        | Primary ID.                                                                                                                                                                                                |
-| `instruction_original` | str        | Canonical wording.                                                                                                                                                                                         |
-| `input`                | str        | Optional extra context (may be empty).                                                                                                                                                                     |
-| `output`               | str        | Reference answer (ground truth).                                                                                                                                                                           |
-| `count_in_buckets`     | list\[int] | `[c₁,c₂,c₃,c₄,c₅]` for bucket sizes.                                                                                                                                                                       |
+| `prompt_count`         | int        | Primary ID                                                                                                                                                                                                |
+| `instruction_original` | str        | Canonical wording                                                                                                                                                                                         |
+| `input`                | str        | Optional extra context (may be empty)                                                                                                                                                                     |
+| `output`               | str        | Reference answer (ground truth)                                                                                                                                                                           |
+| `count_in_buckets`     | list\[int] | `[c₁,c₂,c₃,c₄,c₅]` for bucket sizes                                                                                                                                                                       |
 | `paraphrases`          | list\[obj] | Includes **original** + all `instruct_*`. Each object holds:<br>• `instruct_type` <br>• `paraphrase`<br>• `answer` (Gemma’s reply)<br>• `task_score` (0-10)<br>• `ranking_for_buckets`<br>• `bucket` (1-5) |
 
 -> follows quantile rule
@@ -146,7 +146,7 @@ done
    ```
 
    followed by `<eos>` token.
-   This follows the Alpaca-LoRA format -([github.com][1])
+   This follows the Alpaca-LoRA format -([github.com/tloen/alpaca-lora][1])
 
 4. **Tokenizer & 4-bit model load**
 
@@ -221,7 +221,7 @@ python evaluate_paraphrx.py \
 ###   Extra/Refs
 
 * The script is Apache-2.0; underlying Gemma weights are under the Google AI license.
-* Ideas & hyper-params draw heavily on open-source LoRA work by the Alpaca-LoRA team ([github.com][1]), Hugging Face QLoRA researchers ([huggingface.co][2]), Databricks guides ([databricks.com][3]), Sebastian Raschka’s best-practice notes ([magazine.sebastianraschka.com][5]), and vLLM LoRA discussions ([github.com][6]).
+* Ideas & hyper-params draw heavily on open-source LoRA work by the Alpaca-LoRA team ([github.com/tloen/alpaca-lora][1]), Hugging Face QLoRA researchers ([huggingface.co][2]), Databricks guides ([databricks.com][3]), Sebastian Raschka’s best-practice notes ([magazine.sebastianraschka.com][5]), and vLLM LoRA discussions ([github.com][6]).
 
 
 [1]: https://github.com/tloen/alpaca-lora "tloen/alpaca-lora: Instruct-tune LLaMA on consumer hardware"
