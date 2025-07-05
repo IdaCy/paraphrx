@@ -10,12 +10,16 @@ results_assess_noID = "run --manifest-path c_assess_inf/Cargo.toml --bin results
 results_assess_mmlu = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_mmlu --release --"
 results_assess_mmlu_waits = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess_mmlu_waits --release --"
 results_patch = "run --manifest-path c_assess_inf/Cargo.toml --bin results_patch --release --"
+results_patch_mmlu = "run --manifest-path c_assess_inf/Cargo.toml --bin results_patch_mmlu --release --"
 jsmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_jsons --release --"
 jssplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_jsons --release --"
 countsplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_prompt_counts --release --"
+split_random_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin split_random_ids --release --"
+merge_random_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_random_ids --release --"
 instructmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_instructs --release --"
 results_find_issues = "run --manifest-path c_assess_inf/Cargo.toml --bin results_find_issues --release --"
 merge_issues = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_issues --release --"
+phrx_equivalence_score = "run --manifest-path c_assess_inf/Cargo.toml --bin phrx_equivalence_score --release --"
 
 # e_eval
 compose_top_prompts = "run --manifest-path e_eval/Cargo.toml --bin compose_top_prompts --release --"
@@ -27,3 +31,4 @@ perplexity = "run --manifest-path e_eval/Cargo.toml --bin perplexity --release -
 # f_finetune
 gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download --release --"
 prepare_data = "run --manifest-path f_finetune/Cargo.toml --bin prepare_data --release --"
+score_results = "run --manifest-path f_finetune/Cargo.toml --bin score_results --release --"
