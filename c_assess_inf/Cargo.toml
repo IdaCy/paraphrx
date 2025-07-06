@@ -29,6 +29,10 @@ name = "results_patch"
 path = "src/results_patch.rs"
 
 [[bin]]
+name = "results_patch_mmlu"
+path = "src/results_patch_mmlu.rs"
+
+[[bin]]
 name = "merge_jsons"
 path = "src/merge_jsons.rs"
 
@@ -41,6 +45,14 @@ name = "split_prompt_counts"
 path = "src/split_prompt_counts.rs"
 
 [[bin]]
+name = "split_random_ids"
+path = "src/split_random_ids.rs"
+
+[[bin]]
+name = "merge_random_ids"
+path = "src/merge_random_ids.rs"
+
+[[bin]]
 name = "merge_instructs"
 path = "src/merge_instructs.rs"
 
@@ -51,6 +63,10 @@ path = "src/results_find_issues.rs"
 [[bin]]
 name = "merge_issues"
 path = "src/merge_issues.rs"
+
+[[bin]]
+name = "phrx_equivalence_score"
+path = "src/phrx_equivalence_score.rs"
 
 # Shared dependencies for both binaries
 [dependencies]

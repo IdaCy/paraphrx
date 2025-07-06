@@ -29,6 +29,9 @@ a_data/alpaca/un_prxed
 a_data/alpaca/slice_100/special_char_slice*.json
 a_data/alpaca/paraphrases_500
 a_data/alpaca/paraphrases_500.json
+a_data/alpaca/paraphrases_500_droppedFields
+a_data/alpaca/paraphrases_slice_100
+a_data/alpaca/similarity_judgement
 
 a_data/gsm8k/original
 a_data/gsm8k/prxed
@@ -54,6 +57,7 @@ a_data/mmlu/paraphrases_500.json
 d_gui_backup
 xd_gui
 
+c_assess_inf/hpc/aacommands.md
 c_assess_inf/output/gsm8k_answer_scores
 c_assess_inf/output/mmlu_answer_scores
 
@@ -76,6 +80,8 @@ c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/scores*
 c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/all.json
 
 # gms8k
+c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_500
+
 c_assess_inf/output/gsm8k/gemma-2-2b-it/answers*
 c_assess_inf/output/gsm8k/gemma-2-2b-it/scores*
 c_assess_inf/output/gsm8k/gemma-2-2b-it/all.json
@@ -128,3 +134,9 @@ venv/
 xdg_cache/
 tmp/
 wandb
+
+
+c_assess_inf/hpc
+c_assess_inf/src
+d_gui
+f_finetune
