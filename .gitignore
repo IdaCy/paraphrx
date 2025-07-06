@@ -135,6 +135,4 @@ xdg_cache/
 tmp/
 wandb
 
-a_data
-d_gui
 f_finetune
