@@ -20,6 +20,7 @@ instructmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_instruc
 results_find_issues = "run --manifest-path c_assess_inf/Cargo.toml --bin results_find_issues --release --"
 merge_issues = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_issues --release --"
 drop_keys = "run --manifest-path c_assess_inf/Cargo.toml --bin drop_keys --release --"
+sort_merge_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin sort_merge_ids --release --"
 phrx_equivalence_score = "run --manifest-path c_assess_inf/Cargo.toml --bin phrx_equivalence_score --release --"
 
 # e_eval
