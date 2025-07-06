@@ -52,7 +52,7 @@ a_data/mmlu/original
 a_data/mmlu/paraphrases_sliced_100
 a_data/mmlu/paraphrases_500
 a_data/mmlu/paraphrases_500.json
-
+a_data/alpaca/osimilarity_judgement
 
 d_gui_backup
 xd_gui

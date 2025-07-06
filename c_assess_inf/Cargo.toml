@@ -65,6 +65,10 @@ name = "merge_issues"
 path = "src/merge_issues.rs"
 
 [[bin]]
+name = "drop_keys"
+path = "src/drop_keys.rs"
+
+[[bin]]
 name = "phrx_equivalence_score"
 path = "src/phrx_equivalence_score.rs"
 
