@@ -1,8 +1,8 @@
 /*
 cargo sort_merge_ids \
-    f_finetune/outputs/ft_inf_results/buckets1_sorted.json \
-    f_finetune/outputs/ft_inf_results/bucket1_part1.json \
-    f_finetune/outputs/ft_inf_results/buckets1_part2.json
+    f_finetune/outputs/ft_inf_scores/buckets5.json \
+    f_finetune/outputs/ft_inf_scores/buckets5_part1.json \
+    f_finetune/outputs/ft_inf_scores/buckets5_part2.json
 */
 
 use std::{
