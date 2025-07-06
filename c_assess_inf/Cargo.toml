@@ -69,6 +69,10 @@ name = "drop_keys"
 path = "src/drop_keys.rs"
 
 [[bin]]
+name = "sort_merge_ids"
+path = "src/sort_merge_ids.rs"
+
+[[bin]]
 name = "phrx_equivalence_score"
 path = "src/phrx_equivalence_score.rs"
 
