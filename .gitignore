@@ -29,7 +29,11 @@ a_data/alpaca/un_prxed
 a_data/alpaca/slice_100/special_char_slice*.json
 a_data/alpaca/paraphrases_500
 a_data/alpaca/paraphrases_500.json
+a_data/alpaca/paraphrases_500_droppedFields
+a_data/alpaca/paraphrases_slice_100
+a_data/alpaca/similarity_judgement
 
+a_data/gsm8k/paraphrases_500
 a_data/gsm8k/original
 a_data/gsm8k/prxed
 a_data/gsm8k/prxed_main_slice_100
@@ -37,6 +41,7 @@ a_data/gsm8k/paraphrases_500
 a_data/gsm8k/paraphrases_sliced_100
 a_data/gsm8k/paraphrases_500.json
 
+a_data/mmlu/paraphrases_500
 a_data/mmlu/unselected
 a_data/mmlu/all.json
 a_data/mmlu/moral_scenarios_prxed_500
@@ -49,11 +54,12 @@ a_data/mmlu/original
 a_data/mmlu/paraphrases_sliced_100
 a_data/mmlu/paraphrases_500
 a_data/mmlu/paraphrases_500.json
-
+a_data/alpaca/osimilarity_judgement
 
 d_gui_backup
 xd_gui
 
+c_assess_inf/hpc/aacommands.md
 c_assess_inf/output/gsm8k_answer_scores
 c_assess_inf/output/mmlu_answer_scores
 
@@ -76,6 +82,8 @@ c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/scores*
 c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/all.json
 
 # gms8k
+c_assess_inf/output/gsm8k/gemma-2-9b-it/scores_500
+
 c_assess_inf/output/gsm8k/gemma-2-2b-it/answers*
 c_assess_inf/output/gsm8k/gemma-2-2b-it/scores*
 c_assess_inf/output/gsm8k/gemma-2-2b-it/all.json
@@ -114,9 +122,12 @@ c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
 
 f_finetune/model
+f_finetune/data
 f_finetune/data/alpaca_gemma-2-2b-it.json
+f_finetune/data/exhaustive_gemma.json
 f_finetune/outputs/bucket*
 f_finetune/outputs/inference*
+f_finetune/outputs/ft_inf_results
 
 hpcnotes
 envs
@@ -128,3 +139,4 @@ venv/
 xdg_cache/
 tmp/
 wandb
+
