@@ -59,7 +59,7 @@ _INFER_CTX = getattr(torch, "inference_mode", torch.no_grad)
 # Utility helpers
 
 def parse_bucket_spec(spec: str) -> List[int]:
-    """Convert a spec like "1-3,5" -> ``[1, 2, 3, 5]`` (unique, sorted)"""
+    """Convert a spec like "1-3,5" -> ``[1, 2, 3, 5]`` (unique, sorted)."""
     result: set[int] = set()
     for part in spec.split(","):
         part = part.strip()
@@ -72,7 +72,7 @@ def parse_bucket_spec(spec: str) -> List[int]:
             result.add(int(part))
     allowed = [b for b in sorted(result) if 1 <= b <= 5]
     if not allowed:
-        raise ValueError("Bucket specification must select at least one bucket between 1 and 5")
+        raise ValueError("Bucket specification must select at least one bucket between 1 and 5.")
     return allowed
 
 
@@ -91,7 +91,7 @@ def build_prompt(instruction: str, raw_input: str | None = None) -> str:
 # Data loading & held-out split
 
 def load_examples(paths: List[str], buckets: List[int]) -> List[dict]:
-    """Load JSON prompts, keep only paraphrases in buckets, return flat list"""
+    """Load JSON prompts, keep only paraphrases in *buckets*, return flat list."""
 
     examples: List[dict] = []
     for p in paths:
@@ -144,7 +144,7 @@ def make_holdout_split(examples: List[dict], seed: int, split: str, test_ratio: 
 # Flatten for batched generation
 
 def flatten_examples(examples: List[dict]) -> Tuple[List[Tuple[str, str, str]], Dict[str, Dict[str, str]]]:
-    """Return (flat_queue, results_map)"""
+    """Return (flat_queue, results_map) - mirrors original script but new format"""
 
     flat_queue: List[Tuple[str, str, str]] = []
     results_map: Dict[str, Dict[str, str]] = {}

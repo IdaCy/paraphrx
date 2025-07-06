@@ -48,7 +48,7 @@ class Example:
     answer: str
 
     def to_prompt(self, add_eos: bool = True) -> str:
-        """Construct Alpaca-style prompt."""
+        """Construct Alpaca-style prompt"""
         if self.inp:
             prompt = (
                 f"### Instruction:\n{self.instruction}\n\n"
@@ -97,7 +97,7 @@ def load_examples(paths: List[str], buckets: List[int], use_paraphrase_answer: b
         for item in data:
             base_output = item.get('output', '')
             inp = item.get('input', '')
-            # Include original instruction if bucket passes; it's stored inside paraphrases too, but guard anyway
+            # Include original instruction if bucket passes; it's stored inside paraphrases too, but guard anyway.
             for para in item.get('paraphrases', []):
                 if int(para.get('bucket', 0)) in buckets:
                     ins = para.get('paraphrase') or item.get('instruction_original', '')
@@ -114,15 +114,15 @@ def load_examples(paths: List[str], buckets: List[int], use_paraphrase_answer: b
 
 def make_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="LoRA fine-tuning for paraphrase robustness on GEMMA-2-2B-IT")
-    p.add_argument('--data_paths', type=str, nargs='+', required=True, help='Paths to JSON dataset files.')
-    p.add_argument('--model_path', type=str, default='f_finetune/model', help='Directory with base GEMMA model.')
-    p.add_argument('--output_dir', type=str, required=True, help='Where to save LoRA adapters & checkpoints.')
-    p.add_argument('--run_name', type=str, default='gemma_paraphrx', help='Name for WandB & logs.')
-    p.add_argument('--buckets', type=str, default='1', help='Bucket spec, e.g. "1", "1-3", "1,2,3".')
-    p.add_argument('--use_paraphrase_answer', action='store_true', help='Train on paraphrase answer instead of original output.')
+    p.add_argument('--data_paths', type=str, nargs='+', required=True, help='Paths to JSON dataset files')
+    p.add_argument('--model_path', type=str, default='f_finetune/model', help='Directory with base GEMMA model')
+    p.add_argument('--output_dir', type=str, required=True, help='Where to save LoRA adapters & checkpoints')
+    p.add_argument('--run_name', type=str, default='gemma_paraphrx', help='Name for WandB & logs')
+    p.add_argument('--buckets', type=str, default='1', help='Bucket spec, e.g. "1", "1-3", "1,2,3"')
+    p.add_argument('--use_paraphrase_answer', action='store_true', help='Train on paraphrase answer instead of original output')
 
     # Training hyper-params
-    p.add_argument('--batch_size', type=int, default=4, help='Per-device micro batch size.')
+    p.add_argument('--batch_size', type=int, default=4, help='Per-device micro batch size')
     p.add_argument('--gradient_accumulation_steps', type=int, default=4)
     p.add_argument('--num_epochs', type=int, default=3)
     p.add_argument('--learning_rate', type=float, default=2e-4)
@@ -135,12 +135,12 @@ def make_arg_parser() -> argparse.ArgumentParser:
     p.add_argument('--lora_dropout', type=float, default=0.05)
     p.add_argument('--target_modules', type=str,
                    default='q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj',
-                   help='Comma-separated list of modules to LoRA-ise.')
+                   help='Comma-separated list of modules to LoRA-ise')
 
     # Misc.
     p.add_argument('--seed', type=int, default=42)
-    p.add_argument('--bf16', action='store_true', help='Use bfloat16 instead of fp16 where supported.')
-    p.add_argument('--wandb_project', type=str, default='paraphrx_lora', help='Weights & Biases project.')
+    p.add_argument('--bf16', action='store_true', help='Use bfloat16 instead of fp16 where supported')
+    p.add_argument('--wandb_project', type=str, default='paraphrx_lora', help='Weights & Biases project')
     p.add_argument('--save_steps', type=int, default=200)
 
     return p
@@ -175,7 +175,7 @@ def main(argv: List[str] | None = None) -> None:
     global tokenizer  # Required inside Example.to_prompt
 
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
-    tokenizer.pad_token = tokenizer.eos_token  # gemma has no explicit PAD !
+    tokenizer.pad_token = tokenizer.eos_token  # GEMMA has no explicit PAD
 
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,

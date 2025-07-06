@@ -36,9 +36,9 @@ fn main() -> Result<()> {
     let repo  = Repo::with_revision(args.repo.clone(), RepoType::Model, "main".to_string());
     let handle = api.repo(repo);
 
-    println!("⇣  Pulling {} → {:?}", args.repo, args.dst);
+    println!("⇣  Pulling {} -> {:?}", args.repo, args.dst);
 
-    // fetch metadata → list of files (siblings)
+    // fetch metadata -> list of files (siblings)
     for sib in handle.info()?.siblings {          // RepoInfo::siblings :contentReference[oaicite:0]{index=0}
         let remote = sib.rfilename;               // Siblings::rfilename :contentReference[oaicite:1]{index=1}
 
