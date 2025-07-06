@@ -135,8 +135,6 @@ xdg_cache/
 tmp/
 wandb
 
-
-c_assess_inf/hpc
-c_assess_inf/src
-d_gui
+a_data
 f_finetune
+d_gui
