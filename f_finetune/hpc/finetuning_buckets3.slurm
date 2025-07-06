@@ -12,8 +12,8 @@
 #SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets3.err
 
 set -euo pipefail
-echo "$(date) - ft_buckets3 job started on $(hostname)"
-echo "$(date) - ft_buckets3 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_buckets3 job started on $(hostname)"
+echo "$(date) – ft_buckets3 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 OUT_DIR="f_finetune/outputs_bkts3"
 
@@ -75,5 +75,5 @@ srun python "$RUN_SCRIPT" \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) - ft_buckets3 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - ft_buckets3 job finished OK"
+echo "$(date) – ft_buckets3 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_buckets3 job finished OK"

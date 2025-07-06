@@ -12,8 +12,8 @@
 #SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_bucket2.err
 
 set -euo pipefail
-echo "$(date) - ft_bucket1 job started on $(hostname)"
-echo "$(date) - ft_bucket1 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_bucket1 job started on $(hostname)"
+echo "$(date) – ft_bucket1 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -73,5 +73,5 @@ srun python "$RUN_SCRIPT" \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) - ft_bucket1 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - ft_bucket1 job finished OK"
+echo "$(date) – ft_bucket1 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_bucket1 job finished OK"

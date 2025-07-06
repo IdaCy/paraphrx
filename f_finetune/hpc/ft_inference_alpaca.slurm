@@ -12,10 +12,10 @@
 #SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_buckets5_alpaca_ft_inf.err
 set -euo pipefail
 
-echo "$(date) - buckets5_alpaca_ft_inf job started on $(hostname)"
-echo "$(date) - buckets5_alpaca_ft_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – buckets5_alpaca_ft_inf job started on $(hostname)"
+echo "$(date) – buckets5_alpaca_ft_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
-echo "$(date) - buckets5_alpaca_ft_inf initial setup"
+echo "$(date) – buckets5_alpaca_ft_inf initial setup"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -34,7 +34,7 @@ mkdir -p "$TORCH_HOME" "$TORCHINDUCTOR_CACHE_DIR" "$TRITON_CACHE_DIR"
 
 # Python environment (light venv)
 if [ ! -d venv ]; then
-    echo "Creating venv ..."
+    echo "Creating venv …"
     python3.12 -m venv venv
 fi
 source venv/bin/activate
@@ -51,8 +51,8 @@ echo "Packages ready."
 export HF_HUB_ENABLE_HF_TRANSFER=1
 
 # needed: voice style speci_char voice
-echo "$(date) - buckets5_alpaca_ft_inf initial setup OK"
-echo "$(date) - buckets5_alpaca_ft_inf voice start"
+echo "$(date) – buckets5_alpaca_ft_inf initial setup OK"
+echo "$(date) – buckets5_alpaca_ft_inf voice start"
 
 # Paths & arguments
 RUN_SCRIPT="f_finetune/src/ft_inference_alpaca_gsm8k.py"
@@ -71,5 +71,5 @@ srun python "$RUN_SCRIPT" \
   --batch 16 \
   --max_tokens 256
 
-echo "$(date) - buckets5_alpaca_ft_inf job finished OK"
-echo "$(date) - buckets5_alpaca_ft_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – buckets5_alpaca_ft_inf job finished OK"
+echo "$(date) – buckets5_alpaca_ft_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
