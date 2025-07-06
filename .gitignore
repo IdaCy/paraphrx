@@ -124,7 +124,6 @@ c_assess_inf/hpc/xcommands.md
 f_finetune/src/tmux_score_starter_free_withkey.sh
 f_finetune/src/tmux_score_starter_free_withkey2.sh
 f_finetune/model
-f_finetune/data
 f_finetune/data/alpaca_gemma-2-2b-it.json
 f_finetune/data/exhaustive_gemma.json
 f_finetune/outputs/inference*
