@@ -353,7 +353,7 @@ async fn process_single(
         return Ok((0, false));
     }
 
-    let schema = schema_for_keys(&keys);
+    //let schema = schema_for_keys(&keys);
     let prompt = build_eval_prompt(&section);
 
     // attempt loop

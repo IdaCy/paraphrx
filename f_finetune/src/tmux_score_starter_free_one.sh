@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+xxx
 TS=$(date '+%Y-%m-%d %H:%M:%S')
 echo "$TS - tmux_score_starter_free_one script started" >>"$HOME/times.log"
 echo "$TS - tmux_score_starter_free_one script started"
@@ -12,8 +12,7 @@ MODEL="gemini-2.5-flash-preview-05-20"
 INSTR_DIR="f_finetune/data/alpaca_gemma-2-2b-it.json"
 ANSW_DIR="f_finetune/outputs/ft_inf_results"
 OUT_DIR="f_finetune/outputs/ft_inf_scores"
-
-GOOGLE_API_KEY="${GOOGLE_API_KEY:-}"   # can be overridden with -k
+IN_NAME="buckets2_part1"
 
 # hard-coded per-call keys
 KEY_A=""
@@ -23,13 +22,18 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     -k|--key)   GOOGLE_API_KEY="$2"; shift 2 ;;
     -m|--model) MODEL="$2";         shift 2 ;;
+    -n|--in_name) IN_NAME="$2";         shift 2 ;;
     --) shift; break ;;
     -*) echo "Unknown option: $1" >&2; exit 1 ;;
     *)  break ;;
   esac
 done
 
-[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"   # make cargo available
+KEY_A="$GOOGLE_API_KEY"
+
+if [[ -f "$HOME/.cargo/env" ]]; then
+  . "$HOME/.cargo/env"
+fi
 
 # logging
 LOG_DIR="logs"
@@ -43,9 +47,8 @@ echo "$(date '+%F %T') - score_starter batch started"
 
 # first IN_NAME (A)
 
-IN_NAME="buckets5_part2"
 ANSWERS="$ANSW_DIR/${IN_NAME}.json"
-OUTPUT="$OUT_DIR/${IN_NAME}_results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S')_${IN_NAME}.json"
+OUTPUT="$OUT_DIR/${IN_NAME}_results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
 
 if [[ ! -f $INSTR_DIR || ! -f $ANSWERS ]]; then
   echo "⚠  Skipping $IN_NAME - file(s) missing"
