@@ -1,0 +1,89 @@
+[package]
+name = "c_assess_inf"
+version = "0.1.0"
+edition = "2021"
+
+
+[[bin]]
+name = "results_assess"       # cargo run --bin results_assess
+path = "src/results_assess.rs"
+
+[[bin]]
+name = "results_assess_noID"       # cargo run --bin results_assess_noID
+path = "src/results_assess_noID.rs"
+
+[[bin]]
+name = "results_assess_mmlu"       # cargo run --bin results_assess_mmlu
+path = "src/results_assess_mmlu.rs"
+
+[[bin]]
+name = "results_assess_mmlu_waits"       # cargo run --bin results_assess_mmlu_waits
+path = "src/results_assess_mmlu_waits.rs"
+
+[[bin]]
+name = "summarise_scores"     # cargo run --bin summarise_scores
+path = "src/summarise_scores.rs"
+
+[[bin]]
+name = "results_patch"
+path = "src/results_patch.rs"
+
+[[bin]]
+name = "results_patch_mmlu"
+path = "src/results_patch_mmlu.rs"
+
+[[bin]]
+name = "merge_jsons"
+path = "src/merge_jsons.rs"
+
+[[bin]]
+name = "split_jsons"
+path = "src/split_jsons.rs"
+
+[[bin]]
+name = "split_prompt_counts"
+path = "src/split_prompt_counts.rs"
+
+[[bin]]
+name = "split_random_ids"
+path = "src/split_random_ids.rs"
+
+[[bin]]
+name = "merge_random_ids"
+path = "src/merge_random_ids.rs"
+
+[[bin]]
+name = "merge_instructs"
+path = "src/merge_instructs.rs"
+
+[[bin]]
+name = "results_find_issues"
+path = "src/results_find_issues.rs"
+
+[[bin]]
+name = "merge_issues"
+path = "src/merge_issues.rs"
+
+[[bin]]
+name = "drop_keys"
+path = "src/drop_keys.rs"
+
+[[bin]]
+name = "phrx_equivalence_score"
+path = "src/phrx_equivalence_score.rs"
+
+# Shared dependencies for both binaries
+[dependencies]
+anyhow     = "1"
+chrono     = { version = "0.4", default-features = false, features = ["clock"] }
+clap       = { version = "4", features = ["derive"] }
+indicatif  = "0.17"
+regex = "1"
+#phf        = { version = "0.11", features = ["macros"] }
+#reqwest    = { version = "0.12", features = ["json", "gzip", "rustls-tls"] }
+reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
+serde      = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio      = { version = "1", features = ["full"] }
+simplelog = "0.12"
+log        = "0.4"

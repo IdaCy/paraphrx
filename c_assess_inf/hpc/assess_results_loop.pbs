@@ -1,0 +1,43 @@
+#!/bin/bash
+#PBS -N robu_assess_results
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=45:00:00
+#PBS -o logs/robu_assess_results.out
+#PBS -e logs/robu_assess_results.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - robu_assess_results started" >> $HOME/times.log
+
+export GOOGLE_API_KEY=""
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/c_assess_inf/Cargo.toml"
+
+for TYPE in boundary obstruction style tone voice
+do
+    for SLICE in 1
+    do
+        Q_JSON="a_data/alpaca/slice_100/${TYPE}_slice${SLICE}.json"
+        A_JSON="c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/${TYPE}_slice${SLICE}_infresults.json"
+
+        E_JSON="c_assess_inf/output/alpaca_newphras/gemma-2-2b-it/${TYPE}_slice${SLICE}_infresults_eval.json"
+        echo "$(date "+%Y-%m-%d %H:%M:%S") - robu_assess_results starting ${TYPE}_slice${SLICE}"
+
+        # Run the Rust program
+        cargo assess_robust_longinstruct \
+            --manifest-path c_assess_inf/Cargo.toml \
+            --release \
+            -- \
+            --model gemini-2.5-flash-preview-05-20 \
+            "$Q_JSON" \
+            "$A_JSON" \
+            "$E_JSON"
+
+        echo "$(date "+%Y-%m-%d %H:%M:%S") - robu_assess_results completed ${TYPE}_slice${SLICE}"
+    done
+done
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - robu_assess_results finished" >> $HOME/times.log
