@@ -2,7 +2,7 @@
 """
 python a_data/preproc/downloads/download_mmlu.py --output-dir a_data/mmlu
 
-Requires:  pip install datasets tqdm
+needs:  pip install datasets tqdm
 """
 
 import argparse
@@ -15,7 +15,7 @@ from datasets import get_dataset_config_names, load_dataset
 
 def dump_subject(subject: str, output_dir: str, splits: List[str],
                  indent: Optional[int] = 2) -> None:
-    """Download one subject, attach prompt_count, and save to JSON."""
+    """Download one subject, attach prompt_count, and save to JSON"""
     examples = []
     prompt_count = 1
 
@@ -36,7 +36,7 @@ def dump_subject(subject: str, output_dir: str, splits: List[str],
     with open(outfile, "w", encoding="utf-8") as fp:
         json.dump(examples, fp, ensure_ascii=False, indent=indent)
 
-    print(f"Saved {len(examples):>5} records → {outfile}")
+    print(f"Saved {len(examples):>5} records -> {outfile}")
 
 
 def main(output_dir: str, splits: Optional[List[str]] = None,
@@ -47,7 +47,7 @@ def main(output_dir: str, splits: Optional[List[str]] = None,
     os.makedirs(output_dir, exist_ok=True)
 
     subjects = get_dataset_config_names("cais/mmlu")
-    print(f"Discovered {len(subjects)} subjects.")
+    print(f"Discovered {len(subjects)} subjects")
 
     for subject in subjects:
         print(f"Processing: {subject:>30}")
@@ -56,18 +56,18 @@ def main(output_dir: str, splits: Optional[List[str]] = None,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Download MMLU and store per‑subject JSON files.")
+        description="Download MMLU and store per‑subject JSON files")
     parser.add_argument("--output-dir", "-o", default="mmlu_json",
                         help="Directory to hold JSON files.")
     parser.add_argument(
         "--splits",
         "-s",
         nargs="+",
-        help="Which splits to include (default: auxiliary_train dev val test)."
+        help="Which splits to include (default: auxiliary_train dev val test)"
     )
     parser.add_argument("--no-indent",
                         action="store_true",
-                        help="Write compact JSON without newlines.")
+                        help="Write compact JSON without newlines")
 
     args = parser.parse_args()
     indent = None if args.no_indent else 2

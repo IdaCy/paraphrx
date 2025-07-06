@@ -402,7 +402,7 @@ const LOG_EVERY_N: usize = 10;
 async fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    // ---------------------------- logger setup ----------------------------
+    // logger setup
     let log_dir = PathBuf::from("logs");
     fs::create_dir_all(&log_dir).with_context(|| "failed to create logs directory")?;
 
@@ -437,7 +437,6 @@ async fn main() -> Result<()> {
     ).expect("failed to initialise file logger");*/
 
     log::info!("Program started");
-    // ---------------------------------------------------------------------
 
     let keys = VERSION_SETS
         .get(cli.version_set.as_str())

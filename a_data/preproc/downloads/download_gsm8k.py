@@ -18,7 +18,7 @@ DEFAULT_SPLITS = ["train", "validation"]
 
 
 def dump_config(cfg: str, output_dir: str, splits: List[str], indent: Optional[int] = 2) -> None:  # noqa: D401
-    """Download *one* configuration, attach ``prompt_count``, and save to JSON."""
+    """Download *one* configuration, attach prompt_count, and save to JSON"""
 
     examples: list[dict] = []
     prompt_count = 1
@@ -39,7 +39,7 @@ def dump_config(cfg: str, output_dir: str, splits: List[str], indent: Optional[i
     with open(outfile, "w", encoding="utf-8") as fp:
         json.dump(examples, fp, ensure_ascii=False, indent=indent)
 
-    print(f"Saved {len(examples):>5} records → {outfile}")
+    print(f"Saved {len(examples):>5} records -> {outfile}")
 
 
 def main(output_dir: str, configs: Optional[List[str]] = None, splits: Optional[List[str]] = None, *, indent: Optional[int] = 2) -> None:

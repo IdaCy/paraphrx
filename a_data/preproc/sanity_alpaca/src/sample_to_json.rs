@@ -1,7 +1,7 @@
 /*
 Select rows whose prompt_count in inclusive range --from <START> --to <END>
 & write them as a JSON array with keys in order:
-prompt_count, instruction, input, output, prompt_id.
+prompt_count, instruction, input, output, prompt_id
 
 Example:
 cargo run --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml \

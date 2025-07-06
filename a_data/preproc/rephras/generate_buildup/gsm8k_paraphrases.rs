@@ -396,4 +396,3 @@ async fn query_gemini(
     let map: serde_json::Map<String, serde_json::Value> = serde_json::from_str(json_text)?;
     Ok(map)
 }
-

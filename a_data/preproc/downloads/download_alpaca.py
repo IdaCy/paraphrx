@@ -1,7 +1,4 @@
 """
-Download and clean the Alpaca-52 k dataset.
-
-Usage:
 python a_data/preproc/download_alpaca.py --out a_data/alpaca/alpaca_52k_clean.jsonl
 """
 
@@ -15,7 +12,7 @@ from datasets import load_dataset
 
 
 def clean(text: str | None) -> str:
-    """Normalise newlines and strip surrounding whitespace."""
+    """Normalise newlines and strip surrounding whitespace"""
     if text is None:
         return ""
     # unify CRLF / CR to LF
@@ -43,7 +40,7 @@ def main(out_file: Path) -> None:
             }
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
-    print(f"Wrote {len(seen):,} unique prompts → {out_file}")
+    print(f"Wrote {len(seen):,} unique prompts -> {out_file}")
 
 
 if __name__ == "__main__":

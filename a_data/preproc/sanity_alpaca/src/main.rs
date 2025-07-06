@@ -125,7 +125,7 @@ fn main() -> Result<()> {
     println!("Unique rows           : {}", rows.len());
     println!("Duplicates skipped    : {duplicates}");
     println!("Dropped empty output  : {dropped_empty_output}");
-    println!("–– field empties –––––––––––––––––––");
+    println!("-- field empties -------------------");
     for k in ["instruction", "input", "output"] {
         println!(
             "  {:<11} {:>6} empty / {:>6} non-empty",
@@ -134,7 +134,7 @@ fn main() -> Result<()> {
             field_non_empty.get(k).unwrap_or(&0)
         );
     }
-    println!("–– token length (non-empty rows) ––");
+    println!("-- token length (non-empty rows) --");
     for k in ["instruction", "input", "output"] {
         if let Some((sum, max)) = len_stats.get(k) {
             let count = field_non_empty.get(k).copied().unwrap_or(0);
@@ -152,7 +152,7 @@ fn main() -> Result<()> {
             writeln!(out, "{}", serde_json::to_string(&row)?)?;
         }
     }
-    println!("Cleaned JSONL written → {}", out_path);
+    println!("Cleaned JSONL written -> {}", out_path);
     Ok(())
 }
 
