@@ -128,3 +128,6 @@ venv/
 xdg_cache/
 tmp/
 wandb
+
+
+c_assess_inf
