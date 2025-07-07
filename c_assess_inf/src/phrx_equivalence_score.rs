@@ -1,40 +1,57 @@
 /*
-cargo phrx_equivalence_score \
-  --model gemini-2.0-flash \
-  --api-key $GOOGLE_API_KEY \
-  --delay-ms 200 \
-  --api-call-maximum 250 \
+cargo run --release -- \
   data/prompts_with_paraphrases.json \
-  output/paraphrase_scores.json
+  output/paraphrase_scores.json \
+  --model "gemini-1.5-flash-latest" \
+  --api-key $GOOGLE_API_KEY
 */
 
 use anyhow::{anyhow, Context, Result};
 use chrono::Local;
 use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
-use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
-use serde::{Deserialize, Serialize};
+//use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
+use reqwest::header::HeaderMap;
+use serde::Deserialize;
 use serde_json::{json, Map as JsonMap, Value};
 use std::{
     collections::HashMap,
     fs,
     io::{BufWriter, Write},
     path::{Path, PathBuf},
-    time::{Duration, SystemTime},
+    time::Duration,
 };
+//use tiktoken_rs::CoreBPE;
 use tokio::time::sleep;
 
-// tiny rolling logger
+// Model Configuration & Tokenizer
+
+struct ModelLimits {
+    input: usize,
+    _output: usize, // Reserved for future use
+}
+
+// Returns the hard-coded token limits for a given model name
+fn get_model_limits(model_name: &str) -> ModelLimits {
+    match model_name {
+        "gemini-2.5-flash-preview-05-20" => ModelLimits { input: 1_048_576, _output: 65_536 },
+        "gemini-2.5-flash-lite-preview-06-17" => ModelLimits { input: 1_000_000, _output: 64_000 },
+        "gemini-2.5-flash" => ModelLimits { input: 1_048_576, _output: 65_536 },
+        "gemini-2.5-pro" => ModelLimits { input: 1_048_576, _output: 65_536 },
+        "gemini-2.0-flash" => ModelLimits { input: 1_048_576, _output: 8_192 },
+        // Fallback for any other model, including "gemini-1.5-flash-latest"
+        _ => ModelLimits { input: 1_000_000, _output: 8_192 },
+    }
+}
+
+// Logger & Data Structures
+
 struct Logger {
     writer: BufWriter<fs::File>,
 }
 impl Logger {
     fn new<P: AsRef<Path>>(p: P) -> Result<Self> {
-        let file = fs::OpenOptions::new()
-            .create(true)
-            .truncate(true)
-            .write(true)
-            .open(p)?;
+        let file = fs::OpenOptions::new().create(true).append(true).write(true).open(p)?;
         Ok(Self { writer: BufWriter::new(file) })
     }
     fn log(&mut self, msg: &str) {
@@ -44,305 +61,280 @@ impl Logger {
     }
 }
 
-// data model
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Deserialize)]
 struct Record {
     prompt_count: u32,
-    #[serde(alias = "instruction", alias = "instruction_original")]
+    #[serde(alias = "instruction_original", alias = "instruction")]
     instruction_original: String,
-
-    // everything else (all instruct_* variations, inputs, etc.)
     #[serde(flatten)]
     extra: JsonMap<String, Value>,
 }
 
-// CLI
+// Command Line Interface
+
 #[derive(Parser, Debug)]
-#[command(version, author, about = "Assess paraphrase similarity (content-level)")]
+#[command(version, author, about = "Assess semantic fidelity of paraphrases with dynamic chunking.")]
 struct Cli {
-    // JSON file containing the prompts + paraphrases (see README)
+    // JSON file containing the prompts + paraphrases
     prompts: PathBuf,
-
-    // Where to write the scored JSON file
     output: PathBuf,
-
     // Gemini model name
-    #[arg(long, default_value = "gemini-2.0-flash")]
+    #[arg(long, default_value = "gemini-1.5-flash-latest")]
     model: String,
-
-    // Maximum attempts per individual API call (for transient failures)
+    // Maximum attempts per failed request
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
-
-    // Milliseconds to wait after every *successful* request
+    // Delay (ms) after every *successful* call
     #[arg(long = "delay-ms", default_value_t = 200)]
     delay_ms: u64,
-
-    // Hard ceiling of total API calls in a single run (progress is saved)
-    #[arg(long = "api-call-maximum", default_value_t = 250)]
+    // Global cap on total calls for one run (progress is saved)
+    #[arg(long = "api-call-maximum", default_value_t = 10000)]
     api_call_maximum: usize,
-
-    // Google API key (overrides $GOOGLE_API_KEY env-var)
-    #[arg(long = "api-key", value_name = "KEY")]
+    // Google API key (alternatively: $GOOGLE_API_KEY)
+    #[arg(long = "api-key")]
     api_key: Option<String>,
 }
 
-// JSON Schema builder
-//fn schema_for_keys(_keys: &[String]) -> Value {
-//    json!({ "type": "object" })
-//}
+// Main Functions
 
-// helper: read & parse
-fn read_records<P: AsRef<Path>>(path: P, logger: &mut Logger) -> HashMap<u32, Record> {
-    match fs::read_to_string(&path).and_then(|s| serde_json::from_str::<Vec<Record>>(&s).map_err(Into::into)) {
-        Ok(vec) => vec.into_iter().map(|r| (r.prompt_count, r)).collect(),
-        Err(e) => {
-            logger.log(&format!("[fatal] could not parse {}: {e}", path.as_ref().display()));
-            HashMap::new()
-        }
+fn read_records<P: AsRef<Path>>(p: P, logger: &mut Logger) -> Result<Vec<Record>> {
+    let raw = fs::read_to_string(&p).with_context(|| format!("cannot read {}", p.as_ref().display()))?;
+    let records: Vec<Record> = serde_json::from_str(&raw).context("JSON parse error")?;
+    if records.is_empty() {
+        logger.log("[warn] Prompts file contained 0 records.");
     }
+    Ok(records)
 }
 
-// BUILD PROMPT
-fn build_eval_prompt(section: &str) -> String {
-    format!(
-        r#"You are an expert linguistic evaluator specialised in semantic equivalence.
-
-For *each* paraphrase below (keys starting with `instruct_`), compare its **requested content** to the `instruction_original`. Do **not** care about wording similarity - only whether they ask for the *same thing*. Score every paraphrase on this integer scale:
-
-10 - valid paraphrase; identical information request, merely reworded
-9  - fine paraphrase; very small shift in requested details (slight extra/omission)
-8  - still a paraphrase; noticeable added/omitted element but core request intact
-7  - partial; missing or adding substantive element → clearly different answer needed
-6  - different content dominates; only loosely related to original
-5  - overlaps in topic but mainly asks something else
-4  - faint topical intersection only
-3  - original topic barely present
-2  - almost totally unrelated
-1  - completely unrelated
-0  - unrelated and essentially not a coherent request
-
-Return **ONLY** JSON that conforms *exactly* to this Pydantic model (no extra keys, no code-fences):
-
-```python
-from typing import Dict
-from pydantic import BaseModel, conint
-
-class ParaphraseScore(BaseModel):
-    __root__: Dict[str, conint(ge=0, le=10)]
-```
-
-Begin items:
-
-{section}
-"#
-    )
+fn build_eval_prompt(original: &str, batch: &[(String, String)]) -> (String, String) {
+    let instructions = String::from(
+r#"You are an expert in linguistic semantics. Your task is to compare each provided "paraphrase" against the "Instruction original".
+Your entire focus must be on the **semantic content of the request**. Ignore any differences in style, tone, politeness, or wording.
+Score every single paraphrase **independently** using an **integer from 0 to 5**.
+- **5 (Perfect paraphrase):** The paraphrase asks for the *exact same information or action* as the original. Nothing has been added or removed from the core request. The wording can be completely different.
+- **4 (Minor deviation):** The paraphrase asks for the same thing but adds a very small constraint or piece of information (e.g., "... and explain"). Or, it omits a similarly minor detail.
+- **3 (Noticeable deviation):** The paraphrase clearly adds a new requirement (e.g., "explain your reasoning," "format as a list") or omits a key part of the original request. The resulting output would need to be different to be correct.
+- **2 (Major deviation):** The core task is substantially different. While on the same topic, the instructions have been fundamentally changed.
+- **1 (Different request):** The paraphrase is on the same broad topic but asks for something completely different.
+- **0 (Unrelated):** The paraphrase is nonsensical, irrelevant, or fails to make a request.
+You MUST return a valid JSON object. The JSON object should contain **every single key** from the "Paraphrases to score" list. Do NOT add comments, explanations, or use markdown code fences.
+Example Response Format:
+{
+  "instruct_aave": 5,
+  "instruct_apologetic": 5,
+  "instruct_comparison_table": 3
 }
 
-// Gemini call helper
-const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
-async fn query_gemini(
-    client: &reqwest::Client,
-    key: &str,
-    model: &str,
-    //schema: Value,
-    prompt: String,
-) -> Result<JsonMap<String, Value>> {
-    let url = format!("{ENDPOINT}/models/{model}:generateContent?key={key}");
+
+Instruction original:
+"#);
+
+    let mut paraphrases_text = String::from("\n\nParaphrases to score:\n");
+    for (key, text) in batch {
+        paraphrases_text.push_str(&format!("\"{}\": \"{}\"\n", key, text));
+    }
+    
+    let full_original_text = format!("\"{}\"", original);
+    let mut full_prompt = instructions.clone();
+    full_prompt.push_str(&full_original_text);
+    full_prompt.push_str(&paraphrases_text);
+    
+    (full_prompt, full_original_text)
+}
+
+
+async fn query_gemini(client: &reqwest::Client, key: &str, model: &str, prompt: String) -> Result<JsonMap<String, Value>> {
+    let url = format!("https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent?key={}", model, key);
     let body = json!({
-        "contents": [
-            {"role": "user", "parts": [{"text": prompt}]}
-        ],
-        "generationConfig": {
-            "responseMimeType": "application/json",
-            //"responseSchema": schema,
-            "temperature": 0.0,
-        }
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": { "responseMimeType": "application/json", "temperature": 0.0, "topP": 0.95 },
+        "safetySettings": [
+            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+        ]
     });
 
-    let resp = client.post(&url).json(&body).send().await?;
+    let resp = client.post(url).json(&body).send().await?;
+
     if !resp.status().is_success() {
         return Err(anyhow!("{} — {}", resp.status(), resp.text().await?));
     }
-    let resp_json: Value = resp.json().await?;
-    let json_text = resp_json["candidates"][0]["content"]["parts"][0]["text"].as_str()
-        .ok_or_else(|| anyhow!("unexpected response structure"))?;
-    let cleaned = json_text
-        .trim()
-        .trim_start_matches("```json")
-        .trim_start_matches("```")
-        .trim_end_matches("```")
-        .trim();
-    Ok(serde_json::from_str(cleaned)?)
+
+    let raw: Value = resp.json().await?;
+    let text = raw["candidates"][0]["content"]["parts"][0]["text"].as_str().ok_or_else(|| anyhow!("Unexpected response structure"))?;
+    parse_response(text)
 }
 
-// main async 
-#[tokio::main(flavor = "multi_thread")] // allows many concurrent sleeps
+fn parse_response(s: &str) -> Result<JsonMap<String, Value>> {
+    let cleaned = s.trim().trim_start_matches("```json").trim_start_matches("```").trim_end_matches("```").trim();
+    if let Ok(v) = serde_json::from_str(cleaned) { return Ok(v); }
+    if let (Some(start), Some(end)) = (cleaned.find('{'), cleaned.rfind('}')) {
+        if let Ok(v) = serde_json::from_str(&cleaned[start..=end]) { return Ok(v); }
+    }
+    Err(anyhow!("Could not parse valid JSON from response: {}", s))
+}
+
+// Main Application Logic
+
+#[tokio::main]
 async fn main() -> Result<()> {
     let cli = Cli::parse();
-
-    // logging setup
-    let log_dir = Path::new("logs");
-    fs::create_dir_all(log_dir)?;
-    let ts = Local::now().format("%Y%m%d-%H%M%S");
-    let stem = cli.output.file_stem().unwrap_or_default().to_string_lossy();
-    let log_path = log_dir.join(format!("{stem}_{ts}.logs"));
+    let api_key = cli.api_key.or_else(|| std::env::var("GOOGLE_API_KEY").ok())
+        .context("Missing Google API key. Provide it with --api-key or $GOOGLE_API_KEY")?;
+    
+    fs::create_dir_all("logs")?;
+    let stem = cli.output.file_stem().expect("Output must have a file name");
+    let log_path = PathBuf::from("logs").join(stem).with_extension("log");
     let mut logger = Logger::new(&log_path)?;
-    logger.log(&format!("run started → model={} log={}", cli.model, log_path.display()));
+    logger.log(&format!("Script started. Model: {}", cli.model));
 
-    // data ingest
-    logger.log("reading prompts JSON");
-    let records = read_records(&cli.prompts, &mut logger);
-    if records.is_empty() {
-        return Err(anyhow!("no valid records loaded"));
-    }
+    let headers = HeaderMap::new();
+    let client = reqwest::Client::builder()
+        .default_headers(headers)
+        .timeout(Duration::from_secs(180))
+        .build()?;
 
-    // sort strictly by prompt_count asc
-    let mut ordered: Vec<&Record> = records.values().collect();
-    ordered.sort_by_key(|r| r.prompt_count);
+    let bpe = tiktoken_rs::p50k_base().unwrap();
+    let model_limits = get_model_limits(&cli.model);
+    let token_safety_margin = 0.95; 
+    let effective_token_limit = (model_limits.input as f64 * token_safety_margin) as usize;
 
-    // api key + client
-    let api_key = cli
-        .api_key
-        .clone()
-        .or_else(|| std::env::var("GOOGLE_API_KEY").ok())
-        .context("provide --api-key or set GOOGLE_API_KEY")?;
-    let client = build_client()?;
+    let records = read_records(&cli.prompts, &mut logger)?;
+    
+    let mut existing_results: Vec<JsonMap<String, Value>> = if cli.output.exists() {
+        serde_json::from_reader(fs::File::open(&cli.output)?).unwrap_or_default()
+    } else {
+        Vec::new()
+    };
 
-    // progress tracking
-    let bar = ProgressBar::new(ordered.len() as u64);
-    bar.set_style(
-        ProgressStyle::with_template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})")?,
-    );
+    let pb = ProgressBar::new(records.len() as u64);
+    pb.set_style(ProgressStyle::default_bar()
+        .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({percent}%) - ID {msg}")?
+        .progress_chars("=>-"));
 
-    let mut results: Vec<Value> = Vec::new();
-    let mut issues: Vec<String> = Vec::new();
-    let mut calls_made: usize = 0;
+    let mut api_calls_made = 0;
+    let mut all_errors: HashMap<u32, Vec<String>> = HashMap::new();
 
-    for record in ordered {
-        let id = record.prompt_count;
+    let already_scored = |results: &Vec<JsonMap<String, Value>>, id: u32| -> bool {
+        results.iter()
+            .any(|e| e.get("prompt_count")
+                        .and_then(Value::as_u64)
+                        .map(|v| v as u32 == id)
+                        .unwrap_or(false))
+    };
 
-        if calls_made >= cli.api_call_maximum {
-            issues.push(format!("id {id}: unprocessed"));
+    'outer: for record in records {
+        pb.set_message(format!("{}", record.prompt_count));
+        if already_scored(&existing_results, record.prompt_count) {
+            pb.inc(1);
             continue;
         }
 
-        // gather instruct_* keys
-        let mut keys: Vec<String> = record
-            .extra
-            .keys()
-            .filter(|k| k.starts_with("instruct_"))
-            .cloned()
+        let mut paraphrases_to_process: Vec<_> = record.extra.iter()
+            .filter_map(|(k, v)| if k.starts_with("instruct_") { v.as_str().map(|s| (k.clone(), s.to_string())) } else { None })
             .collect();
-        keys.sort();
+        
+        let mut record_scores = JsonMap::new();
+        
+        // Flexible Chunking Loop
+        while !paraphrases_to_process.is_empty() {
+            if api_calls_made >= cli.api_call_maximum {
+                logger.log("[warn] API call maximum reached. Halting run.");
+                break 'outer;
+            }
 
-        if keys.is_empty() {
-            issues.push(format!("id {id}: no instruct_* fields found"));
-            continue;
-        }
+            //let (base_prompt_template, original_text) = build_eval_prompt(&record.instruction_original, &[]);
+            let (base_prompt_template, _) = build_eval_prompt(&record.instruction_original, &[]);
+            let mut current_tokens = bpe
+                .encode_with_special_tokens(&base_prompt_template)
+                .len();
+            
+            let mut chunk_paraphrases = Vec::new();
+            
+            // Greedily pack paraphrases into the current chunk
+            let mut i = 0;
+            while i < paraphrases_to_process.len() {
+                let (key, text) = &paraphrases_to_process[i];
+                let paraphrase_line = format!("\"{}\": \"{}\"\n", key, text);
+                let paraphrase_tokens = bpe.encode_with_special_tokens(&paraphrase_line).len();
 
-        // build section text for prompt
-        let mut section = String::new();
-        for key in &keys {
-            let paraphrase = record.extra[key].as_str().unwrap_or("");
-            section.push_str(&format!(
-                "### {key}\n[Instruction original]\n{}\n\n[Paraphrase]\n{}\n\n",
-                record.instruction_original, paraphrase
-            ));
-        }
-
-        // check token / size limit (Gemini 100k char safe guard)
-        //const MAX_CHARS: usize = 40_000;   // ~10 k tokens ⇒ well under 12 288
-        //if section.len() > MAX_CHARS {
-        //    issues.push(format!("id {id}: prompt too large, skipping"));
-        //    continue;
-        //}
-
-        // schema & prompt
-        //let schema = schema_for_keys(&keys);
-        let prompt = build_eval_prompt(&section);
-
-        // attempt loop
-        let mut success = false;
-        let mut eval_json = JsonMap::new();
-        let mut attempts_used = 0;
-        for attempt in 1..=cli.max_attempts {
-            logger.log(&format!("[call] id {id} attempt {attempt}/{}/{}", attempt, cli.max_attempts));
-
-            match query_gemini(&client, &api_key, &cli.model, prompt.clone()).await {
-                Ok(obj) => {
-                    logger.log(&format!("[ok]   id {id} attempt {attempt}"));
-                    eval_json = obj;
-                    success = true;
-                    attempts_used = attempt;
-                    break;
+                if current_tokens + paraphrase_tokens > effective_token_limit {
+                    break; // Chunk is full
                 }
-                Err(e) if attempt < cli.max_attempts => {
-                    let wait = 500u64 * 2u64.pow(attempt as u32)
-                        + (SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().subsec_millis() as u64) % 300;
-                    logger.log(&format!("[warn] id {id} attempt {attempt}: {e}"));
-                    sleep(Duration::from_millis(wait)).await;
-                }
-                Err(e) => {
-                    issues.push(format!("id {id}: {e}"));
-                    break;
+                
+                current_tokens += paraphrase_tokens;
+                chunk_paraphrases.push((key.clone(), text.clone()));
+                i += 1;
+            }
+
+            if chunk_paraphrases.is_empty() && !paraphrases_to_process.is_empty() {
+                let err_msg = format!("Paraphrase '{}' is too large to fit in a single API call.", paraphrases_to_process[0].0);
+                logger.log(&format!("[error] ID {}: {}", record.prompt_count, &err_msg));
+                all_errors.entry(record.prompt_count).or_default().push(err_msg);
+                paraphrases_to_process.remove(0); // Skip this paraphrase
+                continue;
+            }
+            
+            paraphrases_to_process.drain(0..i); // Remove the processed items
+            
+            // API Call for the Chunk
+            let (prompt, _) = build_eval_prompt(&record.instruction_original, &chunk_paraphrases);
+            api_calls_made += 1;
+            let mut success = false;
+            
+            for attempt in 1..=cli.max_attempts {
+                logger.log(&format!("[info] ID {}: Calling API for chunk of {} paraphrases (attempt {}/{})", record.prompt_count, chunk_paraphrases.len(), attempt, cli.max_attempts));
+                match query_gemini(&client, &api_key, &cli.model, prompt.clone()).await {
+                    Ok(parsed_scores) => {
+                        logger.log(&format!("[info] ID {}: API call SUCCEEDED on attempt {}", record.prompt_count, attempt));
+                        record_scores.extend(parsed_scores);
+                        success = true;
+                        break;
+                    }
+                    Err(e) => {
+                        logger.log(&format!("[error] ID {}: API call FAILED on attempt {}: {}", record.prompt_count, attempt, e));
+                        if attempt < cli.max_attempts { sleep(Duration::from_secs(3 * attempt as u64)).await; }
+                    }
                 }
             }
-        }
-
-        if !success {
-            bar.inc(1);
-            continue; // go next id, keep issues note
-        }
-
-        // build result object
-        let mut obj = JsonMap::new();
-        obj.insert("prompt_count".to_string(), json!(id));
-        // include perfect 10 for original explicitly
-        obj.insert("instruction_original".to_string(), json!(10));
-        for key in &keys {
-            if let Some(v) = eval_json.get(key) {
-                obj.insert(key.clone(), v.clone());
+            
+            if !success {
+                let err_msg = format!("Chunk of {} items failed after {} attempts.", chunk_paraphrases.len(), cli.max_attempts);
+                logger.log(&format!("[fatal] ID {}: {}", record.prompt_count, &err_msg));
+                all_errors.entry(record.prompt_count).or_default().push(err_msg);
             } else {
-                issues.push(format!("id {id}: missing score for {key}"));
+                sleep(Duration::from_millis(cli.delay_ms)).await;
             }
         }
-        results.push(Value::Object(obj));
-        calls_made += 1;
-        bar.inc(1);
+        
+        let mut final_entry = JsonMap::new();
+        final_entry.insert("prompt_count".to_string(), json!(record.prompt_count));
+        final_entry.insert("instruction_original".to_string(), json!(record.instruction_original));
+        final_entry.insert("scores".to_string(), json!(record_scores));
+        
+        existing_results.push(final_entry);
 
-        // global rate limit sleep
-        if cli.delay_ms > 0 && attempts_used == 1 {
-            sleep(Duration::from_millis(cli.delay_ms)).await;
+        let mut writer = BufWriter::new(fs::File::create(&cli.output)?);
+        serde_json::to_writer_pretty(&mut writer, &existing_results)?;
+        writer.flush()?;
+
+        pb.inc(1);
+    }
+    
+    pb.finish_with_message("Processing complete");
+    logger.log("RUN FINISHED");
+    if all_errors.is_empty() {
+        logger.log("No fatal errors were recorded during the run.");
+    } else {
+        logger.log(&format!("!!! Found fatal errors for {} prompt IDs:", all_errors.len()));
+        for (id, errors) in &all_errors {
+            logger.log(&format!("  - ID {}:", id));
+            for err in errors {
+                logger.log(&format!("    - {}", err));
+            }
         }
     }
-    bar.finish_with_message("done");
-
-    // write outputs
-    fs::create_dir_all(cli.output.parent().unwrap_or(Path::new(".")))?;
-    fs::write(&cli.output, serde_json::to_string_pretty(&results)?)?;
-    logger.log("results written");
-
-    // write issues (includes unprocessed list)
-    if !issues.is_empty() {
-        let issues_path = cli.output.with_extension("issues.json");
-        fs::write(&issues_path, serde_json::to_string_pretty(&issues)?)?;
-        logger.log(&format!("wrote {} issues to {}", issues.len(), issues_path.display()));
-    }
-
-    println!(
-        "done - {} processed, {} issues - log {}",
-        results.len(),
-        issues.len(),
-        log_path.display()
-    );
-
     Ok(())
-}
-
-// reqwest client builder
-fn build_client() -> Result<reqwest::Client> {
-    let mut headers = HeaderMap::new();
-    headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
-    Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
