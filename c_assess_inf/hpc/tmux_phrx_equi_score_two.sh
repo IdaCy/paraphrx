@@ -4,6 +4,7 @@ trap 'echo "› CTRL-C - stopping"; kill -TERM -- -$$' INT TERM
 set -m
 
 SCORING_MODEL="gemini-2.5-flash-preview-05-20"
+#SCORING_MODEL="gemini-2.5-flash-lite-preview-06-17"
 DATASET="alpaca"
 GOOGLE_API_KEY1="${GOOGLE_API_KEY1:-}"
 ORIG_ARGS=("$@") 
