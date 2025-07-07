@@ -91,3 +91,4 @@ serde_json = "1"
 tokio      = { version = "1", features = ["full"] }
 simplelog = "0.12"
 log        = "0.4"
+tiktoken-rs = "0.6.0"
