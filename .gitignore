@@ -123,17 +123,17 @@ c_assess_inf/src/phrx_equivalence_score_to10.rs
 c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
 
-f_finetune/outputs/bucket*
 f_finetune/src/tmux_score_starter_free_withkey.sh
 f_finetune/src/tmux_score_starter_free_withkey2.sh
 f_finetune/model
 f_finetune/data/alpaca_gemma-2-2b-it.json
 f_finetune/data/exhaustive_gemma.json
-f_finetune/outputs/inference*
-f_finetune/outputs/ft_inf_results/*_part*.json
-f_finetune/outputs/ft_inf_scores/*_part*.json
-f_finetune/outputs/ft_inf_scores/issues
-f_finetune/outputs/ft_inf_scores/unprocessed
+f_finetune/outputs/alpaca/bucket*
+f_finetune/outputs/alpaca/inference*
+f_finetune/outputs/alpaca/ft_inf_results/*_part*.json
+f_finetune/outputs/alpaca/ft_inf_scores/*_part*.json
+f_finetune/outputs/alpaca/ft_inf_scores/issues
+f_finetune/outputs/alpaca/ft_inf_scores/unprocessed
 
 hpcnotes
 envs
