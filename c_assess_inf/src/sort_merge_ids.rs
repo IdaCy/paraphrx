@@ -1,8 +1,8 @@
 /*
 cargo sort_merge_ids \
-    f_finetune/outputs/ft_inf_scores/buckets5.json \
-    f_finetune/outputs/ft_inf_scores/buckets5_part1.json \
-    f_finetune/outputs/ft_inf_scores/buckets5_part2.json
+    f_finetune/outputs/ft_inf_scores/buckets2.json \
+    f_finetune/outputs/ft_inf_scores/buckets2_part1_results_gemini_2_5_flash_preview_05_20_20250706_222440.json \
+    f_finetune/outputs/ft_inf_scores/buckets2_part2_results_gemini_2_5_flash_preview_05_20_20250706_222457.json
 */
 
 use std::{
