@@ -185,8 +185,14 @@ async fn main() -> Result<()> {
         .context("Missing Google API key. Provide it with --api-key or $GOOGLE_API_KEY")?;
     
     fs::create_dir_all("logs")?;
-    let stem = cli.output.file_stem().expect("Output must have a file name");
-    let log_path = PathBuf::from("logs").join(stem).with_extension("log");
+    let stem = cli
+        .output
+        .file_stem()
+        .expect("Output must have a file name");
+    let ts = Local::now().format("%Y-%m-%d_%H-%M-%S").to_string();
+    let filename = format!("{}_{ts}.log", stem.to_string_lossy());
+    let log_path = PathBuf::from("logs").join(filename);
+    //let log_path = PathBuf::from("logs").join(stem).with_extension("log");
     let mut logger = Logger::new(&log_path)?;
     logger.log(&format!("Script started. Model: {}", cli.model));
 
