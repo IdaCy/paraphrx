@@ -18,7 +18,7 @@ a_data/preproc/rephras/target
 a_data/preproc/alpaca_sanity
 a_data/sqlite
 
-a_data/alpaca/x*
+a_data/alpaca/paraphrases_500_part*.json
 a_data/alpaca/merge_instructs/bolastto.json
 a_data/alpaca/merge_instructs/coobsyvo.json
 a_data/alpaca/merge_instructs/exlesp.json
@@ -33,6 +33,7 @@ a_data/alpaca/paraphrases_500_droppedFields
 a_data/alpaca/paraphrases_slice_100
 a_data/alpaca/similarity_judgement
 
+a_data/gsm8k/paraphrases_500_part*.json
 a_data/gsm8k/paraphrases_500
 a_data/gsm8k/original
 a_data/gsm8k/prxed
@@ -41,6 +42,7 @@ a_data/gsm8k/paraphrases_500
 a_data/gsm8k/paraphrases_sliced_100
 a_data/gsm8k/paraphrases_500.json
 
+a_data/mmlu/paraphrases_500_part*.json
 a_data/mmlu/paraphrases_500
 a_data/mmlu/unselected
 a_data/mmlu/all.json
@@ -117,10 +119,11 @@ c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/answers*
 c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/scores*
 c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/all.json
 
-
+c_assess_inf/src/phrx_equivalence_score_to10.rs
 c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
 
+f_finetune/outputs/bucket*
 f_finetune/src/tmux_score_starter_free_withkey.sh
 f_finetune/src/tmux_score_starter_free_withkey2.sh
 f_finetune/model
