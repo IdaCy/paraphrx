@@ -66,6 +66,7 @@ c_assess_inf/output/gsm8k_answer_scores
 c_assess_inf/output/mmlu_answer_scores
 
 c_assess_inf/output
+c_assess_inf/src/phrx_equivalence_score_static.rs
 
 # alpaca
 c_assess_inf/output/alpaca/gemma-2-2b-it/answers*
