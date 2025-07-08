@@ -147,3 +147,17 @@ xdg_cache/
 tmp/
 wandb
 
+!a_data
+!a_data/alpaca/
+!a_data/alpaca/paraphrases_500_part1_no236789_phrx_scores.json
+!a_data/alpaca/paraphrases_500_part2_phrx_scores.json
+!a_data/gsm8k/
+!a_data/gsm8k/paraphrases_500_part1_phrx_scores.json
+!a_data/alpaca/paraphrases_500_part1_only23.json
+!a_data/alpaca/paraphrases_500_part1_only67_phrx_scores.json
+!a_data/alpaca/paraphrases_500_part1_only89_phrx_scores.json
+
+a_data/
+a_data/alpaca/
+a_data/alpaca/*
+a_data/alpaca/paraphrases_500_part1.json
