@@ -3,7 +3,7 @@
 python finetune_paraphrx.py \
   --data_paths f_finetune/data/alpaca_gemma-2-2b-it.json \
   --buckets 1-3 \
-  --output_dir out/gemma_lora_bkt1_3 \
+  --output_dir f_finetune/outputs/alpaca/ft_inf_results/bucket1.json \
   --run_name gemma_bkt1_3 \
   --model_path f_finetune/model
 """
