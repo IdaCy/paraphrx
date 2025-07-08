@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-xxx
+
 TS=$(date '+%Y-%m-%d %H:%M:%S')
 echo "$TS - tmux_score_starter_free_one script started" >>"$HOME/times.log"
 echo "$TS - tmux_score_starter_free_one script started"
@@ -10,9 +10,9 @@ trap 'echo "CTRL-C - stopping"; kill -- -$$' INT TERM
 MODEL="gemini-2.5-flash-preview-05-20"
 # could "gemini-2.5-flash-lite-preview-06-17"
 INSTR_DIR="f_finetune/data/alpaca_gemma-2-2b-it.json"
-ANSW_DIR="f_finetune/outputs/ft_inf_results"
-OUT_DIR="f_finetune/outputs/ft_inf_scores"
-IN_NAME="buckets2_part1"
+ANSW_DIR="f_finetune/outputs/alpaca/ft_inf_results"
+OUT_DIR="f_finetune/outputs/alpaca/ft_inf_scores"
+IN_NAME="bucket1_part1"
 
 # hard-coded per-call keys
 KEY_A=""
@@ -38,7 +38,7 @@ fi
 # logging
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/master_score_starter_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/master_one_score_starter_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1
 set -x
 
