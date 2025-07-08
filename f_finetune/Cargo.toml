@@ -29,3 +29,7 @@ path = "src/prepare_data.rs"
 [[bin]]
 name = "score_results"
 path = "src/score_results.rs"
+
+[[bin]]
+name = "split_train_test"
+path = "src/split_train_test.rs"
