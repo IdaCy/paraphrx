@@ -158,3 +158,6 @@ wandb
 a_data/alpaca/equi_scores
 a_data/gsm8k/equi_scores
 a_data/mmlu/equi_scores
+
+f_finetune/data/output_splits/
+f_finetune/src/split_train_test.rs

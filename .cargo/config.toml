@@ -34,3 +34,4 @@ perplexity = "run --manifest-path e_eval/Cargo.toml --bin perplexity --release -
 gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download --release --"
 prepare_data = "run --manifest-path f_finetune/Cargo.toml --bin prepare_data --release --"
 score_results = "run --manifest-path f_finetune/Cargo.toml --bin score_results --release --"
+split_train_test = "run --manifest-path f_finetune/Cargo.toml --bin split_train_test --release --"

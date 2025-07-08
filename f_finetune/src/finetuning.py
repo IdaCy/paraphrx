@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 """
 python finetune_paraphrx.py \
-  --data_paths f_finetune/data/alpaca_gemma-2-2b-it.json \
-  --buckets 1-3 \
+  --data_paths f_finetune/data/output_splits/buckets_1-3_train.json \
   --output_dir f_finetune/outputs/alpaca/ft_inf_results/bucket1.json \
   --run_name gemma_bkt1_3 \
   --model_path f_finetune/model
@@ -28,7 +27,7 @@ from transformers import (
     AutoModelForCausalLM,
     Trainer,
     TrainingArguments,
-    DataCollatorForLanguageModeling,
+    DataCollatorForSeq2Seq,
     BitsAndBytesConfig,
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -209,10 +208,22 @@ def main(argv: List[str] | None = None) -> None:
     examples = load_examples(args.data_paths, buckets, args.use_paraphrase_answer)
 
     def to_tokenised_dict(ex: Example):
-        prompt = ex.to_prompt(add_eos=True)
-        # let the data-collator handle all padding
-        tokenised = tokenizer(prompt, truncation=True, max_length=1024, padding=False)
-        return tokenised
+        # --- build prefix (everything up to “### Response:\n”) ---
+        prefix  = ex.to_prompt(add_eos=False)          # no answer, no <EOS>
+        answer  = ex.answer + tokenizer.eos_token
+
+        full_txt = prefix + answer
+        enc_full = tokenizer(full_txt,
+                             truncation=True,
+                             max_length=1024,
+                             padding=False)
+
+        prefix_len = len(tokenizer(prefix,
+                                   add_special_tokens=False)["input_ids"])
+
+        labels = [-100] * prefix_len + enc_full["input_ids"][prefix_len:]
+        enc_full["labels"] = labels                     # ← important
+        return enc_full
 
     tokenised_ds = Dataset.from_list([dataclasses.asdict(e) for e in examples])
     tokenised_ds = tokenised_ds.map(lambda record: to_tokenised_dict(Example(record['instruction'], record['inp'], record['answer'])),
@@ -220,14 +231,12 @@ def main(argv: List[str] | None = None) -> None:
 
     logging.info("Tokenisation finished - %d rows", len(tokenised_ds))
 
-    # Train / val split - stratified not necessary here
-    split = tokenised_ds.train_test_split(test_size=0.2, seed=args.seed)
-    train_ds = split['train']
-    val_ds = split['test']
+    train_ds = tokenised_ds
+    logging.info("Dataset size - train: %d (no validation split)", len(train_ds))
 
-    logging.info("Dataset sizes - train: %d, val: %d", len(train_ds), len(val_ds))
-
-    data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
+    #data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
+    #data_collator = DataCollatorForSeq2Seq(tokenizer, model=model, padding=True)
+    data_collator = DataCollatorForSeq2Seq(tokenizer, model=model, label_pad_token_id=-100)
 
     # TrainingArguments & Trainer
     train_args = TrainingArguments(
@@ -242,7 +251,7 @@ def main(argv: List[str] | None = None) -> None:
         warmup_ratio=args.warmup_ratio,
         logging_steps      = 500,
         logging_first_step = True,
-        eval_strategy = "epoch",
+        eval_strategy = "no",
         save_strategy       = "epoch",
         #eval_steps=100,
         #save_steps=args.save_steps,
@@ -269,10 +278,10 @@ def main(argv: List[str] | None = None) -> None:
         model=model,
         args=train_args,
         train_dataset=train_ds,
-        eval_dataset=val_ds,
         data_collator=data_collator,
         callbacks=[StepDigest()],
     )
+
 
     # Train
     trainer.train()

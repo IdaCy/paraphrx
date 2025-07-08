@@ -5,7 +5,6 @@ f_finetune/src/ft_inference_alpaca_gsm8k.py \
   --base_model_path f_finetune/model \
   --lora_path        f_finetune/outputs/buckets3/final \
   --buckets 1-3 \
-  --split val \
   --batch 8 --max_tokens 128 --output_json out/bkt1_3_val.json
 """
 
@@ -15,7 +14,6 @@ import argparse
 import json
 import logging
 import os
-import random
 import signal
 import sys
 from datetime import datetime
@@ -124,9 +122,8 @@ def load_examples(paths: List[str], buckets: List[int]) -> List[dict]:
     logging.info("Loaded %d paraphrases matching buckets %s", len(examples), buckets)
     return examples
 
-
+"""
 def make_holdout_split(examples: List[dict], seed: int, split: str, test_ratio: float = 0.2) -> List[dict]:
-    """Replicate the train/val split logic used during fine-tuning"""
 
     if split not in {"train", "val"}:
         raise ValueError("--split must be either 'train' or 'val'")
@@ -139,7 +136,7 @@ def make_holdout_split(examples: List[dict], seed: int, split: str, test_ratio: 
     chosen = splitted["test" if split == "val" else "train"]
     logging.info("Using %s split -> %d examples", split, len(chosen))
     return list(chosen)
-
+"""
 
 # Flatten for batched generation
 
@@ -175,7 +172,7 @@ def main() -> None:
 
     # Dataset filtering
     parser.add_argument("--buckets", default="1-5", help="Bucket spec, e.g. '1', '1-3', '2,4'")
-    parser.add_argument("--split", default="val", choices=["train", "val"], help="Evaluate on the held-out val (default) or train portion")
+    #parser.add_argument("--split", default="val", choices=["train", "val"], help="Evaluate on the held-out val (default) or train portion")
     parser.add_argument("--seed", type=int, default=42, help="Random seed - must match training to reproduce split")
 
     # Generation hyper-params
@@ -202,9 +199,8 @@ def main() -> None:
 
     # Dataset preparation
     buckets = parse_bucket_spec(args.buckets)
-    raw_examples = load_examples(args.data_paths, buckets)
-    heldout_examples = make_holdout_split(raw_examples, seed=args.seed, split=args.split)
-    flat_queue, results_map = flatten_examples(heldout_examples)
+    examples = load_examples(args.data_paths, buckets)
+    flat_queue, results_map = flatten_examples(examples)
 
     # Sort shortest -> longest to optimise batching
     flat_queue.sort(key=lambda t: len(t[2]))
@@ -282,7 +278,10 @@ def main() -> None:
         inputs = tokenizer(list(prompts), return_tensors="pt", padding=True).to(model.device)
         input_lens = inputs["attention_mask"].sum(dim=1)
 
-        gen_kwargs = dict(max_new_tokens=args.max_tokens, pad_token_id=tokenizer.eos_token_id)
+        gen_kwargs = dict(max_new_tokens=args.max_tokens,
+                          pad_token_id=tokenizer.eos_token_id,
+                          eos_token_id=tokenizer.eos_token_id,
+                          )
         if args.temperature > 0:
             gen_kwargs.update(temperature=args.temperature, do_sample=True)
         else:
