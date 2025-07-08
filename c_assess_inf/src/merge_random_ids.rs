@@ -3,6 +3,11 @@ cargo merge_random_ids \
     c_assess_inf/output/gsm8k/Qwen2.5-3B-Instruct/scores_500/voice.json \
     c_assess_inf/output/gsm8k/Qwen2.5-3B-Instruct/scores_500/voice201_results_gemini_2_5_flash_preview_05_20.json \
     c_assess_inf/output/gsm8k/Qwen2.5-3B-Instruct/scores_500/voicelast50_results_gemini_2_5_flash_preview_05_20.json
+
+
+cargo merge_random_ids \
+    a_data/mmlu/equi_scores/paraphrases_500_part1_phrx_scores.json \
+    a_data/mmlu/equi_scores/paraphrases_500_part2_phrx_scores.json
 */
 
 use std::{env, fs};

@@ -1,6 +1,6 @@
 /*
 cargo split_random_ids \
-    a_data/mmlu/paraphrases_500.json \
+    f_finetune/outputs/alpaca/ft_inf_results/buckets5.json \
     250 250
 */
 
