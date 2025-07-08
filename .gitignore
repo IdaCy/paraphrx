@@ -17,8 +17,10 @@ a_data/alpaca/slice_1k
 a_data/preproc/rephras/target
 a_data/preproc/alpaca_sanity
 a_data/sqlite
+a_data/alpaca/paraphrases_500_part*
 
-a_data/alpaca/paraphrases_500_part*.json
+a_data/alpaca/paraphrases_500_*part1.json
+a_data/alpaca/paraphrases_500_*part2.json
 a_data/alpaca/merge_instructs/bolastto.json
 a_data/alpaca/merge_instructs/coobsyvo.json
 a_data/alpaca/merge_instructs/exlesp.json
@@ -135,6 +137,9 @@ f_finetune/outputs/alpaca/ft_inf_results/*_part*.json
 f_finetune/outputs/alpaca/ft_inf_scores/*_part*.json
 f_finetune/outputs/alpaca/ft_inf_scores/issues
 f_finetune/outputs/alpaca/ft_inf_scores/unprocessed
+f_finetune/src/tmux_score_1.sh
+f_finetune/src/tmux_score_2.sh
+f_finetune/src/tmux_score_3.sh
 
 hpcnotes
 envs
@@ -147,3 +152,6 @@ xdg_cache/
 tmp/
 wandb
 
+a_data/alpaca/equi_scores
+a_data/gsm8k/equi_scores
+a_data/mmlu/equi_scores
