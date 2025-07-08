@@ -123,9 +123,11 @@ c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/all.json
 c_assess_inf/src/phrx_equivalence_score_to10.rs
 c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
+c_assess_inf/hpc/tmux_phrx_and_ftscore_*
 
 f_finetune/src/tmux_score_starter_free_withkey.sh
 f_finetune/src/tmux_score_starter_free_withkey2.sh
+f_finetune/src/score_results_static.rs
 f_finetune/model
 f_finetune/data/alpaca_gemma-2-2b-it.json
 f_finetune/data/exhaustive_gemma.json
@@ -146,4 +148,5 @@ venv/
 xdg_cache/
 tmp/
 wandb
+
 
