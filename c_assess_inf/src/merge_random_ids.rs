@@ -6,8 +6,10 @@ cargo merge_random_ids \
 
 
 cargo merge_random_ids \
-    a_data/mmlu/equi_scores/paraphrases_500_part1_phrx_scores.json \
-    a_data/mmlu/equi_scores/paraphrases_500_part2_phrx_scores.json
+    f_finetune/data/output_splits/buckets_1-5_train_part1.json \
+    f_finetune/data/output_splits/buckets_1-5_train_part2.json \
+    f_finetune/data/output_splits/buckets_1-5_train_part3.json \
+    f_finetune/data/output_splits/buckets_1-5_train_part4.json
 */
 
 use std::{env, fs};
