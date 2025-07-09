@@ -2,7 +2,7 @@
 """
 python finetune_paraphrx.py \
   --data_paths f_finetune/data/output_splits/buckets_1-3_train.json \
-  --output_dir f_finetune/outputs/alpaca/ft_inf_results/bucket1.json \
+  --output_dir f_finetune/outputs/alpaca/ft_inf_results/bucket3.json \
   --run_name gemma_bkt1_3 \
   --model_path f_finetune/model
 """
@@ -208,7 +208,7 @@ def main(argv: List[str] | None = None) -> None:
     examples = load_examples(args.data_paths, buckets, args.use_paraphrase_answer)
 
     def to_tokenised_dict(ex: Example):
-        # --- build prefix (everything up to “### Response:\n”) ---
+        # build prefix (everything up to “### Response:\n”)
         prefix  = ex.to_prompt(add_eos=False)          # no answer, no <EOS>
         answer  = ex.answer + tokenizer.eos_token
 
