@@ -1,0 +1,660 @@
+#!/bin/bash
+#PBS -N prx_alpaca_gen_phrx
+#PBS -l select=1:ncpus=8:mem=64gb
+#PBS -l walltime=65:00:00
+#PBS -o logs/prx_alpaca_gen_phrx.out
+#PBS -e logs/prx_alpaca_gen_phrx.err
+
+# Move to the directory from which the job was submitted
+cd "$PBS_O_WORKDIR"
+. "$HOME/.cargo/env"
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - prx_alpaca_gen_phrx started" >> "$HOME/times.log"
+
+export GOOGLE_API_KEY=""
+
+# Path to the Rust workspace
+MANIFEST_PATH="$PBS_O_WORKDIR/a_data/preproc/rephras/Cargo.toml"
+
+
+
+
+### SLICE 1
+SLICE="1"
+IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_style_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set style \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_length_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set length \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_obstruction_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set obstruction \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_special_chars_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_syntax_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set syntax \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_language_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set language \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_context_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set context \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_voice_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set voice \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_tone_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_boundary_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set boundary \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_extra_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set extra \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+
+### SLICE 2 ###
+SLICE="2"
+IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_style_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set style \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_length_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set length \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_obstruction_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set obstruction \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_special_chars_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_syntax_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set syntax \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_language_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set language \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_context_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set context \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_voice_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set voice \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_tone_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_boundary_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set boundary \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_extra_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set extra \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+
+### SLICE 3 ###
+SLICE="3"
+IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_style_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set style \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_length_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set length \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_obstruction_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set obstruction \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_special_chars_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_syntax_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set syntax \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_language_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set language \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_context_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set context \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_voice_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set voice \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_tone_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_boundary_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set boundary \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_extra_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set extra \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+
+
+
+
+### SLICE 4 ###
+SLICE="4"
+IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_style_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set style \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_length_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set length \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_obstruction_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set obstruction \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_special_chars_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_syntax_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set syntax \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_language_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set language \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_context_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set context \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_voice_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set voice \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_tone_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_boundary_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set boundary \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_extra_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set extra \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+
+
+
+
+### SLICE 5 ###
+SLICE="4"
+IN_JSON="a_data/alpaca/slice_100/alpaca_slice"$SLICE".json"
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_style_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set style \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_length_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set length \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_obstruction_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set obstruction \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_special_chars_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set special_chars \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_syntax_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set syntax \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_language_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set language \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_context_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set context \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_voice_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set voice \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_tone_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set tone \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_boundary_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set boundary \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+OUT_JSON="a_data/alpaca/slice_100/prxed_extra_slice"$SLICE".json"
+
+# Run the Rust program
+cargo run \
+    --manifest-path "$MANIFEST_PATH" \
+    --release -- \
+    --version-set extra \
+    "$IN_JSON" \
+    "$OUT_JSON"
+
+
+
+
+
+echo "$(date "+%Y-%m-%d %H:%M:%S") - prx_alpaca_gen_phrx finished" >> "$HOME/times.log"
