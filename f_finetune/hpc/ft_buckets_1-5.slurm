@@ -1,25 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_buckets3
+#SBATCH --job-name=ft_buckets_1-5
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets3.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets3.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-5.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-5.err
 
 set -euo pipefail
-echo "$(date) – ft_buckets3 job started on $(hostname)"
-echo "$(date) – ft_buckets3 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
-
-OUT_DIR="f_finetune/outputs_bkts3"
+echo "$(date) – ft_buckets_1-5 job started on $(hostname)"
+echo "$(date) – ft_buckets_1-5 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache $OUT_DIR
+mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs_buckets_1-5
 export TMPDIR=$PROJ/tmp
 export HF_HOME=$PROJ/hf_cache
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
@@ -28,7 +26,7 @@ export XDG_CACHE_HOME=$PROJ/xdg_cache
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=
 
-# Pick an available Python-3 binary (prefers 3.12 -> 3.8)
+# Pick an available Python-3 binary (prefers 3.12 -as 3.8)
 for P in python3.12 python3.11 python3.10 python3.9 python3; do
   if command -v $P >/dev/null 2>&1; then PYBIN=$(command -v $P); break; fi
 done
@@ -65,15 +63,14 @@ source /scratch_dgxl/ifc24/.hf_token || true
 WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx}
 
 RUN_SCRIPT="f_finetune/src/finetuning.py"
-INPUT_JSON="f_finetune/data/alpaca_gemma-2-2b-it.json"
+INPUT_JSON="f_finetune/data/output_splits/buckets_1-5_train.json"
 
 srun python "$RUN_SCRIPT" \
-  --run_name buckets3 \
   --data_paths "$INPUT_JSON" \
-  --buckets "1-3" \
-  --output_dir "$OUT_DIR" \
+  --output_dir f_finetune/outputs_buckets_1-5 \
+  --run_name buckets_1-5 \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) – ft_buckets3 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – ft_buckets3 job finished OK"
+echo "$(date) – ft_buckets_1-5 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_buckets_1-5 job finished OK"

@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_bucket1
+#SBATCH --job-name=ft_buckets_1-2
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_bucket2.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_bucket2.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-2.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-2.err
 
 set -euo pipefail
-echo "$(date) – ft_bucket1 job started on $(hostname)"
-echo "$(date) – ft_bucket1 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_buckets_1-2 job started on $(hostname)"
+echo "$(date) – ft_buckets_1-2 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs
+mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs_buckets_1-2
 export TMPDIR=$PROJ/tmp
 export HF_HOME=$PROJ/hf_cache
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
@@ -63,15 +63,14 @@ source /scratch_dgxl/ifc24/.hf_token || true
 WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx}
 
 RUN_SCRIPT="f_finetune/src/finetuning.py"
-INPUT_JSON="f_finetune/data/alpaca_gemma-2-2b-it.json"
+INPUT_JSON="f_finetune/data/output_splits/buckets_1-2_train.json"
 
 srun python "$RUN_SCRIPT" \
-  --run_name bucket1 \
   --data_paths "$INPUT_JSON" \
-  --buckets 1 \
-  --output_dir f_finetune/outputs \
+  --output_dir f_finetune/outputs_buckets_1-2 \
+  --run_name buckets_1-2 \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) – ft_bucket1 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – ft_bucket1 job finished OK"
+echo "$(date) – ft_buckets_1-2 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_buckets_1-2 job finished OK"
