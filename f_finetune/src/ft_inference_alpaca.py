@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-f_finetune/src/ft_inference_alpaca_gsm8k.py \
+f_finetune/src/ft_inference_alpaca.py \
   --data_paths f_finetune/data/alpaca_gemma-2-2b-it.json \
   --base_model_path f_finetune/model \
   --lora_path        f_finetune/outputs/buckets3/final \
@@ -275,7 +275,14 @@ def main() -> None:
         batch_slice = flat_queue[start : start + args.batch]
         pcounts, keys, prompts = zip(*batch_slice)
 
-        inputs = tokenizer(list(prompts), return_tensors="pt", padding=True).to(model.device)
+        #inputs = tokenizer(list(prompts), return_tensors="pt", padding=True).to(model.device)
+        inputs = tokenizer(list(prompts),
+                           return_tensors="pt",
+                           padding=True,
+                           truncation=True,
+                           max_length=tokenizer.model_max_length
+                          ).to(model.device)
+
         input_lens = inputs["attention_mask"].sum(dim=1)
 
         gen_kwargs = dict(max_new_tokens=args.max_tokens,
