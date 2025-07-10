@@ -26,7 +26,7 @@ done
 
 # paths (instructions path points to folder that contains the json files)
 INSTR_DIR="a_data/${DATASET}/${NAME}.json"
-SCORE_DIR="a_data/${DATASET}/${NAME}_phrx_scores.json"
+SCORE_DIR="a_data/${DATASET}/equi_scores/${NAME}_phrx_scores.json"
 
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
