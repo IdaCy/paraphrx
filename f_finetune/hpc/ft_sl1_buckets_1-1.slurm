@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_buckets_1-4
+#SBATCH --job-name=ft_sl1_buckets_1-1
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-4.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-4.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_sl1_buckets_1-1.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_sl1_buckets_1-1.err
 
 set -euo pipefail
-echo "$(date) – ft_buckets_1-4 job started on $(hostname)"
-echo "$(date) – ft_buckets_1-4 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_sl1_buckets_1-1 job started on $(hostname)"
+echo "$(date) – ft_sl1_buckets_1-1 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/alpaca/all_layers/outputs_buckets_1-4
+mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/alpaca/all_layers/outputs_buckets_1-1
 export TMPDIR=$PROJ/tmp
 export HF_HOME=$PROJ/hf_cache
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
@@ -62,16 +62,16 @@ source /scratch_dgxl/ifc24/.hf_token || true
 [ -f /scratch_dgxl/ifc24/.wandb_key ] && source /scratch_dgxl/ifc24/.wandb_key
 WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx}
 
-RUN_SCRIPT="f_finetune/src/finetuning.py"
-INPUT_JSON="f_finetune/data/output_splits/buckets_1-4_train.json"
+RUN_SCRIPT="f_finetune/src/finetuning_specific_layers.py"
+INPUT_JSON="f_finetune/data/output_splits/buckets_1-1_train.json"
 
 srun python "$RUN_SCRIPT" \
   --data_paths "$INPUT_JSON" \
-  --output_dir f_finetune/outputs/alpaca/all_layers/outputs_buckets_1-4 \
-  --run_name buckets_1-4 \
-  --buckets 1-4 \
+  --output_dir f_finetune/outputs/alpaca/specific_layers/outputs_buckets_1-1 \
+  --run_name buckets_1-1 \
+  --buckets 1-1 \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) – ft_buckets_1-4 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – ft_buckets_1-4 job finished OK"
+echo "$(date) – ft_sl1_buckets_1-1 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_sl1_buckets_1-1 job finished OK"
