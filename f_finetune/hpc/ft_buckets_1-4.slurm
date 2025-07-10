@@ -17,7 +17,7 @@ echo "$(date) – ft_buckets_1-4 job started OK" >> "$SLURM_SUBMIT_DIR/times.log
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs_buckets_1-4
+mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/alpaca/all_layers/outputs_buckets_1-4
 export TMPDIR=$PROJ/tmp
 export HF_HOME=$PROJ/hf_cache
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
@@ -67,8 +67,9 @@ INPUT_JSON="f_finetune/data/output_splits/buckets_1-4_train.json"
 
 srun python "$RUN_SCRIPT" \
   --data_paths "$INPUT_JSON" \
-  --output_dir f_finetune/outputs_buckets_1-4 \
+  --output_dir f_finetune/outputs/alpaca/all_layers/outputs_buckets_1-4 \
   --run_name buckets_1-4 \
+  --buckets 1-4 \
   --bf16 \
   $WANDB_FLAG
 
