@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_buckets_1-5
+#SBATCH --job-name=ft_all_layers_buckets_1-5
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,12 +8,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-5.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_buckets_1-5.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_all_layers_buckets_1-5.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_all_layers_buckets_1-5.err
 
 set -euo pipefail
-echo "$(date) – ft_buckets_1-5 job started on $(hostname)"
-echo "$(date) – ft_buckets_1-5 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_all_layers_buckets_1-5 job started on $(hostname)"
+echo "$(date) – ft_all_layers_buckets_1-5 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -73,5 +73,5 @@ srun python "$RUN_SCRIPT" \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) – ft_buckets_1-5 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – ft_buckets_1-5 job finished OK"
+echo "$(date) – ft_all_layers_buckets_1-5 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_all_layers_buckets_1-5 job finished OK"

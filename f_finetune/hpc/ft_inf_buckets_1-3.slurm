@@ -1,21 +1,21 @@
 #!/bin/bash -l
-#SBATCH --job-name=buckets5_alpaca_ft_inf
+#SBATCH --job-name=ft_inf_buckets_1-3
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=08:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_buckets5_alpaca_ft_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_buckets5_alpaca_ft_inf.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_inf_buckets_1-3.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_ft_inf_buckets_1-3.err
 set -euo pipefail
 
-echo "$(date) – buckets5_alpaca_ft_inf job started on $(hostname)"
-echo "$(date) – buckets5_alpaca_ft_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_inf_buckets_1-3 job started on $(hostname)"
+echo "$(date) – ft_inf_buckets_1-3 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
-echo "$(date) – buckets5_alpaca_ft_inf initial setup"
+echo "$(date) – ft_inf_buckets_1-3 initial setup"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -51,24 +51,26 @@ echo "Packages ready."
 export HF_HUB_ENABLE_HF_TRANSFER=1
 
 # needed: voice style speci_char voice
-echo "$(date) – buckets5_alpaca_ft_inf initial setup OK"
-echo "$(date) – buckets5_alpaca_ft_inf voice start"
+echo "$(date) – ft_inf_buckets_1-3 initial setup OK"
+echo "$(date) – ft_inf_buckets_1-3 voice start"
 
 # Paths & arguments
 RUN_SCRIPT="f_finetune/src/ft_inference_alpaca.py"
-DATA_PATHS="f_finetune/data/alpaca_gemma-2-2b-it.json"
-OUTPUT_JSON="f_finetune/outputs/inference_buckets/inference_buckets5.json"
+DATA_PATHS="f_finetune/data/output_splits/buckets_1-3_test.json"
+OUTPUT_JSON="f_finetune/outputs/alpaca/inference_results/buckets_1-3.json"
+BASE_MODEL_PATH="f_finetune/model"
+LORA_PATH="f_finetune/outputs/alpaca/finetuned_buckets_1-3/final"
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # Run
 srun python "$RUN_SCRIPT" \
   --data_paths "$DATA_PATHS" \
-  --base_model_path f_finetune/model \
-  --lora_path       f_finetune/outputs/buckets5/final \
+  --base_model_path "$BASE_MODEL_PATH" \
+  --lora_path "$LORA_PATH" \
   --output_json "$OUTPUT_JSON" \
-  --buckets 1-5 \
+  --buckets 1-3 \
   --batch 16 \
   --max_tokens 256
 
-echo "$(date) – buckets5_alpaca_ft_inf job finished OK"
-echo "$(date) – buckets5_alpaca_ft_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_inf_buckets_1-3 job finished OK"
+echo "$(date) – ft_inf_buckets_1-3 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
