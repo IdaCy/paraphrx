@@ -27,6 +27,10 @@ name = "prepare_data"
 path = "src/prepare_data.rs"
 
 [[bin]]
+name = "prepare_all_data"
+path = "src/prepare_all_data.rs"
+
+[[bin]]
 name = "score_results"
 path = "src/score_results.rs"
 
