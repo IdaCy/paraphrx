@@ -1,5 +1,9 @@
 /*
 cargo split_train_test -o f_finetune/data/output_splits
+
+cargo split_train_test \
+    -i f_finetune/data/mmlu_gemma-2-2b-it.json \
+    -o f_finetune/data/output_splits_mmlu
 */
 
 use clap::Parser;

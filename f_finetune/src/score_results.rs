@@ -43,7 +43,7 @@ const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 // Misc helpers
 fn estimate_tokens(text: &str) -> usize {
     // very rough: 0.75 * words ≈ tokens   (≈ bytes / 4)
-    ((text.split_whitespace().count() as f32) * 1.33).ceil() as usize
+    ((text.split_whitespace().count() as f32) * 0.75).ceil() as usize
 }
 
 // Logger
@@ -115,6 +115,9 @@ struct Cli {
     #[arg(long, default_value = "gemini-2.0-flash")]
     model: String,
 
+    #[arg(long = "log-name", default_value = "SCORING")]
+    log_name: String,
+
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
 
@@ -182,7 +185,7 @@ async fn main() -> Result<()> {
     fs::create_dir_all("logs")?;
     let ts = Local::now().format("%Y%m%d-%H%M%S");
     let log_path = Path::new("logs")
-        .join(format!("{}_{}.log", cli.output.file_stem().unwrap().to_string_lossy(), ts));
+        .join(format!("{}_{}_{}.log", cli.log_name, cli.output.file_stem().unwrap().to_string_lossy(), ts));
     let mut logger = Logger::new(&log_path)?;
     logger.log(&format!(
         "run started – model={} margin={} api_cap={} ",
@@ -263,8 +266,10 @@ async fn main() -> Result<()> {
 
             // keys we will score = (instruction_original if it HAS an answer)
             //                      ∪ every instruct_* key that exists in ans.extra
+            // always assess the original instruction if we have an answer in *either*
+            // the canonical `output` field (newer runs) *or* the legacy `extra` slot
             let mut keys: Vec<String> = Vec::new();
-            if ans.output.is_some() {
+            if ans.output.is_some() || ans.extra.contains_key("instruction_original") {
                 keys.push("instruction_original".to_string());
             }
             keys.extend(
@@ -312,8 +317,18 @@ async fn main() -> Result<()> {
                         .unwrap_or("")
                 };
 
-                let ans_text = if key == "instruction_original" {
-                    ans_map[id].output.as_deref().unwrap_or("")
+                // fall back to the legacy location inside `extra` for the original
+                let ans_text_raw = if key == "instruction_original" {
+                    ans_map[id]
+                        .output
+                        .as_deref()
+                        .or_else(|| {
+                            ans_map[id]
+                                .extra
+                                .get("instruction_original")
+                                .and_then(Value::as_str)
+                        })
+                        .unwrap_or("")
                 } else {
                     ans_map[id]
                         .extra
@@ -321,6 +336,17 @@ async fn main() -> Result<()> {
                         .and_then(Value::as_str)
                         .unwrap_or("")
                 };
+
+                // strip boiler-plate that doesn’t matter for quality but eats tokens
+                let ans_text = ans_text_raw
+                    .trim_start_matches("!?\n\n### Response:\n")
+                    .trim_start_matches("?\n\n### Response:\n")
+                    .trim_start_matches(".\n\n### Response:\n")
+                    .trim_start_matches("### Response:\n")
+                    .trim_start_matches("Response:\n")
+                    .trim_start_matches("Response\n")
+                    .trim();
+
                 if ans_text.is_empty() {
                     logger.log(&format!("id {id} key {key} has no answer – skipped"));
                     cursor += 1;

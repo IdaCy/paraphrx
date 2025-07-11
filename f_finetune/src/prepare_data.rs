@@ -18,11 +18,18 @@ cargo run --release --bin prepare_data -- \
     --out-file         f_finetune/data/alpaca_gemma-2-2b-it.json
 
 gsm8k
-    cargo run --release --bin prepare_data -- \
+cargo prepare_data \
     --paraphrases-file a_data/gsm8k/paraphrases_500.json \
-    --answers-file     c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/all.json \
-    --scores-file      c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
-    --out-file         f_finetune/data/alpaca_gemma-2-2b-it.json
+    --answers-file     c_assess_inf/output/gsm8k/gemma-2-2b-it/answers.json \
+    --scores-file      c_assess_inf/output/gsm8k_answer_scores/gemma-2-2b-it.json \
+    --out-file         f_finetune/data/gsm8k_gemma-2-2b-it.json
+
+mmlu
+cargo prepare_data \
+    --paraphrases-file a_data/mmlu/paraphrases_500.json \
+    --answers-file     c_assess_inf/output/mmlu/gemma-2-2b-it/answers.json \
+    --scores-file      c_assess_inf/output/mmlu_answer_scores/gemma-2-2b-it.json \
+    --out-file         f_finetune/data/mmlu_gemma-2-2b-it.json
 */
 
 use anyhow::{Context, Result};

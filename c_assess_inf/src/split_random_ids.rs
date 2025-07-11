@@ -1,7 +1,7 @@
 /*
 cargo split_random_ids \
-    f_finetune/outputs/alpaca/ft_inf_results/buckets5.json \
-    250 250
+    f_finetune/data/mmlu_gemma-2-2b-it.json \
+    100 100 100 100 100
 */
 
 use std::{env, fs};
