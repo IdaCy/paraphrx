@@ -105,7 +105,12 @@ def load_examples(paths: List[str],
         for item in data:
             pc_id = item.get("prompt_count")
             base_output = item.get('output', '')
-            inp = item.get("scenarios", item.get("input", ""))  # keep scenarios if present
+            # non-null scenarios or input or nothing
+            raw_scen = item.get("scenarios")
+            if raw_scen is not None:
+                inp = raw_scen
+            else:
+                inp = item.get("input", "")
 
             # include the *original* instruction---
             if 1 in buckets:            # original always belongs to bucket 1
