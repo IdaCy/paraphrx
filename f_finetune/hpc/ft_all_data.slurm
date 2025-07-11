@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=1-5_specific_layers_ft_inf_alldata
+#SBATCH --job-name=1-2_all_layers_ft_inf_alldata
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-5_specific_layers_ft_inf_alldata.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-5_specific_layers_ft_inf_alldata.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-2_all_layers_ft_inf_alldata.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-2_all_layers_ft_inf_alldata.err
 
 set -euo pipefail
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job started on $(hostname)"
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – 1-2_all_layers_ft_inf_alldata job started on $(hostname)"
+echo "$(date) – 1-2_all_layers_ft_inf_alldata job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/all_data_specific_layers/outputs_buckets_1-5
+mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/all_data_all_layers/outputs_buckets_1-2
 export TMPDIR=$PROJ/tmp
 export HF_HOME=$PROJ/hf_cache
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
@@ -66,14 +66,14 @@ RUN_SCRIPT="f_finetune/src/finetuning.py"
 
 srun python "$RUN_SCRIPT" \
   --data_paths \
-  "f_finetune/data/output_splits_alpaca/buckets_1-5_test.json" \
-  "f_finetune/data/output_splits_gsm8k/buckets_1-5_test.json" \
-  "f_finetune/data/output_splits_mmlu/buckets_1-5_test.json" \
-  --output_dir "f_finetune/outputs/all_data_specific_layers/outputs_buckets_1-5" \
-  --run_name buckets_1-5 \
-  --buckets 1-5 \
+  "f_finetune/data/output_splits_alpaca/buckets_1-2_test.json" \
+  "f_finetune/data/output_splits_gsm8k/buckets_1-2_test.json" \
+  "f_finetune/data/output_splits_mmlu/buckets_1-2_test.json" \
+  --output_dir "f_finetune/outputs/all_data_all_layers/outputs_buckets_1-2" \
+  --run_name buckets_1-2_all_layers \
+  --buckets 1-2 \
   --bf16 \
   $WANDB_FLAG
 
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job finished OK"
+echo "$(date) – 1-2_all_layers_ft_inf_alldata job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – 1-2_all_layers_ft_inf_alldata job finished OK"
