@@ -57,6 +57,7 @@ struct PromptData {
     prompt_count: u32,
     instruction_original: String,
     input: String,
+    scenarios: Option<String>,
     output: String,
     count_in_buckets: Vec<u32>,
     paraphrases: Vec<Paraphrase>,
@@ -193,6 +194,7 @@ fn main() -> anyhow::Result<()> {
                         prompt_count: prompt.prompt_count,
                         instruction_original: prompt.instruction_original.clone(),
                         input: prompt.input.clone(),
+                        scenarios: prompt.scenarios.clone(),          // ← carry it through
                         output: prompt.output.clone(),
                         count_in_buckets: prompt.count_in_buckets.clone(),
                         paraphrases: filtered_paraphrases,
