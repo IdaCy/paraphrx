@@ -6,10 +6,11 @@ cargo merge_random_ids \
 
 
 cargo merge_random_ids \
-    f_finetune/data/output_splits/buckets_1-5_train_part1.json \
-    f_finetune/data/output_splits/buckets_1-5_train_part2.json \
-    f_finetune/data/output_splits/buckets_1-5_train_part3.json \
-    f_finetune/data/output_splits/buckets_1-5_train_part4.json
+    f_finetune/data/mmlu_gemma-2-2b-it_part1.json \
+    f_finetune/data/mmlu_gemma-2-2b-it_part2.json \
+    f_finetune/data/mmlu_gemma-2-2b-it_part3.json \
+    f_finetune/data/mmlu_gemma-2-2b-it_part4.json \
+    f_finetune/data/mmlu_gemma-2-2b-it_part5.json \
 */
 
 use std::{env, fs};
