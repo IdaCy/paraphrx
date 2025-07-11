@@ -5,18 +5,6 @@ cargo prepare_data \
     --scores-file      c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
     --out-file         f_finetune/data/alpaca_gemma-2-2b-it.json
 
-Optional flags:
-  --out-file   Path for resulting JSON (default: f_finetune/data/alpaca_gemma-2-2b-it.json)
-  --log-dir    Directory for log files (default: logs)
-*/
-
-/*
-cargo run --release --bin prepare_data -- \
-    --paraphrases-file a_data/alpaca/merge_instructs/all.json \
-    --answers-file     c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/all.json \
-    --scores-file      c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
-    --out-file         f_finetune/data/alpaca_gemma-2-2b-it.json
-
 gsm8k
 cargo prepare_data \
     --paraphrases-file a_data/gsm8k/paraphrases_500.json \
