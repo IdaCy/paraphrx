@@ -14,6 +14,7 @@ while [[ $# -gt 0 ]]; do
     -sm|--scoring-model)         SCORING_MODEL="$2"; shift 2;;
     -d|--dataset)       DATASET="$2";      shift 2;;
     -n|--name)       NAME="$2";      shift 2;;
+    -ln|--logname)       LOG_NAME="$2";      shift 2;;
     --) shift; break ;;
     -*) echo "Unknown option: $1" >&2; exit 1 ;;
     *)  break ;;
@@ -39,6 +40,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - phrx scoring started" >>"$HOME/times.log"
 
 cargo phrx_equivalence_score \
   --model "$SCORING_MODEL" \
+  --log-name "${LOG_NAME}" \
   --api-key "$GOOGLE_API_KEY" \
   --delay-ms 200 \
   --api-call-maximum 250 \

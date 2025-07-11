@@ -73,6 +73,8 @@ struct Cli {
     output: PathBuf,
     #[arg(long, default_value = "gemini-1.5-flash-latest")]
     model: String,
+    #[arg(long = "log-name", default_value = "alpaca_500")]
+    log_name: String,
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
     #[arg(long = "delay-ms", default_value_t = 200)]
@@ -81,6 +83,8 @@ struct Cli {
     api_call_maximum: usize,
     #[arg(long = "api-key")]
     api_key: Option<String>,
+    #[arg(long, default_value_t = 50)]
+    max_paraphrases_per_chunk: usize,
 }
 
 // Core Functions (build_eval_prompt, query_gemini, etc. remain the same)
@@ -156,6 +160,28 @@ fn parse_response(s: &str) -> Result<JsonMap<String, Value>> {
     Err(anyhow!("Could not parse valid JSON from response: {}", s))
 }
 
+// ID status checkoff helpers
+fn load_status<P: AsRef<Path>>(path: P) -> Result<HashMap<u32,bool>> {
+    if path.as_ref().exists() {
+        let f = fs::File::open(&path)?;
+        let raw: HashMap<u32, bool> = serde_json::from_reader(f)?;
+        Ok(raw)
+    } else {
+        let mut map = HashMap::new();
+        for id in 0..=500 {
+            map.insert(id, false);
+        }
+        let f = fs::File::create(&path)?;
+        serde_json::to_writer_pretty(f, &map)?;
+        Ok(map)
+    }
+}
+
+fn save_status<P: AsRef<Path>>(path: P, status: &HashMap<u32, bool>) -> anyhow::Result<()> {
+    let f = fs::File::create(path)?;
+    serde_json::to_writer_pretty(f, status)?;
+    Ok(())
+}
 
 // Main Application Logic
 #[tokio::main]
@@ -166,8 +192,15 @@ async fn main() -> Result<()> {
     
     fs::create_dir_all("logs")?;
     let stem = cli.output.file_stem().expect("Output must have a file name");
-    let ts = Local::now().format("%Y-%m-%d_%H-%M-%S").to_string();
-    let filename = format!("{}_{ts}.log", stem.to_string_lossy());
+    let ts   = Local::now().format("%Y-%m-%d_%H-%M-%S").to_string();
+    // naming: <stem>_<log_name>_<timestamp>.log
+    let filename = format!(
+        "{}_{}_{}.log",
+        stem.to_string_lossy(),
+        cli.log_name,
+        ts,
+    );g
+
     let log_path = PathBuf::from("logs").join(filename);
     let mut logger = Logger::new(&log_path)?;
     logger.log(&format!("Script started. Model: {}", cli.model));
@@ -176,7 +209,13 @@ async fn main() -> Result<()> {
     let client = reqwest::Client::builder().default_headers(headers).timeout(Duration::from_secs(180)).build()?;
     let bpe = tiktoken_rs::p50k_base().unwrap();
     let model_limits = get_model_limits(&cli.model);
-    let effective_token_limit = (model_limits.input as f64 * 0.8) as usize;
+    let effective_token_limit = (model_limits.input as f64 * 0.5) as usize;
+    // load or initialize our 0–500 ID checklist
+    //let status_file = PathBuf::from("id_status.json");
+    let status_file = PathBuf::from("logs")
+        .join(format!("id_status_{}.json", cli.log_name));
+    let mut id_status = load_status(&status_file)
+        .context("Unable to load or initialize id_status.json")?;
     let input_records = read_records(&cli.prompts, &mut logger)?;
 
     // Load existing results into a HashMap for efficient lookup
@@ -200,8 +239,13 @@ async fn main() -> Result<()> {
     let mut all_errors: HashMap<u32, Vec<String>> = HashMap::new();
 
     'outer: for record in input_records {
-        pb.set_message(format!("{}", record.prompt_count));
         let prompt_id = record.prompt_count;
+        // skip if we've already completed this ID
+        if id_status.get(&prompt_id).copied().unwrap_or(false) {
+            pb.inc(1);
+            continue;
+        }
+        pb.set_message(format!("{}", prompt_id));
 
         // Granular check for unscored items
         let all_paraphrases_in_input: Vec<_> = record.extra.iter()
@@ -235,7 +279,10 @@ async fn main() -> Result<()> {
             let mut chunk_paraphrases = Vec::new();
             
             let mut i = 0;
-            while i < paraphrases_to_process.len() {
+            // also cap by max paraphrases per chunk
+            while i < paraphrases_to_process.len()
+                  && chunk_paraphrases.len() < cli.max_paraphrases_per_chunk
+            {
                 let (key, text) = &paraphrases_to_process[i];
                 let paraphrase_line = format!("\"{}\": \"{}\"\n", key, text);
                 let paraphrase_tokens = bpe.encode_with_special_tokens(&paraphrase_line).len();
@@ -302,6 +349,9 @@ async fn main() -> Result<()> {
         writer.flush()?;
 
         pb.inc(1);
+        id_status.insert(prompt_id, true);
+        save_status(&status_file, &id_status)
+            .context("Failed to write updated id_status.json")?;
     }
     
     pb.finish_with_message("Processing complete");
