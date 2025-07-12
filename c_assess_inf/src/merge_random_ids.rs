@@ -6,48 +6,77 @@ cargo merge_random_ids \
 
 
 cargo merge_random_ids \
-    f_finetune/data/mmlu_gemma-2-2b-it_part1.json \
-    f_finetune/data/mmlu_gemma-2-2b-it_part2.json \
-    f_finetune/data/mmlu_gemma-2-2b-it_part3.json \
-    f_finetune/data/mmlu_gemma-2-2b-it_part4.json \
-    f_finetune/data/mmlu_gemma-2-2b-it_part5.json \
+    -i \
+    f_finetune/data/output_splits_mmlu/buckets_1-5_train_part1.json \
+    f_finetune/data/output_splits_mmlu/buckets_1-5_train_part2.json \
+    f_finetune/data/output_splits_mmlu/buckets_1-5_train_part3.json \
+    -o f_finetune/data/output_splits_mmlu/buckets_1-5_train.json
+    
 */
 
-use std::{env, fs};
-use std::path::{Path, PathBuf};
+use std::{fs, path::{Path, PathBuf}};
+use clap::{Arg, Command};
 use serde_json::Value;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // gather arguments
-    let files: Vec<String> = env::args().skip(1).collect();
-    if files.is_empty() {
-        eprintln!("Usage: merge_json <part1.json> <part2.json> [...]");
-        std::process::exit(1);
-    }
+    // build the CLI
+    let matches = Command::new("merge_random_ids")
+        .version("1.0")
+        .about("Merge multiple JSON array files into one")
+        .arg(Arg::new("input")
+            .short('i')
+            .long("input")
+            .help("Input JSON file (array). Can be used multiple times.")
+            .required(true)
+            .num_args(1..) // 1 or more
+        )
+        .arg(Arg::new("output")
+            .short('o')
+            .long("output")
+            .help("Output file path")
+            .num_args(1)
+        )
+        .get_matches();
 
-    // read & collect
+    // collect inputs
+    let inputs: Vec<_> = matches.get_many::<String>("input")
+        .unwrap()
+        .map(|s| s.as_str())
+        .collect();
+
+    // read & merge
     let mut merged: Vec<Value> = Vec::new();
-    for fname in &files {
-        let text = fs::read_to_string(fname)?;
+    for fname in &inputs {
+        let text = fs::read_to_string(fname)
+            .unwrap_or_else(|e| panic!("Failed to read {}: {}", fname, e));
         let mut part: Vec<Value> = serde_json::from_str(&text)
             .unwrap_or_else(|_| panic!("{} is not a JSON array", fname));
         merged.append(&mut part);
     }
-    println!("Collected {} objects from {} file(s)", merged.len(), files.len());
+    println!("Collected {} objects from {} file(s)", merged.len(), inputs.len());
 
-    // decide output name
-    let first_path = Path::new(&files[0]);
-    let parent:  &Path = first_path.parent().unwrap_or_else(|| Path::new("."));
-    let stem:    &str   = first_path.file_stem()
-        .and_then(|s| s.to_str()).unwrap_or("merged");
-    let ext:     &str   = first_path.extension()
-        .and_then(|s| s.to_str()).unwrap_or("json");
+    // determine output path
+    let out_path = if let Some(o) = matches.get_one::<String>("output") {
+        PathBuf::from(o)
+    } else {
+        // default: use first input's stem
+        let first = Path::new(&inputs[0]);
+        let parent = first.parent().unwrap_or_else(|| Path::new("."));
+        let stem = first.file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("merged");
+        let ext = first.extension()
+            .and_then(|s| s.to_str())
+            .unwrap_or("json");
+        let base = stem.split_once('_')
+            .map(|(a, _)| a)
+            .unwrap_or(stem);
+        parent.join(format!("{base}_merged.{ext}"))
+    };
 
-    let out_name = format!("{}_merged.{}", stem.split_once('_').unwrap_or((stem, "")).0, ext);
-    let out_path: PathBuf = parent.join(out_name);
-
-    // write
+    // write out
     fs::write(&out_path, serde_json::to_string_pretty(&merged)?)?;
     println!("Wrote merged file → {}", out_path.display());
+
     Ok(())
 }
