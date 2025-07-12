@@ -148,9 +148,11 @@ f_finetune/outputs/alpaca/ft_inf_scores/unprocessed
 f_finetune/src/tmux_score_1.sh
 f_finetune/src/tmux_score_2.sh
 f_finetune/src/tmux_score_3.sh
-
 f_finetune/data/output_splits/
-f_finetune
+f_finetune/data/output_splits_alpaca/
+f_finetune/data/output_splits_gsm8k/
+f_finetune/data/output_splits_mmlu/
+f_finetune/data/all_*
 
 hpcnotes
 envs
@@ -162,5 +164,3 @@ venv/
 xdg_cache/
 tmp/
 wandb
-
-
