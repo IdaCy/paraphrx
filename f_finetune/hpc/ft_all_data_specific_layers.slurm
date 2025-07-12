@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --job-name=1-5_specific_layers_ft_all_data
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8

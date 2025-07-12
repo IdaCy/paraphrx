@@ -25,31 +25,35 @@ export PIP_CACHE_DIR=$PROJ/pip_cache
 export XDG_CACHE_HOME=$PROJ/xdg_cache
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=
+export HOME=$TMPDIR
+export PATH=$HOME/.local/bin:$PATH
 
-# Pick an available Python-3 binary (prefers 3.12 -as 3.8)
-for P in python3.12 python3.11 python3.10 python3.9 python3; do
+# Pick an available Python-3 binary (prefers 3.11 - as 3.8)
+for P in python3.11 python3.10 python3.9 python3; do
   if command -v $P >/dev/null 2>&1; then PYBIN=$(command -v $P); break; fi
 done
 [ -z "${PYBIN:-}" ] && { echo "No python3 on PATH"; exit 1; }
 echo "Using $($PYBIN -V)"
 
-# create fresh venv
-rm -rf venv
-$PYBIN -m venv venv
-source venv/bin/activate
+# create fresh venv in node-local scratch
+VENV_DIR="$TMPDIR/venv_$SLURM_JOB_ID"
+rm -rf "$VENV_DIR"
+$PYBIN -m pip install --user virtualenv -q
+virtualenv -p "$PYBIN" "$VENV_DIR"
+source "$VENV_DIR/bin/activate"
 python -m pip install --upgrade pip setuptools wheel -q
 
 python -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
-  bitsandbytes==0.44.1 \
+  bitsandbytes==0.42.0 \
   datasets==2.19.0 \
-  numpy==1.26.4 sentencepiece loguru protobuf==3.20.* wandb -q
+  numpy==1.24.4 sentencepiece loguru protobuf==3.20.* wandb testresources -q
 python -m pip uninstall -y torchaudio torchvision -q || true
 
 python - <<'PY'
-import torch, transformers, platform, pathlib, importlib.util, numpy as np
+import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
 print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
@@ -73,6 +77,12 @@ srun python "$RUN_SCRIPT" \
   --run_name buckets_1-5_all_layers \
   --buckets 1-5 \
   --bf16 \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --learning_rate 2e-4 \
+  --warmup_ratio 0.03 \
+  --num_epochs 3 \
+  --save_steps 200 \
   $WANDB_FLAG
 
 echo "$(date) – 1-5_all_layers_ft_all_data job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
