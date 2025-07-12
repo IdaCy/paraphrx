@@ -6,6 +6,11 @@ srun python "$RUN_SCRIPT" \
   --run_name buckets_1-5 \
   --buckets 1-5 \
   --bf16 \
+  --learning_rate 2e-4 \
+  --warmup_ratio 0.03 \
+  --num_epochs 3 \
+  --save_steps 200 \
+  --logging_steps 100
   $WANDB_FLAG
 """
 
