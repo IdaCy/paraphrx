@@ -9,7 +9,7 @@ trap 'echo "CTRL-C - stopping"; kill -- -$$' INT TERM
 
 MODEL="gemini-2.5-flash-preview-05-20"
 # could "gemini-2.5-flash-lite-preview-06-17"
-BASE_DIR="f_finetune/outputs/alpaca"
+BASE_DIR="f_finetune/outputs"
 #INSTR_DIR="f_finetune/data/alpaca_gemma-2-2b-it.json"
 LAYERS1="all_layers"
 LAYERS2="all_layers"
@@ -44,6 +44,10 @@ done
 KEY_A="$GOOGLE_API_KEY1"
 KEY_B="$GOOGLE_API_KEY2"
 KEY_C="$GOOGLE_API_KEY3"
+
+LAYERS1="all_data_${LAYERS1}"
+LAYERS2="all_data_${LAYERS2}"
+LAYERS3="all_data_${LAYERS3}"
 
 if [[ -f "$HOME/.cargo/env" ]]; then
   . "$HOME/.cargo/env"

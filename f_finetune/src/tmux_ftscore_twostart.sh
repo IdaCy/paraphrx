@@ -10,7 +10,7 @@ trap 'echo "CTRL-C - stopping"; kill -- -$$' INT TERM
 MODEL="gemini-2.5-flash-preview-05-20"
 # could "gemini-2.5-flash-lite-preview-06-17"
 BASE_DIR="f_finetune/outputs/alpaca"
-INSTR_DIR="f_finetune/data/alpaca_gemma-2-2b-it.json"
+#INSTR_DIR="f_finetune/data/alpaca_gemma-2-2b-it.json"
 LAYERS1="all_layers"
 LAYERS2="all_layers"
 IN_NAME1="buckets_1-1"
