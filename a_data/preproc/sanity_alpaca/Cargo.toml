@@ -13,3 +13,7 @@ indexmap     = { version = "2", features = ["serde"] }
 [[bin]]
 name = "sample_to_json"
 path = "src/sample_to_json.rs"
+
+[[bin]]
+name = "preproc"
+path = "src/preproc.rs"

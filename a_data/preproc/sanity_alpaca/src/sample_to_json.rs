@@ -9,6 +9,12 @@ cargo run --manifest-path a_data/preproc/alpaca_sanity/Cargo.toml \
   --from 401 --to 500 \
   a_data/alpaca/alpaca_5k_proc.jsonl \
   a_data/alpaca/alpaca_100_slice5.json
+
+test:
+cargo sample_to_json \
+  --from 1 --to 500 \
+  a_data/alpaca/alpaca_5k_proc_test.jsonl \
+  a_data/alpaca/alpaca_test.json
 */
 
 use anyhow::Result;
