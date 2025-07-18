@@ -49,8 +49,8 @@ name = "split_random_ids"
 path = "src/split_random_ids.rs"
 
 [[bin]]
-name = "merge_random_ids"
-path = "src/merge_random_ids.rs"
+name = "merge_any_ids"
+path = "src/merge_any_ids.rs"
 
 [[bin]]
 name = "merge_any_ids"
