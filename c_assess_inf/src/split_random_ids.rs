@@ -1,7 +1,7 @@
 /*
 cargo split_random_ids \
-    f_finetune/data/output_splits_mmlu/buckets_1-4_train.json \
-    150 150 200
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl.json \
+    100 100 100 100 100
 */
 
 use std::{env, fs};
