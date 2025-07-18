@@ -1,21 +1,21 @@
 #!/bin/bash -l
-#SBATCH --job-name=1-5_specific_layers_ft_inf_alldata
+#SBATCH --job-name=1-1_specific_layers_ft_inf_alldata
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=08:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-5_specific_layers_ft_inf_alldata.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-5_specific_layers_ft_inf_alldata.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-1_specific_layers_ft_inf_alldata.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-1_specific_layers_ft_inf_alldata.err
 set -euo pipefail
 
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job started on $(hostname)"
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata job started on $(hostname)"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata initial setup"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata initial setup"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -51,29 +51,29 @@ echo "Packages ready."
 export HF_HUB_ENABLE_HF_TRANSFER=1
 
 # needed: voice style speci_char voice
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata initial setup OK"
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata voice start"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata initial setup OK"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata voice start"
 
 # Paths & arguments
-RUN_SCRIPT="f_finetune/src/ft_inference_alpaca.py"
-DATA_PATHS="f_finetune/data/output_splits/buckets_1-5_test.json"
-OUTPUT_JSON="f_finetune/outputs/all_data_REALLY_specific_layers/inference_results/buckets_1-5.json"
+RUN_SCRIPT="f_finetune/src/ft_inference_all_data.py"
+#DATA_PATHS="f_finetune/data/output_splits/buckets_1-1_test.json"
+OUTPUT_JSON="f_finetune/outputs/all_data_specific_layers/inference_results/buckets_1-1.json"
 BASE_MODEL_PATH="f_finetune/model"
-LORA_PATH="f_finetune/outputs/all_data_REALLY_specific_layers/outputs_buckets_1-5/final"
+LORA_PATH="f_finetune/outputs/all_data_specific_layers/outputs_buckets_1-1/final"
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # Run
 srun python "$RUN_SCRIPT" \
   --data_paths \
-  "f_finetune/data/output_splits_alpaca/buckets_1-5_test.json" \
-  "f_finetune/data/output_splits_gsm8k/buckets_1-5_test.json" \
-  "f_finetune/data/output_splits_mmlu/buckets_1-5_test.json" \
+  "f_finetune/data/output_splits_alpaca/buckets_1-1_test.json" \
+  "f_finetune/data/output_splits_gsm8k/buckets_1-1_test.json" \
+  "f_finetune/data/output_splits_mmlu/buckets_1-1_test.json" \
   --base_model_path "$BASE_MODEL_PATH" \
   --lora_path "$LORA_PATH" \
   --output_json "$OUTPUT_JSON" \
-  --buckets 1-5 \
+  --buckets 1-1 \
   --batch 16 \
   --max_tokens 256
 
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job finished OK"
-echo "$(date) – 1-5_specific_layers_ft_inf_alldata job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata job finished OK"
+echo "$(date) – 1-1_specific_layers_ft_inf_alldata job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"

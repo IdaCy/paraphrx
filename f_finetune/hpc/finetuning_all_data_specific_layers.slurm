@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=h1-5_specific_layers_ft_all_data
+#SBATCH --job-name=l1-1_all_data_specific_layers_ft
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1-5_specific_layers_ft_all_data.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1-5_specific_layers_ft_all_data.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l1-1_all_data_specific_layers_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l1-1_all_data_specific_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – h1-5_specific_layers_ft_all_data job started on $(hostname)"
-echo "$(date) – h1-5_specific_layers_ft_all_data job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – l1-1_all_data_specific_layers_ft job started on $(hostname)"
+echo "$(date) – l1-1_all_data_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/all_data_specific_layers/outputs_buckets_1-5
+mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/all_data_specific_layers/outputs_buckets_1-1
 export TMPDIR=$PROJ/tmp
 export HF_HOME=$PROJ/hf_cache
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
@@ -51,7 +51,7 @@ python -m pip install --prefer-binary \
   mpi4py \
   deepspeed \
   datasets==2.19.0 \
-  numpy==1.24.4 sentencepiece loguru protobuf==3.20.* wandb testresources -q
+  numpy==1.24.4 sentencepiece loguru protobuf==3.20.* wandb testresources matplotlib -q
 python -m pip uninstall -y torchaudio torchvision -q || true
 
 python - <<'PY'
@@ -66,20 +66,21 @@ PY
 
 source /scratch_dgxl/ifc24/.hf_token || true
 [ -f /scratch_dgxl/ifc24/.wandb_key ] && source /scratch_dgxl/ifc24/.wandb_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx}
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 
 # silence tokenizer warnings
 export TOKENIZERS_PARALLELISM=false
 
+# headless plotting
+export MPLBACKEND=Agg
+
 RUN_SCRIPT="f_finetune/src/finetuning_specific_layers.py"
 srun python "$RUN_SCRIPT" \
-  --data_paths \
-  "f_finetune/data/output_splits_alpaca/buckets_1-5_train.json" \
-  "f_finetune/data/output_splits_gsm8k/buckets_1-5_train.json" \
-  "f_finetune/data/output_splits_mmlu/buckets_1-5_train.json" \
-  --output_dir "f_finetune/outputs/all_data_specific_layers/outputs_buckets_1-5" \
-  --run_name buckets_1-5_specific_layers \
-  --buckets 1-5 \
+  --data_paths alpaca_gemma-2-2b-it gsm8k_gemma-2-2b-it mmlu_gemma-2-2b-it \
+  --model_path f_finetune/model \
+  --output_dir "f_finetune/outputs/all_data_specific_layers_REALLY/outputs_buckets_1-1" \
+  --run_name buckets_1-1_specific_layers \
+  --buckets 1-1 \
   --bf16 \
   --bnb_8bit_optim \
   --batch_size 4 \
@@ -90,5 +91,5 @@ srun python "$RUN_SCRIPT" \
   --save_steps 200 \
   $WANDB_FLAG
 
-echo "$(date) – h1-5_specific_layers_ft_all_data job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – h1-5_specific_layers_ft_all_data job finished OK"
+echo "$(date) – l1-1_all_data_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – l1-1_all_data_specific_layers_ft job finished OK"
