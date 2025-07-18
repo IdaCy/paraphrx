@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 TS=$(date '+%Y-%m-%d %H:%M:%S')
-echo "$TS - tmux_ftscore_threestart script started" >>"$HOME/times.log"
-echo "$TS - tmux_ftscore_threestart script started"
+echo "$TS - tmux_ftscore_all_data_two script started" >>"$HOME/times.log"
+echo "$TS - tmux_ftscore_all_data_two script started"
 
 set -euo pipefail
 trap 'echo "CTRL-C - stopping"; kill -- -$$' INT TERM
@@ -49,7 +49,7 @@ fi
 # logging
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
-MASTER_LOG="$LOG_DIR/SCORING_master_one_score_starter_batch-$(date '+%Y%m%d_%H%M%S').txt"
+MASTER_LOG="$LOG_DIR/all_data_SCORE_master_one_score_starter_batch-$(date '+%Y%m%d_%H%M%S').txt"
 exec >>"$MASTER_LOG" 2>&1
 set -x
 
@@ -63,24 +63,31 @@ OUT_DIR="$BASE_DIR/${LAYERS1}/ft_inf_scores"
 ANSWERS="$ANSW_DIR/${IN_NAME1}.json"
 OUTPUT="$OUT_DIR/${IN_NAME1}_results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
 
-if [[ ! -f $INSTR_DIR || ! -f $ANSWERS ]]; then
-  echo "⚠  Skipping $IN_NAME1 - file(s) missing"
+A1="$INSTR_DIR/output_splits_alpaca/${IN_NAME1}_test.json"
+A2="$INSTR_DIR/output_splits_gsm8k/${IN_NAME1}_test.json"
+A3="$INSTR_DIR/output_splits_mmlu/${IN_NAME1}_test.json"
+
+if [[ ! -f "$A1" || ! -f "$A2" || ! -f "$A3" || ! -f "$ANSWERS" ]]; then
+  echo "⚠  Skipping $IN_NAME1 - missing one of $A1, $A2, $A3, or $ANSWERS"
 else
+  mkdir -p "$(dirname "$OUTPUT")"
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/SCORING_mainlog_score_starter__${IN_NAME1}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/all_data_SCORE_mainlog_score_starter__${IN_NAME1}-${TS}.txt"
   echo "-> $IN_NAME1 - starting $(date)  (log -> $LOG_FILE)"
 
-  if cargo score_results \
-       --instructions \
-       "$INSTR_DIR/output_splits_alpaca/${IN_NAME1}.json" \
-       "$INSTR_DIR/output_splits_gsm8k/${IN_NAME1}.json" \
-       "$INSTR_DIR/output_splits_mmlu/${IN_NAME1}.json" \
-       --datasets "alpaca gsm8k mmlu" \
-       --model "$MODEL" \
-       --api-key "$KEY_A" \
-       --api-call-max 250 \
-       --log-name "SCORING_$LAYERS1" \
-       "$INSTR_DIR" "$ANSWERS" "$OUTPUT" \
+  if cargo score_results_all_data \
+      --instructions "$A1" \
+      --instructions "$A2" \
+      --instructions "$A3" \
+      --datasets alpaca \
+      --datasets gsm8k \
+      --datasets mmlu \
+      --model "$MODEL" \
+      --api-key "$KEY_A" \
+      --api-call-max 250 \
+      --log-name "all_data_SCORE_$LAYERS1" \
+      "$ANSWERS" \
+      "$OUTPUT" \
        &> "$LOG_FILE"
   then
     echo "✔ $IN_NAME1 - finished OK $(date)"
@@ -90,7 +97,7 @@ else
   fi
 fi
 
-echo "$TS - tmux_ftscore_threestart finished $IN_NAME1"
+echo "$TS - tmux_ftscore_all_data_two finished $IN_NAME1"
 
 
 # second IN_NAME (B)
@@ -100,24 +107,26 @@ OUT_DIR="$BASE_DIR/${LAYERS2}/ft_inf_scores"
 ANSWERS="$ANSW_DIR/${IN_NAME2}.json"
 OUTPUT="$OUT_DIR/${IN_NAME2}_results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
 
-if [[ ! -f $INSTR_DIR || ! -f $ANSWERS ]]; then
+if [[ ! -d $INSTR_DIR || ! -f $ANSWERS ]]; then
   echo "⚠  Skipping $IN_NAME2 - file(s) missing"
 else
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/SCORING_mainlog_score_starter__${IN_NAME2}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/all_data_SCORE_mainlog_score_starter__${IN_NAME2}-${TS}.txt"
   echo "-> $IN_NAME2 - starting $(date)  (log -> $LOG_FILE)"
 
-  if cargo score_results \
-       --instructions \
-       "$INSTR_DIR/output_splits_alpaca/${IN_NAME2}.json" \
-       "$INSTR_DIR/output_splits_gsm8k/${IN_NAME2}.json" \
-       "$INSTR_DIR/output_splits_mmlu/${IN_NAME2}.json" \
-       --datasets "alpaca gsm8k mmlu" \
-       --model "$MODEL" \
-       --api-key "$KEY_B" \
-       --api-call-max 250 \
-       --log-name "SCORING_$LAYERS2" \
-       "$INSTR_DIR" "$ANSWERS" "$OUTPUT" \
+  if cargo score_results_all_data \
+      --instructions "$INSTR_DIR/output_splits_alpaca/${IN_NAME2}.json" \
+      --instructions "$INSTR_DIR/output_splits_gsm8k/${IN_NAME2}.json" \
+      --instructions "$INSTR_DIR/output_splits_mmlu/${IN_NAME2}.json" \
+      --datasets alpaca \
+      --datasets gsm8k \
+      --datasets mmlu \
+      --model "$MODEL" \
+      --api-key "$KEY_B" \
+      --api-call-max 250 \
+      --log-name "all_data_SCORE_$LAYERS2" \
+      "$ANSWERS" \
+      "$OUTPUT" \
        &> "$LOG_FILE"
   then
     echo "✔ $IN_NAME2 - finished OK $(date)"
@@ -127,12 +136,12 @@ else
   fi
 fi
 
-echo "$TS - tmux_ftscore_threestart finished $IN_NAME2"
+echo "$TS - tmux_ftscore_all_data_two finished $IN_NAME2"
 
 
 TS=$(date '+%Y-%m-%d %H:%M:%S')
-echo "$TS - tmux_ftscore_threestart finished" >>"$HOME/times.log"
-echo "$TS - tmux_ftscore_threestart finished"
+echo "$TS - tmux_ftscore_all_data_two finished" >>"$HOME/times.log"
+echo "$TS - tmux_ftscore_all_data_two finished"
 
 echo "$(date '+%F %T') - score_starter batch finished"
 exit 0
