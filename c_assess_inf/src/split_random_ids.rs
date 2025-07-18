@@ -1,6 +1,10 @@
 /*
 cargo split_random_ids \
+<<<<<<< HEAD
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl.json \
+=======
     f_finetune/data/all_mmlu_gemma-2-2b-it.json \
+>>>>>>> 53684f5f256e1e0ea6976545a1fe6f089a8dc9d7
     100 100 100 100 100
 */
 
