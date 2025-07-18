@@ -165,3 +165,5 @@ venv/
 xdg_cache/
 tmp/
 wandb
+
+e_eval

@@ -2,12 +2,12 @@
 
 cargo merge_any_ids \
     -i \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part1.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part2.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part3.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part4.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part5.json \
-    -o e_eval/data/mmlu_gemma-2-2b-it.json
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl_part1.json \
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl_part2.json \
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl_part3.json \
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl_part4.json \
+    f_finetune/data/all_gsm8k_gemma-2-2b-it_all_ppl_part5.json \
+    -o e_eval/data/gsm8k_gemma-2-2b-it.json
     
 */
 
