@@ -10,13 +10,11 @@ trap 'echo "CTRL-C - stopping"; kill -- -$$' INT TERM
 MODEL="gemini-2.5-flash-preview-05-20"
 # could "gemini-2.5-flash-lite-preview-06-17"
 BASE_DIR="f_finetune/outputs"
-#INSTR_DIR="f_finetune/data/alpaca_gemma-2-2b-it.json"
+INSTR_DIR="f_finetune/data"
 LAYERS1="all_layers"
 LAYERS2="all_layers"
-LAYERS3="all_layers"
 IN_NAME1="buckets_1-1"
 IN_NAME2="buckets_1-2"
-IN_NAME3="buckets_1-3"
 
 # hard-coded per-call keys
 KEY_A=""
@@ -27,14 +25,11 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     -k1|--key1)   GOOGLE_API_KEY1="$2"; shift 2 ;;
     -k2|--key2)   GOOGLE_API_KEY2="$2"; shift 2 ;;
-    -k3|--key3)   GOOGLE_API_KEY3="$2"; shift 2 ;;
     -m|--model) MODEL="$2";         shift 2 ;;
     -l1|--layers1) LAYERS1="$2";         shift 2 ;;
     -l2|--layers2) LAYERS2="$2";         shift 2 ;;
-    -l3|--layers3) LAYERS3="$2";         shift 2 ;;
     -n1|--in_name1) IN_NAME1="$2";         shift 2 ;;
     -n2|--in_name2) IN_NAME2="$2";         shift 2 ;;
-    -n3|--in_name3) IN_NAME3="$2";         shift 2 ;;
     --) shift; break ;;
     -*) echo "Unknown option: $1" >&2; exit 1 ;;
     *)  break ;;
@@ -43,11 +38,9 @@ done
 
 KEY_A="$GOOGLE_API_KEY1"
 KEY_B="$GOOGLE_API_KEY2"
-KEY_C="$GOOGLE_API_KEY3"
 
 LAYERS1="all_data_${LAYERS1}"
 LAYERS2="all_data_${LAYERS2}"
-LAYERS3="all_data_${LAYERS3}"
 
 if [[ -f "$HOME/.cargo/env" ]]; then
   . "$HOME/.cargo/env"
@@ -78,6 +71,11 @@ else
   echo "-> $IN_NAME1 - starting $(date)  (log -> $LOG_FILE)"
 
   if cargo score_results \
+       --instructions \
+       "$INSTR_DIR/output_splits_alpaca/${IN_NAME1}.json" \
+       "$INSTR_DIR/output_splits_gsm8k/${IN_NAME1}.json" \
+       "$INSTR_DIR/output_splits_mmlu/${IN_NAME1}.json" \
+       --datasets "alpaca gsm8k mmlu" \
        --model "$MODEL" \
        --api-key "$KEY_A" \
        --api-call-max 250 \
@@ -106,10 +104,15 @@ if [[ ! -f $INSTR_DIR || ! -f $ANSWERS ]]; then
   echo "⚠  Skipping $IN_NAME2 - file(s) missing"
 else
   TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/mainlog_score_starter__${IN_NAME2}-${TS}.txt"
+  LOG_FILE="$LOG_DIR/SCORING_mainlog_score_starter__${IN_NAME2}-${TS}.txt"
   echo "-> $IN_NAME2 - starting $(date)  (log -> $LOG_FILE)"
 
   if cargo score_results \
+       --instructions \
+       "$INSTR_DIR/output_splits_alpaca/${IN_NAME2}.json" \
+       "$INSTR_DIR/output_splits_gsm8k/${IN_NAME2}.json" \
+       "$INSTR_DIR/output_splits_mmlu/${IN_NAME2}.json" \
+       --datasets "alpaca gsm8k mmlu" \
        --model "$MODEL" \
        --api-key "$KEY_B" \
        --api-call-max 250 \
@@ -125,39 +128,6 @@ else
 fi
 
 echo "$TS - tmux_ftscore_threestart finished $IN_NAME2"
-
-
-# third IN_NAME (C)
-
-ANSW_DIR="$BASE_DIR/${LAYERS3}/inference_results"
-OUT_DIR="$BASE_DIR/${LAYERS3}/ft_inf_scores"
-ANSWERS="$ANSW_DIR/${IN_NAME3}.json"
-OUTPUT="$OUT_DIR/${IN_NAME3}_results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
-
-if [[ ! -f $INSTR_DIR || ! -f $ANSWERS ]]; then
-  echo "⚠  Skipping $IN_NAME3 - file(s) missing"
-else
-  TS="$(date '+%Y%m%d_%H%M%S')"
-  LOG_FILE="$LOG_DIR/mainlog_score_starter__${IN_NAME3}-${TS}.txt"
-  echo "-> $IN_NAME3 - starting $(date)  (log -> $LOG_FILE)"
-
-  if cargo score_results \
-       --model "$MODEL" \
-       --api-key "$KEY_C" \
-       --api-call-max 250 \
-       --log-name "SCORING_$LAYERS3" \
-       "$INSTR_DIR" "$ANSWERS" "$OUTPUT" \
-       &> "$LOG_FILE"
-  then
-    echo "✔ $IN_NAME3 - finished OK $(date)"
-  else
-    STATUS=$?
-    echo "⚠ $IN_NAME3 - cargo exited $STATUS  (see $LOG_FILE)"
-  fi
-fi
-
-echo "$TS - tmux_ftscore_threestart finished $IN_NAME3"
-
 
 
 TS=$(date '+%Y-%m-%d %H:%M:%S')

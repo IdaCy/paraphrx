@@ -35,5 +35,9 @@ name = "score_results"
 path = "src/score_results.rs"
 
 [[bin]]
+name = "score_results_all_data"
+path = "src/score_results_all_data.rs"
+
+[[bin]]
 name = "split_train_test"
 path = "src/split_train_test.rs"
