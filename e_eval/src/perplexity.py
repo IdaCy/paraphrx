@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 """
+<<<<<<< HEAD
+=======
+compute_perplexity.py
+
+Add a `perplexity` score (Gemma‑2‑2B‑IT by default) to every paraphrase entry
+in an Alpaca‑style dataset.
+
+Example
+-------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 python compute_perplexity.py \
        f_finetune/data/all_alpaca_gemma-2-2b-it.json \
        f_analysis/data/alpaca_with_ppl.json \
@@ -27,7 +37,11 @@ from transformers import (  # type: ignore
     AutoTokenizer,
 )
 
+<<<<<<< HEAD
 # Optional deps
+=======
+# Optional deps -------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 try:
     from transformers import BitsAndBytesConfig  # type: ignore
     _BITSANDBYTES_OK = True
@@ -42,6 +56,10 @@ try:
     _FLASH2_OK = True
 except Exception:                # pragma: no cover
     _FLASH2_OK = False
+<<<<<<< HEAD
+=======
+# --------------------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 
 _INFER_CTX = getattr(torch, "inference_mode", torch.no_grad)
 
@@ -60,6 +78,12 @@ def assert_model_access(model_id: str, token: str | None) -> None:
         ) from e
 
 
+<<<<<<< HEAD
+=======
+# ---------------------------------------------------------------------------
+
+
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Compute perplexity for Alpaca paraphrases")
     p.add_argument("input_json", help="Path to input dataset (.json)")
@@ -87,6 +111,12 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+<<<<<<< HEAD
+=======
+# ---------------------------------------------------------------------------
+
+
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 def load_model_and_tokenizer(
     model_id: str, device: str, quant: str
 ) -> Tuple[Any, Any, str]:
@@ -130,7 +160,15 @@ def load_model_and_tokenizer(
     tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
     return model, tokenizer, quant
 
+<<<<<<< HEAD
   
+=======
+
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------  
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 def compute_batch_perplexity(
     model, tokenizer, texts: Sequence[str]
 ) -> List[float]:
@@ -171,7 +209,11 @@ def compute_batch_perplexity(
     seq_loss = seq_loss.clamp(max=50)           # keep exp stable
     ppl = torch.exp(seq_loss)
 
+<<<<<<< HEAD
     # Optional verbose dump
+=======
+    # Optional verbose dump -------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     dbg_left  = getattr(compute_batch_perplexity, "_dbg_left", 0)
     dbg_tok   = getattr(compute_batch_perplexity, "_dbg_tokens", False)
     if dbg_left > 0:
@@ -197,6 +239,11 @@ def compute_batch_perplexity(
 
 
     return ppl.cpu().tolist()
+<<<<<<< HEAD
+=======
+# ---------------------------------------------------------------------------
+
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 
 def main() -> None:
     args = parse_args()
@@ -206,7 +253,11 @@ def main() -> None:
         compute_batch_perplexity._dbg_left = args.debug_extra
         compute_batch_perplexity._dbg_tokens = args.debug_tokens
 
+<<<<<<< HEAD
     # Logging
+=======
+    # Logging ---------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_path = (
         f"logs/run_ppl_{Path(args.input_json).stem}_"
@@ -220,11 +271,19 @@ def main() -> None:
     logging.info("==== perplexity run started ====")
     logging.info("cmd args: %s", vars(args))
 
+<<<<<<< HEAD
     # Auth & HF access
     ensure_hf_auth(args.hf_token)
     assert_model_access(args.model, args.hf_token)
 
     # Model
+=======
+    # Auth & HF access ------------------------------------------------------
+    ensure_hf_auth(args.hf_token)
+    assert_model_access(args.model, args.hf_token)
+
+    # Model -----------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     print("Loading tokenizer & model – first run may download a few GB …")
     model, tokenizer, actual_quant = load_model_and_tokenizer(
         args.model, args.device, args.quant
@@ -232,7 +291,11 @@ def main() -> None:
     if actual_quant != args.quant:
         logging.info("Quantisation changed to %s due to fall‑back", actual_quant)
 
+<<<<<<< HEAD
     # Data
+=======
+    # Data ------------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     data: List[Dict[str, Any]] = json.loads(Path(args.input_json).read_text())
     if args.n_samples:
         data = data[: args.n_samples]
@@ -243,7 +306,11 @@ def main() -> None:
     # Summary stats for the tail report
     stats = dict(processed=0, errors=0, ppl_sum=0.0)
 
+<<<<<<< HEAD
     # Graceful shutdown
+=======
+    # Graceful shutdown -----------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     def _save_partial() -> None:
         Path(args.output_json).write_text(
             json.dumps(data, indent=2, ensure_ascii=False)
@@ -258,6 +325,10 @@ def main() -> None:
         signal.signal(_sig, _signal_handler)
     atexit.register(_save_partial)
 
+<<<<<<< HEAD
+=======
+    # ----------------------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     batch_buffer: List[Tuple[int, int, str]] = []  # record‑idx, paraphrase‑idx, text
 
     for rec_idx, record in enumerate(tqdm(data, desc="collecting")):
@@ -291,7 +362,11 @@ def main() -> None:
                     torch.cuda.ipc_collect()
                     gc.collect()
 
+<<<<<<< HEAD
     # Flush remaining buffer
+=======
+    # Flush remaining buffer -----------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     if batch_buffer:
         rec_ids, para_ids, texts = zip(*batch_buffer)
         try:
@@ -316,7 +391,11 @@ def main() -> None:
     logging.info(tail_report.strip().replace("\n", " | "))
     print(tail_report)
 
+<<<<<<< HEAD
     # Persist to disk
+=======
+    # Persist to disk --------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     Path(args.output_json).write_text(json.dumps(data, indent=2, ensure_ascii=False))
     print(f"Saved → {args.output_json}")
     logging.info("Finished OK – wrote %s", args.output_json)

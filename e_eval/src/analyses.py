@@ -1,4 +1,5 @@
 """
+<<<<<<< HEAD
 python e_eval/src/analyses.py --run_all --data_dir e_eval/data --output_dir e_eval/output
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir path/to/data --ft_dir path/to/ft_outputs --output_dir e_eval/output
@@ -8,6 +9,8 @@ python e_eval/src/analyses.py --run_all --data_dir e_eval/data --output_dir e_ev
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --data_dir e_eval/data --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir e_eval/data --ft_dir f_finetune/outputs --output_dir e_eval/output
 
+=======
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 python e_eval/src/analyses.py --run_all --output_dir e_eval/output
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir path/to/your/data --ft_dir path/to/your/ft_outputs --output_dir e_eval/output
@@ -79,9 +82,12 @@ def load_main_data(data_path: Path) -> pd.DataFrame:
         data = json.load(f)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # TMP !!!!!!!
         data = data[:500]
 
+=======
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     dataset_name = data_path.stem.split('_')[1] # e.g., 'alpaca' from 'all_alpaca_gemma-2-2b-it'
@@ -145,7 +151,11 @@ def load_and_prepare_data(args: argparse.Namespace) -> pd.DataFrame:
     """Loads all data sources and merges them into a single tidy DataFrame."""
     # Load all baseline data
 <<<<<<< HEAD
+<<<<<<< HEAD
     main_files = list(Path(args.data_dir).glob("*.json"))
+=======
+    main_files = list(Path(args.data_dir).glob("all_*.json"))
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
     main_files = list(Path(args.data_dir).glob("all_*.json"))
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -188,7 +198,11 @@ def load_and_prepare_data(args: argparse.Namespace) -> pd.DataFrame:
     return full_df
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # ANALYSIS & VISUALISATION
+=======
+# ANALYSIS & VISUALIZATION
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
 # ANALYSIS & VISUALIZATION
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -320,7 +334,11 @@ class Analyzer:
         self._add_result("Fine-Tuning Performance Delta", content)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Visualisations
+=======
+        # Visualizations
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
         # Visualizations
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -343,7 +361,11 @@ class Analyzer:
         self._add_result("Perplexity Correlations", content)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Visualisations
+=======
+        # Visualizations
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
         # Visualizations
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -372,7 +394,11 @@ class Analyzer:
         logging.info("Running Advanced Statistics...")
         
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Deeper descriptive
+=======
+        # A. Deeper descriptive
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
         # A. Deeper descriptive
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -381,7 +407,11 @@ class Analyzer:
         content += "### TF Score Percentiles by Bucket:\n" + desc_df.to_string() + "\n\n"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Inferential Testing (Example: ANOVA on buckets)
+=======
+        # B. Inferential Testing (Example: ANOVA on buckets)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
         # B. Inferential Testing (Example: ANOVA on buckets)
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -391,7 +421,11 @@ class Analyzer:
         self._add_result("Advanced Stats: Descriptive & Inferential", content)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Predictive Modeling (Example: Feature Importance)
+=======
+        # C. Predictive Modeling (Example: Feature Importance)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
         # C. Predictive Modeling (Example: Feature Importance)
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
@@ -405,7 +439,11 @@ class Analyzer:
         self._add_result("Advanced Stats: Predictive Modeling", content)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Dimensionality Reduction (PCA)
+=======
+        # D. Dimensionality Reduction (PCA)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 =======
         # D. Dimensionality Reduction (PCA)
 >>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
