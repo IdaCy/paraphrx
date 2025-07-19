@@ -170,5 +170,3 @@ venv/
 xdg_cache/
 tmp/
 wandb
-
-f_finetune
