@@ -1,4 +1,16 @@
 """
+<<<<<<< HEAD
+python e_eval/src/analyses.py --run_all --data_dir e_eval/data --output_dir e_eval/output
+python e_eval/src/analyses.py --do_descriptive --do_perplexity --output_dir e_eval/output
+python e_eval/src/analyses.py --run_all --data_dir path/to/data --ft_dir path/to/ft_outputs --output_dir e_eval/output
+
+
+python e_eval/src/analyses.py --run_all --data_dir e_eval/data --output_dir e_eval/output
+python e_eval/src/analyses.py --do_descriptive --do_perplexity --data_dir e_eval/data --output_dir e_eval/output
+python e_eval/src/analyses.py --run_all --data_dir e_eval/data --ft_dir f_finetune/outputs --output_dir e_eval/output
+
+=======
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 python e_eval/src/analyses.py --run_all --output_dir e_eval/output
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir path/to/your/data --ft_dir path/to/your/ft_outputs --output_dir e_eval/output
@@ -69,6 +81,15 @@ def load_main_data(data_path: Path) -> pd.DataFrame:
     with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # TMP !!!!!!!
+        data = data[:500]
+
+=======
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     dataset_name = data_path.stem.split('_')[1] # e.g., 'alpaca' from 'all_alpaca_gemma-2-2b-it'
     model_name = data_path.stem.split('_')[-1] # e.g., 'gemma-2-2b-it'
 
@@ -129,7 +150,15 @@ def load_ft_data(ft_path: Path) -> pd.DataFrame:
 def load_and_prepare_data(args: argparse.Namespace) -> pd.DataFrame:
     """Loads all data sources and merges them into a single tidy DataFrame."""
     # Load all baseline data
+<<<<<<< HEAD
+<<<<<<< HEAD
+    main_files = list(Path(args.data_dir).glob("*.json"))
+=======
     main_files = list(Path(args.data_dir).glob("all_*.json"))
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+    main_files = list(Path(args.data_dir).glob("all_*.json"))
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     if not main_files:
         raise FileNotFoundError(f"No main data files found in {args.data_dir}")
     baseline_df = pd.concat([load_main_data(f) for f in main_files], ignore_index=True)
@@ -168,7 +197,15 @@ def load_and_prepare_data(args: argparse.Namespace) -> pd.DataFrame:
     logging.info(f"Models found: {full_df['model'].unique()}")
     return full_df
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+# ANALYSIS & VISUALISATION
+=======
 # ANALYSIS & VISUALIZATION
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+# ANALYSIS & VISUALIZATION
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 class Analyzer:
     def __init__(self, df: pd.DataFrame, output_dir: Path, args: argparse.Namespace):
         self.df = df
@@ -296,7 +333,15 @@ class Analyzer:
         content += avg_delta.to_string()
         self._add_result("Fine-Tuning Performance Delta", content)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # Visualisations
+=======
         # Visualizations
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+        # Visualizations
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         fig, ax = plt.subplots(figsize=(14, 8))
         sns.barplot(data=comp_df, x='delta_tf', y='model', ax=ax, estimator=np.mean)
         ax.set_title('Average Change in Task Fulfilment Score vs. Baseline')
@@ -315,7 +360,15 @@ class Analyzer:
         content += corr_matrix.to_string()
         self._add_result("Perplexity Correlations", content)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # Visualisations
+=======
         # Visualizations
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+        # Visualizations
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         # Heatmap of correlations
         fig, ax = plt.subplots(figsize=(10, 8))
         sns.heatmap(corr_matrix, annot=True, cmap='vlag', center=0, ax=ax)
@@ -340,18 +393,42 @@ class Analyzer:
         """Runs advanced analyses: statistical testing, PCA, clustering."""
         logging.info("Running Advanced Statistics...")
         
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # Deeper descriptive
+=======
         # A. Deeper descriptive
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+        # A. Deeper descriptive
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         content = ""
         desc_df = self.df.groupby('bucket')['Task Fulfilment / Relevance'].describe(percentiles=[.1, .25, .5, .75, .9])
         content += "### TF Score Percentiles by Bucket:\n" + desc_df.to_string() + "\n\n"
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # Inferential Testing (Example: ANOVA on buckets)
+=======
         # B. Inferential Testing (Example: ANOVA on buckets)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+        # B. Inferential Testing (Example: ANOVA on buckets)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         model = ols('Q("Task Fulfilment / Relevance") ~ C(bucket)', data=self.df.dropna()).fit()
         content += "### ANOVA: Task Fulfilment vs. Bucket\n"
         content += str(model.summary()) + "\n\n"
         self._add_result("Advanced Stats: Descriptive & Inferential", content)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # Predictive Modeling (Example: Feature Importance)
+=======
         # C. Predictive Modeling (Example: Feature Importance)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+        # C. Predictive Modeling (Example: Feature Importance)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         df_model = self.df.dropna(subset=METRIC_COLS).copy()
         X = df_model[[col for col in METRIC_COLS if col != "Task Fulfilment / Relevance"]]
         y = df_model["Task Fulfilment / Relevance"]
@@ -361,7 +438,15 @@ class Analyzer:
         content = "### Feature Importance (Random Forest)\nPredicting Task Fulfilment from other 9 metrics:\n\n" + feature_imp.to_string()
         self._add_result("Advanced Stats: Predictive Modeling", content)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+        # Dimensionality Reduction (PCA)
+=======
         # D. Dimensionality Reduction (PCA)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
+=======
+        # D. Dimensionality Reduction (PCA)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         df_pca = self.df.dropna(subset=METRIC_COLS).copy()
         X_scaled = StandardScaler().fit_transform(df_pca[METRIC_COLS])
         pca = PCA(n_components=2)

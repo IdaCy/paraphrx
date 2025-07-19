@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+<<<<<<< HEAD
+=======
 perplexity_after_ft.py
 ------------------------
 
@@ -9,6 +11,7 @@ field to each paraphrase whose key is provided by the user (one per adapter).
 
 Example
 -------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 python perplexity_after_ft.py.py \
        f_finetune/data/all_alpaca_gemma-2-2b-it.json \
        f_analysis/alpaca_with_ppl.json \
@@ -39,7 +42,11 @@ from huggingface_hub import HfApi, login as hf_login
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore
 
+<<<<<<< HEAD
+# Optional deps
+=======
 # Optional deps ------------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 try:
     from transformers import BitsAndBytesConfig  # type: ignore
     _BITSANDBYTES_OK = True
@@ -124,7 +131,11 @@ def parse_args() -> argparse.Namespace:
 
 def _parse_adapter_spec(raw: str, prefix: str, idx: int) -> Tuple[str, str]:
     """
+<<<<<<< HEAD
+    Parse 'path=field' or just 'path'  ->  (path, field)
+=======
     Parse 'path=field' or just 'path'  →  (path, field)
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     """
     if "=" in raw:
         path, field = raw.split("=", 1)
@@ -177,7 +188,10 @@ def load_model_and_tokenizer(
     return model, tokenizer, quant
 
 
+<<<<<<< HEAD
+=======
 # ---------------------------------------------------------------------------  
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 def compute_batch_perplexity(
     model, tokenizer, texts: Sequence[str]
 ) -> List[float]:
@@ -198,11 +212,19 @@ def compute_batch_perplexity(
     with torch.inference_mode():
         out = model(**enc, labels=labels)
 
+<<<<<<< HEAD
+    # Case A: new Transformers -> out.loss shape = (batch,)
+    if out.loss.dim() == 1 and out.loss.size(0) == len(texts):
+        seq_loss = out.loss
+    else:
+        # Case B: scalar loss -> compute token‑wise and average manually
+=======
     # Case A: new Transformers → out.loss shape = (batch,)
     if out.loss.dim() == 1 and out.loss.size(0) == len(texts):
         seq_loss = out.loss
     else:
         # Case B: scalar loss → compute token‑wise and average manually
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
         logits = out.logits[:, :-1].contiguous()
         tgt    = labels[:, 1:].contiguous()
 
@@ -219,7 +241,11 @@ def compute_batch_perplexity(
     ppl = torch.exp(seq_loss)
 
 
+<<<<<<< HEAD
+    # Optional verbose dump
+=======
     # Optional verbose dump -------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     dbg_left  = getattr(compute_batch_perplexity, "_dbg_left", 0)
     dbg_tok   = getattr(compute_batch_perplexity, "_dbg_tokens", False)
     if dbg_left > 0:
@@ -245,7 +271,10 @@ def compute_batch_perplexity(
 
 
     return ppl.cpu().tolist()
+<<<<<<< HEAD
+=======
 # ---------------------------------------------------------------------------
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 
 
 def main() -> None:
@@ -314,7 +343,11 @@ def main() -> None:
     # Actual evaluation
     for adapter_idx, (adapter_path, field_name) in enumerate(adapters, 1):
         logging.info("=== Adapter %d / %d – %s ===", adapter_idx, len(adapters), adapter_path)
+<<<<<<< HEAD
+        print(f"Adapter {adapter_idx}/{len(adapters)} -> {field_name}")
+=======
         print(f"Adapter {adapter_idx}/{len(adapters)} → {field_name}")
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 
         # Attach LoRA
         try:
@@ -378,7 +411,11 @@ def main() -> None:
         gc.collect()
 
     _save()
+<<<<<<< HEAD
+    print(f"All adapters done -> saved to {args.output_json}")
+=======
     print(f"All adapters done → saved to {args.output_json}")
+>>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     logging.info("All adapters done – output written to %s", args.output_json)
 
 
