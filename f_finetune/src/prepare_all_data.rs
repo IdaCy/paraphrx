@@ -7,6 +7,51 @@ cargo prepare_all_data \
     --paraphrase-tags-file a_data/paraphrases_tagged.json \
     --out-file f_finetune/data/all_alpaca_gemma-2-2b-it.json
 
+
+cargo prepare_all_data \
+    --paraphrases-file a_data/alpaca/paraphrases_500.json \
+    --answers-file c_assess_inf/output/alpaca/gemma-2-9b-it/answers.json \
+    --scores-file c_assess_inf/output/alpaca_answer_scores/gemma-2-9b-it.json\
+    --paraphrase-content-scores-file a_data/alpaca/equi_scores/scores.json \
+    --paraphrase-tags-file a_data/paraphrases_tagged.json \
+    --out-file e_eval/data/alpaca_gemma-2-9b-it.json
+cargo prepare_all_data \
+    --paraphrases-file a_data/gsm8k/paraphrases_500.json \
+    --answers-file c_assess_inf/output/gsm8k/gemma-2-9b-it/answers.json \
+    --scores-file c_assess_inf/output/gsm8k_answer_scores/gemma-2-9b-it.json\
+    --paraphrase-content-scores-file a_data/gsm8k/equi_scores/scores.json \
+    --paraphrase-tags-file a_data/paraphrases_tagged.json \
+    --out-file e_eval/data/gsm8k_gemma-2-9b-it.json
+cargo prepare_all_data \
+    --paraphrases-file a_data/mmlu/paraphrases_500.json \
+    --answers-file c_assess_inf/output/mmlu/gemma-2-9b-it/answers.json \
+    --scores-file c_assess_inf/output/mmlu_answer_scores/gemma-2-9b-it.json\
+    --paraphrase-content-scores-file a_data/mmlu/equi_scores/scores.json \
+    --paraphrase-tags-file a_data/paraphrases_tagged.json \
+    --out-file e_eval/data/mmlu_gemma-2-9b-it.json
+cargo prepare_all_data \
+    --paraphrases-file a_data/alpaca/paraphrases_500.json \
+    --answers-file c_assess_inf/output/alpaca/Qwen2.5-3B-Instruct/answers.json \
+    --scores-file c_assess_inf/output/alpaca_answer_scores/Qwen2.5-3B-Instruct.json\
+    --paraphrase-content-scores-file a_data/alpaca/equi_scores/scores.json \
+    --paraphrase-tags-file a_data/paraphrases_tagged.json \
+    --out-file e_eval/data/alpaca_Qwen2.5-3B-Instruct.json
+cargo prepare_all_data \
+    --paraphrases-file a_data/gsm8k/paraphrases_500.json \
+    --answers-file c_assess_inf/output/gsm8k/Qwen2.5-3B-Instruct/answers.json \
+    --scores-file c_assess_inf/output/gsm8k_answer_scores/Qwen2.5-3B-Instruct.json\
+    --paraphrase-content-scores-file a_data/gsm8k/equi_scores/scores.json \
+    --paraphrase-tags-file a_data/paraphrases_tagged.json \
+    --out-file e_eval/data/gsm8k_Qwen2.5-3B-Instruct.json
+cargo prepare_all_data \
+    --paraphrases-file a_data/mmlu/paraphrases_500.json \
+    --answers-file c_assess_inf/output/mmlu/Qwen2.5-3B-Instruct/answers.json \
+    --scores-file c_assess_inf/output/mmlu_answer_scores/Qwen2.5-3B-Instruct.json\
+    --paraphrase-content-scores-file a_data/mmlu/equi_scores/scores.json \
+    --paraphrase-tags-file a_data/paraphrases_tagged.json \
+    --out-file e_eval/data/mmlu_Qwen2.5-3B-Instruct.json
+
+
 gsm8k
 cargo prepare_all_data \
     --paraphrases-file a_data/gsm8k/paraphrases_500.json \

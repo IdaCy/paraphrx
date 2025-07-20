@@ -3,6 +3,9 @@
 add_scenarios = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin add_scenarios --release --"
 gen_phrx_skipfail = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin generate_paraphrases_skipfail --release --"
 
+sample_to_json = "run --manifest-path a_data/preproc/sanity_alpaca/Cargo.toml --bin sample_to_json --release --"
+preproc = "run --manifest-path a_data/preproc/sanity_alpaca/Cargo.toml --bin preproc --release --"
+
 # c_assess_inf
 summary = "run -p c_assess_inf --bin summarise_scores"
 results_assess = "run --manifest-path c_assess_inf/Cargo.toml --bin results_assess --release --"
@@ -15,7 +18,9 @@ jsmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_jsons --relea
 jssplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_jsons --release --"
 countsplit = "run --manifest-path c_assess_inf/Cargo.toml --bin split_prompt_counts --release --"
 split_random_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin split_random_ids --release --"
+split_any_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin split_any_ids --release --"
 merge_random_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_random_ids --release --"
+merge_any_ids = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_any_ids --release --"
 instructmerge = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_instructs --release --"
 results_find_issues = "run --manifest-path c_assess_inf/Cargo.toml --bin results_find_issues --release --"
 merge_issues = "run --manifest-path c_assess_inf/Cargo.toml --bin merge_issues --release --"
@@ -35,4 +40,5 @@ gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download
 prepare_data = "run --manifest-path f_finetune/Cargo.toml --bin prepare_data --release --"
 prepare_all_data = "run --manifest-path f_finetune/Cargo.toml --bin prepare_all_data --release --"
 score_results = "run --manifest-path f_finetune/Cargo.toml --bin score_results --release --"
+score_results_all_data = "run --manifest-path f_finetune/Cargo.toml --bin score_results_all_data --release --"
 split_train_test = "run --manifest-path f_finetune/Cargo.toml --bin split_train_test --release --"

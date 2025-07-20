@@ -7,10 +7,10 @@ cargo merge_random_ids \
 
 cargo merge_random_ids \
     -i \
-    f_finetune/data/output_splits_mmlu/buckets_1-5_train_part1.json \
-    f_finetune/data/output_splits_mmlu/buckets_1-5_train_part2.json \
-    f_finetune/data/output_splits_mmlu/buckets_1-5_train_part3.json \
-    -o f_finetune/data/output_splits_mmlu/buckets_1-5_train.json
+    f_finetune/data/all_mmlu_gemma-2-2b-it_part1.json \
+    f_finetune/data/all_mmlu_gemma-2-2b-it_part2.json \
+    f_finetune/data/all_mmlu_gemma-2-2b-it_part3.json \
+    -o f_finetune/data/all_mmlu_gemma-2-2b-it.json
     
 */
 

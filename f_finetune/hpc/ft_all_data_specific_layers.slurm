@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=1-5_specific_layers_ft_all_data
+#SBATCH --job-name=h1-5_specific_layers_ft_all_data
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
@@ -8,12 +8,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-5_specific_layers_ft_all_data.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_1-5_specific_layers_ft_all_data.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1-5_specific_layers_ft_all_data.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1-5_specific_layers_ft_all_data.err
 
 set -euo pipefail
-echo "$(date) – 1-5_specific_layers_ft_all_data job started on $(hostname)"
-echo "$(date) – 1-5_specific_layers_ft_all_data job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – h1-5_specific_layers_ft_all_data job started on $(hostname)"
+echo "$(date) – h1-5_specific_layers_ft_all_data job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -48,6 +48,8 @@ python -m pip install --prefer-binary \
   transformers==4.45.0 \
   peft==0.11.1 \
   bitsandbytes==0.42.0 \
+  mpi4py \
+  deepspeed \
   datasets==2.19.0 \
   numpy==1.24.4 sentencepiece loguru protobuf==3.20.* wandb testresources -q
 python -m pip uninstall -y torchaudio torchvision -q || true
@@ -66,8 +68,10 @@ source /scratch_dgxl/ifc24/.hf_token || true
 [ -f /scratch_dgxl/ifc24/.wandb_key ] && source /scratch_dgxl/ifc24/.wandb_key
 WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx}
 
-RUN_SCRIPT="f_finetune/src/finetuning_specific_layers.py"
+# silence tokenizer warnings
+export TOKENIZERS_PARALLELISM=false
 
+RUN_SCRIPT="f_finetune/src/finetuning_specific_layers.py"
 srun python "$RUN_SCRIPT" \
   --data_paths \
   "f_finetune/data/output_splits_alpaca/buckets_1-5_train.json" \
@@ -77,13 +81,14 @@ srun python "$RUN_SCRIPT" \
   --run_name buckets_1-5_specific_layers \
   --buckets 1-5 \
   --bf16 \
-  --batch_size 2 \
-  --gradient_accumulation_steps 8 \
+  --bnb_8bit_optim \
+  --batch_size 4 \
+  --gradient_accumulation_steps 4 \
   --learning_rate 2e-4 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
   --save_steps 200 \
   $WANDB_FLAG
 
-echo "$(date) – 1-5_specific_layers_ft_all_data job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – 1-5_specific_layers_ft_all_data job finished OK"
+echo "$(date) – h1-5_specific_layers_ft_all_data job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – h1-5_specific_layers_ft_all_data job finished OK"
