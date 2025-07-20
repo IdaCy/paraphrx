@@ -165,3 +165,5 @@ venv/
 xdg_cache/
 tmp/
 wandb
+
+c_assess_inf/hpc/tmux_phrx_equi_score_*.sh
