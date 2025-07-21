@@ -1,27 +1,31 @@
 #!/usr/bin/env python
 """
-LoRA fine‑tune on the paraphrx paraphrase‑robustness corpora.
+running in SLURM:
 
-Highlights
-----------
-* Accept **local JSON** *or* **Weights & Biases Artifacts** via `--data_paths`.
-* Early `wandb.init` so dataset artifacts can be resolved.
-* Optional **debug mode** – `--debug_n_samples 5` prints tokenised samples and exits.
-* Robust Bits‑and‑Bytes handling: silently falls back to fp16 if 4‑bit load fails.
-* Writes `summary.txt`, `metrics_history.json`, `loss_curve.png` into `output_dir` and logs them to W&B.
+source /scratch_root/ifc24/.hf_token || true
+[ -f /scratch_root/ifc24/.wandb_key ] && source /scratch_root/ifc24/.wandb_key
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 
-srun python finetune_lora_paraphrx.py \
+export TOKENIZERS_PARALLELISM=false
+export MPLBACKEND=Agg
+
+RUN_SCRIPT="f_finetune/src/finetuning.py"
+srun python "$RUN_SCRIPT" \
   --data_paths alpaca_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir f_finetune/outputs_buckets_1-5 \
-  --run_name buckets_1-5 \
+  --output_dir "f_finetune/outputs/alpaca_all_layer_safe/outputs_buckets_1-5" \
+  --run_name buckets_1-5_safe_all_layers \
   --buckets 1-5 \
   --bf16 \
-  --learning_rate 2e-4 \
+  --bnb_8bit_optim \
+  --target_modules all \
+  --batch_size 4 \
+  --gradient_accumulation_steps 4 \
+  --learning_rate 8e-5 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
   --save_steps 200 \
-  --logging_steps 100
+  $WANDB_FLAG
 """
 
 from __future__ import annotations
@@ -51,6 +55,7 @@ from transformers import (
     Trainer,
     TrainingArguments,
     TrainerCallback,
+    EarlyStoppingCallback
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 
@@ -62,6 +67,7 @@ DEBUG_PROMPT_IDS = {1, 42, 321}
 #   Example wrapper
 @dataclasses.dataclass
 class Example:
+    prompt_count: int
     instruction: str
     inp: str
     answer: str
@@ -106,6 +112,17 @@ def tokenise_example(ex: Example):
 
 #   Data loading utilities
 
+def group_split(ds, test_pct=0.05, seed=42):
+    import numpy as np
+    rng = np.random.default_rng(seed)
+    pcs = list({ex['prompt_count'] for ex in ds})
+    rng.shuffle(pcs)
+    cut = int(len(pcs)*test_pct)
+    val_ids = set(pcs[:cut])
+    train = ds.filter(lambda ex: ex['prompt_count'] not in val_ids)
+    val   = ds.filter(lambda ex: ex['prompt_count'] in  val_ids)
+    return train, val
+
 def parse_bucket_spec(spec: str) -> List[int]:
     result = set()
     for part in spec.split(','):
@@ -136,7 +153,8 @@ def load_examples(paths: List[str], buckets: List[int], use_para_ans: bool):
             inp = item.get("scenarios") or item.get("input", "")
 
             if 1 in buckets:
-                examples.append(Example(item["instruction_original"], inp, base_ans))
+                #examples.append(Example(item["instruction_original"], inp, base_ans))
+                examples.append(Example(pc_id, item["instruction_original"], inp, base_ans))
                 if pc_id in DEBUG_PROMPT_IDS:
                     logging.debug("[DBG %s-orig] %s", pc_id, item["instruction_original"][:80])
 
@@ -147,7 +165,8 @@ def load_examples(paths: List[str], buckets: List[int], use_para_ans: bool):
                 ans = para.get("answer") if use_para_ans else base_ans
                 if not (inst and ans):
                     continue
-                examples.append(Example(inst, inp, ans))
+                #examples.append(Example(inst, inp, ans))
+                examples.append(Example(pc_id, inst, inp, ans))
                 counter[int(para["bucket"])]+=1
                 if pc_id in DEBUG_PROMPT_IDS:
                     logging.debug("[DBG %s-%s] %s", pc_id, para.get("instruct_type"), inst[:80])
@@ -169,9 +188,10 @@ def make_arg_parser():
     p.add_argument('--batch_size', type=int, default=4)
     p.add_argument('--gradient_accumulation_steps', type=int, default=4)
     p.add_argument('--num_epochs', type=int, default=3)
-    p.add_argument('--learning_rate', type=float, default=2e-4)
+    p.add_argument('--learning_rate', type=float, default=8e-5)
     p.add_argument('--warmup_ratio', type=float, default=0.03)
     p.add_argument('--lr_scheduler_type', default='cosine')
+    p.add_argument('--weight_decay', type=float, default=0.05)
 
     p.add_argument('--lora_rank', type=int, default=16)
     p.add_argument('--lora_alpha', type=int, default=32)
@@ -302,24 +322,28 @@ def main(argv=None):
         **quant_kwargs,
     )
     model.config.pad_token_id = tokenizer.pad_token_id
+    model.config.dropout = 0.10
+    model.config.hidden_dropout = 0.10
+    model.config.attention_dropout = 0.10
     model.gradient_checkpointing_enable()
     model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
 
-    # LoRA adapter
-    mods = [m.strip() for m in args.target_modules.split(',')] or []
-    lcfg = LoraConfig(
-        r=args.lora_rank,
-        lora_alpha=args.lora_alpha,
-        target_modules=mods,
-        lora_dropout=args.lora_dropout,
-        bias='none',
-        task_type='CAUSAL_LM',
-    )
-    model = get_peft_model(model, lcfg)
-    logging.info("LoRA params: %s trainable / %s total",
-                 model.num_parameters(only_trainable=True),
-                 model.num_parameters())
+    # Decide between full‑parameter FT vs LoRA
+    if args.target_modules and args.target_modules.lower() not in {"all", "none"}:
+        mods = [m.strip() for m in args.target_modules.split(',')]
+        lcfg = LoraConfig(
+            r=args.lora_rank,
+            lora_alpha=args.lora_alpha,
+            target_modules=mods,
+            lora_dropout=args.lora_dropout,
+            bias='none',
+            task_type='CAUSAL_LM',
+        )
+        model = get_peft_model(model, lcfg)
+        logging.info("LoRA adapter on modules: %s", mods)
+    else:
+        logging.info("Full-parameter fine-tune (no LoRA)")
 
     # Load examples & optional debug
     buckets = parse_bucket_spec(args.buckets)
@@ -334,20 +358,31 @@ def main(argv=None):
                          toks['input_ids'][:40], toks['labels'][:40])
         return
 
+    # build raw dataset
+    raw_ds = Dataset.from_list([dataclasses.asdict(e) for e in examples])
+    # stratified split on prompt_count
+    train_raw, val_raw = group_split(raw_ds, test_pct=0.05, seed=args.seed)
+    logging.info("raw sizes – train: %d | val: %d", len(train_raw), len(val_raw))
+
     # Tokenise dataset
-    ds = Dataset.from_list([dataclasses.asdict(e) for e in examples])
+    #ds = Dataset.from_list([dataclasses.asdict(e) for e in examples])
+    # tokenise each split
     def batch_tokenise(batch):
-        ins, inp, ans = batch['instruction'], batch['inp'], batch['answer']
+        pcs, ins, inp, ans = batch['prompt_count'], batch['instruction'], batch['inp'], batch['answer']
         iids, lbls = [], []
-        for i, p, a in zip(ins, inp, ans):
-            tok = tokenise_example(Example(i, p, a))
+        for pc, i, p, a in zip(pcs, ins, inp, ans):
+            tok = tokenise_example(Example(pc, i, p, a))
             iids.append(tok['input_ids']); lbls.append(tok['labels'])
         return {'input_ids': iids, 'labels': lbls}
 
-    tokenised = ds.map(batch_tokenise, batched=True, remove_columns=ds.column_names)
+    #tokenised = ds.map(batch_tokenise, batched=True, remove_columns=ds.column_names)
 
-    split = tokenised.train_test_split(test_size=0.05, seed=args.seed)
-    train_ds, val_ds = split['train'], split['test']
+    #split = tokenised.train_test_split(test_size=0.05, seed=args.seed)
+    #train_ds, val_ds = split['train'], split['test']
+    train_ds = train_raw.map(batch_tokenise, batched=True,
+                            remove_columns=train_raw.column_names)
+    val_ds   = val_raw.map(batch_tokenise, batched=True,
+                        remove_columns=val_raw.column_names)
     logging.info("DS sizes – train: %d | val: %d", len(train_ds), len(val_ds))
 
     collator = DataCollatorForSeq2Seq(tokenizer, model=model,
@@ -373,17 +408,21 @@ def main(argv=None):
         per_device_eval_batch_size=args.batch_size*2,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         eval_strategy="steps",
-        eval_steps=5000,
+        eval_steps=200,
         save_strategy="steps",
         save_steps=args.save_steps,
         group_by_length=True,
         learning_rate=args.learning_rate,
+        weight_decay=args.weight_decay,
         lr_scheduler_type=args.lr_scheduler_type,
         warmup_ratio=args.warmup_ratio,
         max_grad_norm=0.3,
         logging_steps=args.logging_steps,
         logging_first_step=True,
         save_total_limit=3,
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
         report_to=['wandb'],
         deepspeed=ds_cfg,
         seed=args.seed,
@@ -403,7 +442,10 @@ def main(argv=None):
         train_dataset=train_ds,
         eval_dataset=val_ds,
         data_collator=collator,
-        callbacks=[StepDigest()],
+        callbacks=[
+            StepDigest(),
+            EarlyStoppingCallback(early_stopping_patience=3)
+        ],
     )
 
     # Train
