@@ -11,9 +11,15 @@ cargo merge_any_ids \
 
 cargo merge_any_ids \
     -i \
+<<<<<<< HEAD
     a_data/mmlu/equi_scores/paraphrases_500_part1_scores.json \
     a_data/mmlu/equi_scores/paraphrases_500_part2_scores.json \
     -o a_data/mmlu/equi_scores_paraphrases_500.json
+=======
+    a_data/gsm8k/equi_scores/paraphrases_500_part1_scores.json \
+    a_data/gsm8k/equi_scores/paraphrases_500_part2_scores.json \
+    -o a_data/gsm8k/equi_scores_paraphrases_500.json
+>>>>>>> 10364a266fa5ca1eef603e5392fca377a85975cd
 */
 
 use std::{

@@ -155,7 +155,7 @@ f_finetune/data/output_splits/
 f_finetune/data/output_splits_alpaca/
 f_finetune/data/output_splits_gsm8k/
 f_finetune/data/output_splits_mmlu/
-f_finetune/outputs
+f_finetune/outputs*
 f_finetune/data/all_*
 f_finetune/data/*
 f_finetune/data/
@@ -163,13 +163,22 @@ f_finetune/data/
 hpcnotes
 envs
 
-hf_cache/
+hf_cache*
 output_bckp/
-pip_cache/
+pip_cache*
 venv/
 xdg_cache/
 tmp/
 wandb
 xx*
+artifacts
+tmp_*
+xdg_cache_*
+
+c_assess_inf/hpc/tmux_phrx_equi_score*
+c_assess_inf/hpc/*
+e_eval/src/tf_stats.rs
+
+hf_cache_*
 
 c_assess_inf/hpc/tmux_phrx_equi_score_*.sh
