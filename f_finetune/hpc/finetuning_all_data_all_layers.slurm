@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=h1-4_all_data_all_layers_ft
+#SBATCH --job-name=hC-hiLR_1-2_all_data_all_layers_ft
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
@@ -8,25 +8,40 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1-4_all_data_all_layers_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1-4_all_data_all_layers_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hC-hiLR_1-2_all_data_all_layers_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hC-hiLR_1-2_all_data_all_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – h1-4_all_data_all_layers_ft job started on $(hostname)"
-echo "$(date) – h1-4_all_data_all_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – hC-hiLR_1-2_all_data_all_layers_ft job started on $(hostname)"
+echo "$(date) – hC-hiLR_1-2_all_data_all_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/all_data_all_layers/outputs_buckets_1-4
-export TMPDIR=$PROJ/tmp
-export HF_HOME=$PROJ/hf_cache
+mkdir -p logs f_finetune/outputs_4/all_data_all_layers/outputs_buckets_1-2_C-hiLR
+
+export TMPDIR=$PROJ/tmp_${SLURM_JOB_ID}
+export HF_HOME=$PROJ/hf_cache_${SLURM_JOB_ID}
+export PIP_CACHE_DIR=$PROJ/pip_cache_${SLURM_JOB_ID}
+export XDG_CACHE_HOME=$PROJ/xdg_cache_${SLURM_JOB_ID}
+
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
-export PIP_CACHE_DIR=$PROJ/pip_cache
-export XDG_CACHE_HOME=$PROJ/xdg_cache
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=
 export HOME=$TMPDIR
 export PATH=$HOME/.local/bin:$PATH
+
+cleanup () {
+  echo "$(date) – cleaning scratch for $SLURM_JOB_ID"
+  rm -rf "$TMPDIR" "$HF_HOME" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
+}
+# run cleanup on:
+#   EXIT  – normal completion
+#   ERR   – any command that triggers `set -e`
+#   INT   – Ctrl‑C from interactive dev
+#   TERM  – scancel / pre‑emption
+trap cleanup EXIT ERR INT TERM
+
+mkdir -p "$TMPDIR" "$HF_HOME" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
 
 # Pick an available Python-3 binary (prefers 3.11 - as 3.8)
 for P in python3.11 python3.10 python3.9 python3; do
@@ -78,18 +93,20 @@ RUN_SCRIPT="f_finetune/src/finetuning.py"
 srun python "$RUN_SCRIPT" \
   --data_paths alpaca_gemma-2-2b-it gsm8k_gemma-2-2b-it mmlu_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs/all_data_all_layers/outputs_buckets_1-4" \
-  --run_name buckets_1-4_all_layers \
-  --buckets 1-4 \
+  --output_dir "f_finetune/outputs_5/all_data_all_layers/outputs_buckets_1-3_C-hiLR" \
+  --run_name C-hiLR_buckets_1-3_all_layers \
+  --buckets 1-3 \
   --bf16 \
-  --bnb_8bit_optim \
-  --batch_size 4 \
-  --gradient_accumulation_steps 4 \
-  --learning_rate 2e-4 \
+  --target_modules none \
+  --batch_size 8 \
+  --gradient_accumulation_steps 16 \
+  --learning_rate 5e-5 \
+  --weight_decay 0.01 \
   --warmup_ratio 0.03 \
-  --num_epochs 3 \
+  --num_epochs 1 \
+  --eval_steps 200 \
   --save_steps 200 \
   $WANDB_FLAG
 
-echo "$(date) – h1-4_all_data_all_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – h1-4_all_data_all_layers_ft job finished OK"
+echo "$(date) – hC-hiLR_1-2_all_data_all_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – hC-hiLR_1-2_all_data_all_layers_ft job finished OK"
