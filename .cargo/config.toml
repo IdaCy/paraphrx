@@ -34,6 +34,8 @@ compose_top_occurences = "run --manifest-path e_eval/Cargo.toml --bin compose_to
 compose_top_occurences_across_metrics = "run --manifest-path e_eval/Cargo.toml --bin compose_top_occurences_across_metrics --release --"
 check_scores = "run --manifest-path e_eval/Cargo.toml --bin check_scores --release --"
 perplexity = "run --manifest-path e_eval/Cargo.toml --bin perplexity --release --"
+equi_patterns = "run --manifest-path e_eval/Cargo.toml --bin equi_patterns --release --"
+tf_stats = "run --manifest-path e_eval/Cargo.toml --bin tf_stats --release --"
 
 # f_finetune
 gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download --release --"
@@ -41,4 +43,5 @@ prepare_data = "run --manifest-path f_finetune/Cargo.toml --bin prepare_data --r
 prepare_all_data = "run --manifest-path f_finetune/Cargo.toml --bin prepare_all_data --release --"
 score_results = "run --manifest-path f_finetune/Cargo.toml --bin score_results --release --"
 score_results_all_data = "run --manifest-path f_finetune/Cargo.toml --bin score_results_all_data --release --"
+score_only_original = "run --manifest-path f_finetune/Cargo.toml --bin score_only_original --release --"
 split_train_test = "run --manifest-path f_finetune/Cargo.toml --bin split_train_test --release --"

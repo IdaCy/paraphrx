@@ -2,25 +2,16 @@ import wandb
 import os
 from glob import glob
 
-<<<<<<< HEAD
 
 def main():
     # Start a “prep-data” run
-=======
-def main():
-    # 1) Start a “prep-data” run
->>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     run = wandb.init(
         project="paraphrx_lora",
         job_type="prepare_data",
         name="upload-all-jsons"
     )
 
-<<<<<<< HEAD
     # For each JSON in e_eval/data, log it as an Artifact
-=======
-    # 2) For each JSON in e_eval/data, log it as an Artifact
->>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
     data_dir = "e_eval/data"
     for path in glob(os.path.join(data_dir, "*.json")):
         fname = os.path.basename(path)
@@ -38,9 +29,6 @@ def main():
     run.finish()
     print("All JSONs uploaded.")
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 if __name__ == "__main__":
     main()
