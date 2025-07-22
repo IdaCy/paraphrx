@@ -23,6 +23,10 @@ use std::{
 //use tiktoken_rs::CoreBPE;
 use tokio::time::sleep;
 
+use governor::{Quota, RateLimiter};
+use std::time::Duration as StdDuration;
+use std::num::NonZeroU32;
+
 // Model Configuration & Tokenizer
 struct ModelLimits {
     input: usize,
@@ -77,13 +81,17 @@ struct Cli {
     log_name: String,
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
-    #[arg(long = "delay-ms", default_value_t = 200)]
-    delay_ms: u64,
+    //#[arg(long = "delay-ms", default_value_t = 200)]
+    //delay_ms: u64,
     #[arg(long = "api-call-maximum", default_value_t = 10000)]
     api_call_maximum: usize,
     #[arg(long = "api-key")]
     api_key: Option<String>,
     #[arg(long, default_value_t = 163)]
+<<<<<<< HEAD
+=======
+    #[arg(long, default_value_t = 130)]
+>>>>>>> 04f99b35685c6c73ef5f8a29ebc98ca5580f0fc1
     max_paraphrases_per_chunk: usize,
 }
 
@@ -99,13 +107,13 @@ fn read_records<P: AsRef<Path>>(p: P, logger: &mut Logger) -> Result<Vec<Record>
 
 fn build_eval_prompt(original: &str, batch: &[(String, String)]) -> (String, String) {
     let instructions = String::from(
-r#"You are an expert in linguistic semantics. Your task is to compare each provided "paraphrase" against the "Instruction original".
+r#"You are an expert in linguistic semantics. Your task is to compare each provided 'paraphrase' against the 'Instruction original'.
 Your entire focus must be on the **semantic content of the request**. Ignore any differences in style, tone, politeness, or wording.
 Score every single paraphrase **independently** using an **integer from 0 to 5**.
-- **5 (Perfect paraphrase):** The paraphrase asks for the *exact same information or action* as the original. Nothing has been added or removed from the core request.
-- **4 (Minor deviation):** The paraphrase asks for the same thing but adds a very small constraint or piece of information (e.g., "... and explain").
-- **3 (Noticeable deviation):** The paraphrase clearly adds a new requirement (e.g., "format as a list") or omits a key part of the original request.
-- **2 (Major deviation):** The core task is substantially different.
+- **5 (Perfect paraphrase):** This prompt would be understood by the average English person as asking for the *exact same information or action* as the original. Nothing has been added or removed from the core request. It is in English and asking for the same thing.
+- **4 (Minor deviation):** This prompt would be understood by the average English person as asking for the same thing, but might be interpreted as adding a small constraint or extra piece of information or intention (e.g., "... and explain"). It is still in English and asking for mostly the same thing.
+- **3 (Noticeable deviation):** This prompt adds a new requirement, omits a key part of the original request, or would not be understood by the average English person for producing the same answer (e.g., asking to form a list, or asking in a different language). It is still asking for the same thing, but with a noticeable change.
+- **2 (Major deviation):** The core task is substantially different, such as asking for a different type of information or action, or phrased in a way that would not be understood by the average English person or be understood as asking for an entirely different thing.
 - **1 (Different request):** The paraphrase is on the same broad topic but asks for something completely different.
 - **0 (Unrelated):** The paraphrase is nonsensical or irrelevant.
 You MUST return a valid JSON object. The JSON object should contain **every single key** from the "Paraphrases to score" list. Do NOT add comments, explanations, or use markdown code fences.
@@ -134,13 +142,7 @@ async fn query_gemini(client: &reqwest::Client, key: &str, model: &str, prompt: 
     let url = format!("https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent?key={}", model, key);
     let body = json!({
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": { "responseMimeType": "application/json", "temperature": 0.0, "topP": 0.95 },
-        "safetySettings": [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
-            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
-        ]
+        "generationConfig": { "responseMimeType": "application/json", "temperature": 0.0, "topP": 0.95 }
     });
     let resp = client.post(url).json(&body).send().await?;
     if !resp.status().is_success() {
@@ -189,6 +191,19 @@ async fn main() -> Result<()> {
     let cli = Cli::parse();
     let api_key = cli.api_key.or_else(|| std::env::var("GOOGLE_API_KEY").ok())
         .context("Missing Google API key. Provide it with --api-key or $GOOGLE_API_KEY")?;
+
+    // Set up a token‑bucket that allows exactly RPM calls/minute:
+    let rpm = match cli.model.as_str() {
+        "gemini-2.5-flash-preview-05-20"     => 10u32,
+        "gemini-2.5-flash-lite-preview-06-17" => 15u32,
+        _                                     => 5u32,
+    };
+
+    let base_quota = Quota::with_period(StdDuration::from_secs(60))
+        .expect("60s is nonzero, so this always returns Some");
+    let nz = NonZeroU32::new(rpm).expect("rpm must be nonzero");
+    let quota = base_quota.allow_burst(nz);
+    let limiter = RateLimiter::direct(quota);
     
     fs::create_dir_all("logs")?;
     let stem = cli.output.file_stem().expect("Output must have a file name");
@@ -199,7 +214,7 @@ async fn main() -> Result<()> {
         stem.to_string_lossy(),
         cli.log_name,
         ts,
-    );g
+    );
 
     let log_path = PathBuf::from("logs").join(filename);
     let mut logger = Logger::new(&log_path)?;
@@ -305,27 +320,52 @@ async fn main() -> Result<()> {
             let mut success = false;
             
             for attempt in 1..=cli.max_attempts {
-                logger.log(&format!("[info] ID {}: Calling API for chunk of {} paraphrases (attempt {}/{})", prompt_id, chunk_paraphrases.len(), attempt, cli.max_attempts));
+                // to stay within RPM
+                limiter.until_ready().await;
+
+                logger.log(&format!(
+                    "[info] ID {}: Calling API for chunk of {} paraphrases (attempt {}/{})",
+                    prompt_id,
+                    chunk_paraphrases.len(),
+                    attempt,
+                    cli.max_attempts
+                ));
+
                 match query_gemini(&client, &api_key, &cli.model, prompt.clone()).await {
                     Ok(parsed_scores) => {
-                        logger.log(&format!("[info] ID {}: API call SUCCEEDED on attempt {}", prompt_id, attempt));
+                        logger.log(&format!(
+                            "[info] ID {}: API call SUCCEEDED on attempt {}",
+                            prompt_id, attempt
+                        ));
                         new_scores_for_this_id.extend(parsed_scores);
                         success = true;
                         break;
                     }
                     Err(e) => {
-                        logger.log(&format!("[error] ID {}: API call FAILED on attempt {}: {}", prompt_id, attempt, e));
-                        if attempt < cli.max_attempts { sleep(Duration::from_secs(3 * attempt as u64)).await; }
+                        logger.log(&format!(
+                            "[error] ID {}: API call FAILED on attempt {}: {}",
+                            prompt_id, attempt, e
+                        ));
+                        if attempt < cli.max_attempts {
+                            let backoff_secs = 3 * attempt as u64;
+                            logger.log(&format!(
+                                "[info] ID {}: Backing off for {}s before retry",
+                                prompt_id, backoff_secs
+                            ));
+                            sleep(Duration::from_secs(backoff_secs)).await;
+                        }
                     }
                 }
             }
+
             if !success {
                 let err_msg = format!("Chunk of {} items failed after {} attempts.", chunk_paraphrases.len(), cli.max_attempts);
                 logger.log(&format!("[fatal] ID {}: {}", prompt_id, &err_msg));
                 all_errors.entry(prompt_id).or_default().push(err_msg);
-            } else {
-                sleep(Duration::from_millis(cli.delay_ms)).await;
-            }
+            } //else {
+                //sleep(Duration::from_millis(cli.delay_ms)).await;
+                //logger.log(&format!("[fatal] ID {}: {}", prompt_id, &err_msg));
+            //}
         }
         
         // Merge new scores into the results map and save

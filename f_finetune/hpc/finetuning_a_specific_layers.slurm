@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=l1-1_a_specific_layers_ft
+#SBATCH --job-name=lB-qlora-lowLR_1-2_a_specific_layers_ft
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,25 +8,40 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l1-1_a_specific_layers_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l1-1_a_specific_layers_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lB-qlora-lowLR_1-2_a_specific_layers_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lB-qlora-lowLR_1-2_a_specific_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – l1-1_a_specific_layers_ft job started on $(hostname)"
-echo "$(date) – l1-1_a_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – lB-qlora-lowLR_1-2_a_specific_layers_ft job started on $(hostname)"
+echo "$(date) – lB-qlora-lowLR_1-2_a_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs tmp hf_cache pip_cache xdg_cache f_finetune/outputs/alpaca_specific_layers_REALLY/outputs_buckets_1-1
-export TMPDIR=$PROJ/tmp
-export HF_HOME=$PROJ/hf_cache
+mkdir -p logs f_finetune/outputs_4/alpaca_specific_layers/outputs_buckets_1-2_lr1e-4_ga16_sas300
+
+export TMPDIR=$PROJ/tmp_${SLURM_JOB_ID}
+export HF_HOME=$PROJ/hf_cache_${SLURM_JOB_ID}
+export PIP_CACHE_DIR=$PROJ/pip_cache_${SLURM_JOB_ID}
+export XDG_CACHE_HOME=$PROJ/xdg_cache_${SLURM_JOB_ID}
+
 export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
-export PIP_CACHE_DIR=$PROJ/pip_cache
-export XDG_CACHE_HOME=$PROJ/xdg_cache
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=
 export HOME=$TMPDIR
 export PATH=$HOME/.local/bin:$PATH
+
+cleanup () {
+  echo "$(date) – cleaning scratch for $SLURM_JOB_ID"
+  rm -rf "$TMPDIR" "$HF_HOME" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
+}
+# run cleanup on:
+#   EXIT  – normal completion
+#   ERR   – any command that triggers `set -e`
+#   INT   – Ctrl‑C from interactive dev
+#   TERM  – scancel / pre‑emption
+trap cleanup EXIT ERR INT TERM
+
+mkdir -p "$TMPDIR" "$HF_HOME" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
 
 # Pick an available Python-3 binary (prefers 3.11 - as 3.8)
 for P in python3.11 python3.10 python3.9 python3; do
@@ -74,22 +89,27 @@ export TOKENIZERS_PARALLELISM=false
 # headless plotting
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_specific_layers.py"
+RUN_SCRIPT="f_finetune/src/finetuning.py"
 srun python "$RUN_SCRIPT" \
   --data_paths alpaca_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs/alpaca_specific_layers_REALLY/outputs_buckets_1-1" \
-  --run_name buckets_1-1_specific_layers \
-  --buckets 1-1 \
+  --output_dir "f_finetune/outputs_5/alpaca_specific_layers/outputs_buckets_1-2_B-qlora-lowLR" \
+  --run_name B-qlora-lowLR_buckets_1-2_specific_layers \
+  --buckets 1-2 \
   --bf16 \
   --bnb_8bit_optim \
-  --batch_size 4 \
+  --lora_rank 32 \
+  --lora_alpha 64 \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --batch_size 2 \
   --gradient_accumulation_steps 4 \
-  --learning_rate 2e-4 \
+  --learning_rate 1e-4 \
+  --weight_decay 0.05 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
-  --save_steps 200 \
+  --eval_steps 1000 \
+  --save_steps 1000 \
   $WANDB_FLAG
 
-echo "$(date) – l1-1_a_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – l1-1_a_specific_layers_ft job finished OK"
+echo "$(date) – lB-qlora-lowLR_1-2_a_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – lB-qlora-lowLR_1-2_a_specific_layers_ft job finished OK"
