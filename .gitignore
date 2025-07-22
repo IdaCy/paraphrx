@@ -179,3 +179,6 @@ c_assess_inf/hpc/tmux_phrx_equi_score*
 c_assess_inf/hpc/*
 e_eval/src/tf_stats.rs
 
+hf_cache_*
+
+c_assess_inf/hpc/tmux_phrx_equi_score_*.sh

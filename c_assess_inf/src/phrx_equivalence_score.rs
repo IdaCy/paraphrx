@@ -88,6 +88,7 @@ struct Cli {
     #[arg(long = "api-key")]
     api_key: Option<String>,
     #[arg(long, default_value_t = 163)]
+    #[arg(long, default_value_t = 130)]
     max_paraphrases_per_chunk: usize,
 }
 
