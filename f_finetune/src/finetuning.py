@@ -18,17 +18,10 @@ srun python "$RUN_SCRIPT" \
   --buckets 1-5 \
   --bf16 \
   --bnb_8bit_optim \
-<<<<<<< HEAD
   --target_modules none \
   --batch_size 4 \
   --gradient_accumulation_steps 4 \
   --learning_rate 3e-5 \
-=======
-  --target_modules all \
-  --batch_size 4 \
-  --gradient_accumulation_steps 4 \
-  --learning_rate 8e-5 \
->>>>>>> d33a0c046c6e02c3e8342ceb8ca052bb5d6f1aa8
   --warmup_ratio 0.03 \
   --num_epochs 3 \
   --eval_steps 200 \
@@ -196,11 +189,7 @@ def make_arg_parser():
     p.add_argument('--batch_size', type=int, default=4)
     p.add_argument('--gradient_accumulation_steps', type=int, default=4)
     p.add_argument('--num_epochs', type=int, default=3)
-<<<<<<< HEAD
     p.add_argument('--learning_rate', type=float, default=3e-5)
-=======
-    p.add_argument('--learning_rate', type=float, default=8e-5)
->>>>>>> d33a0c046c6e02c3e8342ceb8ca052bb5d6f1aa8
     p.add_argument('--warmup_ratio', type=float, default=0.03)
     p.add_argument('--lr_scheduler_type', default='cosine')
     p.add_argument('--weight_decay', type=float, default=0.05)
@@ -364,25 +353,6 @@ def main(argv=None):
     #model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
 
-<<<<<<< HEAD
-=======
-    # Decide between full‑parameter FT vs LoRA
-    if args.target_modules and args.target_modules.lower() not in {"all", "none"}:
-        mods = [m.strip() for m in args.target_modules.split(',')]
-        lcfg = LoraConfig(
-            r=args.lora_rank,
-            lora_alpha=args.lora_alpha,
-            target_modules=mods,
-            lora_dropout=args.lora_dropout,
-            bias='none',
-            task_type='CAUSAL_LM',
-        )
-        model = get_peft_model(model, lcfg)
-        logging.info("LoRA adapter on modules: %s", mods)
-    else:
-        logging.info("Full-parameter fine-tune (no LoRA)")
-
->>>>>>> d33a0c046c6e02c3e8342ceb8ca052bb5d6f1aa8
     # Load examples & optional debug
     buckets = parse_bucket_spec(args.buckets)
     examples, bucket_counter = load_examples(dataset_paths, buckets, args.use_paraphrase_answer)
@@ -448,11 +418,7 @@ def main(argv=None):
         gradient_accumulation_steps=args.gradient_accumulation_steps,
 
         eval_strategy="steps",
-<<<<<<< HEAD
         eval_steps=args.eval_steps,
-=======
-        eval_steps=200,
->>>>>>> d33a0c046c6e02c3e8342ceb8ca052bb5d6f1aa8
         save_strategy="steps",
         save_steps=args.save_steps,
         save_total_limit=1,
@@ -470,14 +436,7 @@ def main(argv=None):
 
         logging_steps=args.logging_steps,
         logging_first_step=True,
-<<<<<<< HEAD
 
-=======
-        save_total_limit=3,
-        load_best_model_at_end=True,
-        metric_for_best_model="eval_loss",
-        greater_is_better=False,
->>>>>>> d33a0c046c6e02c3e8342ceb8ca052bb5d6f1aa8
         report_to=['wandb'],
         deepspeed=ds_cfg,
         seed=args.seed,
@@ -503,11 +462,7 @@ def main(argv=None):
         data_collator=collator,
         callbacks=[
             StepDigest(),
-<<<<<<< HEAD
             EarlyStoppingCallback(early_stopping_patience=9)
-=======
-            EarlyStoppingCallback(early_stopping_patience=3)
->>>>>>> d33a0c046c6e02c3e8342ceb8ca052bb5d6f1aa8
         ],
     )
 
