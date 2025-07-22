@@ -18,12 +18,13 @@ srun python "$RUN_SCRIPT" \
   --buckets 1-5 \
   --bf16 \
   --bnb_8bit_optim \
-  --target_modules all \
+  --target_modules none \
   --batch_size 4 \
   --gradient_accumulation_steps 4 \
-  --learning_rate 8e-5 \
+  --learning_rate 3e-5 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
+  --eval_steps 200 \
   --save_steps 200 \
   $WANDB_FLAG
 """
@@ -188,7 +189,7 @@ def make_arg_parser():
     p.add_argument('--batch_size', type=int, default=4)
     p.add_argument('--gradient_accumulation_steps', type=int, default=4)
     p.add_argument('--num_epochs', type=int, default=3)
-    p.add_argument('--learning_rate', type=float, default=8e-5)
+    p.add_argument('--learning_rate', type=float, default=3e-5)
     p.add_argument('--warmup_ratio', type=float, default=0.03)
     p.add_argument('--lr_scheduler_type', default='cosine')
     p.add_argument('--weight_decay', type=float, default=0.05)
@@ -202,6 +203,7 @@ def make_arg_parser():
     p.add_argument('--deepspeed_config', default='ds_zero2.json')
     p.add_argument('--bnb_8bit_optim', action='store_true')
     p.add_argument('--bf16', action='store_true')
+    p.add_argument('--eval_steps', type=int, default=200)
     p.add_argument('--save_steps', type=int, default=200)
     p.add_argument('--logging_steps', type=int, default=100,
                    help='Log training loss every N steps')
@@ -304,46 +306,52 @@ def main(argv=None):
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.pad_token_id = tokenizer.eos_token_id
 
-    try:
+    # Decide between full‑parameter FT vs LoRA
+    # choose mode
+    full_ft = not args.target_modules or args.target_modules.lower() in {"all", "none"}
+
+    # load model
+    if full_ft:
+        # ordinary bf16/fp16 model (trainable)
+        model = AutoModelForCausalLM.from_pretrained(
+            args.model_path,
+            device_map="auto",
+            torch_dtype=torch.bfloat16 if args.bf16 else torch.float16,
+        )
+    else:
+        # 4‑bit quant + LoRA
         bnb_cfg = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type='nf4',
+            load_in_4bit=True, bnb_4bit_quant_type="nf4",
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=torch.bfloat16 if args.bf16 else torch.float16,
         )
-        quant_kwargs = {'quantization_config': bnb_cfg}
-    except Exception as e:
-        logging.warning("4-bit quant load failed, using default precision: %s", e)
-        quant_kwargs = {}
+        model = AutoModelForCausalLM.from_pretrained(
+            args.model_path,
+            device_map="auto",
+            quantization_config=bnb_cfg,
+        )
+        model = prepare_model_for_kbit_training(model)
 
-    model = AutoModelForCausalLM.from_pretrained(
-        args.model_path,
-        device_map='auto',
-        **quant_kwargs,
-    )
+    if not full_ft:
+        mods = [m.strip() for m in args.target_modules.split(',')]
+        lcfg = LoraConfig(
+            r=args.lora_rank, lora_alpha=args.lora_alpha,
+            target_modules=mods,
+            lora_dropout=args.lora_dropout,
+            bias="none", task_type="CAUSAL_LM",
+        )
+        model = get_peft_model(model, lcfg)
+        logging.info("LoRA adapter on modules: %s", mods)
+    else:
+        logging.info("Full‑parameter fine‑tune (no LoRA)")
+
     model.config.pad_token_id = tokenizer.pad_token_id
     model.config.dropout = 0.10
     model.config.hidden_dropout = 0.10
     model.config.attention_dropout = 0.10
     model.gradient_checkpointing_enable()
-    model = prepare_model_for_kbit_training(model)
+    #model = prepare_model_for_kbit_training(model)
     model.config.use_cache = False
-
-    # Decide between full‑parameter FT vs LoRA
-    if args.target_modules and args.target_modules.lower() not in {"all", "none"}:
-        mods = [m.strip() for m in args.target_modules.split(',')]
-        lcfg = LoraConfig(
-            r=args.lora_rank,
-            lora_alpha=args.lora_alpha,
-            target_modules=mods,
-            lora_dropout=args.lora_dropout,
-            bias='none',
-            task_type='CAUSAL_LM',
-        )
-        model = get_peft_model(model, lcfg)
-        logging.info("LoRA adapter on modules: %s", mods)
-    else:
-        logging.info("Full-parameter fine-tune (no LoRA)")
 
     # Load examples & optional debug
     buckets = parse_bucket_spec(args.buckets)
@@ -401,28 +409,34 @@ def main(argv=None):
         output_dir=args.output_dir,
         run_name=args.run_name,
         num_train_epochs=args.num_epochs,
-        optim=('adamw_bnb_8bit' if args.bnb_8bit_optim else None),
+        optim=('adamw_bnb_8bit' if args.bnb_8bit_optim else 'adamw_torch'),
         bf16=args.bf16,
-        fp16=not(args.bf16 or args.bnb_8bit_optim),
+        fp16=not (args.bf16 or args.bnb_8bit_optim),
+
         per_device_train_batch_size=args.batch_size,
-        per_device_eval_batch_size=args.batch_size*2,
+        per_device_eval_batch_size=args.batch_size * 2,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
+
         eval_strategy="steps",
-        eval_steps=200,
+        eval_steps=args.eval_steps,
         save_strategy="steps",
         save_steps=args.save_steps,
+        save_total_limit=1,
+
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
+
         group_by_length=True,
         learning_rate=args.learning_rate,
         weight_decay=args.weight_decay,
         lr_scheduler_type=args.lr_scheduler_type,
         warmup_ratio=args.warmup_ratio,
         max_grad_norm=0.3,
+
         logging_steps=args.logging_steps,
         logging_first_step=True,
-        save_total_limit=3,
-        load_best_model_at_end=True,
-        metric_for_best_model="eval_loss",
-        greater_is_better=False,
+
         report_to=['wandb'],
         deepspeed=ds_cfg,
         seed=args.seed,
@@ -436,6 +450,10 @@ def main(argv=None):
                              logs.get('loss', float('nan')),
                              logs.get('learning_rate', float('nan')))
 
+    if full_ft:
+        for p in model.parameters():
+            p.requires_grad_(True)
+
     trainer = Trainer(
         model=model,
         args=targs,
@@ -444,7 +462,7 @@ def main(argv=None):
         data_collator=collator,
         callbacks=[
             StepDigest(),
-            EarlyStoppingCallback(early_stopping_patience=3)
+            EarlyStoppingCallback(early_stopping_patience=9)
         ],
     )
 

@@ -1,33 +1,48 @@
 #!/bin/bash -l
-#SBATCH --job-name=l1-5_a_specific_layers_ft
+#SBATCH --job-name=B-qlora-lowLR_1-3_a_specific_layers_ft
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_l1-5_a_specific_layers_ft.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_l1-5_a_specific_layers_ft.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_B-qlora-lowLR_1-3_a_specific_layers_ft.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_B-qlora-lowLR_1-3_a_specific_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – l1-5_a_specific_layers_ft job started on $(hostname)"
-echo "$(date) – l1-5_a_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – B-qlora-lowLR_1-3_a_specific_layers_ft job started on $(hostname)"
+echo "$(date) – B-qlora-lowLR_1-3_a_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
 # Use per‐job scratch areas to avoid inter‐job conflicts
-mkdir -p logs tmp_${SLURM_JOB_ID} hf_cache_${SLURM_JOB_ID} pip_cache_${SLURM_JOB_ID} xdg_cache_${SLURM_JOB_ID} f_finetune/outputs/alpaca_specific_layers/outputs_buckets_1-5
+mkdir -p logs f_finetune/outputs_5/alpaca_specific_layers/outputs_buckets_1-3_B-qlora-lowLR
 
 export TMPDIR=$PROJ/tmp_${SLURM_JOB_ID}
 export HF_HOME=$PROJ/hf_cache_${SLURM_JOB_ID}
-export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
 export PIP_CACHE_DIR=$PROJ/pip_cache_${SLURM_JOB_ID}
 export XDG_CACHE_HOME=$PROJ/xdg_cache_${SLURM_JOB_ID}
+
+export HUGGINGFACE_HUB_CACHE=$HF_HOME/hub
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=
 export HOME=$TMPDIR
 export PATH=$HOME/.local/bin:$PATH
+
+cleanup () {
+  echo "$(date) – cleaning scratch for $SLURM_JOB_ID"
+  rm -rf "$TMPDIR" "$HF_HOME" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
+}
+# run cleanup on:
+#   EXIT  – normal completion
+#   ERR   – any command that triggers `set -e`
+#   INT   – Ctrl‑C from interactive dev
+#   TERM  – scancel / pre‑emption
+trap cleanup EXIT ERR INT TERM
+
+mkdir -p "$TMPDIR" "$HF_HOME" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
+#tmp_${SLURM_JOB_ID} hf_cache_${SLURM_JOB_ID} pip_cache_${SLURM_JOB_ID} xdg_cache_${SLURM_JOB_ID}\
 
 # Pick an available Python-3 binary (prefers 3.11 → 3.8)
 for P in python3.11 python3.10 python3.9 python3; do
@@ -65,15 +80,21 @@ pip install --no-cache-dir --upgrade pip setuptools wheel -q
 pip install --no-cache-dir --prefer-binary \
   torch==2.5.1+cu121 --extra-index-url https://download.pytorch.org/whl/cu121
 
-# install the rest of your stack (including bitsandbytes ≥0.43.2), no cache
+# install the rest of stack (including bitsandbytes ≥0.43.2), no cache
 pip install --no-cache-dir --prefer-binary \
-  transformers==4.45.0 \
-  peft==0.11.1 \
-  bitsandbytes>=0.43.2 \
-  mpi4py \
-  deepspeed \
-  datasets==2.19.0 \
-  numpy==1.24.4 sentencepiece loguru protobuf==3.20.* wandb testresources matplotlib -q
+  "transformers==4.45.0" \
+  "peft==0.11.1" \
+  "bitsandbytes>=0.43.2" \
+  "mpi4py" \
+  "deepspeed" \
+  "datasets==2.19.0" \
+  "numpy==1.24.4" \
+  "sentencepiece" \
+  "loguru" \
+  "protobuf==3.20.*" \
+  "wandb" \
+  "testresources" \
+  "matplotlib" -q
 pip uninstall -y torchaudio torchvision -q || true
 
 python - <<'PY'
@@ -93,24 +114,38 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_specific_layers.py"
+RUN_SCRIPT="f_finetune/src/finetuning.py"
 srun python "$RUN_SCRIPT" \
   --data_paths alpaca_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs/alpaca_all_layer_XXX/outputs_buckets_1-2" \
-  --run_name buckets_1-2_all_layers \
-  --buckets 1-2 \
+  --output_dir "f_finetune/outputs_5/alpaca_specific_layers/outputs_buckets_1-3_B-qlora-lowLR" \
+  --run_name B-qlora-lowLR_buckets_1-3_specific_layers \
+  --buckets 1-3 \
   --bf16 \
   --bnb_8bit_optim \
+  --lora_rank 32 \
+  --lora_alpha 64 \
   --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
-  --batch_size 4 \
+  --batch_size 2 \
   --gradient_accumulation_steps 4 \
-  --learning_rate 8e-5 \
+  --learning_rate 1e-4 \
   --weight_decay 0.05 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
-  --save_steps 200 \
+  --eval_steps 1000 \
+  --save_steps 1000 \
   $WANDB_FLAG
 
-echo "$(date) – l1-5_a_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – l1-5_a_specific_layers_ft job finished OK"
+echo "$(date) – B-qlora-lowLR_1-3_a_specific_layers_ft job itself finished OK"
+
+rm -rf "$TMPDIR" \
+       "$HF_HOME" \
+       "$PIP_CACHE_DIR" \
+       "$XDG_CACHE_HOME"
+
+echo "$(date) – B-qlora-lowLR_1-3_a_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – B-qlora-lowLR_1-3_a_specific_layers_ft job finished & stuff cleaned OK"
+
+
+
+
