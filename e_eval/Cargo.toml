@@ -23,6 +23,14 @@ path = "src/check_scores.rs"
 name = "perplexity"
 path = "src/perplexity.rs"
 
+[[bin]]
+name = "equi_patterns"
+path = "src/equi_patterns.rs"
+
+[[bin]]
+name = "tf_stats"
+path = "src/tf_stats.rs"
+
 [dependencies]
 anyhow     = "1"
 clap = { version = "4.5", features = ["derive"] }
@@ -41,3 +49,6 @@ itertools = "0.14.0"
 csv = "1.1"
 rust_tokenizers = "8.1"
 rust-bert      = { version = "0.23", default-features = false, features = ["download-libtorch"] }
+env_logger = "0.11"
+statrs = "0.16"
+plotters = { version = "0.3", default-features = false, features = ["bitmap_backend"] }

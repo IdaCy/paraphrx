@@ -39,5 +39,13 @@ name = "score_results_all_data"
 path = "src/score_results_all_data.rs"
 
 [[bin]]
+name = "score_only_original"
+path = "src/score_only_original.rs"
+
+[[bin]]
 name = "split_train_test"
 path = "src/split_train_test.rs"
+
+[[bin]]
+name = "equi_score_patterns"
+path = "src/equi_score_patterns.rs"
