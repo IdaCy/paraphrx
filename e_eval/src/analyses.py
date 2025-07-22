@@ -1,5 +1,4 @@
 """
-<<<<<<< HEAD
 python e_eval/src/analyses.py --run_all --data_dir e_eval/data --output_dir e_eval/output
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir path/to/data --ft_dir path/to/ft_outputs --output_dir e_eval/output
@@ -9,8 +8,6 @@ python e_eval/src/analyses.py --run_all --data_dir e_eval/data --output_dir e_ev
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --data_dir e_eval/data --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir e_eval/data --ft_dir f_finetune/outputs --output_dir e_eval/output
 
-=======
->>>>>>> 583483815076ac50f6910be9fc71b4d9ef76c5ab
 python e_eval/src/analyses.py --run_all --output_dir e_eval/output
 python e_eval/src/analyses.py --do_descriptive --do_perplexity --output_dir e_eval/output
 python e_eval/src/analyses.py --run_all --data_dir path/to/your/data --ft_dir path/to/your/ft_outputs --output_dir e_eval/output

@@ -88,10 +88,6 @@ struct Cli {
     #[arg(long = "api-key")]
     api_key: Option<String>,
     #[arg(long, default_value_t = 163)]
-<<<<<<< HEAD
-=======
-    #[arg(long, default_value_t = 130)]
->>>>>>> 10364a266fa5ca1eef603e5392fca377a85975cd
     max_paraphrases_per_chunk: usize,
 }
 
