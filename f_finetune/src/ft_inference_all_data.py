@@ -7,6 +7,19 @@ f_finetune/src/ft_inference_alpaca.py \
   --lora_path        f_finetune/outputs/buckets3/final \
   --buckets 1-3 \
   --batch 8 --max_tokens 128 --output_json out/bkt1_3_val.json
+
+now:
+python f_finetune/src/ft_inference_alpaca.py \
+  --data_paths f_finetune/data/alpaca_gemma-2-2b-it.json \
+  --datasets alpaca \
+  --base_model_path f_finetune/model \
+  --lora_path f_finetune/outputs_5/alpaca_specific_layers/1-3_lowLR_qlora/final \
+  --buckets 1-3 \
+  --batch 8 \
+  --max_tokens 128 \
+  --quant 4bit \
+  --output_json out/bkt1_3_val.json \
+  --wandb_project paraphrx_inference
 """
 
 from __future__ import annotations
@@ -20,6 +33,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple
+import wandb
 
 import gc
 
@@ -205,7 +219,9 @@ def main() -> None:
     # Quantisation / device
     parser.add_argument("--device", default="auto")
     parser.add_argument("--quant", choices=["none", "8bit", "4bit"], default="none")
-
+    parser.add_argument("--wandb_project", default=None,
+                        help="If given, log the inference run to this W&B project")
+ 
     args = parser.parse_args()
 
     out_path = Path(args.output_json)
@@ -225,6 +241,16 @@ def main() -> None:
         level=logging.INFO,
         format="%(asctime)s | %(levelname)s | %(message)s",
     )
+
+    # Optional W&B run--
+    if args.wandb_project:
+        wb_run = wandb.init(project=args.wandb_project,
+                            name=f"infer_{Path(args.lora_path).stem}",
+                            job_type="inference",
+                            config=vars(args))
+        wandb.config.update({"total_prompts": "TBD"})  # we’ll fill later
+    else:
+        wb_run = None
     logging.info("Run args: %s", vars(args))
 
     # Dataset preparation
@@ -233,6 +259,9 @@ def main() -> None:
     examples = load_examples(path_ds_pairs, buckets)
     flat_queue, results_map = flatten_examples(examples)
 
+    if wb_run:
+        wandb.config.update({"total_prompts": len(flat_queue)}, allow_val_change=True)
+ 
     # Sort shortest -> longest to optimise batching
     flat_queue.sort(key=lambda t: len(t[2]))
 
@@ -293,7 +322,9 @@ def main() -> None:
         Path(args.output_json).write_text(
             json.dumps(list(results_map.values()), indent=2, ensure_ascii=False)
         )
-
+        if wb_run:
+            wandb.log({"completed": len([r for r in results_map.values() if len(r) > 3])})
+ 
     def handler(sig_num, _frame):
         logging.info("Signal %s caught - saving partial results", sig_num)
         save_partial()
@@ -304,7 +335,7 @@ def main() -> None:
 
     for start in tqdm(range(0, len(flat_queue), args.batch), desc="generating"):
         batch_slice = flat_queue[start : start + args.batch]
-        pcounts, keys, prompts = zip(*batch_slice)
+        uids, keys, prompts = zip(*batch_slice)
 
         #inputs = tokenizer(list(prompts), return_tensors="pt", padding=True).to(model.device)
         inputs = tokenizer(list(prompts),
@@ -332,7 +363,7 @@ def main() -> None:
             start_tok = int(input_lens[i])
             completion_ids = outputs[i, start_tok:]
             completion = tokenizer.decode(completion_ids, skip_special_tokens=True).strip()
-            results_map[pcounts[i]][keys[i]] = completion
+            results_map[uids[i]][keys[i]] = completion
 
         # Book-keeping
         del inputs, outputs
@@ -347,6 +378,20 @@ def main() -> None:
     logging.info("Finished - wrote %d items to %s", len(results_map), args.output_json)
     print(f"Saved {len(results_map)} generations -> {args.output_json}")
 
+    # Upload outputs to W&B
+    if wb_run:
+        art = wandb.Artifact(
+            name=f"generations_{Path(args.lora_path).stem}",
+            type="inference-results",
+            description="Model generations on held‑out paraphrase buckets",
+            metadata={"num_records": len(results_map),
+                      "buckets": args.buckets,
+                      "model":  Path(args.lora_path).name},
+        )
+        art.add_file(str(out_path))
+        art.add_file(str(log_path))
+        wb_run.log_artifact(art)
+        wb_run.finish()
 
 if __name__ == "__main__":
     main()
