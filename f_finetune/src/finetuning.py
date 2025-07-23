@@ -237,8 +237,14 @@ def summarise_training(trainer: Trainer, bucket_counter: Counter, out_dir: Path)
     except Exception as e:
         logging.warning("Plot failed: %s", e)
 
+    train_examples = getattr(trainer.train_dataset, "num_rows", None)
+    if train_examples is None:
+        try:
+            train_examples = len(trainer.train_dataset)
+        except Exception:
+            train_examples = "?"
     summary = {
-        'train_examples': trainer.num_examples,
+        'train_examples': train_examples,
         'val_examples': trainer.eval_dataset.num_rows if trainer.eval_dataset else 0,
         'bucket_hist': dict(bucket_counter),
         'trainable_params': trainer.model.num_parameters(only_trainable=True),
