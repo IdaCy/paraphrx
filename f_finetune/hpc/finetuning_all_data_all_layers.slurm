@@ -98,8 +98,8 @@ srun python "$RUN_SCRIPT" \
   --buckets 1-3 \
   --bf16 \
   --target_modules none \
-  --batch_size 8 \
-  --gradient_accumulation_steps 16 \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
   --learning_rate 5e-5 \
   --weight_decay 0.01 \
   --warmup_ratio 0.03 \

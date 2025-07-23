@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=lA-base_1-3_a_all_layers_ft
+#SBATCH --job-name=lA-base-mem_1-3_a_all_layers_ft
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lA-base_1-3_a_all_layers_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lA-base_1-3_a_all_layers_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lA-base-mem_1-3_a_all_layers_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lA-base-mem_1-3_a_all_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – lA-base_1-3_a_all_layers_ft job started on $(hostname)"
-echo "$(date) – lA-base_1-3_a_all_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – lA-base-mem_1-3_a_all_layers_ft job started on $(hostname)"
+echo "$(date) – lA-base-mem_1-3_a_all_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs_5/alpaca_all_layers/outputs_buckets_1-3_A-base
+mkdir -p logs f_finetune/outputs_6/alpaca_all_layers/outputs_buckets_1-3_A-base-mem
 
 export TMPDIR=$PROJ/tmp_${SLURM_JOB_ID}
 export HF_HOME=$PROJ/hf_cache_${SLURM_JOB_ID}
@@ -93,13 +93,13 @@ RUN_SCRIPT="f_finetune/src/finetuning.py"
 srun python "$RUN_SCRIPT" \
   --data_paths alpaca_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs_5/alpaca_all_layers/outputs_buckets_1-3_A-base" \
-  --run_name A-base_buckets_1-3_all_layers \
+  --output_dir "f_finetune/outputs_6/alpaca_all_layers/outputs_buckets_1-3_A-base-mem" \
+  --run_name A-base-mem_buckets_1-3_all_layers \
   --buckets 1-3 \
   --bf16 \
   --target_modules none \
-  --batch_size 4 \
-  --gradient_accumulation_steps 16 \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
   --learning_rate 3e-5 \
   --weight_decay 0.05 \
   --warmup_ratio 0.03 \
@@ -108,5 +108,5 @@ srun python "$RUN_SCRIPT" \
   --save_steps 200 \
   $WANDB_FLAG
 
-echo "$(date) – lA-base_1-3_a_all_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – lA-base_1-3_a_all_layers_ft job finished OK"
+echo "$(date) – lA-base-mem_1-3_a_all_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – lA-base-mem_1-3_a_all_layers_ft job finished OK"
