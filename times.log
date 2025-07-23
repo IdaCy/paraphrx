@@ -654,3 +654,17 @@ Wed Jul 23 04:05:57 UTC 2025 – multiple_all_data_specific_layers_ft job finish
 Wed Jul 23 04:39:15 UTC 2025 – multiple_all_data_specific_layers_ft job finished OK
 Wed Jul 23 09:05:38 UTC 2025 – A-base-plus_1-2_a_all_layers_ft job started OK
 Wed Jul 23 09:06:51 UTC 2025 – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job started OK
+Wed Jul 23 10:35:59 UTC 2025 – o6_1-4_lowLR_qlora job started OK
+Wed Jul 23 10:35:59 UTC 2025 – o6_1-3_D-qlora-midLR-1p2e-4 job started OK
+Wed Jul 23 10:36:01 UTC 2025 – o6_1-3_midLR_qlora job started OK
+Wed Jul 23 10:59:17 UTC 2025 – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job finished OK
+Wed Jul 23 11:10:53 UTC 2025 – o6_1-3_B-qlora-lowLR-8e-5_inf_ft job started OK
+Wed Jul 23 11:13:28 UTC 2025 – o6_1-3_D-qlora-midLR-1p2e-4_inf_ft job started OK
+Wed Jul 23 11:16:38 UTC 2025 – o6_1-3_B-qlora-lowLR-8e-5_inf_ft job started OK
+Wed Jul 23 11:17:33 UTC 2025 – o6_1-3_D-qlora-midLR-1p2e-4_inf_ft job started OK
+Wed Jul 23 11:53:32 UTC 2025 – o6_1-3_B-qlora-lowLR-8e-5_inf_ft job started OK
+Wed Jul 23 11:55:31 UTC 2025 – A-base-plus_1-2_a_all_layers_ft job started OK
+Wed Jul 23 12:20:12 UTC 2025 – o6_1-4_lowLR_qlora_inf_ft job started OK
+Wed Jul 23 12:20:12 UTC 2025 – o6_1-3_D-qlora-midLR-1p2e-4_inf_ft job started OK
+Wed Jul 23 13:56:31 UTC 2025 – o6_1-3_B-qlora-lowLR-8e-5_inf_ft job finished OK
+Wed Jul 23 13:56:35 UTC 2025 – o6_1-3_midLR_qlora_inf_ft job started OK
