@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=A-long_1-2_a_all_layers_ft
+#SBATCH --job-name=A-base-plus_1-2_a_all_layers_ft
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_A-long_1-2_a_all_layers_ft.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_A-long_1-2_a_all_layers_ft.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_A-base-plus_1-2_a_all_layers_ft.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_A-base-plus_1-2_a_all_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – A-long_1-2_a_all_layers_ft job started on $(hostname)"
-echo "$(date) – A-long_1-2_a_all_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – A-base-plus_1-2_a_all_layers_ft job started on $(hostname)"
+echo "$(date) – A-base-plus_1-2_a_all_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
 # Use per‐job scratch areas to avoid inter‐job conflicts
-mkdir -p logs f_finetune/outputs_5/alpaca_all_layers/outputs_buckets_1-2_A-long
+mkdir -p logs f_finetune/outputs_6/alpaca_all_layers/outputs_buckets_1-2_A-base-plus
 
 export TMPDIR=$PROJ/tmp_${SLURM_JOB_ID}
 export HF_HOME=$PROJ/hf_cache_${SLURM_JOB_ID}
@@ -118,27 +118,27 @@ RUN_SCRIPT="f_finetune/src/finetuning.py"
 srun python "$RUN_SCRIPT" \
   --data_paths alpaca_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs_5/alpaca_all_layers/outputs_buckets_1-2_A-long" \
-  --run_name A-long_buckets_1-2_all_layers \
-  --buckets 1-2 \
+  --output_dir "f_finetune/outputs_6/alpaca_all_layers/outputs_buckets_1-3_A-base-plus" \
+  --run_name A-base-plus_buckets_1-3_all_layers \
+  --buckets 1-3 \
   --bf16 \
   --target_modules none \
   --batch_size 4 \
   --gradient_accumulation_steps 16 \
-  --learning_rate 2e-5 \
+  --learning_rate 2.5e-5 \
   --weight_decay 0.05 \
   --warmup_ratio 0.03 \
-  --num_epochs 4 \
-  --eval_steps 200 \
-  --save_steps 200 \
+  --num_epochs 3 \
+  --eval_steps 500 \
+  --save_steps 500 \
   $WANDB_FLAG
 
-echo "$(date) – A-long_1-2_a_all_layers_ft job itself finished OK"
+echo "$(date) – A-base-plus_1-2_a_all_layers_ft job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) – A-long_1-2_a_all_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – A-long_1-2_a_all_layers_ft job finished & stuff cleaned OK"
+echo "$(date) – A-base-plus_1-2_a_all_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – A-base-plus_1-2_a_all_layers_ft job finished & stuff cleaned OK"

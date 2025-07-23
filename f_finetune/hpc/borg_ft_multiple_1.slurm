@@ -1,23 +1,20 @@
 #!/bin/bash -l
-#SBATCH --job-name=B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft
+#SBATCH --job-name=multiple_all_data_specific_layers_ft
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_multiple_all_data_specific_layers_ft.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_multiple_all_data_specific_layers_ft.err
 
 set -euo pipefail
-echo "$(date) – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job started on $(hostname)"
-echo "$(date) – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – multiple_all_data_specific_layers_ft job started on $(hostname)"
+echo "$(date) – multiple_all_data_specific_layers_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
-
-# Use per‐job scratch areas to avoid inter‐job conflicts
-mkdir -p logs f_finetune/outputs_6/alpaca_specific_layers/outputs_buckets_1-3_B-qlora-lowLR-8e-5
 
 export TMPDIR=$PROJ/tmp_${SLURM_JOB_ID}
 export HF_HOME=$PROJ/hf_cache_${SLURM_JOB_ID}
@@ -115,35 +112,58 @@ export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
 RUN_SCRIPT="f_finetune/src/finetuning.py"
+
+OUT_DIR="f_finetune/outputs_6/all_data_specific_layers/1-3_midLR_qlora"
+mkdir -p "$OUT_DIR"
 srun python "$RUN_SCRIPT" \
-  --data_paths alpaca_gemma-2-2b-it \
+  --data_paths alpaca_gemma-2-2b-it gsm8k_gemma-2-2b-it mmlu_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs_6/alpaca_specific_layers/outputs_buckets_1-3_B-qlora-lowLR-8e-5" \
-  --run_name B-qlora-lowLR-8e-5_buckets_1-3_specific_layers \
+  --output_dir "$OUT_DIR" \
+  --run_name 1-3_midLR_qlora \
   --buckets 1-3 \
-  --bf16 \
-  --bnb_8bit_optim \
-  --lora_rank 16 \
-  --lora_alpha 32 \
+  --bf16 --bnb_8bit_optim \
+  --lora_rank 16 --lora_alpha 32 \
   --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
-  --batch_size 2 \
-  --gradient_accumulation_steps 4 \
+  --batch_size 2 --gradient_accumulation_steps 4 \
+  --learning_rate 1.2e-4 \
+  --weight_decay 0.05 \
+  --warmup_ratio 0.03 \
+  --num_epochs 3 \
+  --eval_steps 500 --save_steps 500 \
+  $WANDB_FLAG
+
+echo "$(date) – 1-3_midLR_qlora job itself finished OK"
+
+
+output_dir="f_finetune/outputs_6/all_data_specific_layers/1-4_lowLR_qlora"
+mkdir -p "$output_dir"
+srun python "$RUN_SCRIPT" \
+  --data_paths alpaca_gemma-2-2b-it gsm8k_gemma-2-2b-it mmlu_gemma-2-2b-it \
+  --model_path f_finetune/model \
+  --output_dir "$output_dir" \
+  --run_name 1-4_lowLR_qlora \
+  --buckets 1-4 \
+  --bf16 --bnb_8bit_optim \
+  --lora_rank 16 --lora_alpha 32 \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --batch_size 2 --gradient_accumulation_steps 4 \
   --learning_rate 8e-5 \
   --weight_decay 0.05 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
-  --eval_steps 500 \
-  --save_steps 500 \
+  --eval_steps 500 --save_steps 500 \
   $WANDB_FLAG
 
-echo "$(date) – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job itself finished OK"
+echo "$(date) – 1-4_lowLR_qlora job itself finished OK"
+
+
+echo "$(date) – multiple_all_data_specific_layers job itself finished OK"
+
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job finished & stuff cleaned OK"
-
-
+echo "$(date) – multiple_all_data_specific_layers_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – multiple_all_data_specific_layers_ft job finished & stuff cleaned OK"
