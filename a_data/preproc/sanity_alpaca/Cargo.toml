@@ -17,3 +17,7 @@ path = "src/sample_to_json.rs"
 [[bin]]
 name = "preproc"
 path = "src/preproc.rs"
+
+[[bin]]
+name = "generate_11_paraphrases"
+path = "src/generate_11_paraphrases.rs"
