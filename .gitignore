@@ -184,8 +184,3 @@ hf_cache_*
 
 c_assess_inf/hpc/tmux_phrx_equi_score_*.sh
 f_finetune/src/ft_inference_alpaca_xx?.py
-
-!a_data/
-!a_data/preproc/
-!a_data/preproc/rephras/
-!a_data/preproc/rephras/generate_11_paraphrases.rs
