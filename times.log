@@ -654,6 +654,14 @@ Wed Jul 23 04:05:57 UTC 2025 – multiple_all_data_specific_layers_ft job finish
 Wed Jul 23 04:39:15 UTC 2025 – multiple_all_data_specific_layers_ft job finished OK
 Wed Jul 23 09:05:38 UTC 2025 – A-base-plus_1-2_a_all_layers_ft job started OK
 Wed Jul 23 09:06:51 UTC 2025 – B-qlora-lowLR-8e-5_1-3_a_specific_layers_ft job started OK
+Wed Jul 23 10:23:38 UTC 2025 – lA-base-mem_1-3_a_all_layers_ft job finished OK
+Wed Jul 23 10:23:39 UTC 2025 – lo5_1-2_B-qlora-16_ft_inf job started OK
+Wed Jul 23 10:44:50 UTC 2025 – ho5_1-2_D-qlora-32_ft_inf job started OK
+Wed Jul 23 10:49:28 UTC 2025 – lo5_1-2_D-qlora-16_ft_inf job started OK
+Wed Jul 23 10:57:51 UTC 2025 – hC-hiLR_1-2_all_data_all_layers_ft job finished OK
+Wed Jul 23 10:57:52 UTC 2025 – ho5_1-3_lr1.8e-4_ga16_sas400_ft_inf job started OK
+Wed Jul 23 11:19:56 UTC 2025 – lo5_1-2_D-qlora-8-lowLR_ft_inf job started OK
+Wed Jul 23 14:04:21 UTC 2025 – lo5_1-3_lr1e-4_ga16_sas300_ft_inf job started OK
 Wed Jul 23 10:35:59 UTC 2025 – o6_1-4_lowLR_qlora job started OK
 Wed Jul 23 10:35:59 UTC 2025 – o6_1-3_D-qlora-midLR-1p2e-4 job started OK
 Wed Jul 23 10:36:01 UTC 2025 – o6_1-3_midLR_qlora job started OK
@@ -673,3 +681,6 @@ Wed Jul 23 14:46:11 UTC 2025 – o6_1-2_lowLR_fullFT_inf_ft job started OK
 Wed Jul 23 18:57:21 UTC 2025 – o6_1-3_D-qlora-midLR-1p2e-4_inf_ft job finished OK
 Wed Jul 23 20:43:23 UTC 2025 – o6_1-3_midLR_qlora_inf_ft job finished OK
 Wed Jul 23 21:18:20 UTC 2025 – o6_1-4_lowLR_qlora_inf_ft job finished OK
+Wed Jul 23 23:08:45 UTC 2025 – lo5_1-3_A-base-mem_ft_inf job started OK
+Wed Jul 23 23:10:05 UTC 2025 – ho5_1-3_C-hiLR_ft_inf job started OK
+Wed Jul 23 23:11:41 UTC 2025 – lo5_1-3_C-hiLR_ft_inf job started OK

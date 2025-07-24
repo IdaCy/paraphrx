@@ -136,12 +136,12 @@ struct Cli {
     #[arg(long = "api-call-max", default_value_t = 10_000)]
     api_call_max: u32,
 
-    /// keep at least this many tokens below the model context limit
+    // keep at least this many tokens below the model context limit
     #[arg(long, default_value_t = 2048)]
     margin: usize,
 
-    /// emergency upper bound on instruct_* per chunk
-    #[arg(long = "chunk-max", default_value_t = 200)]
+    // emergency upper bound on instruct_* per chunk
+    #[arg(long = "chunk-max", default_value_t = 163)]
     chunk_max: usize,
 }
 
@@ -153,10 +153,10 @@ fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
         Ok(items) => items
             .into_iter()
             .map(|raw| {
-                // 1. turn the raw JSON into our Record
+                // turn the raw JSON into our Record
                 let mut rec: Record = serde_json::from_value(raw.clone())?;
 
-                // 2. pull paraphrases into `extra`
+                // pull paraphrases into `extra`
                 if let Some(pars) = raw.get("paraphrases").and_then(Value::as_array) {
                     for p in pars {
                         if let (Some(t), Some(txt)) = (
@@ -182,8 +182,8 @@ fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
     }
 }
 
-// Read inference‐output JSON (with fields `uid`, `dataset`, `prompt_count`, plus
-// all the `"instruct_*": answer` keys) into a HashMap keyed by `uid`
+// Read inference‐output JSON (with fields uid, dataset, prompt_count, plus
+// all the "instruct_*": answer keys) into a HashMap keyed by uid
 fn read_answers(path: &Path, logger: &mut Logger) -> HashMap<String, AnsRecord> {
     let raw: Vec<Value> = match fs::read_to_string(path) {
         Ok(s) => match serde_json::from_str(&s) {
@@ -249,7 +249,7 @@ fn read_answers(path: &Path, logger: &mut Logger) -> HashMap<String, AnsRecord> 
         map.insert(
             uid.clone(),
             AnsRecord {
-                uid,
+                _uid:         uid.clone(),
                 dataset,
                 prompt_count,
                 extra,
@@ -262,7 +262,7 @@ fn read_answers(path: &Path, logger: &mut Logger) -> HashMap<String, AnsRecord> 
 // New struct to hold an “answer” entry
 #[derive(Debug, Clone)]
 struct AnsRecord {
-    uid:          String,
+    _uid:         String,
     dataset:      String,
     prompt_count: u32,
     extra:        JsonMap<String, Value>,
@@ -340,7 +340,8 @@ async fn main() -> Result<()> {
 
     // preparation: sort by uid
     let mut ans_sorted: Vec<(&String, &AnsRecord)> = ans_map.iter().collect();
-    ans_sorted.sort_by_key(|(uid, _)| uid.clone());
+    //ans_sorted.sort_by_key(|(uid, _)| uid.clone());
+    ans_sorted.sort_by_key(|(uid, _)| *uid);
 
     // progress bar
     let bar = ProgressBar::new(ans_sorted.len() as u64);
@@ -373,7 +374,7 @@ async fn main() -> Result<()> {
             }
         };
 
-        // your old “already_done” logic, but now keyed by uid:
+        // already_done logic, but now keyed by uid:
         let already_done: HashSet<String> = scored
             .get(uid)
             .map(|obj| {
@@ -384,10 +385,10 @@ async fn main() -> Result<()> {
             })
             .unwrap_or_default();
 
-        // collect pending keys from ans.extra exactly as before
+        // collect pending keys from ans.extra
         let pending: Vec<String> = {
             let mut keys = Vec::new();
-            if inst.output.is_some() || ans.extra.contains_key("instruction_original") {
+            if ans.extra.contains_key("instruction_original") {
                 keys.push("instruction_original".to_string());
             }
             keys.extend(

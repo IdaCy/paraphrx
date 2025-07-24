@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 """
-f_finetune/src/ft_inference_alpaca.py \
-  --data_paths f_finetune/data/alpaca_gemma-2-2b-it.json \
-  --datasets alpaca \
-  --base_model_path f_finetune/model \
-  --lora_path        f_finetune/outputs/buckets3/final \
-  --buckets 1-3 \
-  --batch 8 --max_tokens 128 --output_json out/bkt1_3_val.json
-
-now:
+e.g.:
 python f_finetune/src/ft_inference_alpaca.py \
   --data_paths f_finetune/data/alpaca_gemma-2-2b-it.json \
   --datasets alpaca \
@@ -395,3 +387,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
