@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=lo5_1-3_lr1e-4_ga16_sas300_ft_inf
+#SBATCH --job-name=lo5_1-3_A-base-mem_ft_inf
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,14 +8,14 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=08:00:00
-#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lo5_1-3_lr1e-4_ga16_sas300_ft_inf.out
-#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lo5_1-3_lr1e-4_ga16_sas300_ft_inf.err
+#SBATCH -o /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lo5_1-3_A-base-mem_ft_inf.out
+#SBATCH -e /scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lo5_1-3_A-base-mem_ft_inf.err
 set -euo pipefail
 
-echo "$(date) – lo5_1-3_lr1e-4_ga16_sas300_ft_inf job started on $(hostname)"
-echo "$(date) – lo5_1-3_lr1e-4_ga16_sas300_ft_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – lo5_1-3_A-base-mem_ft_inf job started on $(hostname)"
+echo "$(date) – lo5_1-3_A-base-mem_ft_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
-echo "$(date) – lo5_1-3_lr1e-4_ga16_sas300_ft_inf initial setup"
+echo "$(date) – lo5_1-3_A-base-mem_ft_inf initial setup"
 
 # Workspace + caches on scratch
 cd /scratch_dgxl/ifc24/proj/paraphrx
@@ -57,12 +57,12 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 # silence tokenizer warnings
 export TOKENIZERS_PARALLELISM=false
 
-echo "$(date) – lo5_1-3_lr1e-4_ga16_sas300_ft_inf initial setup OK"
+echo "$(date) – lo5_1-3_A-base-mem_ft_inf initial setup OK"
 
 # Paths & arguments
 RUN_SCRIPT="f_finetune/src/ft_inference_all_data.py"
 BASE_MODEL_PATH="f_finetune/model"
-FT_PATH="f_finetune/outputs_4/alpaca_specific_layers/outputs_buckets_1-3_lr1e-4_ga16_sas300"
+FT_PATH="f_finetune/outputs_6/alpaca_all_layers/outputs_buckets_1-3_A-base-mem"
 OUTPUT_JSON="$FT_PATH/inf_results.json"
 LORA_PATH="$FT_PATH/final"
 mkdir -p "$(dirname "$OUTPUT_JSON")"
@@ -80,5 +80,5 @@ srun python "$RUN_SCRIPT" \
   --max_tokens 256 \
   --wandb_project "paraphrx_lora"
 
-echo "$(date) – lo5_1-3_lr1e-4_ga16_sas300_ft_inf job finished OK"
-echo "$(date) – lo5_1-3_lr1e-4_ga16_sas300_ft_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – lo5_1-3_A-base-mem_ft_inf job finished OK"
+echo "$(date) – lo5_1-3_A-base-mem_ft_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
