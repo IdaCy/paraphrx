@@ -31,6 +31,14 @@ path = "src/equi_patterns.rs"
 name = "tf_stats"
 path = "src/tf_stats.rs"
 
+[[bin]]
+name = "get_xth_performance"
+path = "src/get_xth_performance.rs"
+
+[[bin]]
+name = "replace_equi_scores"
+path = "src/replace_equi_scores.rs"
+
 [dependencies]
 anyhow     = "1"
 clap = { version = "4.5", features = ["derive"] }
