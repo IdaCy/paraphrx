@@ -11,21 +11,54 @@ export MPLBACKEND=Agg
 
 RUN_SCRIPT="f_finetune/src/finetuning.py"
 srun python "$RUN_SCRIPT" \
-  --data_paths alpaca_gemma-2-2b-it \
+  --data_paths alpaca_gemma-2-2b-it gsm8k_gemma-2-2b-it mmlu_gemma-2-2b-it \
   --model_path f_finetune/model \
-  --output_dir "f_finetune/outputs/alpaca_all_layer_safe/outputs_buckets_1-5" \
-  --run_name buckets_1-5_safe_all_layers \
-  --buckets 1-5 \
-  --bf16 \
-  --bnb_8bit_optim \
-  --target_modules none \
-  --batch_size 4 \
-  --gradient_accumulation_steps 4 \
-  --learning_rate 3e-5 \
+  --output_dir "f_finetune/outputs_6/all_data_specific_layers/1-3_midLR_qlora" \
+  --run_name 1-3_midLR_qlora_ft \
+  --buckets 1-3 \
+  --bf16 --bnb_8bit_optim \
+  --lora_rank 16 --lora_alpha 32 \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --batch_size 2 --gradient_accumulation_steps 4 \
+  --learning_rate 1.2e-4 \
+  --weight_decay 0.05 \
   --warmup_ratio 0.03 \
   --num_epochs 3 \
-  --eval_steps 200 \
-  --save_steps 200 \
+  --eval_steps 500 --save_steps 500 \
+  $WANDB_FLAG
+
+RUN_SCRIPT="f_finetune/src/finetuning.py"
+srun python "$RUN_SCRIPT" \
+  --data_paths alpaca_gemma-2-2b-it \
+  --model_path f_finetune/model \
+  --output_dir "f_finetune/outputs_6/alpaca_specific_layers/1-3_lowLR_qlora" \
+  --run_name 1-3_lowLR_qlora_ft \
+  --buckets 1-3 \
+  --bf16 --bnb_8bit_optim \
+  --lora_rank 16 --lora_alpha 32 \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --batch_size 2 --gradient_accumulation_steps 4 \
+  --learning_rate 8e-5 \
+  --weight_decay 0.05 \
+  --warmup_ratio 0.03 \
+  --num_epochs 3 \
+  --eval_steps 500 --save_steps 500 \
+  $WANDB_FLAG
+
+RUN_SCRIPT="f_finetune/src/finetuning.py"
+srun python "$RUN_SCRIPT" \
+  --data_paths alpaca_gemma-2-2b-it gsm8k_gemma-2-2b-it mmlu_gemma-2-2b-it \
+  --model_path f_finetune/model \
+  --output_dir "f_finetune/outputs_6/all_data_all_layers/1-2_lowLR_fullFT" \
+  --run_name 1-2_lowLR_fullFT_ft \
+  --buckets 1-2 \
+  --bf16 --target_modules none --bnb_8bit_optim \
+  --batch_size 6 --gradient_accumulation_steps 16 \
+  --learning_rate 2e-5 \
+  --weight_decay 0.05 \
+  --warmup_ratio 0.03 \
+  --num_epochs 2 \
+  --eval_steps 500 --save_steps 500 \
   $WANDB_FLAG
 """
 
