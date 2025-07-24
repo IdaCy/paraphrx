@@ -1,5 +1,5 @@
 """
-python a_data/preproc/downloads/download_alpaca.py --out a_data/alpaca/alpaca_52k_clean.json
+python a_data/preproc/downloads/download_alpaca.py --out a_data/alpaca/alpaca_52k.jsonl
 """
 
 import argparse
