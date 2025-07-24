@@ -191,3 +191,5 @@ g_diff
 c_assess_inf/hpc/tmux_phrx_equi_score_*.sh
 f_finetune/src/ft_inference_alpaca_xx?.py
 f_finetune/src/tmux_ftscore_*.sh
+
+f_finetune/src/tmux_ftscore_*.sh
