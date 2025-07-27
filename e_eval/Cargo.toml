@@ -24,8 +24,8 @@ name = "perplexity"
 path = "src/perplexity.rs"
 
 [[bin]]
-name = "equi_patterns"
-path = "src/equi_patterns.rs"
+name = "equi_score_patterns"
+path = "src/equi_score_patterns.rs"
 
 [[bin]]
 name = "tf_stats"
@@ -60,3 +60,4 @@ rust-bert      = { version = "0.23", default-features = false, features = ["down
 env_logger = "0.11"
 statrs = "0.16"
 plotters = { version = "0.3", default-features = false, features = ["bitmap_backend"] }
+png = "0.17"
