@@ -2,10 +2,10 @@
 # a_data
 add_scenarios = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin add_scenarios --release --"
 gen_phrx_skipfail = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin generate_paraphrases_skipfail --release --"
+generate_11_paraphrases = "run --manifest-path a_data/preproc/rephras/Cargo.toml --bin generate_11_paraphrases --release --"
 
 sample_to_json = "run --manifest-path a_data/preproc/sanity_alpaca/Cargo.toml --bin sample_to_json --release --"
 preproc = "run --manifest-path a_data/preproc/sanity_alpaca/Cargo.toml --bin preproc --release --"
-generate_11_paraphrases = "run --manifest-path a_data/preproc/sanity_alpaca/Cargo.toml --bin generate_11_paraphrases --release --"
 
 # c_assess_inf
 summary = "run -p c_assess_inf --bin summarise_scores"

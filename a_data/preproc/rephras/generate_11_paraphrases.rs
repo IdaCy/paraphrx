@@ -46,14 +46,15 @@ use indicatif::{ProgressBar, ProgressStyle};
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map as JsonMap, Value};
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::fs;
 use std::io::{BufWriter, Write};
 use std::num::NonZeroU32;
 use std::path::{Path, PathBuf};
 use std::time::Duration as StdDuration;
 use tokio::time::{sleep, Duration};
-use tiktoken_rs::CoreBPE;
+//use tiktoken_rs::tiktoken::{CoreBPE, p50k_base};
+use tiktoken_rs::tiktoken::p50k_base;
 
 //  CLI
 #[derive(Parser, Debug)]
@@ -64,8 +65,10 @@ use tiktoken_rs::CoreBPE;
 )]
 struct Cli {
     // Input dataset of Alpaca-style records
+    #[arg(long = "input", value_name = "INPUT_FILE")]
     input:  PathBuf,
     // Output file (will be merged if already exists)
+    #[arg(long = "output", value_name = "OUTPUT_FILE")]
     output: PathBuf,
 
     // Which variant key-set to use (style | all | ...)
@@ -297,7 +300,8 @@ async fn main() -> Result<()> {
     } else { HashMap::new() };
 
     // Token encoder (for optional batching)
-    let bpe = tiktoken_rs::p50k_base().expect("BPE load failed");
+    //let bpe = tiktoken_rs::p50k_base().expect("BPE load failed");
+    let bpe = p50k_base().expect("BPE load failed");
     let max_in_tokens = model_limits(&cli.model).input / 2; // we stay well under the hard cap
 
     // Progress bar
@@ -401,7 +405,8 @@ async fn main() -> Result<()> {
         // Persist
         if success_any {
             output_map.insert(pid, rec.clone());
-            let mut all_vec: Vec<_> = output_map.values().cloned().collect();
+            //let mut all_vec: Vec<_> = output_map.values().cloned().collect();
+            let all_vec: Vec<_> = output_map.values().cloned().collect();
             write_output(&cli.output, &all_vec)?;
             id_status.insert(pid, true);
             save_status(&status_path, &id_status)?;

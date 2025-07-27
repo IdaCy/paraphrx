@@ -16,6 +16,10 @@ name = "generate_paraphrases_skipfail"
 path = "generate_paraphrases_skipfail.rs"
 
 [[bin]]
+name = "generate_11_paraphrases"
+path = "generate_11_paraphrases.rs"
+
+[[bin]]
 name = "add_scenarios"
 path = "src/add_scenarios.rs"
 
@@ -32,3 +36,5 @@ chrono    = "0.4"
 time      = { version = "0.3", features = ["macros"] }
 simplelog = "0.12"
 log       = "0.4"
+governor       = "0.4"      # for RateLimiter & Quota
+tiktoken-rs    = "0.1"
