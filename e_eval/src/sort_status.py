@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
 python e_eval/src/sort_status.py \
-    logs/id_status_phrxing50k_part5b.json \
-    logs/id_status_phrxing50k_part5b_sorted.json
+    logs/id_status_phrxing50k_part5a.json \
+    logs/id_status_phrxing50k_part5a_sorted.json
 """
 import json
 from collections import OrderedDict
 import sys
+
 
 def sort_json_keys_numeric(input_path, output_path):
     # Load the JSON data
@@ -20,6 +21,7 @@ def sort_json_keys_numeric(input_path, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(sorted_data, f, indent=2, ensure_ascii=False)
         f.write('\n')  # newline at end of file
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:

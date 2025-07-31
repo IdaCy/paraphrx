@@ -1,7 +1,7 @@
 /*
 cargo split_any_ids \
-    a_data/alpaca/alpaca_10k_part4.json \
-    6330 10000
+    a_data/alpaca/alpaca_10k_part5.json \
+    7100 580 580 580 580 10000
 */
 
 use std::{
