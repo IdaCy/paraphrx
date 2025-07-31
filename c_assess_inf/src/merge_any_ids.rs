@@ -11,9 +11,22 @@ cargo merge_any_ids \
 
 cargo merge_any_ids \
     -i \
-    a_data/gsm8k/equi_scores/paraphrases_500_part1_scores.json \
-    a_data/gsm8k/equi_scores/paraphrases_500_part2_scores.json \
-    -o a_data/gsm8k/equi_scores_paraphrases_500.json
+    a_data/alpaca/hpcdl/alpaca_10k_part1_phrxed.json \
+    a_data/alpaca/hpcdl/alpaca_10k_part1b_phrxed.json \
+    a_data/alpaca/hpcdl/alpaca_10k_part1c_phrxed.json \
+    a_data/alpaca/phrxed_ese/alpaca_10k_part2a_phrxed.json \
+    a_data/alpaca/phrxed_ese/alpaca_10k_part2b_phrxed.json \
+    a_data/alpaca/phrxed_ese/alpaca_10k_part3a_phrxed.json \
+    a_data/alpaca/phrxed_borg/alpaca_10k_part3b_phrxed.json \
+    a_data/alpaca/hpcdl/alpaca_10k_part4_phrxed.json \
+    a_data/alpaca/hpcdl/alpaca_10k_part4b_phrxed.json \
+    a_data/alpaca/phrxed_borg/alpaca_10k_part5a_phrxed.json \
+    a_data/alpaca/phrxed_borg/alpaca_10k_part5b_phrxed.json \
+    a_data/alpaca/phrxed_borg/alpaca_10k_part5c_phrxed.json \
+    a_data/alpaca/phrxed_ese/alpaca_10k_part5d_phrxed.json \
+    a_data/alpaca/phrxed_ese/alpaca_10k_part5e_phrxed.json \
+    a_data/alpaca/phrxed_ese/alpaca_10k_part5f_phrxed.json \
+    -o a_data/alpaca/50k_phrxed.json
 */
 
 use std::{
