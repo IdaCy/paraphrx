@@ -1,17 +1,17 @@
 """
 python3 e_eval/src/equi_score_patterns_plot.py a_data/alpaca/equi_scores/paraphrases_500_phrx_scores_histograms.json a_data/alpaca/equi_scores/paraphrases_500_phrx_scores.png --top 10
 
-# Multiple instruction types as side-by-side bars
+# multiple instruction types as side-by-side bars
 python3 e_eval/src/equi_score_patterns_plot.py \
     a_data/alpaca/equi_scores/paraphrases_500_phrx_scores_histograms.json \
     a_data/alpaca/equi_scores/paraphrases_500_phrx_scores_multi_hist.png \
     instruct_casual instruct_formal
 
-# Top 15 instruction types
+# top instruction types
 python3 e_eval/src/equi_score_patterns_plot.py \
     a_data/alpaca/equi_scores/paraphrases_500_phrx_scores_histograms.json \
-    a_data/alpaca/equi_scores/paraphrases_500_phrx_scores_top15_hist.png \
-    --top 15
+    a_data/alpaca/equi_scores/paraphrases_500_phrx_scores_top30_hist.png \
+    --top 30
 
 # Median score distribution
 python3 e_eval/src/equi_score_patterns_plot.py \
@@ -22,6 +22,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+MAX_LABEL_LEN = 20 
 
 if len(sys.argv) < 4:
     print("Usage: python plot_histograms.py histograms.json output.png instruct_type1 [instruct_type2 ...]")
@@ -104,8 +105,11 @@ else:
             continue
         
         # Remove 'instruct_' prefix for cleaner labels
+
         label = instruct_type.replace('instruct_', '')
-        
+        if len(label) > MAX_LABEL_LEN:
+            label = label[:MAX_LABEL_LEN - 3] + '...'
+                
         # Calculate bar positions (offset for each instruction type)
         x_pos = np.arange(n_scores) + i * bar_width
         
