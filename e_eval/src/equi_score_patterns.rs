@@ -1,22 +1,26 @@
 /*
+conda activate binutils
+
 cargo equi_score_patterns \
-    a_data/alpaca/equi_scores/paraphrases_500_part1_scores.json
+    a_data/alpaca/equi_scores/paraphrases_500_phrx_scores.json
 */
 
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
 
 use clap::Parser;
 use serde::{Deserialize, Serialize};
+use std::io::BufWriter;
 
 // Simple stats for one paraphrase type
 #[derive(Serialize)]
 struct ParaphraseStats {
     count: usize,
     mean: f64,
-    distribution: HashMap<u64, usize>,
+    //distribution: HashMap<u64, usize>,
+    distribution: BTreeMap<u64, usize>,
     median: f64,
 }
 
@@ -30,9 +34,8 @@ struct Args {
 // Each record in the input file
 #[derive(Deserialize)]
 struct Record {
-    // we only need `scores`; `prompt_count` is not used for grouping here
-    #[serde(skip)]
-    prompt_count: u64,
+    // #[serde(skip)]
+    // _prompt_count: u64,
 
     scores: HashMap<String, u64>,
 }
@@ -58,6 +61,7 @@ fn main() -> anyhow::Result<()> {
     let mut stats_map: HashMap<String, ParaphraseStats> = HashMap::new();
     let mut mean_map: HashMap<String, f64> = HashMap::new();
     let mut median_map: HashMap<String, f64> = HashMap::new();
+    let mut histogram_map: HashMap<String, [usize; 6]> = HashMap::new();
 
     for (para, mut scores) in buckets {
         scores.sort_unstable();
@@ -66,9 +70,17 @@ fn main() -> anyhow::Result<()> {
         let mean = sum as f64 / count as f64;
 
         // distribution
-        let mut dist = HashMap::new();
+        let mut dist = BTreeMap::new();
         for &s in &scores {
             *dist.entry(s).or_default() += 1;
+        }
+
+        // histogram for [0,1,2,3,4,5]
+        let mut histogram = [0; 6];
+        for &score in &scores {
+            if score <= 5 {
+                histogram[score as usize] += 1;
+            }
         }
 
         // median
@@ -89,8 +101,9 @@ fn main() -> anyhow::Result<()> {
                 median,
             },
         );
-        mean_map.insert(para.clone(), mean);
-        median_map.insert(para, median);
+        mean_map.insert(para.clone(), mean.ceil()); // Round up to integer
+        median_map.insert(para.clone(), median);
+        histogram_map.insert(para, histogram);
     }
 
     // Prepare output paths
@@ -101,6 +114,7 @@ fn main() -> anyhow::Result<()> {
     let stats_path  = dir.join(format!("{stem}_stats.json"));
     let mean_path   = dir.join(format!("{stem}_mean_equi_scores.json"));
     let median_path = dir.join(format!("{stem}_median_equi_scores.json"));
+    let histogram_path = dir.join(format!("{stem}_histograms.json"));
 
     // Write them out
     {
@@ -115,7 +129,11 @@ fn main() -> anyhow::Result<()> {
         let f = File::create(median_path)?;
         serde_json::to_writer_pretty(f, &median_map)?;
     }
+    {
+        let f = File::create(histogram_path)?;
+        serde_json::to_writer_pretty(f, &histogram_map)?;
+    }
 
-    println!("Wrote stats, mean & median JSON files next to `{}`", &args.input);
+    println!("Wrote stats, mean, median JSON files next to `{}`", &args.input);
     Ok(())
 }
