@@ -46578,7 +46578,7 @@
     "instruct_polite_request": "Might you be so kind as to furnish a comprehensive list of the key components that constitute a healthy breakfast?",
     "instruct_sardonic": "Oh, goody. Another brilliant query. Pray tell, could you possibly deign to list the groundbreaking 'components' of a healthy breakfast? Because it's not like this information is readily available or anything.",
     "output": "A healthy breakfast should include:\n- whole grains (e.g. oats, quinoa, whole grain bread)\n- protein (e.g. eggs, tofu, nuts, seeds)\n- healthy fat (e.g. avocado, nut butters, olive oil)\n- fruits & vegetables (e.g. apples, oranges, spinach, tomatoes)\n- dairy products (e.g. low-fat yogurt, low-fat milk)"
-  }
+  },
   {
     "prompt_count": 42741,
     "instruction_original": "Come up with a process that should be followed to program a robot.",
@@ -46595,7 +46595,7 @@
     "instruct_polite_request": "Would it be too much trouble, if you wouldn't mind, to kindly sketch out a sequence of steps that one might consider following for the purpose of programming a robot?",
     "instruct_sardonic": "Oh, *sure*, let's just brainstorm yet another 'process' for programming a robot. Because, you know, we definitely haven't done that a hundred times before, and it's not like the robot just figures it out by itself, right?",
     "output": "A process for programming a robot should include: \n1. Design a set of tasks for the robot to complete \n2. Create a program for the robot to execute \n3. Test the program with the robot to ensure its accuracy and effectiveness \n4. Make any changes to the program if needed \n5. Run the program in a real-world setting with the robot \n6. Monitor the robot and make any adjustments as needed \n7. Store the program and the data collected in a secure location"
-  }
+  },
   {
     "prompt_count": 42742,
     "instruction_original": "Tap dance to a song.",
