@@ -1,7 +1,7 @@
 /*
 cargo split_any_ids \
-    f_finetune/data/all_alpaca_gemma-2-2b-it_all_ppl.json \
-    100 100 100 100 100
+    a_data/alpaca/alpaca_10k_part4.json \
+    6330 10000
 */
 
 use std::{
