@@ -135,6 +135,7 @@ c_assess_inf/hpc/tmux_phrx_and_ftscore_*
 
 e_eval/output*
 e_eval/data
+e_eval/analysis_figures*
 
 f_finetune/src/tmux_score_starter_free_withkey.sh
 f_finetune/src/tmux_score_starter_free_withkey2.sh

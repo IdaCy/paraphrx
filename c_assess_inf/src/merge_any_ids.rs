@@ -2,24 +2,18 @@
 
 cargo merge_any_ids \
     -i \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part1.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part2.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part3.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part4.json \
-    f_finetune/data/all_mmlu_gemma-2-2b-it_all_ppl_part5.json \
-    -o e_eval/data/mmlu_gemma-2-2b-it.json
+   a_data/alpaca/alpaca_10k_part1.json \
+   a_data/alpaca/alpaca_10k_part2.json \
+   a_data/alpaca/alpaca_10k_part3.json \
+   a_data/alpaca/alpaca_10k_part4.json \
+   a_data/alpaca/alpaca_10k_part5.json \
+    -o a_data/alpaca/alpaca_50k.json
 
 cargo merge_any_ids \
     -i \
-<<<<<<< HEAD
-    a_data/mmlu/equi_scores/paraphrases_500_part1_scores.json \
-    a_data/mmlu/equi_scores/paraphrases_500_part2_scores.json \
-    -o a_data/mmlu/equi_scores_paraphrases_500.json
-=======
     a_data/gsm8k/equi_scores/paraphrases_500_part1_scores.json \
     a_data/gsm8k/equi_scores/paraphrases_500_part2_scores.json \
     -o a_data/gsm8k/equi_scores_paraphrases_500.json
->>>>>>> 10364a266fa5ca1eef603e5392fca377a85975cd
 */
 
 use std::{
