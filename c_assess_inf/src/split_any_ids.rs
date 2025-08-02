@@ -1,8 +1,8 @@
 /*
 cargo split_any_ids \
-    a_data/alpaca/alpaca_10k_part5.json \
-    7100 580 580 580 580 10000
-*/
+    a_data/alpaca/50k_phrxed.json \
+    6250 6250 6250 6250 6250 6250 6250 10000
+    */
 
 use std::{
     env,
