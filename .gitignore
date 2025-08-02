@@ -133,6 +133,8 @@ c_assess_inf/hpc/commands.md
 c_assess_inf/hpc/xcommands.md
 c_assess_inf/hpc/tmux_phrx_and_ftscore_*
 
+c_assess_inf/output50k/
+
 e_eval/output*
 e_eval/data
 e_eval/analysis_figures*
