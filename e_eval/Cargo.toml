@@ -43,6 +43,10 @@ path = "src/replace_equi_scores.rs"
 name = "check_json"
 path = "src/check_json.rs"
 
+[[bin]]
+name = "move_json_key"
+path = "src/move_json_key.rs"
+
 [dependencies]
 anyhow     = "1"
 clap = { version = "4.5", features = ["derive"] }
