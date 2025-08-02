@@ -159,7 +159,13 @@ def main() -> None:
         config=vars(args),
     )
 
-    capture_layers = [int(x) for x in args.capture_layers.split(",")]
+    #capture_layers = [int(x) for x in args.capture_layers.split(",")]
+    if args.capture_layers.strip():
+        # split on commas, drop any empty pieces, then parse
+        capture_layers = [int(x) for x in args.capture_layers.split(",") if x.strip()]
+    else:
+        # no layers requested -> empty list
+        capture_layers: list[int] = []
 
     tokenizer = AutoTokenizer.from_pretrained(
         args.model, trust_remote_code=True, model_max_length=4096
@@ -170,14 +176,14 @@ def main() -> None:
     gc.collect()
 
     if args.quant != "none" and not _BITSANDBYTES_OK:
-        logging.warning("bitsandbytes not available → reverting to bf16")
+        logging.warning("bitsandbytes not available -> reverting to bf16")
         args.quant = "none"
 
     model_kwargs: dict = dict(device_map=args.device)
     if _FLASH2_OK:
         model_kwargs["attn_implementation"] = "flash_attention_2"
     else:
-        logging.info("Flash-Attention 2 not found → using standard attention")
+        logging.info("Flash-Attention 2 not found -> using standard attention")
 
     if args.quant == "none":
         model_kwargs["torch_dtype"] = torch.bfloat16
