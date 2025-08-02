@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=l10x_ntarg_50k_finetuning
+#SBATCH --job-name=l10x_sptarg_50k_finetuning
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_ntarg_50k_finetuning.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_ntarg_50k_finetuning.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_sptarg_50k_finetuning.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_sptarg_50k_finetuning.err
 
 set -euo pipefail
-echo "$(date) - l10x_ntarg_50k_finetuning job started on $(hostname)"
-echo "$(date) - l10x_ntarg_50k_finetuning job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l10x_sptarg_50k_finetuning job started on $(hostname)"
+echo "$(date) - l10x_sptarg_50k_finetuning job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/l10x_ntarg_50k_finetuning
+mkdir -p logs f_finetune/outputs/l10x_sptarg_50k_finetuning
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -116,10 +116,11 @@ srun $PYBIN "$RUN_SCRIPT" \
   --batch_size 2 \
   --gradient_accumulation_steps 16 \
   --learning_rate 2e-5 \
-  --run_name l10x_ntarg_50k_finetuning \
-  --output_dir f_finetune/runs/l10x_ntarg_50k_finetuning \
+  --bf16 \
+  --run_name l10x_sptarg_50k_finetuning \
+  --output_dir f_finetune/runs/l10x_sptarg_50k_finetuning \
   --wandb_project paraphrx_ft_50k \
   $WANDB_FLAG
 
-echo "$(date) - l10x_ntarg_50k_finetuning job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - l10x_ntarg_50k_finetuning job finished OK"
+echo "$(date) - l10x_sptarg_50k_finetuning job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l10x_sptarg_50k_finetuning job finished OK"
