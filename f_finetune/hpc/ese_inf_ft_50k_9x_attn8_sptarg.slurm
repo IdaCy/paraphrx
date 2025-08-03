@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=l10x_sptarg_2_50k_ft
+#SBATCH --job-name=hTEST_i9x_attn8_sptarg_inf
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_sptarg_2_50k_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_sptarg_2_50k_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hTEST_i9x_attn8_sptarg_inf.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hTEST_i9x_attn8_sptarg_inf.err
 
 set -euo pipefail
-echo "$(date) - l10x_sptarg_2_50k_ft job started on $(hostname)"
-echo "$(date) - l10x_sptarg_2_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hTEST_i9x_attn8_sptarg_inf job started on $(hostname)"
+echo "$(date) - hTEST_i9x_attn8_sptarg_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/l10x_sptarg_2_50k_ft
+mkdir -p logs f_finetune/outputs/hTEST_i9x_attn8_sptarg_inf
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -62,12 +62,6 @@ export PYTHON_PKGS="$TMPDIR/python-packages"
 mkdir -p "$PYTHON_PKGS"
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
 
-# DEEP-SEED compatible metadata libs
-$PYBIN -m pip install --upgrade "importlib_metadata>=5.2.0" \
-                                   "setuptools==65.5.1" \
-                                   "testresources==2.0.1" \
-    --no-cache-dir --target "$PYTHON_PKGS"
-
 # install pip & wheel (keep your pinned setuptools)
 $PYBIN -m pip install --upgrade pip wheel \
   --no-cache-dir --target "$PYTHON_PKGS"
@@ -77,16 +71,9 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
-  bitsandbytes==0.42.0 \
-  mpi4py \
-  --only-binary=deepspeed deepspeed==0.3.1.dev5 \
   datasets==2.19.0 \
   numpy==1.24.4 \
-  sentencepiece \
-  loguru \
-  protobuf==3.20.* \
   wandb \
-  matplotlib \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -94,7 +81,6 @@ $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
-print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
@@ -107,24 +93,18 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_50k.py"
+RUN_SCRIPT="f_finetune/src/inf_ft_50k.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
-  instruct_future_tense instruct_output_markdown instruct_coord_to_subord \
-  instruct_polite_request instruct_dramatic instruct_one_typo_punctuation \
-  --target_modules q_proj,k_proj,v_proj,o_proj \
-  --batch_size 8 \
-  --gradient_accumulation_steps 4 \
-  --learning_rate 5e-5 \
-  --lora_rank 16 \
-  --lora_alpha 32 \
-  --bnb_8bit_optim \
-  --bf16 \
-  --run_name l10x_sptarg_2_50k_ft \
-  --output_dir f_finetune/runs/l10x_sptarg_2_50k_ft \
-  --wandb_project paraphrx_ft_50k \
+  --data_path a_data/alpaca/50k_phrxed.json \
+  --base_model_path f_finetune/model \
+  --lora_path f_finetune/outputs/h9x_attn8_sptarg_50k_ft/final \
+  --output_json f_finetune/output_inf_ft_50k/hTEST_i9x_attn8_sptarg_inf.json \
+  --log_name hTEST_i9x_attn8_sptarg_inf \
+  --val_pct 0.05 --test_pct 0.05 \
+  --batch 8 --max_tokens 128 --quant 4bit \
+  --wandb_project paraphrx_inference \
+  --max_samples 8 \
   $WANDB_FLAG
 
-echo "$(date) - l10x_sptarg_2_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - l10x_sptarg_2_50k_ft job finished OK"
+echo "$(date) - hTEST_i9x_attn8_sptarg_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hTEST_i9x_attn8_sptarg_inf job finished OK"

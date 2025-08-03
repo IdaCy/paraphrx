@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=l10x_sptarg_2_50k_ft
+#SBATCH --job-name=l9x_a1_notarg_50k_ft
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_sptarg_2_50k_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l10x_sptarg_2_50k_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_a1_notarg_50k_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_a1_notarg_50k_ft.err
 
 set -euo pipefail
-echo "$(date) - l10x_sptarg_2_50k_ft job started on $(hostname)"
-echo "$(date) - l10x_sptarg_2_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l9x_a1_notarg_50k_ft job started on $(hostname)"
+echo "$(date) - l9x_a1_notarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/l10x_sptarg_2_50k_ft
+mkdir -p logs f_finetune/outputs/l9x_a1_notarg_50k_ft
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -77,7 +77,6 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
-  bitsandbytes==0.42.0 \
   mpi4py \
   --only-binary=deepspeed deepspeed==0.3.1.dev5 \
   datasets==2.19.0 \
@@ -111,20 +110,25 @@ RUN_SCRIPT="f_finetune/src/finetuning_50k.py"
 srun $PYBIN "$RUN_SCRIPT" \
   --data_paths c_assess_inf/output50k/answers.json \
   --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
-  instruct_future_tense instruct_output_markdown instruct_coord_to_subord \
-  instruct_polite_request instruct_dramatic instruct_one_typo_punctuation \
-  --target_modules q_proj,k_proj,v_proj,o_proj \
-  --batch_size 8 \
-  --gradient_accumulation_steps 4 \
-  --learning_rate 5e-5 \
-  --lora_rank 16 \
-  --lora_alpha 32 \
-  --bnb_8bit_optim \
+  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
+  instruct_polite_request instruct_one_typo_punctuation \
+  --target_modules none \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --num_epochs 2 \
+  --learning_rate 8e-6 \
+  --warmup_ratio 0.05 \
+  --lr_scheduler_type cosine_with_restarts \
+  --weight_decay 0.1 \
   --bf16 \
-  --run_name l10x_sptarg_2_50k_ft \
-  --output_dir f_finetune/runs/l10x_sptarg_2_50k_ft \
+  --eval_steps 500 \
+  --save_steps 500 \
+  --early_stopping_patience 3 \
+  --logging_steps 100 \
+  --run_name l9x_a1_notarg_50k_ft \
+  --output_dir f_finetune/outputs/l9x_a1_notarg_50k_ft \
   --wandb_project paraphrx_ft_50k \
   $WANDB_FLAG
 
-echo "$(date) - l10x_sptarg_2_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - l10x_sptarg_2_50k_ft job finished OK"
+echo "$(date) - l9x_a1_notarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l9x_a1_notarg_50k_ft job finished OK"
