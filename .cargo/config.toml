@@ -50,3 +50,4 @@ score_results = "run --manifest-path f_finetune/Cargo.toml --bin score_results -
 score_results_all_data = "run --manifest-path f_finetune/Cargo.toml --bin score_results_all_data --release --"
 score_only_original = "run --manifest-path f_finetune/Cargo.toml --bin score_only_original --release --"
 split_train_test = "run --manifest-path f_finetune/Cargo.toml --bin split_train_test --release --"
+score_inf_ft_50k = "run --manifest-path f_finetune/Cargo.toml --bin score_inf_ft_50k --release --"

@@ -935,3 +935,17 @@ Sun Aug  3 21:31:22 UTC 2025 – 8x_attn8_sptarg job started OK
 Sun Aug  3 21:56:19 UTC 2025 – all_b2_2_sptarg job finished OK
 Sun Aug  3 22:02:18 UTC 2025 – all_a1_notarg_inf job finished OK
 Sun Aug  3 22:10:35 UTC 2025 – 8x_attn8_sptarg job finished OK
+Sun Aug  3 14:47:50 UTC 2025 - l9x_a1_notarg_50k_ft job finished OK
+Sun Aug  3 14:47:50 UTC 2025 - hTEST_i9x_attn8_sptarg_inf job started OK
+Sun Aug  3 14:50:49 UTC 2025 - hTEST_i9x_attn8_sptarg_inf job finished OK
+Sun Aug  3 16:45:47 UTC 2025 - hi9x_attn8_sptarg_inf job started OK
+Sun Aug  3 17:11:36 UTC 2025 - li9x_a1_notarg_inf job started OK
+Sun Aug  3 18:11:24 UTC 2025 - hi9x_attn8_sptarg_inf job finished OK
+Sun Aug  3 18:25:58 UTC 2025 - li9x_a1_notarg_inf job finished OK
+Sun Aug  3 18:36:08 UTC 2025 - h9x_opt_sptarg_50k_ft job started OK
+Sun Aug  3 18:50:07 UTC 2025 - hi9x_attn8_sptarg_inf job started OK
+Sun Aug  3 20:13:28 UTC 2025 - hi9x_attn8_sptarg_inf job finished OK
+Sun Aug  3 20:13:29 UTC 2025 - li9x_a1_notarg_inf job started OK
+Sun Aug  3 21:14:39 UTC 2025 - hi9x_attn8_sptarg_inf job started OK
+Sun Aug  3 22:39:07 UTC 2025 - hi9x_attn8_sptarg_inf job finished OK
+Sun Aug  3 22:57:32 UTC 2025 - l9x_b2_sptarg_50k_ft job finished OK
