@@ -19,7 +19,7 @@ python ft_inference_paraphrx.py \
   --base_model_path f_finetune/outputs/8x_notarg_50k_ft/final \
   --output_json f_finetune/output_inf_ft_50k/8x_notarg_held.json \
   --val_pct 0.05 --test_pct 0.05 \
-  --batch 2 --max_tokens 128 \
+  --batch 8 --max_tokens 128 \
   --log_name 8x_notarg_held \
   --wandb_project paraphrx_inference
 
@@ -342,6 +342,9 @@ def main() -> None:
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
+    # left padding so new tokens are appended
+    tokenizer.padding_side = "left"
+
     #   GENERATION LOOP
     def save_partial():
         out_items = sorted(results_map.values(), key=lambda d: d["prompt_count"])
@@ -375,7 +378,8 @@ def main() -> None:
             max_length=tokenizer.model_max_length,
         ).to(model.device)
 
-        input_lens = tokenised["attention_mask"].sum(dim=1)
+        #input_lens = tokenised["attention_mask"].sum(dim=1)
+        prompt_len = tokenised["input_ids"].shape[1]
 
         gen_cfg = dict(
             max_new_tokens=args.max_tokens,
@@ -389,10 +393,9 @@ def main() -> None:
             outputs = model.generate(**tokenised, **gen_cfg)
 
         for i in range(len(batch)):
-            start_tok = int(input_lens[i])
-            reply_ids = outputs[i, start_tok:]
+            # slice from prompt_len, not input_lens[i]
+            reply_ids = outputs[i, prompt_len:]
             reply = tokenizer.decode(reply_ids, skip_special_tokens=True).strip()
-            results_map[pcs[i]][keys[i]] = reply
 
         # housekeeping
         del tokenised, outputs
