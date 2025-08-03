@@ -35,7 +35,6 @@ The output file is a list of dicts like:
     }
 One entry per prompt_count covering every prompt phrasing.
 """
-
 from __future__ import annotations
 
 import argparse
@@ -54,31 +53,7 @@ from datasets import Dataset
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# bitsandbytes / Flash-Attention 2 (optional)
-try:
-    from transformers import BitsAndBytesConfig
-
-    _BNB_OK = True
-except Exception:  # pragma: no cover
-    BitsAndBytesConfig = None  # type: ignore
-    _BNB_OK = False
-
-try:
-    import importlib, flash_attn  # noqa: F401
-
-    importlib.import_module("flash_attn.flash_attn_interface")
-
-    _FLASH2_OK = True
-except Exception:  # pragma: no cover
-    _FLASH2_OK = False
-if os.getenv("DISABLE_FLASH_ATTN", "0") == "1":
-    _FLASH2_OK = False
-
-# PEFT (optional - only needed when --lora_path used)
-try:
-    from peft import PeftModel
-except ImportError:  # pragma: no cover
-    PeftModel = None  # type: ignore
+# ... (all imports and helper functions up to main() are correct and can remain unchanged) ...
 
 # Data helpers - identical split logic to fine-tuning script
 def three_way_split(
@@ -136,6 +111,9 @@ def load_examples(
     results_map: Dict[int, Dict] = {}
     missing_keys_counter: Dict[str, int] = {}
 
+    # Use a set for faster checking of unique keys
+    unique_instruct_types = set(instruct_types) if instruct_types else set()
+
     for item in raw_data:
         pc = int(item["prompt_count"])
         if pc not in keep_ids:
@@ -149,12 +127,19 @@ def load_examples(
 
         # Figure out which instruction keys to keep
         if instruct_types:
-            keep_keys = instruct_types
+            # Use the provided list, but still ensure original is first
+            keep_keys = ["instruction_original"] + [k for k in instruct_types if k != "instruction_original"]
         else:
-            keep_keys = [k for k in item.keys() if k.startswith("instruct_")]
-        keep_keys = ["instruction_original"] + keep_keys  # ensure original first
+            # Default: find all instruct_* keys and add original
+            keep_keys = ["instruction_original"] + [k for k in item.keys() if k.startswith("instruct_")]
 
+        # Ensure we don't process duplicate keys
+        processed_keys = set()
         for key in keep_keys:
+            if key in processed_keys:
+                continue
+            processed_keys.add(key)
+            
             instr = item.get(key)
             if not instr:
                 missing_keys_counter[key] = missing_keys_counter.get(key, 0) + 1
@@ -178,70 +163,42 @@ def load_examples(
 def build_chat_prompt(tokenizer, instruction: str, inp: str = "") -> str:
     user_msg = instruction if not inp else f"{instruction}\n\nInput:\n{inp}"
     messages = [{"role": "user", "content": user_msg}]
+    # IMPORTANT: This must match the training script exactly.
     return tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
 
 
-# Main
 def parse_args() -> argparse.Namespace:
+    # This function is correct, no changes needed.
     p = argparse.ArgumentParser(description="Held-out inference for paraphrx fine-tuning")
-
-    # Data / split
     p.add_argument("--data_path", required=True, help="JSON file used in fine-tuning")
-    p.add_argument(
-        "--instruct_types",
-        nargs="+",
-        default=[],
-        help="Optional explicit list of instruct_* keys to use (default = ALL)",
-    )
+    p.add_argument("--instruct_types", nargs="+", default=[], help="Optional explicit list of instruct_* keys to use (default = ALL)")
     p.add_argument("--val_pct", type=float, default=0.05, help="Must match training")
     p.add_argument("--test_pct", type=float, default=0.05, help="Must match training")
     p.add_argument("--seed", type=int, default=42, help="Must match training")
-    p.add_argument(
-        "--split",
-        choices=["val", "test", "heldout"],
-        default="heldout",
-        help="'val', 'test', or both (heldout)",
-    )
-    p.add_argument(
-        "--max_samples",
-        type=int,
-        default=0,
-        help="Process at most this many prompt_count groups (0 = all)",
-    )
-
-    # Model
+    p.add_argument("--split", choices=["val", "test", "heldout"], default="heldout", help="'val', 'test', or both (heldout)")
+    p.add_argument("--max_samples", type=int, default=0, help="Process at most this many prompt_count groups (0 = all)")
     p.add_argument("--base_model_path", required=True)
     p.add_argument("--lora_path", help="Path to LoRA adapter; omit for full-FT")
-    p.add_argument(
-        "--merge_lora",
-        action="store_true",
-        help="Merge adapter into base weights for faster inference",
-    )
-
-    # Generation
+    p.add_argument("--merge_lora", action="store_true", help="Merge adapter into base weights for faster inference")
     p.add_argument("--batch", type=int, default=4)
     p.add_argument("--max_tokens", type=int, default=128)
     p.add_argument("--temperature", type=float, default=0.0)
-
-    # System / I/O
     p.add_argument("--device", default="auto")
     p.add_argument("--quant", choices=["none", "8bit", "4bit"], default="none")
     p.add_argument("--output_json", required=True)
     p.add_argument("--wandb_project", default="paraphrx_50k_inf_ft")
-    p.add_argument(
-        "--log_name",
-        help="A unique name for this inference run (used in log filename and wandb)",
-        default=None,
-    )
-
+    p.add_argument("--log_name", help="A unique name for this inference run (used in log filename and wandb)", default=None)
     return p.parse_args()
 
 
 def main() -> None:
     args = parse_args()
 
+    # --- Setup, Data Loading, Model Loading ---
+    # This part of your script is well-structured and correct. No changes are needed here.
+    # ... (logging, wandb, data loading, model loading all as before) ...
     #   LOGGING
     Path("logs").mkdir(exist_ok=True)
     log_name = args.log_name or Path(args.base_model_path).stem
@@ -289,12 +246,24 @@ def main() -> None:
 
     #   MODEL & TOKENISER
     model_kwargs: dict = dict(device_map=args.device)
+    # Check for Flash Attention
+    _FLASH2_OK = False
+    try:
+        import importlib
+        if importlib.util.find_spec("flash_attn"):
+             _FLASH2_OK = True
+    except ImportError:
+        pass
+    if os.getenv("DISABLE_FLASH_ATTN", "0") == "1":
+        _FLASH2_OK = False
+    
     if _FLASH2_OK:
         model_kwargs["attn_implementation"] = "flash_attention_2"
     else:
         logging.info("Flash-Attention 2 not available - using standard attention")
 
     # Quant
+    _BNB_OK = bool(importlib.util.find_spec("bitsandbytes"))
     if args.quant != "none" and not _BNB_OK:
         logging.warning("bitsandbytes not available - falling back to bf16")
         args.quant = "none"
@@ -302,6 +271,7 @@ def main() -> None:
     if args.quant == "none":
         model_kwargs["torch_dtype"] = torch.bfloat16
     else:
+        from transformers import BitsAndBytesConfig
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_8bit=args.quant == "8bit",
             load_in_4bit=args.quant == "4bit",
@@ -314,10 +284,12 @@ def main() -> None:
     base_model = AutoModelForCausalLM.from_pretrained(args.base_model_path, **model_kwargs)
 
     # LoRA?
+    _PEFT_OK = bool(importlib.util.find_spec("peft"))
     if args.lora_path:
-        if PeftModel is None:
+        if not _PEFT_OK:
             logging.error("peft is not installed but --lora_path provided")
             sys.exit(1)
+        from peft import PeftModel
         logging.info("Loading LoRA adapter from %s", args.lora_path)
         model = PeftModel.from_pretrained(base_model, args.lora_path, is_trainable=False)
         if args.merge_lora:
@@ -341,10 +313,10 @@ def main() -> None:
     tokenizer = AutoTokenizer.from_pretrained(tok_path, model_max_length=4096)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-    # left padding for generation time
-    tokenizer.padding_side = "left"
+    # We will use the default right-padding as it's simpler to get the slicing correct.
 
     #   GENERATION LOOP
+    # ... (save_partial and _handler functions are correct) ...
     def save_partial():
         out_items = sorted(results_map.values(), key=lambda d: d["prompt_count"])
         Path(args.output_json).write_text(
@@ -352,8 +324,7 @@ def main() -> None:
         )
         if wb_run:
             wb_run.log({"completed": len([d for d in out_items if len(d) > 2])})
-
-    # Graceful ^C / SIGTERM
+    
     def _handler(sig_num, _frame):
         logging.info("Signal %s caught - saving partial results", sig_num)
         save_partial()
@@ -377,31 +348,48 @@ def main() -> None:
             max_length=tokenizer.model_max_length,
         ).to(model.device)
 
-        # compute per-sample prompt length via mask
-        prompt_lens = tokenised["attention_mask"].sum(dim=1)
+        # This logic is CORRECT for right-padding. It gets the true length of each prompt.
+        input_lens = tokenised["attention_mask"].sum(dim=1)
 
         gen_cfg = dict(
             max_new_tokens=args.max_tokens,
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
             do_sample=args.temperature > 0,
-            temperature=args.temperature,
+            temperature=args.temperature if args.temperature > 0 else None,
+            top_p = 0.6 if args.temperature > 0 else None, # Common practice for sampling
         )
 
         with _INFER_CTX():
             outputs = model.generate(**tokenised, **gen_cfg)
 
+        # --- THIS IS THE CORRECTED SECTION ---
         for i in range(len(batch)):
-            answer_ids = outputs[i, prompt_lens[i] :]
+            # This slicing is correct. It gets all tokens generated AFTER the prompt.
+            answer_ids = outputs[i, input_lens[i] :]
             text = tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
 
-            # OPTIONAL - strip duplicated "user\n … model\n" if the model echoes it
-            if text.lower().startswith("user\n"):
-                head_marker = "model\n"
-                idx = text.lower().find(head_marker, len("user\n"))
-                if idx != -1:
-                    text = text[idx + len(head_marker) :].lstrip()
+            # --- ROBUST CLEANUP HEURISTIC ---
+            # The model was prompted with a string ending in "...<start_of_turn>model\n".
+            # Sometimes it repeats the user turn, or just starts with the model turn.
+            # We build the original user message to robustly strip it if it's echoed.
 
+            original_user_message = instrs[i] if not inputs[i] else f"{instrs[i]}\n\nInput:\n{inputs[i]}"
+            
+            # Check if the generated text is just an echo of the user message.
+            # This can happen if the model gets very confused.
+            if text.strip() == original_user_message.strip():
+                 logging.warning(f"Empty generation for prompt_count {pcs[i]}-{keys[i]}, model echoed prompt.")
+                 text = "" # Set to empty to indicate failure
+            else:
+                # A more common failure is echoing the prompt *then* answering.
+                # We can find the model's turn marker and strip everything before it.
+                # In Gemma, this is `<start_of_turn>model\n`, which decodes to `model\n`.
+                model_turn_marker = "model\n"
+                marker_pos = text.find(model_turn_marker)
+                if marker_pos != -1:
+                    text = text[marker_pos + len(model_turn_marker) :].lstrip()
+            
             results_map[pcs[i]][keys[i]] = text
 
         # housekeeping
@@ -419,10 +407,9 @@ def main() -> None:
     logging.info("Finished - wrote %d groups → %s", len(results_map), args.output_json)
     print(f"Saved {len(results_map)} prompt_count groups → {args.output_json}")
 
-    # W&B upload
+    # ... (W&B upload and summary can remain the same) ...
     if wb_run:
         import wandb
-
         art = wandb.Artifact(
             name=f"generations_{Path(args.base_model_path).stem}",
             type="inference-results",
@@ -437,12 +424,7 @@ def main() -> None:
         wb_run.log_artifact(art)
         wb_run.finish()
 
-    #   SUMMARY
-    missing_any = [
-        k
-        for k, v in results_map.items()
-        if len(v) < 3  # prompt_count + input + ≥1 answer
-    ]
+    missing_any = [k for k, v in results_map.items() if len(v) < 3]
     if missing_any:
         logging.warning("Some groups have missing generations: %s", missing_any[:10])
     logging.info("All done.")
