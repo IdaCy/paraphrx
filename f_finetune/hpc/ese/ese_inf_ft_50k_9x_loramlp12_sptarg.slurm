@@ -1,19 +1,19 @@
 #!/bin/bash -l
-#SBATCH --job-name=hi9x_attn8_sptarg_inf
+#SBATCH --job-name=li9x_loramlp12_sptarg_inf
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hi9x_attn8_sptarg_inf.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hi9x_attn8_sptarg_inf.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_li9x_loramlp12_sptarg_inf.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_li9x_loramlp12_sptarg_inf.err
 
 set -euo pipefail
-echo "$(date) - hi9x_attn8_sptarg_inf job started on $(hostname)"
-echo "$(date) - hi9x_attn8_sptarg_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - li9x_loramlp12_sptarg_inf job started on $(hostname)"
+echo "$(date) - li9x_loramlp12_sptarg_inf job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -97,9 +97,9 @@ RUN_SCRIPT="f_finetune/src/inf_ft_50k.py"
 srun $PYBIN "$RUN_SCRIPT" \
   --data_path a_data/alpaca/50k_phrxed.json \
   --base_model_path f_finetune/model \
-  --lora_path f_finetune/outputs/h9x_attn8_sptarg_50k_ft/final \
-  --output_json f_finetune/output_inf_ft_50k/hi9x_attn8_sptarg_inf.json \
-  --log_name hi9x_attn8_sptarg_inf \
+  --lora_path f_finetune/outputs/h9x_loramlp12_sptarg_50k_ft/final \
+  --output_json f_finetune/output_inf_ft_50k/li9x_loramlp12_sptarg_inf.json \
+  --log_name li9x_loramlp12_sptarg_inf \
   --val_pct 0.05 --test_pct 0.05 \
   --batch 8 --max_tokens 128 \
   --quant 4bit \
@@ -107,5 +107,5 @@ srun $PYBIN "$RUN_SCRIPT" \
   --max_samples 500 \
   $WANDB_FLAG
 
-echo "$(date) - hi9x_attn8_sptarg_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - hi9x_attn8_sptarg_inf job finished OK"
+echo "$(date) - li9x_loramlp12_sptarg_inf job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - li9x_loramlp12_sptarg_inf job finished OK"

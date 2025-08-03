@@ -49,3 +49,7 @@ path = "src/split_train_test.rs"
 [[bin]]
 name = "equi_score_patterns"
 path = "src/equi_score_patterns.rs"
+
+[[bin]]
+name = "score_inf_ft_50k"
+path = "src/score_inf_ft_50k.rs"
