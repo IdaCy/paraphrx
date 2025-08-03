@@ -196,3 +196,4 @@ f_finetune/src/ft_inference_alpaca_xx?.py
 f_finetune/src/tmux_ftscore_*.sh
 
 f_finetune/src/tmux_ftscore_*.sh
+f_finetune/src/finetuning_50k_increvalloss.py

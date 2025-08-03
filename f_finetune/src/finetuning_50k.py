@@ -1,49 +1,32 @@
 #!/usr/bin/env python
 """
-running in SLURM:
+Full-parameter fine-tune (2 B params, BF16)
 
-source /scratch_root/ifc24/.hf_token || true
-[ -f /scratch_root/ifc24/.wandb_key ] && source /scratch_root/ifc24/.wandb_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_50k}
-
-export TOKENIZERS_PARALLELISM=false
-export MPLBACKEND=Agg
-
-RUN_SCRIPT="f_finetune/src/finetuning_50k.py"
-srun python "$RUN_SCRIPT" \
-  --data_paths paraphrx1.json paraphrx2.json \
-  --model_path f_finetune/model \
-  --output_dir f_finetune/runs/gemma2b_round1 \
-  --run_name gemma2b_round1 \
-  --instruct_types instruct_sardonic instruct_polite_request \
-  --batch_size 4 --gradient_accumulation_steps 8 \
-  --num_epochs 3 --bf16 --bnb_8bit_optim
-  $WANDB_FLAG
-
-Full-parameter fine-tune (target-modules "none", 10 paraphrase types)
 srun python finetuning_50k.py \
   --target_modules none \
-  --batch_size 2 --gradient_accumulation_steps 16 \
-  --learning_rate 2e-5 \
-  --run_name gemma2b_fullft_10x \
-  --output_dir f_finetune/runs/gemma2b_fullft_10x
+  --batch_size 2 \
+  --gradient_accumulation_steps 16 \
+  --learning_rate 1e-5 \
+  --warmup_ratio 0.1 \
+  --weight_decay 0.1 \
+  --num_epochs 3 \
+  --bf16 \
+  --run_name gemma2b_fullft_safe \
+  --output_dir f_finetune/runs/gemma2b_fullft_safe
 
-LoRA-4-bit adapters (default target-modules list, 10 paraphrase types)
+LoRA-NF4 4-bit adapters (recommended first try)
+
 srun python finetuning_50k.py \
-  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
-  --batch_size 8 --gradient_accumulation_steps 4 \
-  --learning_rate 1e-4 --lora_rank 16 --lora_alpha 32 \
+  --target_modules q_proj,k_proj,v_proj,o_proj \
+  --batch_size 8 \
+  --gradient_accumulation_steps 4 \
+  --learning_rate 5e-5 \
+  --lora_rank 16 \
+  --lora_alpha 32 \
   --bnb_8bit_optim --bf16 \
-  --run_name gemma2b_lora_10x \
-  --output_dir f_finetune/runs/gemma2b_lora_10x
-
-Full-parameter fine-tune (target-modules "none", 12 paraphrase types)
-srun python finetuning_50k.py \
-  --target_modules none \
-  --batch_size 2 --gradient_accumulation_steps 16 \
-  --num_epochs 2 --learning_rate 3e-5 \
-  --run_name gemma2b_fullft_12x \
-  --output_dir f_finetune/runs/gemma2b_fullft_12x
+  --num_epochs 3 \
+  --run_name gemma2b_lora_safe \
+  --output_dir f_finetune/runs/gemma2b_lora_safe
 """
 from __future__ import annotations
 
@@ -88,6 +71,7 @@ class Example:
     instruction: str
     inp: str
     answer: str
+    style: str 
 
     def to_prompt(self, with_answer: bool = False, add_eos: bool = True) -> str:
         if self.inp:
@@ -105,31 +89,35 @@ class Example:
         return prompt
 
 
+def build_chat_prompt(instruction: str, inp: str | None = "") -> str:
+    """
+    Return a single-turn chat prompt in the format Gemma-2-IT was trained on.
+    add_generation_prompt=True inserts Gemma’s assistant role marker.
+    """
+    user_msg = instruction if not inp else f"{instruction}\n\nInput:\n{inp}"
+    messages = [{"role": "user", "content": user_msg}]
+    return tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+
+
 # Helper: tokenise a single Example → dict(input_ids, labels)
 
 def tokenise_example(ex: Example):
-    prefix = ex.to_prompt(with_answer=False, add_eos=False)
-    prefix_ids = tokenizer(
-        prefix, add_special_tokens=False, truncation=True, max_length=2048
-    )["input_ids"]
+    # prompt part (masked out in labels)
+    prompt_txt = build_chat_prompt(ex.instruction, ex.inp)
+    prompt_ids = tokenizer(prompt_txt, add_special_tokens=False)["input_ids"]
 
+    # answer part (to be learned)
     answer_ids = tokenizer(
         ex.answer, add_special_tokens=False, truncation=True, max_length=1024
     )["input_ids"]
-    # ensure exactly one EOS at the end
-    if answer_ids and answer_ids[-1] == tokenizer.eos_token_id:
-        answer_ids = answer_ids[:-1]
-    answer_ids.append(tokenizer.eos_token_id)
+    answer_ids.append(tokenizer.eos_token_id)        # exactly one <eos>
 
-    bos = [tokenizer.bos_token_id]
-    input_ids = bos + prefix_ids + answer_ids
-    labels = [-100] + [-100] * len(prefix_ids) + answer_ids
-
-    max_len = tokenizer.model_max_length or 4096
-    if len(input_ids) > max_len:
-        input_ids = input_ids[-max_len:]
-        labels = labels[-max_len:]
-    return {"input_ids": input_ids, "labels": labels}
+    input_ids = prompt_ids + answer_ids
+    labels     = [-100] * len(prompt_ids) + answer_ids
+    return {"input_ids": input_ids,
+            "labels": labels}
 
 
 # Data‑loading utilities
@@ -173,7 +161,8 @@ def load_examples(
             inp = item.get("input", "")
 
             # always include the original instruction
-            examples.append(Example(pc_id, item["instruction_original"], inp, base_ans))
+            examples.append(Example(pc_id, item["instruction_original"],
+                                    inp, base_ans, "instruction_original"))
 
             # Decide which paraphrase keys to keep
             if instruct_types:
@@ -188,7 +177,8 @@ def load_examples(
                 if not paraphrase:
                     continue
                 ans = item.get("output_paraphrase", base_ans) if use_para_ans else base_ans
-                examples.append(Example(pc_id, paraphrase, inp, ans))
+                #examples.append(Example(pc_id, paraphrase, inp, ans))
+                examples.append(Example(pc_id, paraphrase, inp, ans, k))
 
                 if pc_id in DEBUG_PROMPT_IDS:
                     logging.debug("[DBG %s-%s] %s", pc_id, k, paraphrase[:80])
@@ -244,6 +234,9 @@ def make_arg_parser():
     )
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--wandb_project", default="paraphrx_ft_50k")
+
+    p.add_argument("--early_stopping_patience", type=int, default=9,
+                  help="Number of evals with no improvement before stopping")
 
     # quick inspection helper
     p.add_argument(
@@ -332,6 +325,7 @@ def main(argv=None):
         handlers=[logging.FileHandler(log_file), logging.StreamHandler(sys.stdout)],
     )
     logging.info("Starting run %s", args.run_name)
+    logging.info("Command-line args:\n%s", json.dumps(vars(args), indent=2))
 
     # Seed & TF32
     torch.manual_seed(args.seed)
@@ -370,6 +364,7 @@ def main(argv=None):
     else:
         bnb_cfg = BitsAndBytesConfig(
             load_in_4bit=True,
+            offload_state_dict=True,
             bnb_4bit_quant_type="nf4",
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=torch.bfloat16 if args.bf16 else torch.float16,
@@ -396,9 +391,9 @@ def main(argv=None):
 
     model.config.pad_token_id = tokenizer.pad_token_id
     # Dropout tweaks (kept modest)
-    model.config.dropout = 0.05
-    model.config.hidden_dropout = 0.05
-    model.config.attention_dropout = 0.05
+#    model.config.dropout = 0.05
+#    model.config.hidden_dropout = 0.05
+#    model.config.attention_dropout = 0.05
     model.gradient_checkpointing_enable()
     model.config.use_cache = False  # needed for checkpointing
 
@@ -432,14 +427,14 @@ def main(argv=None):
     )
 
     def batch_tokenise(batch):
-        iids, lbls = [], []
-        for pc, ins, inp, ans in zip(
-            batch["prompt_count"], batch["instruction"], batch["inp"], batch["answer"]
+        iids, lbls, styles = [], [], []
+        for pc, ins, inp, ans, sty in zip(
+            batch["prompt_count"], batch["instruction"],
+            batch["inp"], batch["answer"], batch["style"]
         ):
-            tok = tokenise_example(Example(pc, ins, inp, ans))
-            iids.append(tok["input_ids"])
-            lbls.append(tok["labels"])
-        return {"input_ids": iids, "labels": lbls}
+            tok = tokenise_example(Example(pc, ins, inp, ans, sty))
+            iids.append(tok["input_ids"]); lbls.append(tok["labels"]); styles.append(sty)
+        return {"input_ids": iids, "labels": lbls, "style": styles}
 
     train_ds = train_raw.map(
         batch_tokenise, batched=True, remove_columns=train_raw.column_names
@@ -503,11 +498,24 @@ def main(argv=None):
 
     class StepDigest(TrainerCallback):
         def on_log(self, args, state, control, logs=None, **kwargs):
-            if logs and state.global_step % args.logging_steps == 0:
-                logging.info("step %d | loss %.4f | lr %.3g",
-                             state.global_step,
-                             logs.get('loss', float('nan')),
-                             logs.get('learning_rate', float('nan')))
+            if not logs:
+                return
+
+            # print train loss every logging_steps
+            if "loss" in logs and state.global_step % args.logging_steps == 0:
+                logging.info(
+                    "step %4d | train_loss %.4f | lr %.3g",
+                    state.global_step, logs["loss"], logs.get("learning_rate", float("nan"))
+                )
+
+            # print validation loss whenever it appears
+            if "eval_loss" in logs:
+                logging.info(
+                    "step %4d | eval_loss  %.4f | perplexity %.2f",
+                    state.global_step,
+                    logs["eval_loss"],
+                    math.exp(logs["eval_loss"])
+                )
 
     if full_ft:
         for p in model.parameters():
@@ -521,15 +529,52 @@ def main(argv=None):
         data_collator=collator,
         callbacks=[
             StepDigest(),
-            EarlyStoppingCallback(early_stopping_patience=9)
+            EarlyStoppingCallback(early_stopping_patience=args.early_stopping_patience)
         ],
     )
 
+    logging.info("Step-0 evaluation (no fine-tuning)")
+    init_metrics = trainer.evaluate()
+    logging.info("step 0 | eval_loss %.4f | ppl %.2f",
+                init_metrics["eval_loss"],
+                math.exp(init_metrics["eval_loss"]))
+    if wandb.run:
+        wandb.log({"eval_loss/step0": init_metrics["eval_loss"]})
+
     # Train
     trainer.train()
+    logging.info("Total training steps: %d", trainer.state.max_steps)
     trainer.save_model(Path(args.output_dir)/'final')
     tokenizer.save_pretrained(Path(args.output_dir)/'final')
     logging.info("Training done: adapters & tokenizer in %s/final", args.output_dir)
+
+    # style-wise validation loss
+    from collections import defaultdict
+    import numpy as np
+    val_loader = torch.utils.data.DataLoader(
+        val_ds.remove_columns(["style"]),             # model feed
+        batch_size=args.batch_size * 2,
+        shuffle=False,
+        collate_fn=collator
+    )
+    styles = val_ds["style"]                          # parallel list
+
+    model.eval(); losses_by_style = defaultdict(list)
+    with torch.no_grad():
+        for idx, batch in enumerate(val_loader):
+            out = model(**{k: v.to(model.device) for k, v in batch.items()})
+            # each batch corresponds to the same slice in 'styles'
+            bsz = batch["input_ids"].size(0)
+            sl = styles[idx * bsz : (idx + 1) * bsz]
+            for s in sl:
+                losses_by_style[s].append(out.loss.item())
+
+    style_avg = {k: float(np.mean(v)) for k, v in losses_by_style.items()}
+    for sty, lv in sorted(style_avg.items(), key=lambda x: x[1], reverse=True):
+        logging.info("VAL-loss %-25s %.4f", sty, lv)
+
+    if wandb.run:
+        wandb.log({f"val_loss/{sty}": lv for sty, lv in style_avg.items()})
 
     summarise_training(trainer, Path(args.output_dir))
 
