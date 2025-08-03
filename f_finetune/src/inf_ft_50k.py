@@ -2,6 +2,8 @@
 """
 Inference on the held-out split (val + test) for paraphrase-robust fine-tuning.
 
+Usage examples (same as before):
+
 # - LoRA run (run #1)
 python ft_inference_paraphrx.py \
   --data_path a_data/alpaca/50k_phrxed.json \
@@ -23,7 +25,7 @@ python ft_inference_paraphrx.py \
   --log_name 8x_notarg_held \
   --wandb_project paraphrx_inference
 
-The output file is a list like:
+The output file is a list of dicts like:
     {
       "prompt_count": 17,
       "input": "",
@@ -244,7 +246,6 @@ def main() -> None:
     Path("logs").mkdir(exist_ok=True)
     log_name = args.log_name or Path(args.base_model_path).stem
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    #log_path = Path("logs") / f"infer_{Path(args.base_model_path).stem}_{ts}.log"
     log_path = Path("logs") / f"infer_{log_name}_{ts}.log"
     logging.basicConfig(
         level=logging.INFO,
@@ -259,7 +260,6 @@ def main() -> None:
 
         wb_run = wandb.init(
             project=args.wandb_project,
-            #name=f"infer_{Path(args.base_model_path).stem}",
             name=f"infer_{log_name}",
             job_type="inference",
             config=vars(args),
@@ -341,8 +341,7 @@ def main() -> None:
     tokenizer = AutoTokenizer.from_pretrained(tok_path, model_max_length=4096)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-
-    # left padding so new tokens are appended
+    # left padding for generation time
     tokenizer.padding_side = "left"
 
     #   GENERATION LOOP
@@ -378,8 +377,8 @@ def main() -> None:
             max_length=tokenizer.model_max_length,
         ).to(model.device)
 
-        #input_lens = tokenised["attention_mask"].sum(dim=1)
-        prompt_len = tokenised["input_ids"].shape[1]
+        # compute per-sample prompt length via mask
+        prompt_lens = tokenised["attention_mask"].sum(dim=1)
 
         gen_cfg = dict(
             max_new_tokens=args.max_tokens,
@@ -393,9 +392,17 @@ def main() -> None:
             outputs = model.generate(**tokenised, **gen_cfg)
 
         for i in range(len(batch)):
-            # slice from prompt_len, not input_lens[i]
-            reply_ids = outputs[i, prompt_len:]
-            reply = tokenizer.decode(reply_ids, skip_special_tokens=True).strip()
+            answer_ids = outputs[i, prompt_lens[i] :]
+            text = tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
+
+            # OPTIONAL - strip duplicated "user\n … model\n" if the model echoes it
+            if text.lower().startswith("user\n"):
+                head_marker = "model\n"
+                idx = text.lower().find(head_marker, len("user\n"))
+                if idx != -1:
+                    text = text[idx + len(head_marker) :].lstrip()
+
+            results_map[pcs[i]][keys[i]] = text
 
         # housekeeping
         del tokenised, outputs
