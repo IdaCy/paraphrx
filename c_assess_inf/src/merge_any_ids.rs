@@ -2,12 +2,15 @@
 
 cargo merge_any_ids \
     -i \
-   a_data/alpaca/alpaca_10k_part1.json \
-   a_data/alpaca/alpaca_10k_part2.json \
-   a_data/alpaca/alpaca_10k_part3.json \
-   a_data/alpaca/alpaca_10k_part4.json \
-   a_data/alpaca/alpaca_10k_part5.json \
-    -o a_data/alpaca/alpaca_50k.json
+   c_assess_inf/output50k/answers_part1.json \
+   c_assess_inf/output50k/answers_part2.json \
+   c_assess_inf/output50k/answers_part3.json \
+   c_assess_inf/output50k/answers_part4.json \
+   c_assess_inf/output50k/answers_part5.json \
+   c_assess_inf/output50k/answers_part6.json \
+   c_assess_inf/output50k/answers_part7.json \
+   c_assess_inf/output50k/answers_part8.json \
+    -o c_assess_inf/output50k/answers.json
 
 cargo merge_any_ids \
     -i \

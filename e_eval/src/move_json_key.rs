@@ -2,7 +2,7 @@
 cargo move_json_key \
     a_data/alpaca/50k_phrxed.json \
     c_assess_inf/output50k/answers_plain.json \
-    c_assess_inf/output50k/answers_w_output_proc.json
+    c_assess_inf/output50k/answers.json
 */
 
 use std::{collections::HashMap, env, error::Error, fs};
