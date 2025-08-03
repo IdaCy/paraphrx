@@ -158,7 +158,7 @@ f_finetune/data/output_splits/
 f_finetune/data/output_splits_alpaca/
 f_finetune/data/output_splits_gsm8k/
 f_finetune/data/output_splits_mmlu/
-f_finetune/outputs*
+f_finetune/output*
 f_finetune/data/all_*
 f_finetune/data/*
 f_finetune/data/
@@ -196,3 +196,4 @@ f_finetune/src/ft_inference_alpaca_xx?.py
 f_finetune/src/tmux_ftscore_*.sh
 
 f_finetune/src/tmux_ftscore_*.sh
+f_finetune/src/finetuning_50k_increvalloss.py
