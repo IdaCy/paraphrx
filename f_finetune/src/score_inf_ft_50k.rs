@@ -1,7 +1,7 @@
 /*
 cargo score_inf_ft_50k \
   --model gemini-2.0-flash \
-  --api-key AIzaSyCC_nV5YSbSy0u77bKoWr8WyURei_sxQb0 \
+  --api-key <KEY> \
   --api-call-max 2 \
   --log-name "SCORTEST" \
   a_data/alpaca/50k_phrxed.json \
