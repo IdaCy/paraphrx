@@ -1,10 +1,12 @@
 /*
 cargo score_inf_ft_50k \
   --model gemini-2.0-flash \
-  --api-call-max 500 \
-  to/prompts.json \
-  to/inference-results.json \
-  to/output-scores.json
+  --api-key AIzaSyCC_nV5YSbSy0u77bKoWr8WyURei_sxQb0 \
+  --api-call-max 2 \
+  --log-name "SCORTEST" \
+  a_data/alpaca/50k_phrxed.json \
+  f_finetune/output_inf_ft_50k/test.json \
+  f_finetune/output_inf_ft_50k_scores/test.json
 */
 
 use anyhow::{anyhow, Context, Result};
@@ -13,7 +15,7 @@ use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
 use once_cell::sync::Lazy;
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize};
 use serde_json::{json, Map as JsonMap, Value};
 use std::{
     collections::{HashMap, HashSet},
@@ -80,18 +82,24 @@ where
     de.deserialize_any(Visitor)
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
-struct Record {
+/// One row in the prompts file (contains the canonical instruction)
+#[derive(Debug, Deserialize, Clone)]
+struct PromptRecord {
     #[serde(alias = "prompt_count", deserialize_with = "de_prompt_count")]
     prompt_count: u32,
     #[serde(alias = "instruction", alias = "instruction_original")]
     instruction_original: String,
     #[serde(default)]
     input: String,
-    #[serde(default)]
-    output: Option<String>,
+}
+
+/// One row in the answers file
+#[derive(Debug, Deserialize, Clone)]
+struct AnswerRecord {
+    #[serde(alias = "prompt_count", deserialize_with = "de_prompt_count")]
+    prompt_count: u32,
     #[serde(flatten)]
-    extra: JsonMap<String, Value>,
+    answers: JsonMap<String, Value>,   // every answer variant lives here
 }
 
 #[derive(Parser, Debug)]
@@ -118,25 +126,28 @@ struct Cli {
     chunk_max: usize,
 }
 
-fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
-    let content = match fs::read_to_string(path) {
-        Ok(s) => s,
-        Err(e) => {
-            logger.log(&format!("[FATAL] Could not read file {}: {}", path.display(), e));
-            return HashMap::new();
-        }
-    };
-    let records: Vec<Record> = match serde_json::from_str(&content) {
-        Ok(r) => r,
-        Err(e) => {
-            logger.log(&format!("[FATAL] Could not parse JSON from {}: {}", path.display(), e));
-            return HashMap::new();
-        }
-    };
-    records
-        .into_iter()
-        .map(|rec| (rec.prompt_count.to_string(), rec))
-        .collect()
+fn read_prompt_records(path: &Path, logger: &mut Logger) -> HashMap<String, PromptRecord> {
+    let content = fs::read_to_string(path).unwrap_or_else(|e| {
+        logger.log(&format!("[FATAL] Could not read {}: {e}", path.display()));
+        String::new()
+    });
+    let recs: Vec<PromptRecord> = serde_json::from_str(&content).unwrap_or_else(|e| {
+        logger.log(&format!("[FATAL] JSON parse error in {}: {e}", path.display()));
+        Vec::new()
+    });
+    recs.into_iter().map(|r| (r.prompt_count.to_string(), r)).collect()
+}
+
+fn read_answer_records(path: &Path, logger: &mut Logger) -> HashMap<String, AnswerRecord> {
+    let content = fs::read_to_string(path).unwrap_or_else(|e| {
+        logger.log(&format!("[FATAL] Could not read {}: {e}", path.display()));
+        String::new()
+    });
+    let recs: Vec<AnswerRecord> = serde_json::from_str(&content).unwrap_or_else(|e| {
+        logger.log(&format!("[FATAL] JSON parse error in {}: {e}", path.display()));
+        Vec::new()
+    });
+    recs.into_iter().map(|r| (r.prompt_count.to_string(), r)).collect()
 }
 
 #[tokio::main(flavor = "multi_thread")]
@@ -157,9 +168,11 @@ async fn main() -> Result<()> {
     ));
 
     logger.log(&format!("Reading instructions from: {}", cli.instructions.display()));
-    let instr_map = read_records(&cli.instructions, &mut logger);
+    //let instr_map = read_records(&cli.instructions, &mut logger);
+    let instr_map = read_prompt_records(&cli.instructions, &mut logger);
     logger.log(&format!("Reading answers from: {}", cli.answers.display()));
-    let ans_map = read_records(&cli.answers, &mut logger);
+    //let ans_map = read_records(&cli.answers, &mut logger);
+    let ans_map = read_answer_records(&cli.answers, &mut logger);
 
     if instr_map.is_empty() || ans_map.is_empty() {
         return Err(anyhow!("Instruction or answer JSON could not be read or was empty. Check logs."));
@@ -192,6 +205,7 @@ async fn main() -> Result<()> {
         .context("Provide --api-key or set GOOGLE_API_KEY")?;
     let client = build_client()?;
 
+    // The script iterates through the answers JSON
     let mut ans_sorted: Vec<_> = ans_map.iter().collect();
     ans_sorted.sort_by_key(|(_, r)| r.prompt_count);
 
@@ -219,28 +233,35 @@ async fn main() -> Result<()> {
             }
         };
 
-        // <<< CHANGE: This logic now correctly checks for the raw key, not "score_" prefixed key >>>
         let already_done_keys: HashSet<String> = scored
             .get(id)
             .map(|obj| {
                 obj.keys()
-                   .filter(|k| **k != "prompt_count") // Exclude prompt_count from the list of scored keys
+                   .filter(|k| **k != "prompt_count")
                    .cloned()
                    .collect()
             })
             .unwrap_or_default();
-
-        let pending: Vec<String> = ans.extra.keys()
-            .filter(|k| k.starts_with("instruct_") || **k == "instruction_original")
-            .filter(|k| !already_done_keys.contains(*k))
+        
+        // Gather ALL potential instruct* keys from the answer file
+        let potential_keys_to_score: HashSet<String> = ans
+            .answers
+            .keys()
+            .filter(|k| k == &"instruction_original" || k.starts_with("instruct_"))
             .cloned()
             .collect();
 
+        
+        let pending: Vec<String> = potential_keys_to_score
+            .into_iter()
+            .filter(|k| !already_done_keys.contains(k))
+            .collect();
+
         if pending.is_empty() {
-            logger.log(&format!("ID {id}: All variants present in answer file are already scored, skipping."));
+            logger.log(&format!("ID {id}: All answer variants are already scored, skipping."));
             continue;
         }
-        logger.log(&format!("ID {id}: Found {} unscored variants in answer file.", pending.len()));
+        logger.log(&format!("ID {id}: Found {} unscored answer variants to evaluate.", pending.len()));
 
         let mut cursor = 0usize;
         while cursor < pending.len() {
@@ -250,27 +271,30 @@ async fn main() -> Result<()> {
             }
 
             let mut chunk: Vec<String> = Vec::new();
-            let mut section = String::new();
+            let full_instruction = if master_instr_record.input.is_empty() {
+                master_instr_record.instruction_original.clone()
+            } else {
+                format!(
+                    "{}\n\n[Input]\n{}",
+                    master_instr_record.instruction_original, master_instr_record.input
+                )
+            };
+
+            let mut section = format!("[Instruction]\n{full_instruction}\n\n");
             let mut est_tokens = 0usize;
             while cursor < pending.len() && chunk.len() < cli.chunk_max {
                 let key_to_score = &pending[cursor];
-                let instr_text = if key_to_score == "instruction_original" {
-                    &master_instr_record.instruction_original
-                } else {
-                    master_instr_record.extra
-                        .get(key_to_score)
-                        .and_then(Value::as_str)
-                        .unwrap_or("")
-                };
-
-                if instr_text.is_empty() {
-                    logger.log(&format!("ID {id} key {key_to_score}: Instruction text not found in master prompts file, skipping variant."));
-                    cursor += 1;
-                    continue;
-                }
                 
-                let ans_text_raw = ans.extra.get(key_to_score).and_then(Value::as_str).unwrap_or("");
-                let ans_text = ans_text_raw.trim();
+                // The instruction text is ALWAYS the original one from the master record
+                //let instr_text = &master_instr_record.instruction_original;
+                
+                // Get the corresponding ANSWER for the variant being scored
+                let ans_text = ans
+                    .answers
+                    .get(key_to_score)
+                    .and_then(Value::as_str)
+                    .unwrap_or("")
+                    .trim();
                 
                 if ans_text.is_empty() {
                     logger.log(&format!("ID {id} key {key_to_score}: Answer text is empty in answer file, skipping variant."));
@@ -278,14 +302,9 @@ async fn main() -> Result<()> {
                     continue;
                 }
                 
-                let full_instruction = if master_instr_record.input.is_empty() {
-                    instr_text.to_string()
-                } else {
-                    format!("{instr_text}\n\n[Input]\n{}", master_instr_record.input)
-                };
-                
+                // and Combine the original instruction with the input field
                 let block = format!(
-                    "### {key_to_score}\n[Instruction]\n{full_instruction}\n\n[Answer]\n{ans_text}\n\n"
+                    "### {key_to_score}\n[Answer]\n{ans_text}\n\n"
                 );
                 let block_tokens = estimate_tokens(&block);
 
@@ -312,6 +331,7 @@ async fn main() -> Result<()> {
             ));
 
             let prompt = build_eval_prompt(&section);
+            logger.log(&format!("FULL RAW PROMPT FOR ID {}:\n{}\n---", id, prompt));
             if DEBUG_IDS.contains(&master_instr_record.prompt_count) {
                 fs::create_dir_all("logs/debug")?;
                 let dump_path = format!("logs/debug/prompt_id_{}_chunk_{}.txt", id, api_calls_used);
@@ -324,7 +344,6 @@ async fn main() -> Result<()> {
                 match query_gemini(&client, &api_key, &cli.model, &prompt).await {
                     Ok(obj) => {
                         success = true;
-                        // <<< CHANGE: Merging logic simplified for new format >>>
                         let entry = scored.entry(id.clone()).or_insert_with(|| {
                             let mut base = JsonMap::new();
                             base.insert("prompt_count".into(), json!(master_instr_record.prompt_count));
@@ -332,7 +351,6 @@ async fn main() -> Result<()> {
                         });
                         for key in &chunk {
                             if let Some(v) = obj.get(key) {
-                                // The value `v` is now expected to be an array of integers
                                 entry.insert(key.clone(), v.clone());
                             } else {
                                 logger.log(&format!("ID {id}: Missing key {key} in Gemini response."));
@@ -373,6 +391,7 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
+
 fn save_results(
     scored: &HashMap<String, JsonMap<String, Value>>,
     output_path: &Path,
@@ -390,7 +409,6 @@ fn build_client() -> Result<reqwest::Client> {
     Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
 
-// <<< CHANGE: The evaluation prompt is updated for the new format >>>
 fn build_eval_prompt(section: &str) -> String {
     format!(r#"You are an expert evaluator. Your task is to assess language model answers based on the provided instructions.
 
