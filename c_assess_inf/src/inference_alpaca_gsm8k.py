@@ -3,9 +3,9 @@
 Each JSON needed like:
 [
   {
-    "prompt_count": "uuid-string",
-    "instruction_original": "Give three tips for staying healthy.",
+    "prompt_count": <plain-number>:,
     "input": "",  # optional - may be empty or missing
+    "instruction_original": "Give three tips for staying healthy.",
     "instruct_apologetic": "I'm sorry to ask, but could you perhaps...",
     "instruct_archaic": "Pray tell, reveal unto me...",
     ...
