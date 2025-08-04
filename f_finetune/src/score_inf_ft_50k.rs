@@ -331,7 +331,7 @@ async fn main() -> Result<()> {
             ));
 
             let prompt = build_eval_prompt(&section);
-            logger.log(&format!("FULL RAW PROMPT FOR ID {}:\n{}\n---", id, prompt));
+            //logger.log(&format!("FULL RAW PROMPT FOR ID {}:\n{}\n---", id, prompt));
             if DEBUG_IDS.contains(&master_instr_record.prompt_count) {
                 fs::create_dir_all("logs/debug")?;
                 let dump_path = format!("logs/debug/prompt_id_{}_chunk_{}.txt", id, api_calls_used);
