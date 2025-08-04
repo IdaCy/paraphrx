@@ -197,3 +197,6 @@ f_finetune/src/tmux_ftscore_*.sh
 
 f_finetune/src/tmux_ftscore_*.sh
 f_finetune/src/finetuning_50k_increvalloss.py
+
+b_tests/robust_alpaca
+

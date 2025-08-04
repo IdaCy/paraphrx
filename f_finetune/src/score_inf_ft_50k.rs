@@ -1,12 +1,12 @@
 /*
 cargo score_inf_ft_50k \
   --model gemini-2.0-flash \
-  --api-key <KEY> \
+  --api-key <key> \
   --api-call-max 2 \
   --log-name "SCORTEST" \
   a_data/alpaca/50k_phrxed.json \
-  f_finetune/output_inf_ft_50k/test.json \
-  f_finetune/output_inf_ft_50k_scores/test.json
+  b_tests/robust_alpaca/answers_li9x_a1_notarg.json \
+  b_tests/robust_alpaca/answers_li9x_a1_notarg_aw1.json
 */
 
 use anyhow::{anyhow, Context, Result};

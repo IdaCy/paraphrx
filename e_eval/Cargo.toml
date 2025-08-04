@@ -47,6 +47,10 @@ path = "src/check_json.rs"
 name = "move_json_key"
 path = "src/move_json_key.rs"
 
+[[bin]]
+name = "robust_alpaca_eval"
+path = "src/robust_alpaca_eval.rs"
+
 [dependencies]
 anyhow     = "1"
 clap = { version = "4.5", features = ["derive"] }
@@ -69,3 +73,4 @@ env_logger = "0.11"
 statrs = "0.16"
 plotters = { version = "0.3", default-features = false, features = ["bitmap_backend"] }
 png = "0.17"
+once_cell     = "1"
