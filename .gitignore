@@ -197,4 +197,3 @@ f_finetune/src/tmux_ftscore_*.sh
 
 f_finetune/src/tmux_ftscore_*.sh
 f_finetune/src/finetuning_50k_increvalloss.py
-
