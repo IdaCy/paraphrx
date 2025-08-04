@@ -1,25 +1,15 @@
 """
 
 python3 e_eval/src/tf_stats.py \
-<<<<<<< HEAD
-    --orig_json e_eval/data/alpaca_gemma-2-2b-it.json \
-=======
     --orig_json f_finetune/data/all_alpaca_gemma-2-2b-it_all_ppl.json \
->>>>>>> 04f99b35685c6c73ef5f8a29ebc98ca5580f0fc1
     --finetune_jsons \
     f_finetune/outputs/1st_run/alpaca/all_layers/ft_inf_scores/buckets_1-1.json \
     f_finetune/outputs/1st_run/alpaca/all_layers/ft_inf_scores/buckets_1-2.json \
     f_finetune/outputs/1st_run/alpaca/all_layers/ft_inf_scores/buckets_1-3.json \
     f_finetune/outputs/1st_run/alpaca/all_layers/ft_inf_scores/buckets_1-4.json \
-<<<<<<< HEAD
-    f_finetune/outputs/1st_run/alpaca/all_layers/ft_inf_scores/buckets_1-5.json \
-    --equiv_json a_data/alpaca/equi_scores/median_equi_integer.json \
-    --log_file logs/stats_run.log \
-=======
     equiv_json/outputs/1st_run/alpaca/all_layers/ft_inf_scores/buckets_1-5.json \
     --equivalence a_data/alpaca/equi_scores/median_equi_integer.json \
     --log-log_file logs/stats_run.log \
->>>>>>> 04f99b35685c6c73ef5f8a29ebc98ca5580f0fc1
     --output_dir e_eval/output/alpaca/tf_stats
 """
 
@@ -203,11 +193,7 @@ def main():
     logging.info("Saved statistical tables to CSV")
 
     # Plotting
-<<<<<<< HEAD
-    # 1. Mean TF by stage
-=======
     # Mean TF by stage
->>>>>>> 04f99b35685c6c73ef5f8a29ebc98ca5580f0fc1
     plt.figure()
     df1['mean'].plot(kind='bar')
     plt.title('Mean TF Score by Stage (All paraphrases)')
@@ -217,11 +203,7 @@ def main():
     plt.close()
     logging.info("Saved plot mean_tf_by_stage.png")
 
-<<<<<<< HEAD
-    # 2. Mean TF by stage for high_eq
-=======
     # Mean TF by stage for high_eq
->>>>>>> 04f99b35685c6c73ef5f8a29ebc98ca5580f0fc1
     plt.figure()
     df2['mean'].plot(kind='bar')
     plt.title('Mean TF Score by Stage (High-Equivalence)')
@@ -231,11 +213,7 @@ def main():
     plt.close()
     logging.info("Saved plot mean_tf_high_eq_by_stage.png")
 
-<<<<<<< HEAD
-    # 3. Distribution boxplot of TF scores for high_eq across stages
-=======
     # Distribution boxplot of TF scores for high_eq across stages
->>>>>>> 04f99b35685c6c73ef5f8a29ebc98ca5580f0fc1
     plt.figure()
     high_pivot = high_eq.pivot(columns='stage', values='tf_score')
     high_pivot.boxplot()
