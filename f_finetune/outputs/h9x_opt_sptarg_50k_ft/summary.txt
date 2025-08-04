@@ -1,6 +1,0 @@
-train_examples: 404516
-val_examples: 22472
-trainable_params: 3194880
-total_params: 2617536768
-final_val_loss: 1.3777364492416382
-final_val_ppl: 3.9659144112487814
