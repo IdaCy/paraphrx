@@ -2,9 +2,9 @@
 cargo score_inf_ft_50k \
   --model gemini-2.0-flash \
   --api-call-max 500 \
-  path/to/your/prompts.json \
-  path/to/your/inference-results.json \
-  path/to/your/output-scores.json
+  to/prompts.json \
+  to/inference-results.json \
+  to/output-scores.json
 */
 
 use anyhow::{anyhow, Context, Result};
@@ -24,10 +24,8 @@ use std::{
 };
 use tokio::time::sleep;
 
-const PROMPT_PREAMBLE_TOKENS: usize = 550; // Increased slightly to be safe
-const DEBUG_IDS: &[u32] = &[1, 3, 23];     // Updated to match your examples
-
-// Constants
+const PROMPT_PREAMBLE_TOKENS: usize = 550;
+const DEBUG_IDS: &[u32] = &[1, 3, 23];
 static MODEL_LIMITS: Lazy<HashMap<&'static str, usize>> = Lazy::new(|| {
     HashMap::from([
         ("gemini-2.5-flash-preview-05-20", 1_048_576),
@@ -37,16 +35,12 @@ static MODEL_LIMITS: Lazy<HashMap<&'static str, usize>> = Lazy::new(|| {
         ("gemini-2.0-flash", 1_048_576),
     ])
 });
-
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
 
-// Misc helpers
 fn estimate_tokens(text: &str) -> usize {
-    // very rough: 0.75 * words ≈ tokens   (≈ bytes / 4)
     ((text.split_whitespace().count() as f32) * 0.75).ceil() as usize
 }
 
-// Logger
 struct Logger {
     writer: BufWriter<fs::File>,
 }
@@ -60,12 +54,11 @@ impl Logger {
     fn log(&mut self, msg: &str) {
         let ts = Local::now().format("%Y-%m-%d %H:%M:%S");
         let _ = writeln!(self.writer, "[{ts}] {msg}");
-        println!("[{ts}] {msg}"); // Also print to console for real-time feedback
+        println!("[{ts}] {msg}");
         let _ = self.writer.flush();
     }
 }
 
-// Data model
 fn de_prompt_count<'de, D>(de: D) -> std::result::Result<u32, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -91,58 +84,40 @@ where
 struct Record {
     #[serde(alias = "prompt_count", deserialize_with = "de_prompt_count")]
     prompt_count: u32,
-
     #[serde(alias = "instruction", alias = "instruction_original")]
     instruction_original: String,
-    
-    // **MODIFIED**: Added 'input' field to correctly parse your data
     #[serde(default)]
     input: String,
-
     #[serde(default)]
     output: Option<String>,
-
     #[serde(flatten)]
     extra: JsonMap<String, Value>,
 }
 
-// CLI
 #[derive(Parser, Debug)]
 #[command(version, about = "Assess paraphrase answers with Gemini (resume-able, token-aware)")]
 struct Cli {
     instructions: PathBuf,
     answers: PathBuf,
     output: PathBuf,
-
     #[arg(long, default_value = "gemini-2.0-flash")]
     model: String,
-
     #[arg(long = "log-name", default_value = "SCORING")]
     log_name: String,
-
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
-
     #[arg(long = "delay-ms", default_value_t = 200)]
     delay_ms: u64,
-
     #[arg(long = "api-key")]
     api_key: Option<String>,
-
     #[arg(long = "api-call-max", default_value_t = 10_000)]
     api_call_max: u32,
-
-    /// keep at least this many tokens below the model context limit
     #[arg(long, default_value_t = 2048)]
     margin: usize,
-
-    /// emergency upper bound on instruct_* per chunk
     #[arg(long = "chunk-max", default_value_t = 200)]
     chunk_max: usize,
 }
 
-// **MODIFIED**: This function is now completely rewritten to handle your JSON structure.
-// It correctly deserializes a `Vec<Record>` and converts it into a HashMap keyed by `prompt_count`.
 fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
     let content = match fs::read_to_string(path) {
         Ok(s) => s,
@@ -151,7 +126,6 @@ fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
             return HashMap::new();
         }
     };
-
     let records: Vec<Record> = match serde_json::from_str(&content) {
         Ok(r) => r,
         Err(e) => {
@@ -159,19 +133,15 @@ fn read_records(path: &Path, logger: &mut Logger) -> HashMap<String, Record> {
             return HashMap::new();
         }
     };
-
     records
         .into_iter()
         .map(|rec| (rec.prompt_count.to_string(), rec))
         .collect()
 }
 
-// Main
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
     let cli = Cli::parse();
-
-    // logging
     fs::create_dir_all("logs")?;
     let ts = Local::now().format("%Y%m%d-%H%M%S");
     let log_path = Path::new("logs").join(format!(
@@ -186,7 +156,6 @@ async fn main() -> Result<()> {
         cli.model, cli.margin, cli.api_call_max
     ));
 
-    // I/O
     logger.log(&format!("Reading instructions from: {}", cli.instructions.display()));
     let instr_map = read_records(&cli.instructions, &mut logger);
     logger.log(&format!("Reading answers from: {}", cli.answers.display()));
@@ -196,7 +165,6 @@ async fn main() -> Result<()> {
         return Err(anyhow!("Instruction or answer JSON could not be read or was empty. Check logs."));
     }
 
-    // load / init output
     let mut scored: HashMap<String, JsonMap<String, Value>> = if cli.output.exists() {
         logger.log(&format!("Loading existing output for resume mode: {}", cli.output.display()));
         let content = fs::read_to_string(&cli.output)?;
@@ -211,13 +179,12 @@ async fn main() -> Result<()> {
                     .to_string();
                 Ok((id, obj))
             })
-            .collect::<Result<_, _>>()?
+            .collect::<Result<_, anyhow::Error>>()?
     } else {
         logger.log("No existing output file found. Starting fresh.");
         HashMap::new()
     };
 
-    // HTTP client
     let api_key = cli
         .api_key
         .clone()
@@ -225,15 +192,14 @@ async fn main() -> Result<()> {
         .context("Provide --api-key or set GOOGLE_API_KEY")?;
     let client = build_client()?;
 
-    // preparation
-    let mut instr_sorted: Vec<(&String, &Record)> = instr_map.iter().collect();
-    instr_sorted.sort_by_key(|(_, r)| r.prompt_count);
+    let mut ans_sorted: Vec<_> = ans_map.iter().collect();
+    ans_sorted.sort_by_key(|(_, r)| r.prompt_count);
 
     let ctx_limit = *MODEL_LIMITS
         .get(cli.model.as_str())
         .ok_or_else(|| anyhow!("Unknown model {}", cli.model))?;
 
-    let bar = ProgressBar::new(instr_sorted.len() as u64);
+    let bar = ProgressBar::new(ans_sorted.len() as u64);
     bar.set_style(
         ProgressStyle::with_template(
             "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})",
@@ -241,50 +207,41 @@ async fn main() -> Result<()> {
         .unwrap(),
     );
 
-    // main loop
     let mut api_calls_used = 0u32;
-    for (id, inst) in instr_sorted {
+    for (id, ans) in ans_sorted {
         bar.inc(1);
 
-        // Check if this entire prompt_count is already fully scored in the output file
-        let already_done_keys: HashSet<String> = scored
-            .get(id)
-            .map(|obj| {
-                obj.keys()
-                    .filter(|k| k.starts_with("instruct_") || **k == "instruction_original")
-                    .cloned()
-                    .collect()
-            })
-            .unwrap_or_default();
-        
-        let ans = match ans_map.get(id) {
-            Some(a) => a,
+        let master_instr_record = match instr_map.get(id) {
+            Some(i) => i,
             None => {
-                logger.log(&format!("ID {id}: Answer not found, skipping."));
+                logger.log(&format!("ID {id}: Original instruction record not found in master file, skipping."));
                 continue;
             }
         };
 
-        // **MODIFIED**: Logic for finding keys to score is now cleaner.
-        // It checks for any key starting with "instruct_" or "instruction_original" in the answer file.
-        let potential_keys_to_score: HashSet<String> = ans.extra.keys()
-            .filter(|k| k.starts_with("instruct_"))
+        // <<< CHANGE: This logic now correctly checks for the raw key, not "score_" prefixed key >>>
+        let already_done_keys: HashSet<String> = scored
+            .get(id)
+            .map(|obj| {
+                obj.keys()
+                   .filter(|k| **k != "prompt_count") // Exclude prompt_count from the list of scored keys
+                   .cloned()
+                   .collect()
+            })
+            .unwrap_or_default();
+
+        let pending: Vec<String> = ans.extra.keys()
+            .filter(|k| k.starts_with("instruct_") || **k == "instruction_original")
+            .filter(|k| !already_done_keys.contains(*k))
             .cloned()
-            .chain(std::iter::once("instruction_original".to_string()))
-            .collect();
-        
-        let pending: Vec<String> = potential_keys_to_score
-            .into_iter()
-            .filter(|k| !already_done_keys.contains(k))
             .collect();
 
         if pending.is_empty() {
-            logger.log(&format!("ID {id}: All variants already scored, skipping."));
+            logger.log(&format!("ID {id}: All variants present in answer file are already scored, skipping."));
             continue;
         }
-        logger.log(&format!("ID {id}: Found {} variants to score.", pending.len()));
+        logger.log(&format!("ID {id}: Found {} unscored variants in answer file.", pending.len()));
 
-        // chunking
         let mut cursor = 0usize;
         while cursor < pending.len() {
             if api_calls_used >= cli.api_call_max {
@@ -292,70 +249,56 @@ async fn main() -> Result<()> {
                 break;
             }
 
-            // greedy accumulate
             let mut chunk: Vec<String> = Vec::new();
             let mut section = String::new();
             let mut est_tokens = 0usize;
             while cursor < pending.len() && chunk.len() < cli.chunk_max {
-                let key = &pending[cursor];
-
-                // **MODIFIED**: Clearer logic to get instruction and answer text.
-                let instr_text = if key == "instruction_original" {
-                    &inst.instruction_original
+                let key_to_score = &pending[cursor];
+                let instr_text = if key_to_score == "instruction_original" {
+                    &master_instr_record.instruction_original
                 } else {
-                    inst.extra
-                        .get(key)
+                    master_instr_record.extra
+                        .get(key_to_score)
                         .and_then(Value::as_str)
                         .unwrap_or("")
                 };
-                
-                // If the instruction for this key is missing, we can't score it.
+
                 if instr_text.is_empty() {
-                    logger.log(&format!("ID {id} key {key}: Instruction text not found, skipping variant."));
+                    logger.log(&format!("ID {id} key {key_to_score}: Instruction text not found in master prompts file, skipping variant."));
                     cursor += 1;
                     continue;
                 }
-
-                // Answer text can be in `extra` for both original and paraphrases.
-                // The original script had a more complex check for `output` which we keep for compatibility.
-                let ans_text_raw = if key == "instruction_original" {
-                    ans.output.as_deref().or_else(|| ans.extra.get(key).and_then(Value::as_str)).unwrap_or("")
-                } else {
-                    ans.extra.get(key).and_then(Value::as_str).unwrap_or("")
-                };
-
-                // Strip boilerplate that doesn’t matter for quality but eats tokens
+                
+                let ans_text_raw = ans.extra.get(key_to_score).and_then(Value::as_str).unwrap_or("");
                 let ans_text = ans_text_raw.trim();
-
+                
                 if ans_text.is_empty() {
-                    logger.log(&format!("ID {id} key {key}: Answer text is empty, skipping variant."));
+                    logger.log(&format!("ID {id} key {key_to_score}: Answer text is empty in answer file, skipping variant."));
                     cursor += 1;
                     continue;
                 }
-
-                // **MODIFIED**: Now includes the [Input] field if it exists.
-                let full_instruction = if inst.input.is_empty() {
+                
+                let full_instruction = if master_instr_record.input.is_empty() {
                     instr_text.to_string()
                 } else {
-                    format!("{instr_text}\n\n[Input]\n{}", inst.input)
+                    format!("{instr_text}\n\n[Input]\n{}", master_instr_record.input)
                 };
-
+                
                 let block = format!(
-                    "### {key}\n[Instruction]\n{full_instruction}\n\n[Answer]\n{ans_text}\n\n"
+                    "### {key_to_score}\n[Instruction]\n{full_instruction}\n\n[Answer]\n{ans_text}\n\n"
                 );
                 let block_tokens = estimate_tokens(&block);
 
                 if est_tokens + block_tokens + PROMPT_PREAMBLE_TOKENS >= ctx_limit - cli.margin {
                     if chunk.is_empty() {
-                        logger.log(&format!("ID {id} key {key}: Single item is too large for context window ({block_tokens} tokens), skipping."));
+                        logger.log(&format!("ID {id} key {key_to_score}: Single item is too large for context window ({block_tokens} tokens), skipping."));
                         cursor += 1;
                     }
-                    break; // Current chunk is full, or this item is too big to add
+                    break;
                 }
-
                 section.push_str(&block);
                 est_tokens += block_tokens;
-                chunk.push(key.clone());
+                chunk.push(key_to_score.clone());
                 cursor += 1;
             }
 
@@ -368,8 +311,8 @@ async fn main() -> Result<()> {
                 chunk.len(), est_tokens, api_calls_used
             ));
 
-            let prompt = build_eval_prompt(§ion);
-            if DEBUG_IDS.contains(&inst.prompt_count) {
+            let prompt = build_eval_prompt(&section);
+            if DEBUG_IDS.contains(&master_instr_record.prompt_count) {
                 fs::create_dir_all("logs/debug")?;
                 let dump_path = format!("logs/debug/prompt_id_{}_chunk_{}.txt", id, api_calls_used);
                 fs::write(&dump_path, &prompt)?;
@@ -377,29 +320,20 @@ async fn main() -> Result<()> {
             }
 
             let mut success = false;
-            let mut attempt_used = 0;
             for attempt in 1..=cli.max_attempts {
-                attempt_used = attempt;
                 match query_gemini(&client, &api_key, &cli.model, &prompt).await {
                     Ok(obj) => {
                         success = true;
-                        // merge result
+                        // <<< CHANGE: Merging logic simplified for new format >>>
                         let entry = scored.entry(id.clone()).or_insert_with(|| {
                             let mut base = JsonMap::new();
-                            base.insert("prompt_count".into(), json!(inst.prompt_count));
-                            // Also copy original instruction/input/output for context
-                            base.insert("instruction_original".into(), json!(inst.instruction_original));
-                            if !inst.input.is_empty() {
-                                base.insert("input".into(), json!(inst.input));
-                            }
-                            if let Some(out) = &inst.output {
-                                base.insert("output_golden".into(), json!(out));
-                            }
+                            base.insert("prompt_count".into(), json!(master_instr_record.prompt_count));
                             base
                         });
                         for key in &chunk {
                             if let Some(v) = obj.get(key) {
-                                entry.insert(format!("score_{}", key), v.clone());
+                                // The value `v` is now expected to be an array of integers
+                                entry.insert(key.clone(), v.clone());
                             } else {
                                 logger.log(&format!("ID {id}: Missing key {key} in Gemini response."));
                             }
@@ -416,7 +350,15 @@ async fn main() -> Result<()> {
                     }
                 }
             }
-            api_calls_used += 1; // Count as 1 call regardless of retries
+            api_calls_used += 1;
+
+            if success {
+                logger.log(&format!("ID {id}: Chunk processed successfully. Saving progress..."));
+                if let Err(e) = save_results(&scored, &cli.output) {
+                    logger.log(&format!("[ERROR] Failed to save results to {}: {}", cli.output.display(), e));
+                }
+            }
+            
             if success && cli.delay_ms > 0 {
                 sleep(Duration::from_millis(cli.delay_ms)).await;
             }
@@ -424,29 +366,37 @@ async fn main() -> Result<()> {
     }
     bar.finish();
 
-    // save
-    let mut vec_out: Vec<JsonMap<String, Value>> = scored.into_values().collect();
-    vec_out.sort_by_key(|m| m.get("prompt_count").and_then(Value::as_u64).unwrap_or(0));
-    fs::write(&cli.output, serde_json::to_string_pretty(&vec_out)?)?;
-    logger.log(&format!("Finished. All results written to {}", cli.output.display()));
+    logger.log(&format!("Finished. Writing final results to {}", cli.output.display()));
+    save_results(&scored, &cli.output)?;
 
     println!("\nScoring complete. Log file at: {}", log_path.display());
     Ok(())
 }
 
-// HTTP & prompt
+fn save_results(
+    scored: &HashMap<String, JsonMap<String, Value>>,
+    output_path: &Path,
+) -> Result<()> {
+    let mut vec_out: Vec<JsonMap<String, Value>> = scored.values().cloned().collect();
+    vec_out.sort_by_key(|m| m.get("prompt_count").and_then(Value::as_u64).unwrap_or(0));
+    let json_string = serde_json::to_string_pretty(&vec_out)?;
+    fs::write(output_path, json_string)?;
+    Ok(())
+}
+
 fn build_client() -> Result<reqwest::Client> {
     let mut headers = HeaderMap::new();
     headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
     Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
 
+// <<< CHANGE: The evaluation prompt is updated for the new format >>>
 fn build_eval_prompt(section: &str) -> String {
     format!(r#"You are an expert evaluator. Your task is to assess language model answers based on the provided instructions.
 
 For every answer below, assess it against **ten metrics**. Each metric must be scored on a 0-10 integer scale (higher is better).
 
-Metrics (use **exact** keys and order):
+The 10 metrics, in **exact order**, are:
 1.  **Task_Fulfilment**: Does it respond to every part of the prompt? Is it relevant?
 2.  **Usefulness_Actionability**: Does it provide concrete, actionable advice or clear information?
 3.  **Factual_Accuracy**: Are the statements factually correct? Does it avoid hallucinations?
@@ -458,22 +408,11 @@ Metrics (use **exact** keys and order):
 9.  **Completeness_Depth**: Does it cover the key aspects of the topic sufficiently?
 10. **Creativity_Novelty**: Does it offer a fresh perspective or a non-obvious, clever response?
 
-Return *only* valid JSON (no markdown, no surrounding text or code fences). The JSON object should have keys corresponding to each `### key` from the input (e.g., "instruct_dramatic"). The value for each key must be an object containing the ten metric keys, each with an integer score from 0-10.
+Return *only* valid JSON (no markdown, no surrounding text or code fences). The JSON object should have keys corresponding to each `### key` from the input (e.g., "instruct_dramatic"). The value for each key must be an **array of exactly ten integers** representing the scores for the 10 metrics in the order listed above.
 
 Example of a valid response format for a single entry:
 {{
-  "instruct_leet_speak": {{
-    "Task_Fulfilment": 9,
-    "Usefulness_Actionability": 8,
-    "Factual_Accuracy": 10,
-    "Clarity_Conciseness": 5,
-    "Reasoning_Quality": 8,
-    "Tone_Style": 7,
-    "Safety_Bias_Avoidance": 10,
-    "Structure_Formatting": 9,
-    "Completeness_Depth": 8,
-    "Creativity_Novelty": 6
-  }}
+  "instruct_leet_speak": [9, 8, 10, 5, 8, 7, 10, 9, 8, 6]
 }}
 
 Begin data to evaluate:
@@ -482,8 +421,6 @@ Begin data to evaluate:
 "#)
 }
 
-// **MODIFIED**: The response parsing is now more flexible and robust.
-// It will also handle the new structured JSON response format from the updated prompt.
 async fn query_gemini(
     client: &reqwest::Client,
     key: &str,
@@ -498,7 +435,7 @@ async fn query_gemini(
         }],
         "generationConfig": {
             "responseMimeType": "application/json",
-            "temperature": 0.1, // Lower temperature for more consistent evaluation
+            "temperature": 0.1,
         }
     });
     let resp = client.post(&url).json(&body).send().await?;
