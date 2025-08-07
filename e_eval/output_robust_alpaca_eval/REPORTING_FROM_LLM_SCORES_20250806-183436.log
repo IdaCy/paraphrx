@@ -1,0 +1,44 @@
+[2025-08-06 18:3436] Run started (from-llm-scores mode)
+[2025-08-06 18:3436] Reading pre-computed verdicts from: e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json
+[2025-08-06 18:3436] 
+--- Final Report (from pre-computed verdicts) ---
+[2025-08-06 18:3436] 
+--- Overall Results ---
+[2025-08-06 18:3436] Total Comparisons: 203
+[2025-08-06 18:3436] Win Rate (Win + Tie): 44.83%
+[2025-08-06 18:3436]   - Wins (Paraphrase > Original): 41 (20.20%)
+[2025-08-06 18:3436]   - Ties (Paraphrase ≈ Original): 50 (24.63%)
+[2025-08-06 18:3436]   - Losses (Paraphrase < Original): 112 (55.17%)
+[2025-08-06 18:3436] 
+--- Win Rate by Paraphrase Type ---
+[2025-08-06 18:3436] - instruct_coord_to_subord      : 63.16%  (n=19)
+[2025-08-06 18:3436] - instruct_double_negative      : 44.44%  (n=18)
+[2025-08-06 18:3436] - instruct_dramatic             : 31.58%  (n=19)
+[2025-08-06 18:3436] - instruct_formal_memo          : 63.16%  (n=19)
+[2025-08-06 18:3436] - instruct_future_tense         : 38.89%  (n=18)
+[2025-08-06 18:3436] - instruct_joke                 : 31.58%  (n=19)
+[2025-08-06 18:3436] - instruct_leet_speak           : 15.79%  (n=19)
+[2025-08-06 18:3436] - instruct_one_typo_punctuation : 61.11%  (n=18)
+[2025-08-06 18:3436] - instruct_output_markdown      : 44.44%  (n=18)
+[2025-08-06 18:3436] - instruct_polite_request       : 50.00%  (n=18)
+[2025-08-06 18:3436] - instruct_sardonic             : 50.00%  (n=18)
+[2025-08-06 18:3436] Reporting complete.
+
+
+Win Rate (Win + Tie): 44.83%
+  - Wins (Paraphrase > Original): 20.20%
+  - Ties (Paraphrase ≈ Original): 24.63%
+  - Losses (Paraphrase < Original): 55.17%
+
+--- Win Rate by Paraphrase Type ---
+- instruct_leet_speak           : 15.79%
+- instruct_dramatic             : 31.58%
+- instruct_joke                 : 31.58%
+- instruct_double_negative      : 44.44%
+- instruct_future_tense         : 38.89%
+- instruct_output_markdown      : 44.44%
+- instruct_polite_request       : 50.00%
+- instruct_sardonic             : 50.00%
+- instruct_one_typo_punctuation : 61.11%
+- instruct_formal_memo          : 63.16%
+- instruct_coord_to_subord      : 63.16%

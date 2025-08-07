@@ -1,0 +1,100 @@
+   Compiling e_eval v0.1.0 (/scratch_root/ifc24/paraphrx/e_eval)
+    Finished `release` profile [optimized] target(s) in 12.60s
+     Running `e_eval/target/release/robust_alpaca_eval llm-judge --prompts a_data/alpaca/50k_phrxed.json --answers-original c_assess_inf/output50k/answers.json --answers-paraphrased f_finetune/output_inf_ft_50k/li9x_a1_notarg_inf.json --output e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json --judging-model gemini-2.0-flash --delay-ms 4000 --api-call-max 200 --api-key AIzaSyCmVLuRr7r9nL_vXvxiusTO4ZtiSaLF2qU --num-judge-votes 3`
+[2025-08-05 21:4114] Run started (llm-judge mode) – model=gemini-2.0-flash judge_votes=3
+[2025-08-05 21:4114] Reading prompts from: a_data/alpaca/50k_phrxed.json
+[2025-08-05 21:4114] Reading original answers from: c_assess_inf/output50k/answers.json
+[2025-08-05 21:4115] Reading paraphrased answers from: f_finetune/output_inf_ft_50k/li9x_a1_notarg_inf.json
+[2025-08-05 21:4115] Loading existing output for resume mode: e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json
+[2025-08-05 21:4115] Starting evaluation for 500 paraphrased answer records.
+[2025-08-05 21:4128] ID 81 key instruct_coord_to_subord: Final verdict is Tie.
+[2025-08-05 21:4146] ID 81 key instruct_double_negative: Final verdict is Tie.
+[2025-08-05 21:4203] ID 81 key instruct_dramatic: Final verdict is Loss.
+[2025-08-05 21:4221] ID 81 key instruct_formal_memo: Final verdict is Loss.
+[2025-08-05 21:4238] ID 81 key instruct_future_tense: Final verdict is Loss.
+[2025-08-05 21:4255] ID 81 key instruct_joke: Final verdict is Loss.
+[2025-08-05 21:4312] ID 81 key instruct_leet_speak: Final verdict is Loss.
+[2025-08-05 21:4330] ID 81 key instruct_one_typo_punctuation: Final verdict is Tie.
+[2025-08-05 21:4348] ID 81 key instruct_output_markdown: Final verdict is Win.
+[2025-08-05 21:4405] ID 81 key instruct_polite_request: Final verdict is Tie.
+[2025-08-05 21:4422] ID 81 key instruct_sardonic: Final verdict is Tie.
+[2025-08-05 21:4439] ID 89 key instruct_coord_to_subord: Final verdict is Tie.
+[2025-08-05 21:4456] ID 89 key instruct_double_negative: Final verdict is Loss.
+[2025-08-05 21:4514] ID 89 key instruct_dramatic: Final verdict is Loss.
+[2025-08-05 21:4531] ID 89 key instruct_formal_memo: Final verdict is Loss.
+[2025-08-05 21:4548] ID 89 key instruct_future_tense: Final verdict is Loss.
+[2025-08-05 21:4605] ID 89 key instruct_joke: Final verdict is Loss.
+[2025-08-05 21:4622] ID 89 key instruct_leet_speak: Final verdict is Loss.
+[2025-08-05 21:4639] ID 89 key instruct_one_typo_punctuation: Final verdict is Loss.
+[2025-08-05 21:4656] ID 89 key instruct_output_markdown: Final verdict is Loss.
+[2025-08-05 21:4714] ID 89 key instruct_polite_request: Final verdict is Loss.
+[2025-08-05 21:4731] ID 89 key instruct_sardonic: Final verdict is Loss.
+[2025-08-05 21:4748] ID 100 key instruct_coord_to_subord: Final verdict is Loss.
+[2025-08-05 21:4806] ID 100 key instruct_double_negative: Final verdict is Loss.
+[2025-08-05 21:4824] ID 100 key instruct_dramatic: Final verdict is Loss.
+[2025-08-05 21:4841] ID 100 key instruct_formal_memo: Final verdict is Win.
+[2025-08-05 21:4858] ID 100 key instruct_future_tense: Final verdict is Loss.
+[2025-08-05 21:4915] ID 100 key instruct_joke: Final verdict is Loss.
+[2025-08-05 21:4933] ID 100 key instruct_leet_speak: Final verdict is Loss.
+[2025-08-05 21:4950] ID 100 key instruct_one_typo_punctuation: Final verdict is Loss.
+[2025-08-05 21:5007] ID 100 key instruct_output_markdown: Final verdict is Loss.
+[2025-08-05 21:5024] ID 100 key instruct_polite_request: Final verdict is Loss.
+[2025-08-05 21:5041] ID 100 key instruct_sardonic: Final verdict is Loss.
+[2025-08-05 21:5058] ID 103 key instruct_coord_to_subord: Final verdict is Loss.
+[2025-08-05 21:5116] ID 103 key instruct_double_negative: Final verdict is Tie.
+[2025-08-05 21:5132] ID 103 key instruct_dramatic: Final verdict is Loss.
+[2025-08-05 21:5150] ID 103 key instruct_formal_memo: Final verdict is Win.
+[2025-08-05 21:5207] ID 103 key instruct_future_tense: Final verdict is Loss.
+[2025-08-05 21:5225] ID 103 key instruct_joke: Final verdict is Loss.
+[2025-08-05 21:5242] ID 103 key instruct_leet_speak: Final verdict is Loss.
+[2025-08-05 21:5259] ID 103 key instruct_one_typo_punctuation: Final verdict is Loss.
+[2025-08-05 21:5316] ID 103 key instruct_output_markdown: Final verdict is Loss.
+[2025-08-05 21:5333] ID 103 key instruct_polite_request: Final verdict is Loss.
+[2025-08-05 21:5351] ID 103 key instruct_sardonic: Final verdict is Loss.
+[2025-08-05 21:5408] ID 125 key instruct_coord_to_subord: Final verdict is Loss.
+[2025-08-05 21:5425] ID 125 key instruct_double_negative: Final verdict is Loss.
+[2025-08-05 21:5442] ID 125 key instruct_dramatic: Final verdict is Loss.
+[2025-08-05 21:5500] ID 125 key instruct_formal_memo: Final verdict is Loss.
+[2025-08-05 21:5517] ID 125 key instruct_future_tense: Final verdict is Loss.
+[2025-08-05 21:5534] ID 125 key instruct_joke: Final verdict is Loss.
+[2025-08-05 21:5552] ID 125 key instruct_leet_speak: Final verdict is Loss.
+[2025-08-05 21:5609] ID 125 key instruct_one_typo_punctuation: Final verdict is Loss.
+[2025-08-05 21:5626] ID 125 key instruct_output_markdown: Final verdict is Loss.
+[2025-08-05 21:5643] ID 125 key instruct_polite_request: Final verdict is Loss.
+[2025-08-05 21:5701] ID 125 key instruct_sardonic: Final verdict is Loss.
+[2025-08-05 21:5718] ID 142 key instruct_coord_to_subord: Final verdict is Win.
+[2025-08-05 21:5735] ID 142 key instruct_double_negative: Final verdict is Tie.
+[2025-08-05 21:5753] ID 142 key instruct_dramatic: Final verdict is Win.
+[2025-08-05 21:5810] ID 142 key instruct_formal_memo: Final verdict is Win.
+[2025-08-05 21:5827] ID 142 key instruct_future_tense: Final verdict is Tie.
+[2025-08-05 21:5844] ID 142 key instruct_joke: Final verdict is Win.
+[2025-08-05 21:5901] ID 142 key instruct_leet_speak: Final verdict is Tie.
+[2025-08-05 21:5918] ID 142 key instruct_one_typo_punctuation: Final verdict is Tie.
+[2025-08-05 21:5936] ID 142 key instruct_output_markdown: Final verdict is Loss.
+[2025-08-05 21:5952] ID 142 key instruct_polite_request: Final verdict is Win.
+[2025-08-05 22:0010] ID 142 key instruct_sardonic: Final verdict is Win.
+[2025-08-05 22:0027] ID 159 key instruct_coord_to_subord: Final verdict is Tie.
+[2025-08-05 22:0031] API call limit reached -> aborting early
+[2025-08-05 22:0031] Finished. Writing final results to e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json
+[2025-08-05 22:0031] 
+--- Final Report (llm-judge) ---
+[2025-08-05 22:0031] 
+--- Overall Results ---
+[2025-08-05 22:0031] Total Comparisons: 203
+[2025-08-05 22:0031] Win Rate (Win + Tie): 44.83%
+[2025-08-05 22:0031]   - Wins (Paraphrase > Original): 41 (20.20%)
+[2025-08-05 22:0031]   - Ties (Paraphrase ≈ Original): 50 (24.63%)
+[2025-08-05 22:0031]   - Losses (Paraphrase < Original): 112 (55.17%)
+[2025-08-05 22:0031] 
+--- Win Rate by Paraphrase Type ---
+[2025-08-05 22:0031] - instruct_coord_to_subord      : 63.16%  (n=19)
+[2025-08-05 22:0031] - instruct_double_negative      : 44.44%  (n=18)
+[2025-08-05 22:0031] - instruct_dramatic             : 31.58%  (n=19)
+[2025-08-05 22:0031] - instruct_formal_memo          : 63.16%  (n=19)
+[2025-08-05 22:0031] - instruct_future_tense         : 38.89%  (n=18)
+[2025-08-05 22:0031] - instruct_joke                 : 31.58%  (n=19)
+[2025-08-05 22:0031] - instruct_leet_speak           : 15.79%  (n=19)
+[2025-08-05 22:0031] - instruct_one_typo_punctuation : 61.11%  (n=18)
+[2025-08-05 22:0031] - instruct_output_markdown      : 44.44%  (n=18)
+[2025-08-05 22:0031] - instruct_polite_request       : 50.00%  (n=18)
+[2025-08-05 22:0031] - instruct_sardonic             : 50.00%  (n=18)
