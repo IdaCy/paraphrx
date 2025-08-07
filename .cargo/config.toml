@@ -42,6 +42,7 @@ replace_equi_scores = "run --manifest-path e_eval/Cargo.toml --bin replace_equi_
 check_json = "run --manifest-path e_eval/Cargo.toml --bin check_json --release --"
 move_json_key = "run --manifest-path e_eval/Cargo.toml --bin move_json_key --release --"
 robust_alpaca_eval = "run --manifest-path e_eval/Cargo.toml --bin robust_alpaca_eval --release --"
+robust_alpaca_genbasline = "run --manifest-path e_eval/Cargo.toml --bin robust_alpaca_genbasline --release --"
 
 # f_finetune
 gemma_download = "run --manifest-path f_finetune/Cargo.toml --bin gemma_download --release --"
