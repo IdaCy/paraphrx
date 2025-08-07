@@ -38,9 +38,42 @@ cargo robust_alpaca_eval llm-judge \
     --output e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json \
     --judging-model gemini-2.0-flash \
     --delay-ms 4000 \
-    --api-call-max 250 \
+    --api-call-max 200 \
+    --api-key AIzaSyADcQC36VhgYzQUMAn6rhq1bN43vMaeK6Q \
     --num-judge-votes 3 \
-    >> logs/robalev2_$(date +%F_%T).log 2>&1 &
+    >> logs/robalev_$(date +%F_%T).log 2>&1 &
+
+from-scores:
+cargo robust_alpaca_eval from-scores \
+    --prompts a_data/alpaca/50k_phrxed.json \
+    --scores-original c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
+    --scores-paraphrased f_finetune/output_inf_ft_50k_scores/li9x_a1_notarg_inf.json \
+    --output e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf_from_scores.json \
+    --log-name SCORING_FROM_SCORES \
+    >> logs/robalev_from_scores_$(date +%F_%T).log 2>&1 &
+
+from-llm-scores:
+cargo robust_alpaca_eval from-llm-scores \
+    --verdicts e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json \
+    --log-name REPORTING_FROM_LLM_SCORES \
+    >> logs/robalev_from_llm_scores_$(date +%F_%T).log 2>&1 &
+
+operates in three modes:
+
+1. llm-judge:
+- Compares an answer from an original prompt against an answer from a paraphrased prompt using an LLM judge
+- Calculates a win/loss/tie verdict
+- Requires a GOOGLE_API_KEY 
+
+2. from-scores:
+- Compares pre-computed numerical scores for original and paraphrased answers
+- Determines win/loss/tie based on the difference in a specific score metric
+- No API calls needed
+
+3. from-llm-scores:
+- Reads a file of pre-computed verdicts (Win/Loss/Tie)
+- Runs only the final summary and reporting analysis
+- No API calls or comparisons needed
 */
 
 use anyhow::{anyhow, Context, Result};
@@ -124,6 +157,15 @@ struct ScoreRecord {
     scores: JsonMap<String, Value>,
 }
 
+// A record for a file that already contains Win/Loss/Tie verdicts
+#[derive(Debug, Deserialize, Clone)]
+struct VerdictRecord {
+    #[serde(alias = "prompt_count", deserialize_with = "de_prompt_count")]
+    prompt_count: u32,
+    #[serde(flatten)]
+    verdicts: JsonMap<String, Value>,
+}
+
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash, Clone, Copy)]
 enum Verdict {
     Win,
@@ -139,10 +181,15 @@ struct Cli {
     command: Commands,
 }
 
+// Added the FromLlmScores command variant
 #[derive(Subcommand, Debug)]
 enum Commands {
+    // Evaluate using an LLM as a judge
     LlmJudge(LlmJudgeArgs),
+    // Evaluate using pre-computed numerical scores
     FromScores(FromScoresArgs),
+    // Report results from a pre-computed verdict file
+    FromLlmScores(FromLlmScoresArgs),
 }
 
 #[derive(Parser, Debug)]
@@ -195,6 +242,21 @@ struct FromScoresArgs {
     include_types: Vec<String>,
 }
 
+// Arguments for from-llm-scores mode
+#[derive(Parser, Debug)]
+struct FromLlmScoresArgs {
+    // Path to the JSON file with pre-computed Win/Loss/Tie verdicts
+    #[arg(long="verdicts", value_name = "VERDICTS_FILE")]
+    verdicts: PathBuf,
+    // Log file name prefix
+    #[arg(long, default_value = "REPORTING_FROM_LLM_SCORES")]
+    log_name: String,
+    // Optionally, only report on these specific paraphrase types. Can be repeated
+    #[arg(long = "include-type", value_name = "TYPE_NAME")]
+    include_types: Vec<String>,
+}
+
+
 // File reading
 fn read_records<T: for<'de> Deserialize<'de>>(path: &Path, logger: &mut Logger) -> Result<Vec<T>> {
     let content = match fs::read_to_string(path) {
@@ -205,6 +267,9 @@ fn read_records<T: for<'de> Deserialize<'de>>(path: &Path, logger: &mut Logger) 
             return Err(anyhow!(msg));
         }
     };
+    if content.trim().is_empty() {
+        return Ok(Vec::new());
+    }
     match serde_json::from_str(&content) {
         Ok(r) => Ok(r),
         Err(e) => {
@@ -221,13 +286,63 @@ async fn main() -> Result<()> {
     let cli = Cli::parse();
     fs::create_dir_all("logs")?;
     
+    // Added match arm for the new command
     match cli.command {
         Commands::LlmJudge(args) => run_llm_judge(args).await,
         Commands::FromScores(args) => run_from_scores(args),
+        Commands::FromLlmScores(args) => run_from_llm_scores(args),
     }
 }
 
-// The main loop is now driven by the paraphrased scores file
+// The entire function for the from-llm-scores route
+fn run_from_llm_scores(args: FromLlmScoresArgs) -> Result<()> {
+    let ts = Local::now().format("%Y%m%d-%H%M%S");
+    let log_path = Path::new("logs").join(format!("{}_{}.log", args.log_name, ts));
+    let mut logger = Logger::new(&log_path)?;
+    logger.log("Run started (from-llm-scores mode)");
+    if !args.include_types.is_empty() {
+        logger.log(&format!("Filtering to only include types: {:?}", args.include_types));
+    }
+
+    let included_types: Option<HashSet<String>> = if !args.include_types.is_empty() {
+        Some(args.include_types.into_iter().collect())
+    } else {
+        None
+    };
+
+    logger.log(&format!("Reading pre-computed verdicts from: {}", args.verdicts.display()));
+    let verdict_records: Vec<VerdictRecord> = read_records(&args.verdicts, &mut logger)?;
+
+    // The print_summary_report function expects a specific HashMap structure
+    // - built from the input file
+    let mut results: HashMap<String, JsonMap<String, Value>> = HashMap::new();
+    for record in verdict_records {
+        let id_str = record.prompt_count.to_string();
+        let mut entry_map = JsonMap::new();
+        entry_map.insert("prompt_count".to_string(), json!(record.prompt_count));
+
+        for (key, value) in record.verdicts {
+            // Apply the include_type filter if it exists
+            if let Some(whitelist) = &included_types {
+                if whitelist.contains(&key) {
+                    entry_map.insert(key, value);
+                }
+            } else {
+                // Otherwise, add all keys
+                entry_map.insert(key, value);
+            }
+        }
+        results.insert(id_str, entry_map);
+    }
+
+    logger.log("\n--- Final Report (from pre-computed verdicts) ---");
+    print_summary_report(&results, &mut logger);
+
+    logger.log("Reporting complete.");
+    Ok(())
+}
+
+// main loop
 fn run_from_scores(args: FromScoresArgs) -> Result<()> {
     let ts = Local::now().format("%Y%m%d-%H%M%S");
     let log_path = Path::new("logs").join(format!("{}_{}.log", args.log_name, ts));
@@ -533,9 +648,22 @@ fn print_summary_report(results: &HashMap<String, JsonMap<String, Value>>, logge
     for item in results.values() {
         for (key, value) in item {
             if key == "prompt_count" { continue; }
-            if let Ok(verdict) = serde_json::from_value::<Verdict>(value.clone()) {
-                *overall_counts.entry(verdict).or_insert(0) += 1;
-                *by_type_counts.entry(key.clone()).or_default().entry(verdict).or_insert(0) += 1;
+            // Handle both string verdicts and serialized enum verdicts
+            let verdict_result: Result<Verdict, _> = serde_json::from_value(value.clone());
+            if let Ok(verdict) = verdict_result {
+                 *overall_counts.entry(verdict).or_insert(0) += 1;
+                 *by_type_counts.entry(key.clone()).or_default().entry(verdict).or_insert(0) += 1;
+            } else if let Some(s) = value.as_str() {
+                 let verdict = match s.to_lowercase().as_str() {
+                     "win" => Some(Verdict::Win),
+                     "loss" => Some(Verdict::Loss),
+                     "tie" => Some(Verdict::Tie),
+                     _ => None
+                 };
+                 if let Some(v) = verdict {
+                    *overall_counts.entry(v).or_insert(0) += 1;
+                    *by_type_counts.entry(key.clone()).or_default().entry(v).or_insert(0) += 1;
+                 }
             }
         }
     }
@@ -660,8 +788,8 @@ async fn query_gemini_for_judgment(
         .with_context(|| format!("Failed to parse the inner judge JSON content: {json_text}"))?;
     
     match judge_response.verdict.to_uppercase().as_str() {
-        "A" => Ok(Verdict::Loss), // Original answer (A) won, so the paraphrase (B) is a Loss
-        "B" => Ok(Verdict::Win),  // Paraphrased answer (B) won, so it's a Win
+        "A" => Ok(Verdict::Loss),
+        "B" => Ok(Verdict::Win),
         "TIE" => Ok(Verdict::Tie),
         _ => Err(anyhow!("Invalid verdict received from judge: {}", judge_response.verdict)),
     }
