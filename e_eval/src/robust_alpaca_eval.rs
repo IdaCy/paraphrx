@@ -39,7 +39,7 @@ cargo robust_alpaca_eval llm-judge \
     --judging-model gemini-2.0-flash \
     --delay-ms 4000 \
     --api-call-max 200 \
-    --api-key AIzaSyADcQC36VhgYzQUMAn6rhq1bN43vMaeK6Q \
+    --api-key xxx \
     --num-judge-votes 3 \
     >> logs/robalev_$(date +%F_%T).log 2>&1 &
 
