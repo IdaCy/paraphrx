@@ -70,7 +70,7 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, PeftModel
 
-# --- Global Configuration & Logger Setup ---
+# Global Configuration & Logger Setup
 os.environ.setdefault("TQDM_MININTERVAL", "60")
 os.environ.setdefault("TQDM_MINITER", "200")
 DEBUG_PROMPT_IDS = {1, 42, 321}
@@ -78,10 +78,9 @@ DEBUG_PROMPT_IDS = {1, 42, 321}
 # Suppress excessive warnings
 hf_logging.set_verbosity_warning()
 
-# <<< UTILITIES AND CLASSES MERGED FROM ORIGINAL SCRIPT (B) >>>
 @dataclasses.dataclass
 class Example:
-    """Lightweight container used before tokenisation."""
+    """Lightweight container used before tokenisation"""
     prompt_count: int
     instruction: str
     inp: str
@@ -89,7 +88,7 @@ class Example:
     style: str
 
 def build_chat_prompt(instruction: str, inp: str | None = "") -> str:
-    """Return a single-turn chat prompt in the format Gemma-2-IT was trained on."""
+    """Return a single-turn chat prompt in the format Gemma-2-IT was trained on"""
     user_msg = instruction if not inp else f"{instruction}\n\nInput:\n{inp}"
     messages = [{"role": "user", "content": user_msg}]
     return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
@@ -108,7 +107,7 @@ def tokenise_example(ex: Example):
     return {"input_ids": input_ids, "labels": labels}
 
 def three_way_split(ds: Dataset, *, val_pct: float = 0.05, test_pct: float = 0.05, seed: int = 42) -> Tuple[Dataset, Dataset, Dataset]:
-    """Group-wise split guaranteeing each prompt_count appears in one split."""
+    """Group-wise split guaranteeing each prompt_count appears in one split"""
     rng = np.random.default_rng(seed)
     pcs = list({ex["prompt_count"] for ex in ds})
     rng.shuffle(pcs)
@@ -136,7 +135,6 @@ def load_examples(paths: List[str], instruct_types: List[str], use_para_ans: boo
     random.shuffle(examples)
     return examples
 
-# <<< LAP LOGIC INJECTION >>>
 class LAPTtrainer(Trainer):
     def __init__(self, *args, **kwargs):
         self.lap_kwargs = kwargs.pop('lap_kwargs', {})
@@ -213,7 +211,7 @@ class LAPTtrainer(Trainer):
         else: self.accelerator.backward(loss)
         return loss.detach() / self.args.gradient_accumulation_steps
 
-# --- CLI & Main Execution Logic ---
+# CLI & Main Execution Logic
 def make_arg_parser():
     p = argparse.ArgumentParser(description="Fine-tuning with optional Latent Adversarial Paraphrasing")
     p.add_argument("--data_paths", nargs="+", required=True); p.add_argument("--model_path", default="f_finetune/model"); p.add_argument("--output_dir", required=True); p.add_argument("--run_name", default="gemma_paraphrx"); p.add_argument("--instruct_types", nargs="+", default=[]); p.add_argument("--use_paraphrase_answer", action="store_true"); p.add_argument("--val_pct", type=float, default=0.05); p.add_argument("--test_pct", type=float, default=0.05); p.add_argument("--batch_size", type=int, default=4); p.add_argument("--gradient_accumulation_steps", type=int, default=4); p.add_argument("--num_epochs", type=int, default=3); p.add_argument("--learning_rate", type=float, default=3e-5); p.add_argument("--warmup_ratio", type=float, default=0.03); p.add_argument("--lr_scheduler_type", default="cosine"); p.add_argument("--weight_decay", type=float, default=0.0); p.add_argument("--lora_rank", type=int, default=16); p.add_argument("--lora_alpha", type=int, default=32); p.add_argument("--lora_dropout", type=float, default=0.05); p.add_argument("--target_modules", default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"); p.add_argument("--use_deepspeed", action="store_true"); p.add_argument("--deepspeed_config", default="ds_zero2.json"); p.add_argument("--bnb_8bit_optim", action="store_true"); p.add_argument("--bf16", action="store_true"); p.add_argument("--eval_steps", type=int, default=800); p.add_argument("--save_steps", type=int, default=800); p.add_argument("--logging_steps", type=int, default=100); p.add_argument("--seed", type=int, default=42); p.add_argument("--wandb_project", default="paraphrx_ft_50k"); p.add_argument("--early_stopping_patience", type=int, default=9); p.add_argument("--use_lap", action="store_true"); p.add_argument("--lap_layer", type=int, default=10); p.add_argument("--lap_t_inner", type=int, default=5); p.add_argument("--lap_p_sample", type=float, default=0.5); p.add_argument("--lap_epsilon", type=float, default=0.05); p.add_argument("--lap_delta_lr", type=float, default=1e-2); p.add_argument("--lap_lambda_lr", type=float, default=1e-3); p.add_argument("--debug_n_samples", type=int, default=0); p.add_argument("--debug_seed", type=int, default=123);
@@ -272,8 +270,6 @@ def main(argv=None):
     train_raw, val_raw, test_raw = three_way_split(raw_ds, val_pct=args.val_pct, test_pct=args.test_pct, seed=args.seed)
     
     def batch_tokenise(batch):
-        # This is the corrected function. The list comprehension to create
-        # batch_data must come before the return statement that uses it.
         batch_data = [tokenise_example(Example(pc, ins, inp, ans, sty)) for pc, ins, inp, ans, sty in zip(batch["prompt_count"], batch["instruction"], batch["inp"], batch["answer"], batch["style"])]
         return {"input_ids": [d["input_ids"] for d in batch_data], "labels": [d["labels"] for d in batch_data]}
 
