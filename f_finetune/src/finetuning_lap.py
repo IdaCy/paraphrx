@@ -30,12 +30,6 @@ srun python finetuning_lap_final.py \
   --lap_t_inner 5 \
   --run_name gemma2b_lap_safe \
   --output_dir f_finetune/runs/gemma2b_lap_safe
-
-
-Complete fine-tuning script with optional Latent Adversarial Paraphrasing (LAP),
-merged from the original working script and the corrected LAP logic.
-
-This version corrects all previous errors, including the final KeyError.
 """
 from __future__ import annotations
 
@@ -95,15 +89,39 @@ def build_chat_prompt(instruction: str, inp: str | None = "") -> str:
 
 def tokenise_example(ex: Example):
     """
-    Correctly tokenizes an example, masking the prompt part of the labels with -100.
-    This is the CRITICAL logic from your original script (B).
+    Correctly tokenizes an example, masking the prompt part of the labels with -100
+    Enforces a total maximum sequence length to prevent OOM errors and logs when truncation occurs
     """
+    MAX_TOTAL_LENGTH = 1024
+
     prompt_txt = build_chat_prompt(ex.instruction, ex.inp)
-    prompt_ids = tokenizer(prompt_txt, add_special_tokens=False)["input_ids"]
-    answer_ids = tokenizer(ex.answer, add_special_tokens=False, truncation=True, max_length=1024)["input_ids"]
-    answer_ids.append(tokenizer.eos_token_id)
-    input_ids = prompt_ids + answer_ids
-    labels = [-100] * len(prompt_ids) + answer_ids
+    prompt_ids_untruncated = tokenizer(prompt_txt, add_special_tokens=False)["input_ids"]
+    answer_ids_untruncated = tokenizer(ex.answer, add_special_tokens=False)["input_ids"]
+    original_total_length = len(prompt_ids_untruncated) + len(answer_ids_untruncated) + 1
+
+    full_tokenized = tokenizer(
+        prompt_txt + ex.answer + tokenizer.eos_token,
+        truncation=True,
+        max_length=MAX_TOTAL_LENGTH,
+        add_special_tokens=False
+    )
+    input_ids = full_tokenized["input_ids"]
+
+    if original_total_length > MAX_TOTAL_LENGTH:
+        logging.warning(
+            f"Sequence truncated for prompt_count {ex.prompt_count}. "
+            f"Original length ({original_total_length}) > MAX_TOTAL_LENGTH ({MAX_TOTAL_LENGTH}). "
+            f"Truncated to {len(input_ids)} tokens."
+        )
+
+    prompt_len_in_sequence = len(prompt_ids_untruncated)
+    if prompt_len_in_sequence >= len(input_ids):
+        prompt_len_in_sequence = len(input_ids)
+
+    labels = [-100] * prompt_len_in_sequence + input_ids[prompt_len_in_sequence:]
+    if len(labels) != len(input_ids):
+       return {"input_ids": input_ids, "labels": [-100] * len(input_ids)}
+
     return {"input_ids": input_ids, "labels": labels}
 
 def three_way_split(ds: Dataset, *, val_pct: float = 0.05, test_pct: float = 0.05, seed: int = 42) -> Tuple[Dataset, Dataset, Dataset]:
@@ -121,18 +139,23 @@ def three_way_split(ds: Dataset, *, val_pct: float = 0.05, test_pct: float = 0.0
     return train, val, test
 
 def load_examples(paths: List[str], instruct_types: List[str], use_para_ans: bool) -> List[Example]:
+    """Loads and parses the prompt data from JSON files"""
     examples: List[Example] = []
     for p in paths:
         logging.info(f"Loading {p}")
         with open(p, "r", encoding="utf-8") as fh: data = json.load(fh)
         for item in data:
-            pc_id, base_ans, inp = item["prompt_count"], item.get("output", ""), item.get("input", "")
-            examples.append(Example(pc_id, item["instruction_original"], inp, base_ans, "instruction_original"))
-            keys = instruct_types or [k for k in item if k.startswith("instruct_")]
-            for k in keys:
-                if k in item and item[k]:
+            pc_id = item["prompt_count"]
+            base_ans = item.get("output", "")
+            inp = item.get("input", "")
+            if "instruction_original" in item:
+                examples.append(Example(pc_id, item["instruction_original"], inp, base_ans, "instruction_original"))
+            keys_to_process = instruct_types or [k for k in item if k.startswith("instruct_")]
+            for k in keys_to_process:
+                if k in item and item[k] and k != "instruction_original":
                     examples.append(Example(pc_id, item[k], inp, base_ans, k))
     random.shuffle(examples)
+    logging.info(f"Loaded a total of {len(examples)} examples.")
     return examples
 
 class LAPTtrainer(Trainer):
@@ -140,81 +163,83 @@ class LAPTtrainer(Trainer):
         self.lap_kwargs = kwargs.pop('lap_kwargs', {})
         super().__init__(*args, **kwargs)
         if self.lap_kwargs.get('use_lap', False):
-            logging.info(f"LAP Trainer initialized: {json.dumps(self.lap_kwargs, indent=2)}")
-
-    def _forward_with_perturbation(self, model: torch.nn.Module, inputs: Dict[str, Any], delta: torch.Tensor, layer_idx: int) -> Dict[str, torch.Tensor]:
-        causal_lm_model = model.model if isinstance(model, PeftModel) else model
-        base_transformer_model = causal_lm_model.model
-        input_ids = inputs["input_ids"]
-        attention_mask = inputs.get("attention_mask")
-        batch_size, seq_length = input_ids.shape
-        position_ids = torch.arange(0, seq_length, dtype=torch.long, device=input_ids.device).unsqueeze(0)
-        
-        if attention_mask is not None and hasattr(base_transformer_model, "_prepare_4d_causal_attention_mask"):
-            attention_mask = base_transformer_model._prepare_4d_causal_attention_mask(attention_mask, (batch_size, seq_length), 0)
-
-        hidden_states = base_transformer_model.embed_tokens(input_ids)
-        for i in range(layer_idx):
-            hidden_states, _, _ = base_transformer_model.layers[i](hidden_states, attention_mask=attention_mask, position_ids=position_ids, use_cache=False)
-        hidden_states = hidden_states + delta
-        for i in range(layer_idx, len(base_transformer_model.layers)):
-            hidden_states, _, _ = base_transformer_model.layers[i](hidden_states, attention_mask=attention_mask, position_ids=position_ids, use_cache=False)
-        
-        hidden_states = base_transformer_model.norm(hidden_states)
-        logits = causal_lm_model.lm_head(hidden_states)
-        loss = None
-        if 'labels' in inputs:
-            loss_fct = torch.nn.CrossEntropyLoss()
-            logits_for_loss = logits[..., :-1, :].contiguous()
-            labels = inputs['labels'][..., 1:].contiguous()
-            loss = loss_fct(logits_for_loss.view(-1, model.config.vocab_size), labels.view(-1))
-        return {"loss": loss, "logits": logits}
+            logging.info(f"LAP Trainer initialized with robust hook-based method: {json.dumps(self.lap_kwargs, indent=2)}")
 
     def training_step(self, model: torch.nn.Module, inputs: Dict[str, torch.Tensor]) -> torch.Tensor:
         use_lap = self.lap_kwargs.get('use_lap', False) and random.random() < self.lap_kwargs.get('lap_p_sample', 0.5)
         if not use_lap:
-            return super().training_step(model, inputs)
+            return self.compute_loss(model, inputs)
 
         model.eval()
         t_inner = self.lap_kwargs['lap_t_inner']
-        epsilon, delta_lr, lambda_lr = self.lap_kwargs['lap_epsilon'], self.lap_kwargs['lap_delta_lr'], self.lap_kwargs['lap_lambda_lr']
+        epsilon = self.lap_kwargs['lap_epsilon']
+        delta_lr = self.lap_kwargs['lap_delta_lr']
+        lambda_lr = self.lap_kwargs['lap_lambda_lr']
         layer_idx = self.lap_kwargs['lap_layer']
         inputs = self._prepare_inputs(inputs)
+
         try:
             with torch.no_grad():
                 outputs_orig = model(**inputs, output_hidden_states=True)
                 J0 = outputs_orig.loss.detach()
-                hidden_states_l = outputs_orig.hidden_states[layer_idx].detach()
-            delta = torch.zeros_like(hidden_states_l, requires_grad=True)
+                hidden_states_l_shape = outputs_orig.hidden_states[layer_idx].shape
+                hidden_states_l_device = outputs_orig.hidden_states[layer_idx].device
+            
+            del outputs_orig
+            torch.cuda.empty_cache()
+
+            delta = torch.zeros(hidden_states_l_shape, device=hidden_states_l_device, requires_grad=True)
             delta_optimizer = torch.optim.SGD([delta], lr=delta_lr)
             log_lambda = torch.tensor(0.0, device=model.device, requires_grad=True)
-            lambda_optimizer = torch.optim.SGD([log_lambda], lr=-lambda_lr)
+            lambda_optimizer = torch.optim.SGD([log_lambda], lr=lambda_lr)
+
+            layer_list = model.model.model.layers
+            target_layer = layer_list[layer_idx]
+
             for _ in range(t_inner):
                 delta_optimizer.zero_grad()
-                J_delta = self._forward_with_perturbation(model, inputs, delta, layer_idx)['loss']
+                def add_delta_hook(module, p_inputs):
+                    return (p_inputs[0] + delta,) + p_inputs[1:]
+                hook_handle = target_layer.register_forward_pre_hook(add_delta_hook)
+                J_delta = model(**inputs).loss
+                hook_handle.remove()
                 lagrangian_for_delta = -torch.norm(delta, p=2) + torch.exp(log_lambda).detach() * (J_delta - J0 - epsilon)
                 (-lagrangian_for_delta).backward()
                 delta_optimizer.step()
+                delta.grad.zero_()
+
                 lambda_optimizer.zero_grad()
-                J_delta_updated = self._forward_with_perturbation(model, inputs, delta.detach(), layer_idx)['loss']
+                def add_updated_delta_hook(module, p_inputs):
+                    return (p_inputs[0] + delta.detach(),) + p_inputs[1:]
+                hook_handle = target_layer.register_forward_pre_hook(add_updated_delta_hook)
+                J_delta_updated = model(**inputs).loss
+                hook_handle.remove()
                 lagrangian_for_lambda = torch.exp(log_lambda) * (J_delta_updated - J0 - epsilon)
                 lagrangian_for_lambda.backward()
                 lambda_optimizer.step()
+                
+                del J_delta, J_delta_updated, lagrangian_for_delta, lagrangian_for_lambda
+                torch.cuda.empty_cache()
+
             final_delta = delta.detach()
+
         except Exception as e:
             logging.error(f"Error in LAP inner loop: {e}", exc_info=True)
-            return super().training_step(model, inputs)
-            
-        model.train()
-        loss = self._forward_with_perturbation(model, inputs, final_delta, layer_idx)['loss']
-        if self.do_grad_scaling: self.scaler.scale(loss).backward()
-        else: self.accelerator.backward(loss)
-        return loss.detach() / self.args.gradient_accumulation_steps
+            model.train()
+            return self.compute_loss(model, inputs)
 
-# CLI & Main Execution Logic
+        model.train()
+        def add_final_delta_hook(module, p_inputs):
+            return (p_inputs[0] + final_delta,) + p_inputs[1:]
+        hook_handle = target_layer.register_forward_pre_hook(add_final_delta_hook)
+        loss = model(**inputs).loss
+        hook_handle.remove()
+        return loss
+
 def make_arg_parser():
     p = argparse.ArgumentParser(description="Fine-tuning with optional Latent Adversarial Paraphrasing")
-    p.add_argument("--data_paths", nargs="+", required=True); p.add_argument("--model_path", default="f_finetune/model"); p.add_argument("--output_dir", required=True); p.add_argument("--run_name", default="gemma_paraphrx"); p.add_argument("--instruct_types", nargs="+", default=[]); p.add_argument("--use_paraphrase_answer", action="store_true"); p.add_argument("--val_pct", type=float, default=0.05); p.add_argument("--test_pct", type=float, default=0.05); p.add_argument("--batch_size", type=int, default=4); p.add_argument("--gradient_accumulation_steps", type=int, default=4); p.add_argument("--num_epochs", type=int, default=3); p.add_argument("--learning_rate", type=float, default=3e-5); p.add_argument("--warmup_ratio", type=float, default=0.03); p.add_argument("--lr_scheduler_type", default="cosine"); p.add_argument("--weight_decay", type=float, default=0.0); p.add_argument("--lora_rank", type=int, default=16); p.add_argument("--lora_alpha", type=int, default=32); p.add_argument("--lora_dropout", type=float, default=0.05); p.add_argument("--target_modules", default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"); p.add_argument("--use_deepspeed", action="store_true"); p.add_argument("--deepspeed_config", default="ds_zero2.json"); p.add_argument("--bnb_8bit_optim", action="store_true"); p.add_argument("--bf16", action="store_true"); p.add_argument("--eval_steps", type=int, default=800); p.add_argument("--save_steps", type=int, default=800); p.add_argument("--logging_steps", type=int, default=100); p.add_argument("--seed", type=int, default=42); p.add_argument("--wandb_project", default="paraphrx_ft_50k"); p.add_argument("--early_stopping_patience", type=int, default=9); p.add_argument("--use_lap", action="store_true"); p.add_argument("--lap_layer", type=int, default=10); p.add_argument("--lap_t_inner", type=int, default=5); p.add_argument("--lap_p_sample", type=float, default=0.5); p.add_argument("--lap_epsilon", type=float, default=0.05); p.add_argument("--lap_delta_lr", type=float, default=1e-2); p.add_argument("--lap_lambda_lr", type=float, default=1e-3); p.add_argument("--debug_n_samples", type=int, default=0); p.add_argument("--debug_seed", type=int, default=123);
+    p.add_argument("--data_paths", nargs="+", required=True);
+    p.add_argument("--model_path", default="f_finetune/model"); p.add_argument("--output_dir", required=True); p.add_argument("--run_name", default="gemma_paraphrx"); p.add_argument("--instruct_types", nargs="+", default=[]); p.add_argument("--use_paraphrase_answer", action="store_true"); p.add_argument("--val_pct", type=float, default=0.05); p.add_argument("--test_pct", type=float, default=0.05); p.add_argument("--batch_size", type=int, default=4); p.add_argument("--gradient_accumulation_steps", type=int, default=4); p.add_argument("--num_epochs", type=int, default=3); p.add_argument("--learning_rate", type=float, default=3e-5); p.add_argument("--warmup_ratio", type=float, default=0.03); p.add_argument("--lr_scheduler_type", default="cosine"); p.add_argument("--weight_decay", type=float, default=0.0); p.add_argument("--lora_rank", type=int, default=16); p.add_argument("--lora_alpha", type=int, default=32); p.add_argument("--lora_dropout", type=float, default=0.05); p.add_argument("--target_modules", default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"); p.add_argument("--use_deepspeed", action="store_true"); p.add_argument("--deepspeed_config", default="ds_zero2.json"); p.add_argument("--bnb_8bit_optim", action="store_true"); p.add_argument("--bf16", action="store_true"); p.add_argument("--eval_steps", type=int, default=800); p.add_argument("--save_steps", type=int, default=800); p.add_argument("--logging_steps", type=int, default=100); p.add_argument("--seed", type=int, default=42); p.add_argument("--wandb_project", default="paraphrx_ft_50k"); p.add_argument("--early_stopping_patience", type=int, default=9); p.add_argument("--use_lap", action="store_true"); p.add_argument("--lap_layer", type=int, default=10); p.add_argument("--lap_t_inner", type=int, default=5); p.add_argument("--lap_p_sample", type=float, default=0.5); p.add_argument("--lap_epsilon", type=float, default=0.05); p.add_argument("--lap_delta_lr", type=float, default=1e-2); p.add_argument("--lap_lambda_lr", type=float, default=1e-3); p.add_argument("--debug_n_samples", type=int, default=0); p.add_argument("--debug_seed", type=int, default=123);
     return p
 
 def summarise_training(trainer: Trainer, out_dir: Path):
@@ -242,8 +267,15 @@ def main(argv=None):
     args = make_arg_parser().parse_args(argv)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        handlers=[
+            logging.FileHandler(output_dir / "run.log"),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
     run = wandb.init(project=args.wandb_project, name=args.run_name, config=vars(args))
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s", handlers=[logging.FileHandler(output_dir / "run.log"), logging.StreamHandler(sys.stdout)])
     logging.info(f"Starting run {args.run_name} -> {args.output_dir}")
     logging.info(f"Args: {json.dumps(vars(args), indent=2)}")
 
@@ -253,15 +285,22 @@ def main(argv=None):
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
     tokenizer.pad_token = tokenizer.eos_token
 
-    full_ft = not args.target_modules or args.target_modules.lower() in {"all", "none"}
-    if full_ft: model = AutoModelForCausalLM.from_pretrained(args.model_path, device_map="auto", torch_dtype=torch.bfloat16 if args.bf16 else torch.float16)
-    else:
-        bnb_cfg = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True, bnb_4bit_compute_dtype=torch.bfloat16)
-        model = AutoModelForCausalLM.from_pretrained(args.model_path, device_map="auto", quantization_config=bnb_cfg)
-        model = prepare_model_for_kbit_training(model)
-        lcfg = LoraConfig(r=args.lora_rank, lora_alpha=args.lora_alpha, target_modules=args.target_modules.split(","), lora_dropout=args.lora_dropout, bias="none", task_type="CAUSAL_LM")
-        model = get_peft_model(model, lcfg)
-        logging.info(f"LoRA on modules: {args.target_modules.split(',')}")
+    model = AutoModelForCausalLM.from_pretrained(
+        args.model_path,
+        device_map="auto",
+        quantization_config=BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True, bnb_4bit_compute_dtype=torch.bfloat16)
+    )
+    model = prepare_model_for_kbit_training(model)
+    lcfg = LoraConfig(
+        r=args.lora_rank,
+        lora_alpha=args.lora_alpha,
+        target_modules=args.target_modules.split(","),
+        lora_dropout=args.lora_dropout,
+        bias="none",
+        task_type="CAUSAL_LM"
+    )
+    model = get_peft_model(model, lcfg)
+    logging.info(f"LoRA on modules: {args.target_modules.split(',')}")
     
     model.gradient_checkpointing_enable(); model.config.use_cache = False
 
@@ -270,13 +309,50 @@ def main(argv=None):
     train_raw, val_raw, test_raw = three_way_split(raw_ds, val_pct=args.val_pct, test_pct=args.test_pct, seed=args.seed)
     
     def batch_tokenise(batch):
-        batch_data = [tokenise_example(Example(pc, ins, inp, ans, sty)) for pc, ins, inp, ans, sty in zip(batch["prompt_count"], batch["instruction"], batch["inp"], batch["answer"], batch["style"])]
-        return {"input_ids": [d["input_ids"] for d in batch_data], "labels": [d["labels"] for d in batch_data]}
-
+        processed_batch = defaultdict(list)
+        for i in range(len(batch["prompt_count"])):
+            ex = Example(
+                prompt_count=batch["prompt_count"][i],
+                instruction=batch["instruction"][i],
+                inp=batch["inp"][i],
+                answer=batch["answer"][i],
+                style=batch["style"][i],
+            )
+            tokenized = tokenise_example(ex)
+            processed_batch["input_ids"].append(tokenized["input_ids"])
+            processed_batch["labels"].append(tokenized["labels"])
+        return processed_batch
+    
+    logging.info("Starting data tokenization... This may take a few minutes with multiprocessing disabled.")
     train_ds = train_raw.map(batch_tokenise, batched=True, remove_columns=train_raw.column_names)
     val_ds = val_raw.map(batch_tokenise, batched=True, remove_columns=val_raw.column_names)
-    
-    targs = TrainingArguments(output_dir=args.output_dir, run_name=args.run_name, num_train_epochs=args.num_epochs, optim=("adamw_bnb_8bit" if args.bnb_8bit_optim else "adamw_torch"), bf16=args.bf16, per_device_train_batch_size=args.batch_size, gradient_accumulation_steps=args.gradient_accumulation_steps, evaluation_strategy="steps", eval_steps=args.eval_steps, save_strategy="steps", save_steps=args.save_steps, save_total_limit=1, load_best_model_at_end=True, metric_for_best_model="eval_loss", greater_is_better=False, learning_rate=args.learning_rate, weight_decay=args.weight_decay, lr_scheduler_type=args.lr_scheduler_type, warmup_ratio=args.warmup_ratio, logging_steps=args.logging_steps, report_to=['wandb'], seed=args.seed)
+    logging.info("Data tokenization complete.")
+
+    targs = TrainingArguments(
+        output_dir=str(output_dir),
+        run_name=args.run_name,
+        num_train_epochs=args.num_epochs,
+        optim=("adamw_bnb_8bit" if args.bnb_8bit_optim else "adamw_torch"),
+        bf16=args.bf16,
+        per_device_train_batch_size=args.batch_size,
+        gradient_accumulation_steps=args.gradient_accumulation_steps,
+        evaluation_strategy="steps",
+        eval_strategy="steps",
+        eval_steps=args.eval_steps,
+        save_strategy="steps",
+        save_steps=args.save_steps,
+        save_total_limit=1,
+        load_best_model_at_end=True,
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
+        learning_rate=args.learning_rate,
+        weight_decay=args.weight_decay,
+        lr_scheduler_type=args.lr_scheduler_type,
+        warmup_ratio=args.warmup_ratio,
+        logging_steps=args.logging_steps,
+        report_to=['wandb'],
+        seed=args.seed
+    )
     
     class StepDigest(TrainerCallback):
         def on_log(self, args, state, control, logs=None, **kwargs):
@@ -287,10 +363,18 @@ def main(argv=None):
     lap_kwargs['use_lap'] = args.use_lap
 
     trainer_class = LAPTtrainer if args.use_lap else Trainer
-    trainer = trainer_class(model=model, args=targs, train_dataset=train_ds, eval_dataset=val_ds, data_collator=DataCollatorForSeq2Seq(tokenizer, model=model, label_pad_token_id=-100, pad_to_multiple_of=8), callbacks=[StepDigest(), EarlyStoppingCallback(early_stopping_patience=args.early_stopping_patience)], lap_kwargs=lap_kwargs)
+    trainer = trainer_class(
+        model=model,
+        args=targs,
+        train_dataset=train_ds,
+        eval_dataset=val_ds,
+        data_collator=DataCollatorForSeq2Seq(tokenizer, model=model, label_pad_token_id=-100, pad_to_multiple_of=8),
+        callbacks=[StepDigest(), EarlyStoppingCallback(early_stopping_patience=args.early_stopping_patience)]
+    )
     
     trainer.train()
-    trainer.save_model(output_dir / 'final'); tokenizer.save_pretrained(output_dir / 'final')
+    trainer.save_model(str(output_dir / 'final'))
+    tokenizer.save_pretrained(str(output_dir / 'final'))
     summarise_training(trainer, output_dir)
     if run: run.finish()
 
