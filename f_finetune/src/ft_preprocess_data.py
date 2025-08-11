@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+"""
+preprocessing the data for the finetuning with LAP
+- compatible with latest version of ft_lap_optim_continue
+(continue was for allowing to go on with stopped checkpoints)
+"""
 import argparse
 import dataclasses
 import json
@@ -5,12 +11,15 @@ import logging
 import os
 import random
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from datasets import Dataset, DatasetDict
 from transformers import AutoTokenizer
 
-# Data Structures and Utilities
+# Global variables
+tokenizer = None
+
+# Data Structures and utilities
 @dataclasses.dataclass
 class Example:
     prompt_count: int
@@ -19,10 +28,14 @@ class Example:
     answer: str
     style: str
 
-def build_chat_prompt(instruction: str, inp: str | None = "") -> str:
+# using Union[str, None] instead of `str | None`
+# - syntax is understood by Python 3.9 and older
+def build_chat_prompt(instruction: str, inp: Union[str, None] = "") -> str:
     user_msg = instruction if not inp else f"{instruction}\n\nInput:\n{inp}"
     messages = [{"role": "user", "content": user_msg}]
-    return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    if tokenizer:
+        return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    return f"<start_of_turn>user\n{user_msg}<end_of_turn>\n<start_of_turn>model\n"
 
 def load_examples(paths: List[str], instruct_types: List[str]) -> List[Example]:
     examples = []
@@ -80,7 +93,6 @@ def main():
     
     tokenized_ds = raw_ds.map(tokenise_example, remove_columns=raw_ds.column_names, num_proc=num_workers, desc="Tokenizing dataset")
     
-    # Filter out any empty examples that might result from errors
     tokenized_ds = tokenized_ds.filter(lambda example: len(example['input_ids']) > 0)
     
     logging.info(f"Tokenization complete. Final dataset size: {len(tokenized_ds)}")
