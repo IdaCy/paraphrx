@@ -18,7 +18,7 @@ operates in two modes:
   --output results/eval_regime1_vs_original_from_scores.json
 
 TEST:
-cargo robust_alpaca_eval llm-judge \
+cargo robust_alpaca_eval_twomodes llm-judge \
     --prompts b_tests/robust_alpaca/prompts.json \
     --answers-original b_tests/robust_alpaca/answers_gemmaplain.json \
     --answers-paraphrased b_tests/robust_alpaca/answers_li9x_a1_notarg.json \
@@ -31,7 +31,7 @@ cargo robust_alpaca_eval llm-judge \
     >> logs/robalev2_$(date +%F_%T).log 2>&1 &
 
 running:
-cargo robust_alpaca_eval llm-judge \
+cargo robust_alpaca_eval_twomodes llm-judge \
     --prompts a_data/alpaca/50k_phrxed.json \
     --answers-original c_assess_inf/output50k/answers.json \
     --answers-paraphrased f_finetune/output_inf_ft_50k/li9x_a1_notarg_inf.json \
@@ -44,7 +44,7 @@ cargo robust_alpaca_eval llm-judge \
     >> logs/robalev_$(date +%F_%T).log 2>&1 &
 
 from-scores:
-cargo robust_alpaca_eval from-scores \
+cargo robust_alpaca_eval_twomodes from-scores \
     --prompts a_data/alpaca/50k_phrxed.json \
     --scores-original c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
     --scores-paraphrased f_finetune/output_inf_ft_50k_scores/li9x_a1_notarg_inf.json \
@@ -237,7 +237,7 @@ async fn main() -> Result<()> {
     }
 }
 
-// The main loop is now driven by the paraphrased scores file
+// main loop driven by the paraphrased scores file
 fn run_from_scores(args: FromScoresArgs) -> Result<()> {
     let ts = Local::now().format("%Y%m%d-%H%M%S");
     let log_path = Path::new("logs").join(format!("{}_{}.log", args.log_name, ts));

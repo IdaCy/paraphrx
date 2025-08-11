@@ -6,12 +6,13 @@ set key either with the flag or as an environment variable: export OPENAI_API_KE
 
 cargo robust_alpaca_genbasline \
     --prompts a_data/alpaca/50k_phrxed.json \
+    --whitelist e_eval/output_robust_alpaca_eval/li9k_a1_notarg_whitelist.json \
     --output c_assess_inf/output50k/gpt4_answers_1440.json \
     --model gpt-4o \
-    --api-key "sk-proj-T-xxx-xxx" \
-    --log-name "GPT4_Baseline_Gen_1440" \
-    --api-call-max 1440 \
-    >> logs/robalev_gpt4_gen_1440_$(date +%F_%T).log 2>&1 &
+    --api-key "xxxxxxxxxxxxxx" \
+    --log-name "GPT4_Baseline_Gen_1548whitelist" \
+    --api-call-max 1548 \
+    >> logs/robalev_gpt4_gen_1548whitelist_$(date +%F_%T).log 2>&1 &
 */
 
 use anyhow::{anyhow, Context, Result};
@@ -81,13 +82,13 @@ struct PromptRecord {
 #[derive(Parser, Debug)]
 #[command(version, about = "Generates LLM answers for all paraphrases in a prompt file using the OpenAI API.")]
 struct Cli {
-    // Path to the JSON file containing prompts and their paraphrases
     #[arg(long)]
     prompts: PathBuf,
-    // Path to write the output JSON file with generated answers
     #[arg(long)]
     output: PathBuf,
-    // The OpenAI model to use for generation (e.g., gpt-4o, gpt-4-turbo, gpt-3.5-turbo)
+    // Path to an optional JSON file containing a list of prompt_count IDs to process
+    #[arg(long)]
+    whitelist: Option<PathBuf>,
     #[arg(long, default_value = "gpt-4o")]
     model: String,
     // OpenAI API key- Can also be set via the OPENAI_API_KEY environment variable
@@ -96,7 +97,6 @@ struct Cli {
     // A name for the run, used in the log file name
     #[arg(long, default_value = "AnswerGen")]
     log_name: String,
-    // System prompt to guide the model's behavior
     #[arg(long, default_value = "You are a helpful assistant. Provide a direct and concise answer to the user's request.")]
     system_prompt: String,
     // Maximum number of API call attempts for each prompt
@@ -105,7 +105,6 @@ struct Cli {
     // Delay in milliseconds between API calls
     #[arg(long, default_value_t = 200)]
     delay_ms: u64,
-    // Stop after this many API calls
     #[arg(long, default_value_t = 10_000)]
     api_call_max: u32,
 }
@@ -122,8 +121,40 @@ async fn main() -> Result<()> {
     let api_key = cli.api_key.or_else(|| std::env::var("OPENAI_API_KEY").ok())
         .context("Provide --api-key or set OPENAI_API_KEY environment variable")?;
 
+    let whitelist_set: Option<HashSet<String>> = if let Some(path) = &cli.whitelist {
+        logger.log(&format!("Reading whitelist from: {}", path.display()));
+        let json_values: Vec<Value> = read_records(path, &mut logger)
+            .context("Failed to read or parse whitelist file")?;
+        let ids: HashSet<String> = json_values.into_iter().filter_map(|v| match v {
+            Value::Number(n) => n.as_u64().map(|i| i.to_string()),
+            Value::String(s) => Some(s),
+            _ => {
+                logger.log(&format!("[WARN] Ignoring non-string/non-number value in whitelist: {:?}", v));
+                None
+            }
+        }).collect();
+        if ids.is_empty() {
+             logger.log("[WARN] Whitelist was provided but resulted in an empty set of IDs.");
+        }
+        Some(ids)
+    } else {
+        None
+    };
+
     logger.log(&format!("Reading prompts from: {}", cli.prompts.display()));
-    let prompt_records: Vec<PromptRecord> = read_records(&cli.prompts, &mut logger)?;
+    let all_prompt_records: Vec<PromptRecord> = read_records(&cli.prompts, &mut logger)?;
+
+    let prompt_records = if let Some(set) = whitelist_set {
+        let original_count = all_prompt_records.len();
+        let filtered: Vec<PromptRecord> = all_prompt_records
+            .into_iter()
+            .filter(|rec| set.contains(&rec.prompt_count.to_string()))
+            .collect();
+        logger.log(&format!("Whitelist applied: {} of {} records selected for processing.", filtered.len(), original_count));
+        filtered
+    } else {
+        all_prompt_records
+    };
 
     let mut answers: HashMap<String, JsonMap<String, Value>> = load_existing_answers(&cli.output, &mut logger)?;
     

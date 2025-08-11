@@ -33,15 +33,15 @@ cargo robust_alpaca_eval llm-judge \
 running:
 cargo robust_alpaca_eval llm-judge \
     --prompts a_data/alpaca/50k_phrxed.json \
-    --answers-original c_assess_inf/output50k/answers.json \
+    --answers-original c_assess_inf/output50k/gpt4_answers_1440.json \
     --answers-paraphrased f_finetune/output_inf_ft_50k/li9x_a1_notarg_inf.json \
-    --output e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json \
+    --output e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf_against_gpt4.json \
     --judging-model gemini-2.0-flash \
     --delay-ms 4000 \
     --api-call-max 200 \
-    --api-key xxx \
+    --api-key "xxx" \
     --num-judge-votes 3 \
-    >> logs/robalev_$(date +%F_%T).log 2>&1 &
+    >> logs/robalev_6_$(date +%F_%T).log 2>&1 &
 
 from-scores:
 cargo robust_alpaca_eval from-scores \
@@ -54,9 +54,9 @@ cargo robust_alpaca_eval from-scores \
 
 from-llm-scores:
 cargo robust_alpaca_eval from-llm-scores \
-    --verdicts e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf.json \
-    --log-name REPORTING_FROM_LLM_SCORES \
-    >> logs/robalev_from_llm_scores_$(date +%F_%T).log 2>&1 &
+    --verdicts e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf_against_gpt4_selected.json \
+    --log-name REPORTING_FROM_LLM_SCORES_365_SELECTED \
+    >> logs/robalev_from_llm_scores_report_$(date +%F_%T).log 2>&1 &
 
 operates in three modes:
 
