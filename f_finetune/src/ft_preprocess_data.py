@@ -11,10 +11,11 @@ import logging
 import os
 import random
 from pathlib import Path
-from typing import List, Dict, Any, Union
+from typing import List, Dict, Any, Union, Set, Tuple
 
 from datasets import Dataset, DatasetDict
 from transformers import AutoTokenizer
+import numpy as np
 
 # Global variables
 tokenizer = None
@@ -50,7 +51,7 @@ def load_examples(paths: List[str], instruct_types: List[str]) -> List[Example]:
             for k in keys_to_process:
                 if k in item and item[k] and k != "instruction_original":
                     examples.append(Example(pc_id, item[k], inp, base_ans, k))
-    random.shuffle(examples)
+    # ! shuffling to happen on the group IDs (prompt_count), not on the individual examples before splitting.
     return examples
 
 def tokenise_example(example: Dict[str, Any]) -> Dict[str, List[int]]:
@@ -63,6 +64,39 @@ def tokenise_example(example: Dict[str, Any]) -> Dict[str, List[int]]:
     input_ids = prompt_ids + answer_ids
     labels = [-100] * len(prompt_ids) + answer_ids
     return {"input_ids": input_ids, "labels": labels}
+
+def get_group_wise_split_ids(
+    examples: List[Example], test_size: float, seed: int
+) -> Tuple[Set[int], Set[int]]:
+    """
+    Splits data by 'prompt_count' to prevent leakage
+
+    Args:
+        examples: The list of all loaded Example objects.
+        test_size: The fraction of groups to allocate to the test set.
+        seed: The random seed for reproducibility.
+
+    Returns:
+        A tuple containing two sets: (train_prompt_ids, test_prompt_ids)
+    """
+    logging.info(f"Performing group-wise split with test_size={test_size} and seed={seed}.")
+    
+    # Get all unique group identifiers
+    all_prompt_ids = sorted(list({ex.prompt_count for ex in examples}))
+    
+    # Shuffle the group identifiers reproducibly
+    rng = np.random.default_rng(seed)
+    rng.shuffle(all_prompt_ids)
+    
+    # Determine the split index
+    n_test = int(len(all_prompt_ids) * test_size)
+    
+    # Create the sets of identifiers
+    test_ids = set(all_prompt_ids[:n_test])
+    train_ids = set(all_prompt_ids[n_test:])
+    
+    logging.info(f"Split complete. Train groups: {len(train_ids)}, Test groups: {len(test_ids)}")
+    return train_ids, test_ids
 
 def main():
     global tokenizer
@@ -83,21 +117,44 @@ def main():
     logging.info("Starting data preprocessing.")
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
     
-    examples = load_examples(args.data_paths, args.instruct_types)
-    logging.info(f"Loaded {len(examples)} examples.")
+    # Load all examples first
+    all_examples = load_examples(args.data_paths, args.instruct_types)
+    logging.info(f"Loaded {len(all_examples)} total examples.")
+
+    # 1. Get the IDs for each split based on prompt_count
+    TEST_SET_SIZE = 0.05
+    RANDOM_SEED = 42
+    train_prompt_ids, test_prompt_ids = get_group_wise_split_ids(all_examples, test_size=TEST_SET_SIZE, seed=RANDOM_SEED)
+
+    # 2. Create the two datasets based on the split IDs
+    train_examples = [ex for ex in all_examples if ex.prompt_count in train_prompt_ids]
+    test_examples = [ex for ex in all_examples if ex.prompt_count in test_prompt_ids]
     
-    raw_ds = Dataset.from_list([dataclasses.asdict(e) for e in examples])
+    logging.info(f"Created train set with {len(train_examples)} examples and test set with {len(test_examples)} examples.")
+
+    train_ds = Dataset.from_list([dataclasses.asdict(e) for e in train_examples])
+    test_ds = Dataset.from_list([dataclasses.asdict(e) for e in test_examples])
+
+    raw_datasets = DatasetDict({
+        "train": train_ds,
+        "test": test_ds
+    })
     
+    # 3. Tokenize both datasets
     num_workers = min(8, os.cpu_count() or 1)
     logging.info(f"Tokenizing with {num_workers} processes...")
     
-    tokenized_ds = raw_ds.map(tokenise_example, remove_columns=raw_ds.column_names, num_proc=num_workers, desc="Tokenizing dataset")
+    tokenized_datasets = raw_datasets.map(
+        tokenise_example,
+        remove_columns=raw_datasets["train"].column_names,  # Use train columns as reference
+        num_proc=num_workers,
+        desc="Tokenizing dataset"
+    )
     
-    tokenized_ds = tokenized_ds.filter(lambda example: len(example['input_ids']) > 0)
+    # 4. Filter empty examples from both splits
+    final_datasets = tokenized_datasets.filter(lambda example: len(example['input_ids']) > 0)
     
-    logging.info(f"Tokenization complete. Final dataset size: {len(tokenized_ds)}")
-    
-    final_datasets = tokenized_ds.train_test_split(test_size=0.05, seed=42)
+    logging.info(f"Tokenization complete. Final dataset sizes: Train={len(final_datasets['train'])}, Test={len(final_datasets['test'])}")
     
     logging.info(f"Saving tokenized dataset to {output_path}")
     final_datasets.save_to_disk(str(output_path))
