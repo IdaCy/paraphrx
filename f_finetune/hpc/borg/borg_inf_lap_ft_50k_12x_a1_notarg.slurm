@@ -1,17 +1,17 @@
 #!/bin/bash -l
-#SBATCH --job-name=9xdata
+#SBATCH --job-name=inflap_9x_a1_notarg
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
 #SBATCH --gres=gpu:1
+#SBATCH --mem=40G
 #SBATCH --time=10:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_9xdata.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_9xdata.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_inflap_9x_a1_notarg.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_inflap_9x_a1_notarg.err
 
 set -euo pipefail
-echo "$(date) – 9xdata job started on $(hostname)"
-echo "$(date) – 9xdata job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – inflap_9x_a1_notarg job started on $(hostname)"
+echo "$(date) – inflap_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -29,6 +29,7 @@ export HUGGINGFACE_HUB_CACHE="$HF_HOME/hub"
 export TRANSFORMERS_CACHE="$HF_HOME/transformers"
 mkdir -p "$HF_HOME"
 
+# Redirect Triton autotune cache
 export TRITON_CACHE_DIR="$TMPDIR/triton_cache_${SLURM_JOB_ID}"
 mkdir -p "$TRITON_CACHE_DIR"
 
@@ -52,6 +53,7 @@ trap cleanup EXIT ERR INT TERM
 
 mkdir -p "$TMPDIR" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME" "$WANDB_DIR"
 
+# Pick an available Python-3 binary (prefers 3.11 → 3.8)
 for P in python3.11 python3.10 python3.9 python3; do
   if command -v $P &>/dev/null; then PYBIN=$(command -v $P); break; fi
 done
@@ -63,33 +65,35 @@ mkdir -p "$PYTHON_PKGS"
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
 
 curl -sSL https://bootstrap.pypa.io/get-pip.py -o "$TMPDIR/get-pip.py"
+
+# Install pip into your PYTHON_PKGS target area
 $PYBIN "$TMPDIR/get-pip.py" --target "$PYTHON_PKGS" --no-cache-dir
 
-$PYBIN -m pip install --upgrade "importlib_metadata>=5.2.0" \
-                                "testresources==2.0.1" \
-    --no-cache-dir --target "$PYTHON_PKGS"
-
+# install pip & wheel (keep your pinned setuptools)
 $PYBIN -m pip install --upgrade pip wheel \
   --no-cache-dir --target "$PYTHON_PKGS"
 
 $PYBIN -m pip install --upgrade setuptools \
   --no-cache-dir --target "$PYTHON_PKGS"
 
+# install everything from wheels only (no source builds)
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
-  torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cpu \
-  transformers==4.41.2 \
+  torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
+  transformers==4.45.0 \
+  peft==0.11.1 \
+  bitsandbytes==0.43.2 \
   datasets==2.19.0 \
   numpy==1.26.4 \
-  sentencepiece \
-  loguru \
-  protobuf==3.20.* \
+  wandb \
+  matplotlib \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
 $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
-print("CUDA?       :", torch.cuda.is_available()) # Will print False, which is correct
+print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
@@ -97,32 +101,40 @@ PY
 
 source /scratch_root/ifc24/.hf_token || true
 [ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 
 export TOKENIZERS_PARALLELISM=false
-export MPLBACKEND=Agg
+
+BASE_MODEL_PATH="f_finetune/model"  # not needed - it's a full fine-tune
+MAIN_PATH="f_finetune/outputs_lap/9x_a1_notarg_lap"
+OUTPUT_JSON="$MAIN_PATH/inf_results.json"
+FT_MODEL_PATH="$MAIN_PATH/final"
+mkdir -p "$(dirname "$OUTPUT_JSON")"
+
+# sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
 
 # Run
-echo "$(date) – 9xdata initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
+echo "$(date) – inflap_9x_a1_notarg initial setup OK"
+RUN_SCRIPT="f_finetune/src/inf_ft_50k.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types \
-    instruct_formal_memo \
-    instruct_joke \
-    instruct_sardonic \
-    instruct_future_tense \
-    instruct_coord_to_subord \
-    instruct_dramatic \
-    instruct_polite_request \
-    instruct_one_typo_punctuation \
-  --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/cached_tokenized_data_9x
+  --data_path a_data/alpaca/50k_phrxed.json \
+  --base_model_path $FT_MODEL_PATH \
+  --output_json $OUTPUT_JSON \
+  --log_name inflap_9x_a1_notarg \
+  --val_pct 0.05 --test_pct 0.05 \
+  --batch 8 \
+  --max_tokens 128 \
+  --quant 4bit \
+  --wandb_project paraphrx_lap_inference \
+  --max_samples 500 \
+  $WANDB_FLAG
 
-echo "$(date) – 9xdata job itself finished OK"
+echo "$(date) – inflap_9x_a1_notarg job itself finished OK"
 
 rm -rf "$TMPDIR" \
+       "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) – 9xdata job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – 9xdata job finished & stuff cleaned OK"
+echo "$(date) – inflap_9x_a1_notarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – inflap_9x_a1_notarg job finished & stuff cleaned OK"
