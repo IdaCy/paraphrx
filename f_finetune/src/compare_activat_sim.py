@@ -34,7 +34,7 @@ import logging
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -44,21 +44,45 @@ from peft import PeftModel
 from transformers import (AutoModelForCausalLM, AutoTokenizer,
                           PreTrainedModel)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] - %(message)s",
-    handlers=[logging.StreamHandler(sys.stdout)]
-)
-plt.style.use('seaborn-v0_8-whitegrid')
-# backend that doesn't require a GUI, essential for SLURM
-plt.switch_backend('Agg')
 
+class SafeFormatter(logging.Formatter):
+    """A custom formatter that prevents crashes from malformed log messages."""
+    def format(self, record):
+        record_copy = logging.makeLogRecord(record.__dict__)
+        try:
+            return super().format(record_copy)
+        except (TypeError, ValueError):
+            record_copy.msg = f"MALFORMED LOG: {record_copy.msg} | ARGS: {record_copy.args}"
+            record_copy.args = ()
+            return logging.Formatter('[%(levelname)s] %(message)s').format(record_copy)
+
+# Create a single, safe handler
+safe_handler = logging.StreamHandler(sys.stdout)
+safe_handler.setFormatter(SafeFormatter("%(asctime)s [%(levelname)s] - %(message)s"))
+
+# Configure the logger for THIS script's messages
+script_logger = logging.getLogger(__name__)
+script_logger.setLevel(logging.INFO)
+script_logger.handlers.clear()
+script_logger.addHandler(safe_handler)
+script_logger.propagate = False # vent messages from being sent to the root logger
+
+# Surgically target and fix the 'transformers' library's logger
+transformers_logger = logging.getLogger("transformers")
+transformers_logger.setLevel(logging.WARNING) # only want to see warnings/errors from it
+transformers_logger.handlers.clear()
+transformers_logger.addHandler(safe_handler)
+transformers_logger.propagate = False # stop it from propagating up
+
+# Matplotlib and Style Setup
+plt.switch_backend('Agg')
+plt.style.use('seaborn-v0_8-whitegrid')
+
+
+# Core Comparison Logic using Hooks (No changes needed here)
 
 class ActivationComparator:
-    """
-    stateful class to compare activations between two forward passes using hooks
-    Designed for a two-step process: run a base input, then a comparison input
-    """
+    """A stateful class to compare activations between two forward passes using hooks."""
     def __init__(self, model: PreTrainedModel):
         self._model = model
         self._device = model.device
@@ -101,14 +125,12 @@ class ActivationComparator:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.remove_hooks()
 
-
 def run_and_compare_activations(
     model: PreTrainedModel,
     tokenizer: AutoTokenizer,
     original_text: str,
     paraphrase_text: str
 ) -> Dict[int, float]:
-    """Runs a pair of prompts and returns layer-wise cosine similarities"""
     model.eval()
     with ActivationComparator(model) as comparator:
         inputs = tokenizer(
@@ -116,8 +138,8 @@ def run_and_compare_activations(
             return_tensors="pt", padding="longest", truncation=True, max_length=512
         ).to(model.device)
         with torch.no_grad():
-            _ = model(input_ids=inputs.input_ids[0].unsqueeze(0)) # Run 1: Store activations
-            _ = model(input_ids=inputs.input_ids[1].unsqueeze(0)) # Run 2: Compare
+            _ = model(input_ids=inputs.input_ids[0].unsqueeze(0))
+            _ = model(input_ids=inputs.input_ids[1].unsqueeze(0))
     return dict(sorted(comparator.similarities.items()))
 
 
@@ -125,229 +147,134 @@ def run_and_compare_activations(
 
 def load_model_and_tokenizer(
     model_path: str, base_model_path: str, device: str
-) -> Tuple[PreTrainedModel, AutoTokenizer]:
-    """
-    Loads a model and tokenizer, automatically handling full models vs. LoRA
-    """
+) -> tuple[PreTrainedModel, AutoTokenizer]:
     path = Path(model_path)
     base_path = Path(base_model_path)
-    
+
     if not base_path.exists():
-        logging.error(f"Base model path not found at: {base_path}")
+        script_logger.error(f"Base model path not found at: {base_path}")
         sys.exit(1)
-        
-    logging.info(f"Loading tokenizer from base path: {base_path}")
+
+    script_logger.info(f"Loading tokenizer from base path: {base_path}")
     tokenizer = AutoTokenizer.from_pretrained(base_path)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
     model_to_load = None
     if (path / "adapter_config.json").exists():
-        logging.info("Detected LoRA adapters. Loading base model and applying adapters.")
+        script_logger.info("Detected LoRA adapters. Loading base model and applying adapters.")
         model_to_load = AutoModelForCausalLM.from_pretrained(
             base_model_path, torch_dtype=torch.bfloat16, device_map={"": device}
         )
         model_to_load = PeftModel.from_pretrained(model_to_load, model_path)
-        logging.info("Successfully merged LoRA adapters.")
+        script_logger.info("Successfully merged LoRA adapters.")
     else:
-        logging.info("Detected a full model. Loading directly.")
+        script_logger.info("Detected a full model or fine-tune without adapters. Loading directly.")
         model_to_load = AutoModelForCausalLM.from_pretrained(
             model_path, torch_dtype=torch.bfloat16, device_map={"": device}
         )
 
     if model_to_load is None:
-        logging.error(f"Could not determine how to load model from {model_path}")
+        script_logger.error(f"Could not determine how to load model from {model_path}")
         sys.exit(1)
-        
+
     return model_to_load, tokenizer
 
 
-# visualisation functions
+# Visualistion functions
 
-def plot_case_study(
-    base_sims: Dict, ft_sims: Dict, prompt_id: int, paraphrase_key: str, output_path: Path
-):
-    """Creates a detailed, multi-panel plot for a single analysis case"""
-    layers = list(base_sims.keys())
-    base_scores = np.array(list(base_sims.values()))
-    ft_scores = np.array(list(ft_sims.values()))
+def plot_case_study(base_sims, ft_sims, prompt_id, p_key, output_path):
+    layers, base_scores, ft_scores = list(base_sims.keys()), np.array(list(base_sims.values())), np.array(list(ft_sims.values()))
     delta = ft_scores - base_scores
-
     fig, axs = plt.subplots(2, 1, figsize=(15, 12), gridspec_kw={'height_ratios': [2, 1]})
-    fig.suptitle(f'Case Study: Representational Similarity\nPrompt ID: {prompt_id} | Paraphrase: "{paraphrase_key}"', fontsize=18, weight='bold')
-
-    # Panel 1: Similarity Trajectory
+    fig.suptitle(f'Case Study: Representational Similarity\nPrompt ID: {prompt_id} | Paraphrase: "{p_key}"', fontsize=18, weight='bold')
     ax1 = axs[0]
     ax1.plot(layers, base_scores, 'o-', label='Base Model Similarity', color='cornflowerblue', lw=2)
     ax1.plot(layers, ft_scores, 's-', label='Fine-Tuned Model Similarity', color='firebrick', lw=2)
     ax1.fill_between(layers, base_scores, ft_scores, where=(ft_scores > base_scores), color='mediumseagreen', alpha=0.3, label='Improvement')
     ax1.fill_between(layers, base_scores, ft_scores, where=(ft_scores <= base_scores), color='salmon', alpha=0.3, label='Regression')
-    ax1.set_title('Similarity Trajectory Across Layers', fontsize=14)
-    ax1.set_ylabel('Cosine Similarity', fontsize=12)
-    ax1.set_xlabel('Decoder Layer', fontsize=12)
-    ax1.legend()
-    ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
-
-    # Panel 2: Change in Similarity (Delta)
+    ax1.set_title('Similarity Trajectory Across Layers', fontsize=14); ax1.set_ylabel('Cosine Similarity', fontsize=12); ax1.set_xlabel('Decoder Layer', fontsize=12); ax1.legend(); ax1.grid(True, which='both', linestyle='--', linewidth=0.5)
     ax2 = axs[1]
     colors = ['mediumseagreen' if d >= 0 else 'salmon' for d in delta]
-    ax2.bar(layers, delta, color=colors, alpha=0.8, label='Similarity Delta (FT - Base)')
-    ax2.axhline(0, color='black', lw=1, linestyle='--')
-    ax2.set_title('Change in Similarity After Fine-Tuning', fontsize=14)
-    ax2.set_ylabel('Δ Cosine Similarity', fontsize=12)
-    ax2.set_xlabel('Decoder Layer', fontsize=12)
-    ax2.legend()
-    
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    filename = f"case_study_prompt_{prompt_id}_{paraphrase_key}.png"
-    fig.savefig(output_path / filename)
-    logging.info(f"Saved case study plot to {output_path / filename}")
+    ax2.bar(layers, delta, color=colors, alpha=0.8, label='Similarity Delta (FT - Base)'); ax2.axhline(0, color='black', lw=1, linestyle='--')
+    ax2.set_title('Change in Similarity After Fine-Tuning', fontsize=14); ax2.set_ylabel('Δ Cosine Similarity', fontsize=12); ax2.set_xlabel('Decoder Layer', fontsize=12); ax2.legend()
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95]); fig.savefig(output_path / f"case_study_prompt_{prompt_id}_{p_key}.png")
+    script_logger.info(f"Saved case study plot to {output_path / f'case_study_prompt_{prompt_id}_{p_key}.png'}")
     plt.close(fig)
 
-def plot_aggregate_results(
-    agg_data: Dict[str, Dict[int, List[float]]], num_samples: int, output_path: Path
-):
-    """Creates summary plots (heatmap, line plot) from aggregated data"""
-    if not agg_data:
-        logging.warning("No data for aggregation plot. Skipping.")
-        return
-
-    # Plot 1: Heatmap of Average Delta
-    paraphrase_types = sorted(agg_data.keys())
-    first_key = paraphrase_types[0]
-    layers = sorted(agg_data[first_key].keys())
-    heatmap_data = np.array([[np.mean(agg_data[p_key][layer]) for layer in layers] for p_key in paraphrase_types])
-
-    fig, ax = plt.subplots(figsize=(16, max(8, len(paraphrase_types) * 0.5)))
-    sns.heatmap(
-        heatmap_data, yticklabels=paraphrase_types, xticklabels=layers,
-        annot=True, fmt=".3f", cmap="viridis", ax=ax,
-        cbar_kws={'label': 'Average Δ Cosine Similarity (FT - Base)'}
-    )
-    ax.set_title(f'Aggregate Analysis: Mean Change in Similarity per Paraphrase Type (N={num_samples})', fontsize=16, weight='bold')
-    ax.set_xlabel('Decoder Layer', fontsize=12)
-    ax.set_ylabel('Paraphrase Type', fontsize=12)
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    fig.savefig(output_path / "aggregate_heatmap_delta_by_type.png")
-    logging.info(f"Saved aggregate heatmap to {output_path / 'aggregate_heatmap_delta_by_type.png'}")
-    plt.close(fig)
-
-    # Plot 2: Line plot of overall average delta
-    all_deltas_by_layer = defaultdict(list)
-    for p_key in paraphrase_types:
-        for layer in layers:
-            all_deltas_by_layer[layer].extend(agg_data[p_key][layer])
-
-    mean_deltas = np.array([np.mean(all_deltas_by_layer[layer]) for layer in layers])
-    std_devs = np.array([np.std(all_deltas_by_layer[layer]) for layer in layers])
-    # Standard error of the mean for confidence interval
-    sem = np.array([np.std(all_deltas_by_layer[layer]) / np.sqrt(len(all_deltas_by_layer[layer])) for layer in layers])
-
+def plot_aggregate_results(agg_data, num_samples, output_path):
+    if not agg_data: script_logger.warning("No data for aggregation plot. Skipping."); return
+    p_keys = sorted(agg_data.keys()); layers = sorted(agg_data[p_keys[0]].keys())
+    heatmap_data = np.array([[np.mean(agg_data[pk][layer]) for layer in layers] for pk in p_keys])
+    fig, ax = plt.subplots(figsize=(16, max(8, len(p_keys) * 0.5)))
+    sns.heatmap(heatmap_data, yticklabels=p_keys, xticklabels=layers, annot=True, fmt=".3f", cmap="viridis", ax=ax, cbar_kws={'label': 'Average Δ Cosine Similarity (FT - Base)'})
+    ax.set_title(f'Aggregate Analysis: Mean Change in Similarity (N={num_samples})', fontsize=16, weight='bold'); ax.set_xlabel('Decoder Layer', fontsize=12); ax.set_ylabel('Paraphrase Type', fontsize=12)
+    plt.xticks(rotation=45); plt.tight_layout(); fig.savefig(output_path / "aggregate_heatmap_delta_by_type.png")
+    script_logger.info(f"Saved aggregate heatmap to {output_path / 'aggregate_heatmap_delta_by_type.png'}"); plt.close(fig)
+    all_deltas = defaultdict(list)
+    for pk in p_keys:
+        for layer in layers: all_deltas[layer].extend(agg_data[pk][layer])
+    mean_deltas = np.array([np.mean(all_deltas[layer]) for layer in layers]); sem = np.array([np.std(all_deltas[layer]) / np.sqrt(len(all_deltas[layer])) for layer in layers])
     fig, ax = plt.subplots(figsize=(14, 8))
-    ax.plot(layers, mean_deltas, 'o-', color='darkslateblue', label='Mean Δ Similarity')
-    ax.fill_between(layers, mean_deltas - 1.96 * sem, mean_deltas + 1.96 * sem, color='darkslateblue', alpha=0.2, label='95% Confidence Interval')
-    ax.axhline(0, color='black', lw=1, linestyle='--')
-    ax.set_title(f'Overall Average Change in Similarity Across All Paraphrases (N={num_samples})', fontsize=16, weight='bold')
-    ax.set_xlabel('Decoder Layer', fontsize=12)
-    ax.set_ylabel('Average Δ Cosine Similarity (FT - Base)', fontsize=12)
-    ax.legend()
-    ax.grid(True)
-    plt.tight_layout()
+    ax.plot(layers, mean_deltas, 'o-', color='darkslateblue', label='Mean Δ Similarity'); ax.fill_between(layers, mean_deltas - 1.96 * sem, mean_deltas + 1.96 * sem, color='darkslateblue', alpha=0.2, label='95% Confidence Interval')
+    ax.axhline(0, color='black', lw=1, linestyle='--'); ax.set_title(f'Overall Average Change in Similarity (N={num_samples})', fontsize=16, weight='bold')
+    ax.set_xlabel('Decoder Layer', fontsize=12); ax.set_ylabel('Average Δ Cosine Similarity (FT - Base)', fontsize=12); ax.legend(); ax.grid(True); plt.tight_layout()
     fig.savefig(output_path / "aggregate_lineplot_mean_delta.png")
-    logging.info(f"Saved aggregate line plot to {output_path / 'aggregate_lineplot_mean_delta.png'}")
-    plt.close(fig)
+    script_logger.info(f"Saved aggregate line plot to {output_path / 'aggregate_lineplot_mean_delta.png'}"); plt.close(fig)
+
 
 # Main impl
 
 def main():
     parser = argparse.ArgumentParser(description="Robustness Analyzer for LLM Activations.")
-    # Model and Data Paths
-    parser.add_argument("--base_model_path", type=str, required=True, help="Path to the base model.")
-    parser.add_argument("--ft_model_path", type=str, required=True, help="Path to the fine-tuned model or LoRA adapters.")
-    parser.add_argument("--prompts_json_path", type=str, required=True, help="Path to the JSON file with prompts.")
-    parser.add_argument("--output_dir", type=str, default="robustness_analysis_results", help="Directory to save plots.")
-    # Mode Selection
-    parser.add_argument("--run_mode", type=str, choices=['case_study', 'aggregate'], default='case_study', help="Choose analysis mode.")
-    # Mode-specific arguments
-    parser.add_argument("--prompt_ids", type=int, nargs='+', help="[Case Study] Space-separated prompt_count IDs to analyze.")
-    parser.add_argument("--paraphrase_keys", type=str, nargs='+', help="[Case Study] Space-separated instruct_* keys to analyze.")
-    parser.add_argument("--limit", type=int, default=0, help="[Aggregate] Limit the number of prompts to process (0 for all).")
-
+    parser.add_argument("--base_model_path", type=str, required=True); parser.add_argument("--ft_model_path", type=str, required=True)
+    parser.add_argument("--prompts_json_path", type=str, required=True); parser.add_argument("--output_dir", type=str, default="robustness_analysis_results")
+    parser.add_argument("--run_mode", type=str, choices=['case_study', 'aggregate'], default='case_study'); parser.add_argument("--prompt_ids", type=int, nargs='+')
+    parser.add_argument("--paraphrase_keys", type=str, nargs='+'); parser.add_argument("--limit", type=int, default=0)
     args = parser.parse_args()
 
-    # Validate Mode-specific Arguments
     if args.run_mode == 'case_study' and (not args.prompt_ids or not args.paraphrase_keys):
         parser.error("--prompt_ids and --paraphrase_keys are required for --run_mode case_study.")
 
-    # Setup
-    output_path = Path(args.output_dir)
-    output_path.mkdir(exist_ok=True)
+    output_path = Path(args.output_dir); output_path.mkdir(exist_ok=True, parents=True)
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    if device == "cpu":
-        logging.warning("CUDA not available. Running on CPU will be extremely slow.")
+    if device == "cpu": script_logger.warning("CUDA not available. Running on CPU will be extremely slow.")
 
-    # Load Models
     base_model, base_tokenizer = load_model_and_tokenizer(args.base_model_path, args.base_model_path, device)
     ft_model, ft_tokenizer = load_model_and_tokenizer(args.ft_model_path, args.base_model_path, device)
 
-    # Load Data
-    with open(args.prompts_json_path, 'r', encoding='utf-8') as f:
-        prompts_data = json.load(f)
+    with open(args.prompts_json_path, 'r', encoding='utf-8') as f: prompts_data = json.load(f)
     prompts_map = {item['prompt_count']: item for item in prompts_data}
 
-    # Execute Selected Mode
     if args.run_mode == 'case_study':
-        logging.info("--- Running in Case Study Mode ---")
+        script_logger.info("--- Running in Case Study Mode ---")
         for pid in args.prompt_ids:
-            if pid not in prompts_map:
-                logging.warning(f"Prompt ID {pid} not found. Skipping.")
-                continue
-            prompt_item = prompts_map[pid]
+            if pid not in prompts_map: continue
             for p_key in args.paraphrase_keys:
-                if p_key not in prompt_item or not prompt_item[p_key]:
-                    logging.warning(f"Paraphrase key '{p_key}' not found for prompt {pid}. Skipping.")
-                    continue
-                
-                logging.info(f"Analyzing Prompt ID: {pid}, Paraphrase: {p_key}")
-                base_sims = run_and_compare_activations(base_model, base_tokenizer, prompt_item['instruction_original'], prompt_item[p_key])
-                ft_sims = run_and_compare_activations(ft_model, ft_tokenizer, prompt_item['instruction_original'], prompt_item[p_key])
-                
+                if p_key not in prompts_map[pid] or not prompts_map[pid][p_key]: continue
+                script_logger.info(f"Analyzing Prompt ID: {pid}, Paraphrase: {p_key}")
+                base_sims = run_and_compare_activations(base_model, base_tokenizer, prompts_map[pid]['instruction_original'], prompts_map[pid][p_key])
+                ft_sims = run_and_compare_activations(ft_model, ft_tokenizer, prompts_map[pid]['instruction_original'], prompts_map[pid][p_key])
                 plot_case_study(base_sims, ft_sims, pid, p_key, output_path)
 
     elif args.run_mode == 'aggregate':
-        logging.info("--- Running in Aggregate Mode ---")
+        script_logger.info("--- Running in Aggregate Mode ---")
         aggregate_data = defaultdict(lambda: defaultdict(list))
-        
         prompts_to_process = prompts_data[:args.limit] if args.limit > 0 else prompts_data
         num_processed = 0
-
         for i, prompt_item in enumerate(prompts_to_process):
-            pid = prompt_item['prompt_count']
-            original_instruction = prompt_item.get('instruction_original')
-            if not original_instruction: continue
-
+            pid, original_instruction = prompt_item.get('prompt_count'), prompt_item.get('instruction_original')
+            if not all([pid, original_instruction]): continue
             paraphrase_keys = [k for k in prompt_item if k.startswith('instruct_') and prompt_item[k]]
-            
             for p_key in paraphrase_keys:
-                logging.info(f"Processing... [Prompt {i+1}/{len(prompts_to_process)}] [ID: {pid}] [{p_key}]")
+                script_logger.info(f"Processing... [Prompt {i+1}/{len(prompts_to_process)}] [ID: {pid}] [{p_key}]")
                 base_sims = run_and_compare_activations(base_model, base_tokenizer, original_instruction, prompt_item[p_key])
                 ft_sims = run_and_compare_activations(ft_model, ft_tokenizer, original_instruction, prompt_item[p_key])
-                
-                for layer_idx in base_sims.keys():
-                    delta = ft_sims[layer_idx] - base_sims[layer_idx]
-                    aggregate_data[p_key][layer_idx].append(delta)
-
+                for layer_idx in base_sims.keys(): aggregate_data[p_key][layer_idx].append(ft_sims[layer_idx] - base_sims[layer_idx])
             num_processed += 1
-        
-        if num_processed > 0:
-            logging.info(f"Aggregation complete. Processed {num_processed} prompts.")
-            plot_aggregate_results(aggregate_data, num_processed, output_path)
-        else:
-            logging.warning("No prompts were processed in aggregate mode.")
+        if num_processed > 0: plot_aggregate_results(aggregate_data, num_processed, output_path)
 
-    logging.info(f"Analysis complete. All outputs saved to: {output_path}")
-
+    script_logger.info(f"Analysis complete. All outputs saved to: {output_path}")
 
 if __name__ == "__main__":
     main()
