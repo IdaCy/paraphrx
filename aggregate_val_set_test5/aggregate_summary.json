@@ -1,0 +1,263 @@
+{
+  "num_samples": 5,
+  "analyses": {
+    "Embedding Similarity Delta": {
+      "instruct_coord_to_subord": {
+        "mean": 1.52587890625e-05,
+        "median": 0.0,
+        "std_dev": 3.7063469853183345e-05,
+        "t_statistic": 0.8233869695926183,
+        "p_value": 0.45654624433878416
+      },
+      "instruct_double_negative": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_dramatic": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_formal_memo": {
+        "mean": -0.00048828125,
+        "median": 0.0,
+        "std_dev": 0.0007564420598061361,
+        "t_statistic": -1.2909944487358056,
+        "p_value": 0.26626462796630995
+      },
+      "instruct_future_tense": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_joke": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_leet_speak": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_one_typo_punctuation": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_output_markdown": {
+        "mean": 0.0001953125,
+        "median": 0.0,
+        "std_dev": 0.000390625,
+        "t_statistic": 1.0,
+        "p_value": 0.373900966300059
+      },
+      "instruct_polite_request": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "instruct_sardonic": {
+        "mean": 0.0,
+        "median": 0.0,
+        "std_dev": 0.0,
+        "t_statistic": NaN,
+        "p_value": NaN
+      },
+      "__grand_total__": {
+        "mean": -2.5246360085227273e-05,
+        "median": 0.0,
+        "std_dev": 0.0003009006779645361,
+        "t_statistic": -0.6165559395515553,
+        "p_value": 0.5401183898105972
+      }
+    },
+    "Representational Similarity Delta": {
+      "instruct_coord_to_subord": {
+        "mean": -0.009146822415865384,
+        "median": -0.009765625,
+        "std_dev": 0.015985412359631666,
+        "t_statistic": -6.49892101453526,
+        "p_value": 1.6081111890036172e-09
+      },
+      "instruct_double_negative": {
+        "mean": -0.007613431490384615,
+        "median": -0.0068359375,
+        "std_dev": 0.016992899416617288,
+        "t_statistic": -5.0887112988668095,
+        "p_value": 1.2434934650534818e-06
+      },
+      "instruct_dramatic": {
+        "mean": -0.008437171349158654,
+        "median": -0.009765625,
+        "std_dev": 0.013070674511658846,
+        "t_statistic": -7.3315149492775635,
+        "p_value": 2.2231971826678124e-11
+      },
+      "instruct_formal_memo": {
+        "mean": -0.008834134615384615,
+        "median": -0.0087890625,
+        "std_dev": 0.013458039672702262,
+        "t_statistic": -7.455504964365648,
+        "p_value": 1.1547163433648291e-11
+      },
+      "instruct_future_tense": {
+        "mean": -0.008623798076923078,
+        "median": -0.0069580078125,
+        "std_dev": 0.0195976938330957,
+        "t_statistic": -4.997910395847714,
+        "p_value": 1.8483480286123075e-06
+      },
+      "instruct_joke": {
+        "mean": -0.00814208984375,
+        "median": -0.00830078125,
+        "std_dev": 0.013690672726814469,
+        "t_statistic": -6.754698310093366,
+        "p_value": 4.419270515011597e-10
+      },
+      "instruct_leet_speak": {
+        "mean": -0.007558265099158654,
+        "median": -0.0079345703125,
+        "std_dev": 0.009262115233630587,
+        "t_statistic": -9.26844325916642,
+        "p_value": 5.537764604765001e-16
+      },
+      "instruct_one_typo_punctuation": {
+        "mean": -0.010496168870192307,
+        "median": -0.0087890625,
+        "std_dev": 0.019598495831410066,
+        "t_statistic": -6.082791404872376,
+        "p_value": 1.2499010020156042e-08
+      },
+      "instruct_output_markdown": {
+        "mean": -0.009539325420673078,
+        "median": -0.009765625,
+        "std_dev": 0.012993078732788809,
+        "t_statistic": -8.338740318421433,
+        "p_value": 9.778537732888866e-14
+      },
+      "instruct_polite_request": {
+        "mean": -0.011308405949519231,
+        "median": -0.011962890625,
+        "std_dev": 0.0132990894544806,
+        "t_statistic": -9.657713957670396,
+        "p_value": 6.150909332723093e-17
+      },
+      "instruct_sardonic": {
+        "mean": -0.008077063927283653,
+        "median": -0.0091552734375,
+        "std_dev": 0.012058984416150801,
+        "t_statistic": -7.607424334138865,
+        "p_value": 5.146750487697986e-12
+      },
+      "__grand_total__": {
+        "mean": -0.008888788823481207,
+        "median": -0.008544921875,
+        "std_dev": 0.014901399485321827,
+        "t_statistic": -22.54922630477995,
+        "p_value": 1.4305320683956998e-96
+      }
+    },
+    "Activation Norm Delta": {
+      "instruct_coord_to_subord": {
+        "mean": -17.55330341045673,
+        "median": -9.768585205078125,
+        "std_dev": 42.2177419159541,
+        "t_statistic": -4.722355896364825,
+        "p_value": 5.990065751253197e-06
+      },
+      "instruct_double_negative": {
+        "mean": -16.965802001953126,
+        "median": -7.058990478515625,
+        "std_dev": 48.49275177627307,
+        "t_statistic": -3.9736756959718735,
+        "p_value": 0.00011709462114783851
+      },
+      "instruct_dramatic": {
+        "mean": -16.10692614041842,
+        "median": -9.721755981445312,
+        "std_dev": 36.063757897020984,
+        "t_statistic": -5.0726692179556,
+        "p_value": 1.334111431649613e-06
+      },
+      "instruct_formal_memo": {
+        "mean": -14.942997213510367,
+        "median": -8.449691772460938,
+        "std_dev": 35.069624345357326,
+        "t_statistic": -4.839510725943,
+        "p_value": 3.6519324227574145e-06
+      },
+      "instruct_future_tense": {
+        "mean": -17.363428673377403,
+        "median": -8.225303649902344,
+        "std_dev": 46.47371647920513,
+        "t_statistic": -4.243487608703388,
+        "p_value": 4.1712851517369626e-05
+      },
+      "instruct_joke": {
+        "mean": -17.307324570875902,
+        "median": -9.590621948242188,
+        "std_dev": 41.72865448403059,
+        "t_statistic": -4.710753853165109,
+        "p_value": 6.288308447521819e-06
+      },
+      "instruct_leet_speak": {
+        "mean": -11.052130303016076,
+        "median": -5.0480804443359375,
+        "std_dev": 24.701243979890208,
+        "t_statistic": -5.081852158358307,
+        "p_value": 1.2814814535770845e-06
+      },
+      "instruct_one_typo_punctuation": {
+        "mean": -17.003397897573617,
+        "median": -10.035430908203125,
+        "std_dev": 39.77826742264049,
+        "t_statistic": -4.854949422585179,
+        "p_value": 3.4194561267564905e-06
+      },
+      "instruct_output_markdown": {
+        "mean": -16.730035048264725,
+        "median": -10.24542236328125,
+        "std_dev": 34.433986009239995,
+        "t_statistic": -5.518288567325732,
+        "p_value": 1.801903885581663e-07
+      },
+      "instruct_polite_request": {
+        "mean": -18.262700477013222,
+        "median": -11.04425048828125,
+        "std_dev": 39.27561128980376,
+        "t_statistic": -5.281252092577129,
+        "p_value": 5.290931986560566e-07
+      },
+      "instruct_sardonic": {
+        "mean": -16.830794466458833,
+        "median": -8.652877807617188,
+        "std_dev": 42.93583825267026,
+        "t_statistic": -4.452249824472813,
+        "p_value": 1.8199013030859994e-05
+      },
+      "__grand_total__": {
+        "mean": -16.374440018447128,
+        "median": -8.82843017578125,
+        "std_dev": 39.735485939434994,
+        "t_statistic": -15.577725350337374,
+        "p_value": 1.1801581030846603e-50
+      }
+    }
+  }
+}
