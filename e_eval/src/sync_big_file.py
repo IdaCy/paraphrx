@@ -4,6 +4,8 @@ import wandb
 """
 python sync_big_file.py upload path/to/thefile.bin the_artifact_name
 
+rm -rf ~/.cache/wandb
+rm -rf ~/.cache
 export WANDB_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
 export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
     python3 e_eval/src/sync_big_file.py upload \
@@ -18,6 +20,21 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
     python3 e_eval/src/sync_big_file.py upload \
         f_finetune/outputs/l9x_a1_notarg_50k_ft/final/training_args.bin \
         tokenizer_training_args_bin
+    python3 e_eval/src/sync_big_file.py upload \
+        a_data/alpaca/50k_phrxed.json \
+        prompts_50k
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs/l9x_a1_notarg_50k_ft \
+        9x_a1_notarg_best
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount \
+        tokenized_data_9x_wstyle_wcount
+
+srun "$PYBIN" e_eval/src/sync_big_file.py upload_folder \
+  f_finetune/outputs_lap/tokenized_data_9x_wstyle \
+  tokenized_data_9x_wstyle
 
     python3 e_eval/src/sync_big_file.py upload \
         c_assess_inf/output50k/answers.json \
@@ -36,6 +53,21 @@ python3 e_eval/src/sync_big_file.py download \
 python3 e_eval/src/sync_big_file.py download \
     tokenizer_training_args_bin \
     f_finetune/outputs/cp_9x_a1_notarg_best/final/training_args.bin
+python3 e_eval/src/sync_big_file.py download \
+    prompts_50k \
+    a_data/alpaca/50k_phrxed.json
+
+python3 e_eval/src/sync_big_file.py download_folder \
+    tokenized_data_9x_wstyle \
+    f_finetune/outputs_lap/tokenized_data_9x_wstyle
+
+python3 e_eval/src/sync_big_file.py download_folder \
+    9x_a1_notarg_best \
+    f_finetune/outputs/l9x_a1_notarg_50k_ft
+
+python3 e_eval/src/sync_big_file.py download_folder \
+    tokenized_data_9x_wstyle_wcount \
+    f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount
 
 python3 e_eval/src/sync_big_file.py download \
     answers_50k \
