@@ -36,6 +36,10 @@ srun "$PYBIN" e_eval/src/sync_big_file.py upload_folder \
   f_finetune/outputs_lap/tokenized_data_9x_wstyle \
   tokenized_data_9x_wstyle
 
+    python3 e_eval/src/sync_big_file.py upload \
+        c_assess_inf/output50k/answers.json \
+        answers_50k
+
 python sync_big_file.py download the_artifact_name /path/to/save
 python3 e_eval/src/sync_big_file.py download \
     safetensors00002 \
@@ -64,6 +68,10 @@ python3 e_eval/src/sync_big_file.py download_folder \
 python3 e_eval/src/sync_big_file.py download_folder \
     tokenized_data_9x_wstyle_wcount \
     f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount
+
+python3 e_eval/src/sync_big_file.py download \
+    answers_50k \
+    c_assess_inf/output50k/answers.json
 
   Upload file:        python sync_big_file.py upload <file_path> <artifact_name>
   Download file:      python sync_big_file.py download <artifact_name> <output_dir>

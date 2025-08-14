@@ -5,7 +5,7 @@ Inference on the held-out split (val + test) for paraphrase-robust fine-tuning.
 Usage examples (same as before):
 
 # - LoRA run (run #1)
-python ft_inference_paraphrx.py \
+python $RUN_SCRIPT \
   --data_path a_data/alpaca/50k_phrxed.json \
   --base_model_path f_finetune/model \
   --lora_path f_finetune/outputs/h9x_attn8_sptarg_50k_ft/final \
@@ -16,7 +16,7 @@ python ft_inference_paraphrx.py \
   --wandb_project paraphrx_inference
 
 # - Full-parameter run (run #2 - no LoRA)
-python ft_inference_paraphrx.py \
+python $RUN_SCRIPT \
   --data_path a_data/alpaca/50k_phrxed.json \
   --base_model_path f_finetune/outputs/8x_notarg_50k_ft/final \
   --output_json f_finetune/output_inf_ft_50k/8x_notarg_held.json \
