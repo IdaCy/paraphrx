@@ -16,7 +16,7 @@ echo "$(date) – com_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.l
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap/9x_a1_notarg_lap/prefinal_comp_sim/com_9x_a1_notarg
+mkdir -p logs f_finetune/outputs/cp_9x_a1_notarg_best/case_studies_test
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -75,6 +75,7 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   protobuf==3.20.* \
   matplotlib \
   seaborn \
+  scipy \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
@@ -97,11 +98,12 @@ TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
 
 srun $PYBIN "$RUN_SCRIPT" \
   --run_mode case_study \
+  --data_split all \
   --base_model_path "f_finetune/model" \
-  --ft_model_path "f_finetune/outputs_lap/9x_a1_notarg_lap/final" \
+  --ft_model_path "f_finetune/outputs/cp_9x_a1_notarg_best/final" \
   --prompts_json_path c_assess_inf/output50k/answers.json \
-  --output_dir "f_finetune/outputs_lap/9x_a1_notarg_lap/case_studies" \
-  --prompt_ids 1 3 \
+  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/case_studies_test" \
+  --prompt_ids 1 3 5 \
   --paraphrase_keys "instruct_polite_request" "instruct_sardonic" "instruct_one_typo_punctuation"
 
 echo "$(date) – com_9x_a1_notarg job itself finished OK"

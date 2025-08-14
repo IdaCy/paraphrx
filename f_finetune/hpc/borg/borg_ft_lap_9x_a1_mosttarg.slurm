@@ -91,7 +91,7 @@ export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
 echo "$(date) – 9x_a1_mosttarg_lap initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_lap_optim.py"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
 TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
 
 MODEL_PATH="f_finetune/model"

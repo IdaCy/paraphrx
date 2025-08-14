@@ -1,17 +1,17 @@
 #!/bin/bash -l
-#SBATCH --job-name=9xdata
+#SBATCH --job-name=9xdata_withstyle
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --gres=gpu:1
 #SBATCH --time=10:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_9xdata.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_9xdata.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_9xdata_withstyle.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_9xdata_withstyle.err
 
 set -euo pipefail
-echo "$(date) – 9xdata job started on $(hostname)"
-echo "$(date) – 9xdata job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – 9xdata_withstyle job started on $(hostname)"
+echo "$(date) – 9xdata_withstyle job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -102,7 +102,7 @@ export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
 # Run
-echo "$(date) – 9xdata initial setup OK"
+echo "$(date) – 9xdata_withstyle initial setup OK"
 RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
 srun $PYBIN "$RUN_SCRIPT" \
   --data_paths c_assess_inf/output50k/answers.json \
@@ -116,13 +116,13 @@ srun $PYBIN "$RUN_SCRIPT" \
     instruct_polite_request \
     instruct_one_typo_punctuation \
   --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/cached_tokenized_data_9x
+  --output_path f_finetune/outputs_lap/tokenized_data_9x
 
-echo "$(date) – 9xdata job itself finished OK"
+echo "$(date) – 9xdata_withstyle job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) – 9xdata job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – 9xdata job finished & stuff cleaned OK"
+echo "$(date) – 9xdata_withstyle job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – 9xdata_withstyle job finished & stuff cleaned OK"

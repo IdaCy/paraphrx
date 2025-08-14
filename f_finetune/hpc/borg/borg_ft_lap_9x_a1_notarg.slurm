@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=9x_a1_notarg_lap
+#SBATCH --job-name=9x2_a1_notarg_lap
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_9x_a1_notarg_lap.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_9x_a1_notarg_lap.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_9x2_a1_notarg_lap.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_9x2_a1_notarg_lap.err
 
 set -euo pipefail
-echo "$(date) – 9x_a1_notarg_lap job started on $(hostname)"
-echo "$(date) – 9x_a1_notarg_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - 9x2_a1_notarg_lap job started on $(hostname)"
+echo "$(date) - 9x2_a1_notarg_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap/9x_a1_notarg_lap
+mkdir -p logs f_finetune/outputs_lap/9x2_a1_notarg_lap
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -38,7 +38,7 @@ export PYTHONPATH=
 export PATH=$HOME/.local/bin:$PATH
 
 cleanup () {
-  echo "$(date) – cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
+  echo "$(date) - cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
   rm -rf "$TMPDIR"
 }
 trap cleanup EXIT ERR INT TERM
@@ -90,14 +90,14 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) – 9x_a1_notarg_lap initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_lap_optim.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
+echo "$(date) - 9x2_a1_notarg_lap initial setup OK"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
+TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x_wstyle"
 
 MODEL_PATH="f_finetune/model"
-OUTPUT_DIR="f_finetune/outputs_lap/9x_a1_notarg_lap"
+OUTPUT_DIR="f_finetune/outputs_lap/9x2_a1_notarg_lap"
 WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="9x_a1_notarg_lap"
+RUN_NAME="9x2_a1_notarg_lap"
 
 srun "$PYBIN" "$RUN_SCRIPT" \
   --tokenized_data_path "$TOKENIZED_DATA" \
@@ -116,7 +116,6 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --early_stopping_patience 3 \
   --save_steps 500 \
   --logging_steps 100 \
-  --bnb_8bit_optim \
   --use_lap \
   --lap_layer 12 \
   --lap_t_inner 3 \
@@ -128,7 +127,7 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --seed 42
   $WANDB_FLAG
 
-echo "$(date) – 9x_a1_notarg_lap job itself finished OK"
+echo "$(date) - 9x2_a1_notarg_lap job itself finished OK"
 
-echo "$(date) – 9x_a1_notarg_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – 9x_a1_notarg_lap job finished & stuff cleaned OK"
+echo "$(date) - 9x2_a1_notarg_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - 9x2_a1_notarg_lap job finished & stuff cleaned OK"

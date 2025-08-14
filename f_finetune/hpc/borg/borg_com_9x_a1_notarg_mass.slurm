@@ -1,27 +1,30 @@
 #!/bin/bash -l
-#SBATCH --job-name=c9x_a1_notarg_lap
+#SBATCH --job-name=com_9x_a1_notarg
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_c9x_a1_notarg_lap.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_c9x_a1_notarg_lap.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_com_9x_a1_notarg.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_com_9x_a1_notarg.err
 
 set -euo pipefail
-echo "$(date) – c9x_a1_notarg_lap job started on $(hostname)"
-echo "$(date) – c9x_a1_notarg_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – com_9x_a1_notarg job started on $(hostname)"
+echo "$(date) – com_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap/c9x_a1_notarg_lap
+mkdir -p logs f_finetune/outputs/cp_9x_a1_notarg_best/mass_20test
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
 mkdir -p "$TMPDIR"
 echo "Using scratch-backed TMPDIR=$TMPDIR"
+
+export MPLCONFIGDIR="$TMPDIR/matplotlib_config"
+mkdir -p "$MPLCONFIGDIR"
 
 export HF_HOME="$PROJ/hf_cache"
 export HUGGINGFACE_HUB_CACHE="$HF_HOME/hub"
@@ -70,8 +73,9 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   sentencepiece \
   loguru \
   protobuf==3.20.* \
-  wandb \
   matplotlib \
+  seaborn \
+  scipy \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
@@ -85,50 +89,31 @@ print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
 source /scratch_root/ifc24/.hf_token || true
-[ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) – c9x_a1_notarg_lap initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
+echo "$(date) – com_9x_a1_notarg initial setup OK"
+RUN_SCRIPT="f_finetune/src/compare_activat_sim.py"
 TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
 
-MODEL_PATH="f_finetune/model"
-OUTPUT_DIR="f_finetune/outputs_lap/9x_a1_notarg_lap"
-WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="c9x_a1_notarg_lap"
+############### IS LIMITED ################
+############### IS LIMITED ################
+############### IS LIMITED ################
+############### IS LIMITED ################
+############### IS LIMITED ################
+############### IS LIMITED ################
+############### IS LIMITED ################
+srun $PYBIN "$RUN_SCRIPT" \
+  --run_mode aggregate \
+  --data_split test \
+  --paraphrase_keys "instruct_joke" "instruct_sardonic" \
+  --base_model_path "f_finetune/model" \
+  --ft_model_path "f_finetune/outputs/cp_9x_a1_notarg_best/final" \
+  --prompts_json_path c_assess_inf/output50k/answers.json \
+  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/mass_20test" \
+  --limit 20
 
-srun "$PYBIN" "$RUN_SCRIPT" \
-  --tokenized_data_path "$TOKENIZED_DATA" \
-  --model_path "$MODEL_PATH" \
-  --output_dir "$OUTPUT_DIR" \
-  --run_name "$RUN_NAME" \
-  --resume_from_checkpoint f_finetune/outputs_lap/9x_a1_notarg_lap/checkpoint-27500 \
-  --target_modules none \
-  --batch_size 2 \
-  --gradient_accumulation_steps 8 \
-  --num_epochs 2 \
-  --learning_rate 8e-6 \
-  --warmup_ratio 0.05 \
-  --lr_scheduler_type cosine_with_restarts \
-  --weight_decay 0.1 \
-  --bf16 \
-  --early_stopping_patience 3 \
-  --save_steps 500 \
-  --logging_steps 100 \
-  --use_lap \
-  --lap_layer 12 \
-  --lap_t_inner 3 \
-  --lap_p_sample 0.5 \
-  --lap_epsilon 0.05 \
-  --lap_delta_lr 1e-2 \
-  --lap_lambda_lr 1e-3 \
-  --wandb_project "$WANDB_PROJECT" \
-  --seed 42
-  $WANDB_FLAG
+echo "$(date) – com_9x_a1_notarg job itself finished OK"
 
-echo "$(date) – c9x_a1_notarg_lap job itself finished OK"
-
-echo "$(date) – c9x_a1_notarg_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – c9x_a1_notarg_lap job finished & stuff cleaned OK"
+echo "$(date) – com_9x_a1_notarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – com_9x_a1_notarg job finished & stuff cleaned OK"
