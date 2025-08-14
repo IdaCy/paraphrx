@@ -1,19 +1,19 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_10x_prerpoc
+#SBATCH --job-name=hprc_10x
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_10x_preproc.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_10x_preproc.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hprc_10x.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hprc_10x.err
 
 set -euo pipefail
-echo "$(date) - ft_10x_prerpoc job started on $(hostname)"
-echo "$(date) - ft_10x_prerpoc job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hprc_10x job started on $(hostname)"
+echo "$(date) - hprc_10x job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -114,5 +114,5 @@ srun $PYBIN "$RUN_SCRIPT" \
   --model_path f_finetune/model \
   --output_path f_finetune/outputs_lap/cached_tokenized_data_10x
 
-echo "$(date) - preprocdata_10x job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - preprocdata_10x job finished OK"
+echo "$(date) - hprc_10x job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hprc_10x job finished OK"

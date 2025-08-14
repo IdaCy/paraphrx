@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=l9x_b2_sptarg
+#SBATCH --job-name=h9x_b2_sptarg
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_b2_sptarg.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_b2_sptarg.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_b2_sptarg.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_b2_sptarg.err
 
 set -euo pipefail
-echo "$(date) - l9x_b2_sptarg job started on $(hostname)"
-echo "$(date) - l9x_b2_sptarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h9x_b2_sptarg job started on $(hostname)"
+echo "$(date) - h9x_b2_sptarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/l9x_b2_sptarg
+mkdir -p logs f_finetune/outputs_lap/h9x_b2_sptarg
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -110,7 +110,7 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
-RUN_SCRIPT="f_finetune/src/ft_lap_optim.py"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
 
 srun $PYBIN "$RUN_SCRIPT" \
   --tokenized_data_path "f_finetune/outputs_lap/cached_tokenized_data_9x" \
@@ -137,10 +137,10 @@ srun $PYBIN "$RUN_SCRIPT" \
   --lap_epsilon 0.05 \
   --lap_delta_lr 1e-2 \
   --lap_lambda_lr 1e-3 \
-  --run_name l9x_b2_sptarg \
-  --output_dir f_finetune/outputs/l9x_b2_sptarg \
+  --run_name h9x_b2_sptarg \
+  --output_dir f_finetune/outputs_lap/h9x_b2_sptarg \
   --wandb_project paraphrx_ft_lap \
   $WANDB_FLAG
 
-echo "$(date) - l9x_b2_sptarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - l9x_b2_sptarg job finished OK"
+echo "$(date) - h9x_b2_sptarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h9x_b2_sptarg job finished OK"

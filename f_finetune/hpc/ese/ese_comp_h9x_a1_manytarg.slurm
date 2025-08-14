@@ -91,6 +91,7 @@ $PYBIN -m pip install --prefer-binary \
   protobuf==3.20.* \
   wandb \
   matplotlib \
+  scipy \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 

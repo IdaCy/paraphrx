@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=lcompare_actv_sim
+#SBATCH --job-name=hi9x_full_stable2_lap
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lcompare_actv_sim.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lcompare_actv_sim.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hi9x_full_stable2_lap.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hi9x_full_stable2_lap.err
 
 set -euo pipefail
-echo "$(date) - lcompare_actv_sim job started on $(hostname)"
-echo "$(date) - lcompare_actv_sim job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hi9x_full_stable2_lap job started on $(hostname)"
+echo "$(date) - hi9x_full_stable2_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs_lap/hlap_8k_attn8ssettings/case_studies
+mkdir -p logs
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -91,7 +91,6 @@ $PYBIN -m pip install --prefer-binary \
   protobuf==3.20.* \
   wandb \
   matplotlib \
-  scipy \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -111,16 +110,26 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
-RUN_SCRIPT="f_finetune/src/compare_actvat_sim"
 
-srun $PYBIN "$RUN_SCRIPT" \
-  --run_mode case_study \
-  --base_model_path "f_finetune/model" \
-  --ft_model_path "f_finetune/outputs_lap/hlap_8k_attn8ssettings/final" \
-  --prompts_json_path c_assess_inf/output50k/answers.json \
-  --output_dir "f_finetune/outputs_lap/hlap_8k_attn8ssettings/case_studies" \
-  --prompt_ids 1 3 \
-  --paraphrase_keys "instruct_polite_request" "instruct_sardonic" "instruct_one_typo_punctuation"
+# sbatch --dependency=afterok:28003 f_finetune/hpc/ese/ese_ft_inf_lap_9x_full_stable2.slurm
 
-echo "$(date) - lcompare_actv_sim job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - lcompare_actv_sim job finished OK"
+echo "$(date) - i9x_3lap_notarg initial setup OK"
+RUN_SCRIPT="f_finetune/src/inf_ft_50k_frompreproc.py"
+TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount"
+
+MAIN_DIR="f_finetune/outputs_lap/hi9x_full_stable2_lap"
+MODEL_PATH="$MAIN_DIR/final"
+WANDB_PROJECT="paraphrx_lap_inf"
+RUN_NAME="i9x_3lap_notarg"
+
+srun "$PYBIN" "$RUN_SCRIPT" \
+    --data_path a_data/alpaca/50k_phrxed.json \
+    --tokenized_data_path "$TOKENIZED_DATA" \
+    --base_model_path "$MAIN_DIR/final" \
+    --output_json "$MAIN_DIR/answers.json" \
+    --batch 4 \
+    --quant 4bit
+  $WANDB_FLAG
+
+echo "$(date) - hi9x_full_stable2_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hi9x_full_stable2_lap job finished OK"

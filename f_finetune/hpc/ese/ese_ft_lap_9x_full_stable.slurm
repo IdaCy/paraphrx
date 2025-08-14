@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=h9x_a1_manytarg
+#SBATCH --job-name=l9x_full_stable_lap
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_a1_manytarg.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_a1_manytarg.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_full_stable_lap.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_full_stable_lap.err
 
 set -euo pipefail
-echo "$(date) - h9x_a1_manytarg job started on $(hostname)"
-echo "$(date) - h9x_a1_manytarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l9x_full_stable_lap job started on $(hostname)"
+echo "$(date) - l9x_full_stable_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/h9x_a1_manytarg
+mkdir -p logs f_finetune/outputs_lap/l9x_full_stable_lap
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -110,38 +110,40 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
-RUN_SCRIPT="f_finetune/src/ft_lap_optim.py"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
+TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x_wstyle"
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_lap/l9x_full_stable_lap"
+WANDB_PROJECT="paraphrx_ft_lap"
+RUN_NAME="l9x_full_stable_lap"
 
-srun $PYBIN "$RUN_SCRIPT" \
-  --tokenized_data_path "f_finetune/outputs_lap/cached_tokenized_data_9x" \
-  --model_path "f_finetune/model" \
-  --target_modules q_proj,k_proj,v_proj,o_proj,up_proj,down_proj \
+srun "$PYBIN" "$RUN_SCRIPT" \
+  --tokenized_data_path "$TOKENIZED_DATA" \
+  --model_path "$MODEL_PATH" \
+  --output_dir "$OUTPUT_DIR" \
+  --run_name "$RUN_NAME" \
+  --wandb_project "$WANDB_PROJECT" \
+  --target_modules none \
   --batch_size 2 \
   --gradient_accumulation_steps 8 \
-  --lr_scheduler_type cosine_with_restarts \
-  --num_epochs 3 \
-  --learning_rate 8e-6 \
+  --num_epochs 2 \
+  --learning_rate 8e-06 \
   --warmup_ratio 0.05 \
+  --lr_scheduler_type "cosine_with_restarts" \
   --weight_decay 0.1 \
-  --lora_rank 16 \
-  --lora_alpha 32 \
-  --lora_dropout 0.05 \
-  --bnb_8bit_optim \
   --bf16 \
-  --save_steps 500 \
-  --early_stopping_patience 3 \
-  --logging_steps 100 \
   --use_lap \
   --lap_layer 10 \
   --lap_t_inner 2 \
   --lap_p_sample 0.5 \
   --lap_epsilon 0.05 \
-  --lap_delta_lr 1e-2 \
-  --lap_lambda_lr 1e-3 \
-  --run_name h9x_a1_manytarg \
-  --output_dir f_finetune/outputs/h9x_a1_manytarg \
-  --wandb_project paraphrx_ft_lap \
+  --lap_delta_lr 0.01 \
+  --lap_lambda_lr 0.001 \
+  --early_stopping_patience 3 \
+  --save_steps 500 \
+  --logging_steps 100 \
+  --seed 42
   $WANDB_FLAG
 
-echo "$(date) - h9x_a1_manytarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - h9x_a1_manytarg job finished OK"
+echo "$(date) - l9x_full_stable_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l9x_full_stable_lap job finished OK"

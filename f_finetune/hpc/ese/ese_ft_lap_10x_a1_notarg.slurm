@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_preprocess_data
+#SBATCH --job-name=h10x_a1_notarg
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/ft_preproca%x_%j_hlap_9x_a1_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/ft_preproca%x_%j_hlap_9x_a1_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h10x_a1_notarg.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h10x_a1_notarg.err
 
 set -euo pipefail
-echo "$(date) - ft_preprocess_data job started on $(hostname)"
-echo "$(date) - ft_preprocess_data job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h10x_a1_notarg job started on $(hostname)"
+echo "$(date) - h10x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs_lap/ft_preprocess_data
+mkdir -p logs f_finetune/outputs_lap/h10x_a1_notarg
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -59,7 +59,11 @@ done
 echo "Using $($PYBIN -V)"
 
 export PYTHON_PKGS="$TMPDIR/python-packages"
+# --- NEW: Force a clean directory for packages ---
+echo "Forcing clean package directory at $PYTHON_PKGS"
+rm -rf "$PYTHON_PKGS"
 mkdir -p "$PYTHON_PKGS"
+# --- END NEW ---
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
 
 # DEEP-SEED compatible metadata libs
@@ -77,8 +81,9 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
+  "bitsandbytes>=0.43.2" \
   mpi4py \
-  --only-binary=deepspeed deepspeed==0.3.1.dev5 \
+  deepspeed \
   datasets==2.19.0 \
   numpy==1.24.4 \
   sentencepiece \
@@ -93,6 +98,7 @@ $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
@@ -104,15 +110,38 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
 
-RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
-  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
-  instruct_polite_request instruct_one_typo_punctuation \
-  --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/cached_tokenized_data_9x
+  --tokenized_data_path "f_finetune/outputs_lap/cached_tokenized_data_10x" \
+  --model_path "f_finetune/model" \
+  --target_modules none \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --lr_scheduler_type cosine_with_restarts \
+  --num_epochs 2 \
+  --learning_rate 8e-6 \
+  --warmup_ratio 0.05 \
+  --weight_decay 0.1 \
+  --lora_rank 16 \
+  --lora_alpha 32 \
+  --lora_dropout 0.05 \
+  --bnb_8bit_optim \
+  --bf16 \
+  --save_steps 500 \
+  --early_stopping_patience 3 \
+  --logging_steps 100 \
+  --use_lap \
+  --lap_layer 10 \
+  --lap_t_inner 2 \
+  --lap_p_sample 0.5 \
+  --lap_epsilon 0.05 \
+  --lap_delta_lr 1e-2 \
+  --lap_lambda_lr 1e-3 \
+  --run_name h10x_a1_notarg \
+  --output_dir f_finetune/outputs_lap/h10x_a1_notarg \
+  --wandb_project paraphrx_ft_lap \
+  $WANDB_FLAG
 
-echo "$(date) - preprocdata_8x job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - preprocdata_8x job finished OK"
+echo "$(date) - h10x_a1_notarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h10x_a1_notarg job finished OK"

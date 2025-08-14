@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=lcompare_actv_sim
+#SBATCH --job-name=l9x_a1_manytarg
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lcompare_actv_sim.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lcompare_actv_sim.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_a1_manytarg.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_a1_manytarg.err
 
 set -euo pipefail
-echo "$(date) - lcompare_actv_sim job started on $(hostname)"
-echo "$(date) - lcompare_actv_sim job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l9x_a1_manytarg job started on $(hostname)"
+echo "$(date) - l9x_a1_manytarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs_lap/hlap_8k_attn8ssettings/case_studies
+mkdir -p logs f_finetune/outputs_lap/l9x_a1_manytarg
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -91,7 +91,6 @@ $PYBIN -m pip install --prefer-binary \
   protobuf==3.20.* \
   wandb \
   matplotlib \
-  scipy \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -111,16 +110,38 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
-RUN_SCRIPT="f_finetune/src/compare_actvat_sim"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
 
 srun $PYBIN "$RUN_SCRIPT" \
-  --run_mode case_study \
-  --base_model_path "f_finetune/model" \
-  --ft_model_path "f_finetune/outputs_lap/hlap_8k_attn8ssettings/final" \
-  --prompts_json_path c_assess_inf/output50k/answers.json \
-  --output_dir "f_finetune/outputs_lap/hlap_8k_attn8ssettings/case_studies" \
-  --prompt_ids 1 3 \
-  --paraphrase_keys "instruct_polite_request" "instruct_sardonic" "instruct_one_typo_punctuation"
+  --tokenized_data_path "f_finetune/outputs_lap/cached_tokenized_data_9x" \
+  --model_path "f_finetune/model" \
+  --target_modules q_proj,k_proj,v_proj,o_proj,up_proj,down_proj \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --lr_scheduler_type cosine_with_restarts \
+  --num_epochs 3 \
+  --learning_rate 8e-6 \
+  --warmup_ratio 0.05 \
+  --weight_decay 0.1 \
+  --lora_rank 16 \
+  --lora_alpha 32 \
+  --lora_dropout 0.05 \
+  --bnb_8bit_optim \
+  --bf16 \
+  --save_steps 500 \
+  --early_stopping_patience 3 \
+  --logging_steps 100 \
+  --use_lap \
+  --lap_layer 10 \
+  --lap_t_inner 2 \
+  --lap_p_sample 0.5 \
+  --lap_epsilon 0.05 \
+  --lap_delta_lr 1e-2 \
+  --lap_lambda_lr 1e-3 \
+  --run_name l9x_a1_manytarg \
+  --output_dir f_finetune/outputs_lap/l9x_a1_manytarg \
+  --wandb_project paraphrx_ft_lap \
+  $WANDB_FLAG
 
-echo "$(date) - lcompare_actv_sim job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - lcompare_actv_sim job finished OK"
+echo "$(date) - l9x_a1_manytarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l9x_a1_manytarg job finished OK"
