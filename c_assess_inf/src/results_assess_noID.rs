@@ -1,20 +1,21 @@
 /*
 cargo results_assess \
   --model gemini-2.0-flash \
+  --run-name my_alpaca_run \
   a_data/alpaca/merge_instructs/all.json \
   c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all.json \
   c_assess_inf/output/alpaca_prxed/gemma-2-2b-it/instruct_merged/all_results.json
 */
 
 use anyhow::{anyhow, Context, Result};
+use chrono::Local;
 use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Map as JsonMap, Value};
-use chrono::Local;
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     fs,
     io::{BufWriter, Write},
     path::{Path, PathBuf},
@@ -62,6 +63,10 @@ struct Cli {
     answers: PathBuf,
     output: PathBuf,
 
+    // A name for the run, prepended to log and issues files
+    #[arg(long)]
+    run_name: Option<String>,
+
     // Gemini model name (e.g. gemini-2.5-flash-preview-05-20)
     #[arg(long, default_value = "gemini-2.0-flash")]
     model: String,
@@ -70,7 +75,7 @@ struct Cli {
     max_attempts: u8,
 
     // Milliseconds to wait after every successful request (avoid 429s)
-    #[arg(long = "delay-ms", default_value_t = 200)]
+    #[arg(long = "delay-ms", default_value_t = 250)]
     delay_ms: u64,
 
     // Google API key (overrides $GOOGLE_API_KEY)
@@ -119,9 +124,12 @@ async fn main() -> Result<()> {
         .file_stem()
         .unwrap_or_default()
         .to_string_lossy();
+    
+    // Prepend run_name to log and issue files if provided
+    let run_name_prefix = cli.run_name.as_deref().map(|n| format!("{}_", n)).unwrap_or_default();
 
-    // logs/<stem>_<timestamp>.logs
-    let log_path = log_dir.join(format!("{stem}_{ts}.logs"));
+    // logs/<run_name>_<stem>_<timestamp>.logs
+    let log_path = log_dir.join(format!("{}{}_{}.logs", run_name_prefix, stem, ts));
 
     let mut logger = Logger::new(&log_path)?;
     logger.log(&format!("run started -> model={} log={}", cli.model, log_path.display()));
@@ -130,6 +138,21 @@ async fn main() -> Result<()> {
     logger.log("reading json files");
     let instr_map = read_records(&cli.instructions, &mut logger);
     let ans_map   = read_records(&cli.answers,     &mut logger);
+
+    // Load existing results to allow resuming
+    let mut results: Vec<Value> = if cli.output.exists() {
+        fs::read_to_string(&cli.output)
+            .and_then(|s| serde_json::from_str(&s).map_err(Into::into))
+            .unwrap_or_else(|e| {
+                logger.log(&format!("[warn] could not parse existing results from {}: {}. Starting fresh.", cli.output.display(), e));
+                Vec::new()
+            })
+    } else {
+        Vec::new()
+    };
+    let processed_ids: HashSet<u32> = results.iter()
+        .filter_map(|v| v.get("prompt_count").and_then(Value::as_u64).map(|pc| pc as u32))
+        .collect();
 
     let api_key = cli
         .api_key
@@ -142,23 +165,52 @@ async fn main() -> Result<()> {
     let mut instr_sorted: Vec<(&String, &Record)> = instr_map.iter().collect();
     instr_sorted.sort_by_key(|(_, r)| r.prompt_count);
 
-    let bar = ProgressBar::new(instr_sorted.len() as u64);
+    // Filter out prompts that have already been processed
+    let tasks_to_process: Vec<_> = instr_sorted
+        .into_iter()
+        .filter(|(_, r)| !processed_ids.contains(&r.prompt_count))
+        .collect();
+    
+    logger.log(&format!(
+        "Total instructions: {}, Already processed: {}, To process now: {}",
+        instr_map.len(),
+        processed_ids.len(),
+        tasks_to_process.len()
+    ));
+
+    if tasks_to_process.is_empty() {
+        println!("All prompts already processed. Log: {}", log_path.display());
+        return Ok(());
+    }
+
+    let bar = ProgressBar::new(tasks_to_process.len() as u64);
     bar.set_style(
         ProgressStyle::with_template(
             "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})",
         )?,
     );
 
-    let mut results = Vec::new();
     let mut issues  = Vec::new();
 
-    for (id, inst) in instr_sorted {
-        logger.log(&format!("▶ id {id}"));
+    for (id, inst) in tasks_to_process {
+        // Add progress counter to log message
+        let progress = format!("({}/{})", bar.position() + 1, bar.length().unwrap_or(0));
+        logger.log(&format!("▶ id {id} {progress}"));
+
         let attempts = match process_single(
             id, inst, &ans_map, &client, &api_key, &cli.model,
             cli.max_attempts, &mut logger, &mut results, &mut issues,
         ).await {
-            Ok(n) => n,             // number of tries actually used
+            Ok((n, processed_this_run)) => {
+                // If the function processed something, save the results immediately
+                if processed_this_run {
+                    if let Err(e) = fs::write(&cli.output, serde_json::to_string_pretty(&results)?) {
+                         logger.log(&format!("[error] id {id}: Failed to save intermediate results: {e}"));
+                         // Continue anyway, but log the error
+                    }
+                }
+                n // number of tries actually used
+            },
             Err(e) => {
                 logger.log(&format!("[error] id {id}: {e}"));
                 issues.push(format!("id {id}: {e}"));
@@ -174,11 +226,11 @@ async fn main() -> Result<()> {
     }
     bar.finish_with_message("done");
 
-    fs::write(&cli.output, serde_json::to_string_pretty(&results)?)?;
-    logger.log("results written");
+    logger.log("run finished, results are up-to-date");
 
     if !issues.is_empty() {
-        let issues_path = cli.output.with_extension("issues.json");
+        // Use run_name_prefix for issues file as well
+        let issues_path = cli.output.with_file_name(format!("{}{}.issues.json", run_name_prefix, stem));
         fs::write(&issues_path, serde_json::to_string_pretty(&issues)?)?;
         logger.log(&format!(
             "wrote {} issues to {}", issues.len(), issues_path.display()
@@ -204,12 +256,12 @@ async fn process_single(
     logger: &mut Logger,
     results: &mut Vec<Value>,
     issues: &mut Vec<String>,
-) -> Result<u8> {
+) -> Result<(u8, bool)> { // Return number of attempts and a bool indicating if we processed
     let ans = match ans_map.get(id) {
         Some(a) => a,
         None => {
             issues.push(format!("answers missing id {id}"));
-            return Ok(max_attempts);
+            return Ok((max_attempts, false));
         }
     };
     let mut keys = vec!["instruction_original".to_string()];
@@ -242,7 +294,7 @@ async fn process_single(
     }
     if section.len() > 95_000 {
         issues.push(format!("id {id}: prompt too large"));
-        return Ok(max_attempts);
+        return Ok((max_attempts, false));
     }
 
     let schema = schema_for_keys(&keys);
@@ -280,13 +332,13 @@ async fn process_single(
             }
             Err(e) => {
                 issues.push(format!("id {id}: {e}"));
-                return Ok(max_attempts);
+                return Ok((max_attempts, false));
             }
         }
     }
     if !success {
         issues.push(format!("id {id}: all attempts failed"));
-        return Ok(max_attempts);
+        return Ok((max_attempts, false));
     }
 
     let mut res_obj = JsonMap::new();
@@ -303,7 +355,7 @@ async fn process_single(
     }
     results.push(Value::Object(res_obj));
     logger.log(&format!("[done] id {id} fully processed"));
-    Ok(attempts_used)
+    Ok((attempts_used, true))
 }
 
 fn build_client() -> Result<reqwest::Client> {
