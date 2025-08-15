@@ -12,7 +12,7 @@ Keeps all original outputs, adds:
 - Robust outlier detection (MAD z-scores)
 - Optional correlations of Δmetrics with ΔTF via scores JSONs
 
-USAGE (as before, plus optional flags):
+
   python 01_activation_similarity_norms.py \
     --base_model_path <BASE> \
     --ft_model_path <FT> \
@@ -23,6 +23,34 @@ USAGE (as before, plus optional flags):
     [--scores_ft_json_path <SCORES_FT.json>] \
     [--compute_pii] [--compute_svd] [--paraphrase_keys instruct_* ...]
 
+python3 f_finetune/src/compare_script01.py \
+    --base_model_path f_finetune/model \
+    --ft_model_path f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/final \
+    --prompts_json_path a_data/alpaca/50k_phrxed.json \
+    --output_dir f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/masstest100 \
+    --run_mode aggregate \
+    --limit 100 \
+    --compute_pii --compute_svd \
+    --scores_base_json_path c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
+    --scores_ft_json_path f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/scores.json
+
+    parser.add_argument("--base_model_path", type=str, required=True)
+    parser.add_argument("--ft_model_path", type=str, required=True)
+    parser.add_argument("--prompts_json_path", type=str, required=True)
+    parser.add_argument("--output_dir", type=str, default="robustness_analysis_results")
+    parser.add_argument("--run_mode", type=str, choices=['case_study', 'aggregate'], required=True)
+    parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--paraphrase_keys", type=str, nargs='+')
+    parser.add_argument("--prompt_ids", type=int, nargs='+')
+    parser.add_argument("--data_split", type=str, choices=['all', 'train', 'val', 'test'], default='test')
+    parser.add_argument("--val_size", type=float, default=0.05)
+    parser.add_argument("--test_size", type=float, default=0.05)
+    parser.add_argument("--seed", type=int, default=42)
+    # options
+    parser.add_argument("--compute_pii", action="store_true", help="Compute Paraphrase Invariance Index per layer (Base & FT).")
+    parser.add_argument("--compute_svd", action="store_true", help="Compute SVD summaries for 2D weight deltas.")
+    parser.add_argument("--scores_base_json_path", type=str, default="", help="Scores JSON for base (TF at index 0).")
+    parser.add_argument("--scores_ft_json_path", type=str, default="", help="Scores JSON for FT (TF at index 0).")
 """
 
 import argparse
@@ -240,17 +268,22 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
             # SVD (optional, only for 2D matrices)
             svd_vals = []
             energy_ratio_topk = None
-            if compute_svd and diff.dim() == 2 and min(diff.shape) >= topk:
+            # Guard against large matrices and unsupported dtypes for stability and performance.
+            SIZE_LIMIT = 16384  # Skip SVD for matrices with any dimension larger than this.
+            if compute_svd and diff.dim() == 2 and min(diff.shape) >= topk and max(diff.shape) <= SIZE_LIMIT:
                 try:
-                    # economy SVD on CPU to avoid OOM (fallback to torch.linalg.svdvals on smaller)
-                    sv = torch.linalg.svdvals(diff.cpu())
+                    # 1. Cast to float32 on CPU for SVD compatibility, as bfloat16 is not supported.
+                    M = diff.to(dtype=torch.float32, device='cpu')
+                    # 2. Compute SVD on the correctly typed matrix.
+                    sv = torch.linalg.svdvals(M)
                     sv = sv.detach().cpu().numpy()
                     sv_sorted = np.sort(sv)[::-1]
                     top = sv_sorted[:topk]
                     svd_vals = top.tolist()
-                    energy_ratio_topk = float((top**2).sum() / (sv_sorted**2).sum())
+                    # Add a small epsilon to prevent division by zero for zero-matrices.
+                    energy_ratio_topk = float((top**2).sum() / ((sv_sorted**2).sum() + 1e-9))
                 except Exception as e:
-                    script_logger.warning(f"SVD failed for {name}: {e}")
+                    script_logger.warning(f"SVD failed for {name} (shape: {list(diff.shape)}): {e}")
 
             scope, bucket, layer_idx = module_bucket(name)
             rows.append({
@@ -284,7 +317,7 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
     agg_bucket.to_csv(output_path / "weight_deltas_per_bucket_sum.csv", index=False)
     agg_bucket_normed.to_csv(output_path / "weight_deltas_per_bucket_normalized.csv", index=False)
 
-    # Legacy per-layer bar (kept)
+    # Legacy per-layer bar
     if not agg_layer.empty:
         fig, ax = plt.subplots(figsize=(15, 8))
         ax.bar(agg_layer["layer_idx"], agg_layer["delta_fro"], color='indigo', alpha=0.8)
@@ -784,7 +817,7 @@ def main():
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--paraphrase_keys", type=str, nargs='+')
     parser.add_argument("--prompt_ids", type=int, nargs='+')
-    parser.add_argument("--data_split", type=str, choices=['all', 'train', 'val', 'test'], default='val')
+    parser.add_argument("--data_split", type=str, choices=['all', 'train', 'val', 'test'], default='test')
     parser.add_argument("--val_size", type=float, default=0.05)
     parser.add_argument("--test_size", type=float, default=0.05)
     parser.add_argument("--seed", type=int, default=42)
