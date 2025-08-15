@@ -34,14 +34,16 @@ running:
 cargo robust_alpaca_eval llm-judge \
     --prompts a_data/alpaca/50k_phrxed.json \
     --answers-original c_assess_inf/output50k/gpt4_answers_1440.json \
-    --answers-paraphrased f_finetune/output_inf_ft_50k/li9x_a1_notarg_inf.json \
-    --output e_eval/output_robust_alpaca_eval/li9x_a1_notarg_inf_against_gpt4.json \
+    --answers-paraphrased f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/hanswers.json \
+    --output f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/robustalpaca_against_gpt4.json \
     --judging-model gemini-2.0-flash \
     --delay-ms 4000 \
     --api-call-max 200 \
     --api-key "xxx" \
     --num-judge-votes 3 \
     >> logs/robalev_6_$(date +%F_%T).log 2>&1 &
+
+    
 
 from-scores:
 cargo robust_alpaca_eval from-scores \

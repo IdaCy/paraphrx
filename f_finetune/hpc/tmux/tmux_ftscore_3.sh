@@ -35,10 +35,10 @@ set -x
 echo "$(date '+%F %T') - score_starter batch started"
 
 
-# 1A
+# 2A
 
-RUN_NAME="outputs_buckets_1-2_B-qlora-16"
-RUN_DIR="f_finetune/outputs_5/alpaca_specific_layers/${RUN_NAME}"
+RUN_NAME="outputs_buckets_1-2_D-qlora-16"
+RUN_DIR="f_finetune/outputs_5/all_data_specific_layers/${RUN_NAME}"
 ANSWERS="$RUN_DIR/${INF_NAME}"
 OUTPUT="$RUN_DIR/results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
 
@@ -52,7 +52,11 @@ else
 
   if cargo score_results_all_data \
       --instructions "$INSTR_ALPACA" \
+      --instructions "$INSTR_GSM8K" \
+      --instructions "$INSTR_MMLU" \
       --datasets alpaca \
+      --datasets gsm8k \
+      --datasets mmlu \
       --model "$MODEL" \
       --api-key "xxx" \
       --api-call-max 250 \
@@ -71,9 +75,50 @@ fi
 echo "$TS - tmux_ftscore_threestart finished $RUN_NAME"
 
 
-# 1B
+# 2B
 
-RUN_NAME="outputs_buckets_1-2_B-qlora-lowLR"
+RUN_NAME="outputs_buckets_1-2_D-qlora-32"
+RUN_DIR="f_finetune/outputs_5/all_data_specific_layers/${RUN_NAME}"
+ANSWERS="$RUN_DIR/${INF_NAME}"
+OUTPUT="$RUN_DIR/results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
+
+if [[ ! -d $RUN_DIR || ! -f $ANSWERS ]]; then
+  echo "⚠  Skipping $RUN_NAME - file(s) missing"
+else
+  mkdir -p "$(dirname "$OUTPUT")"
+  TS="$(date '+%Y%m%d_%H%M%S')"
+  LOG_FILE="$LOG_DIR/SCORING_mainlog_${RUN_NAME}_${TS}.txt"
+  echo "-> $RUN_NAME - starting $(date)  (log -> $LOG_FILE)"
+
+  if cargo score_results_all_data \
+      --instructions "$INSTR_ALPACA" \
+      --instructions "$INSTR_GSM8K" \
+      --instructions "$INSTR_MMLU" \
+      --datasets alpaca \
+      --datasets gsm8k \
+      --datasets mmlu \
+      --model "$MODEL" \
+      --api-key "xxx" \
+      --api-call-max 250 \
+      --log-name "SCORE_${RUN_NAME}" \
+      "$ANSWERS" \
+      "$OUTPUT" \
+       &> "$LOG_FILE"
+  then
+    echo "✔ $RUN_NAME - finished OK $(date)"
+  else
+    STATUS=$?
+    echo "⚠ $RUN_NAME - cargo exited $STATUS  (see $LOG_FILE)"
+  fi
+fi
+
+echo "$TS - tmux_ftscore_threestart finished $RUN_NAME"
+
+
+
+# 2C
+
+RUN_NAME="outputs_buckets_1-2_B-qlora-16"
 RUN_DIR="f_finetune/outputs_5/alpaca_specific_layers/${RUN_NAME}"
 ANSWERS="$RUN_DIR/${INF_NAME}"
 OUTPUT="$RUN_DIR/results_${MODEL//[^[:alnum:]]/_}_$(date '+%Y%m%d_%H%M%S').json"
