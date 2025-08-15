@@ -41,6 +41,16 @@ The output file is a list of dicts like:
       ...
     }
 One entry per prompt_count covering every prompt phrasing.
+
+python3 f_finetune/src/inf_ft_50k.py \
+    --data_path a_data/alpaca/50k_phrxed.json \
+    --base_model_path "f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/final" \
+    --output_json "f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/hanswers.json" \
+    --log_name "lgreat_nolap" \
+    --batch 32 \
+    --quant 4bit \
+    --max_samples 200 \
+    --wandb_project paraphrx_ft_nolap_inf
 """
 from __future__ import annotations
 
