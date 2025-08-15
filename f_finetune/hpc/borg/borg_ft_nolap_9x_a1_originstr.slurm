@@ -91,7 +91,6 @@ export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
 echo "$(date) - nolap_9x_a1_originst initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
 
 MODEL_PATH="f_finetune/model"
 OUTPUT_DIR="f_finetune/outputs_lap_pr/nolap_9x_a1_originst"
@@ -100,14 +99,14 @@ RUN_NAME="nolap_9x_a1_originst"
 
 # sbatch --dependency=afterany:1793 f_finetune/hpc/borg/borg_ft_nolap_9x_a1_originstr.slurm
 
-RUN_SCRIPT="f_finetune/src/finetuning_50k_resume.py"
+RUN_SCRIPT="f_finetune/src/finetuning_50k_resume_any_aw.py"
 srun "$PYBIN" "$RUN_SCRIPT" \
   --data_paths a_data/alpaca/50k_phrxed.json \
   --answers_path c_assess_inf/output50k/answers.json \
   --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
   instruct_future_tense instruct_coord_to_subord instruct_dramatic \
   instruct_polite_request instruct_one_typo_punctuation \
-  --resume_checkpoint f_finetune/outputs_lap_pr/real9x_stable5/checkpoint-1000 \
+  --resume_checkpoint f_finetune/outputs_nolap/nolap_9x_a1_originst/checkpoint-16500 \
   --target_modules none \
   --batch_size 2 \
   --gradient_accumulation_steps 8 \

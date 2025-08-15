@@ -107,7 +107,7 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --output_dir "$OUTPUT_DIR" \
   --run_name "$RUN_NAME" \
   --wandb_project "$WANDB_PROJECT" \
-  --resume_from_checkpoint f_finetune/outputs_lap_pr/real9x_stable5/checkpoint-1000 \
+  --resume_from_checkpoint f_finetune/outputs_lap_pr/real9x_stable5/checkpoint-10000\
   --target_modules none \
   --batch_size 2 \
   --gradient_accumulation_steps 8 \
