@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=lprc_9x_pr_aw
+#SBATCH --job-name=lgreat_nolap
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,12 +8,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_9x_pr_aw_%j_.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_9x_pr_aw_%j_.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lgreat_nolap.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lgreat_nolap.err
 
 set -euo pipefail
-echo "$(date) - lprc_9x_pr_aw job started on $(hostname)"
-echo "$(date) - lprc_9x_pr_aw job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lgreat_nolap job started on $(hostname)"
+echo "$(date) - lgreat_nolap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -59,7 +59,11 @@ done
 echo "Using $($PYBIN -V)"
 
 export PYTHON_PKGS="$TMPDIR/python-packages"
+# --- NEW: Force a clean directory for packages ---
+echo "Forcing clean package directory at $PYTHON_PKGS"
+rm -rf "$PYTHON_PKGS"
 mkdir -p "$PYTHON_PKGS"
+# --- END NEW ---
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
 
 # DEEP-SEED compatible metadata libs
@@ -77,8 +81,9 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
+  "bitsandbytes>=0.43.2" \
   mpi4py \
-  --only-binary=deepspeed deepspeed==0.3.1.dev5 \
+  deepspeed \
   datasets==2.19.0 \
   numpy==1.24.4 \
   sentencepiece \
@@ -93,6 +98,7 @@ $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
@@ -105,17 +111,25 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
-srun $PYBIN "$RUN_SCRIPT" \
-  --prompts_path a_data/alpaca/50k_phrxed.json \
-  --answers_path c_assess_inf/output50k/answers.json \
-  --model_path f_finetune/model \
-  ¶¶¶¶####--output_path f_finetune/outputs_lap/cached_tokenized_data_prompts_answers \
-  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
-  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
-  instruct_polite_request instruct_one_typo_punctuation \
-  --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/l_tokenized_data_9x_pr_aw
+# sbatch --dependency=afterok:28003 f_finetune/hpc/ese/ese_ft_inf_lap_9x_full_stable2.slurm
 
-echo "$(date) - lprc_9x_pr_aw job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - lprc_9x_pr_aw job finished OK"
+echo "$(date) - lgreat_nolap initial setup OK"
+RUN_SCRIPT="f_finetune/src/inf_ft_50k.py"
+TOKENIZED_DATA="f_finetune/data/tokenized_data_9x_pr_aw"
+
+MAIN_DIR="f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft"
+MODEL_PATH="$MAIN_DIR/final"
+WANDB_PROJECT="paraphrx_nolap_inf"
+RUN_NAME="lgreat_nolap"
+
+srun "$PYBIN" "$RUN_SCRIPT" \
+    --data_path a_data/alpaca/50k_phrxed.json \
+    --base_model_path "$MAIN_DIR/final" \
+    --output_json "$MAIN_DIR/hanswers.json" \
+    --log_name "$RUN_NAME" \
+    --batch 4 \
+    --quant 4bit
+  $WANDB_FLAG
+
+echo "$(date) - lgreat_nolap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lgreat_nolap job finished OK"

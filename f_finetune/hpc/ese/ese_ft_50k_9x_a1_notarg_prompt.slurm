@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=lprc_9x_pr_aw
+#SBATCH --job-name=lpr9x_a1_notarg_50k_ft
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_9x_pr_aw_%j_.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_9x_pr_aw_%j_.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lpr9x_a1_notarg_50k_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lpr9x_a1_notarg_50k_ft.err
 
 set -euo pipefail
-echo "$(date) - lprc_9x_pr_aw job started on $(hostname)"
-echo "$(date) - lprc_9x_pr_aw job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lpr9x_a1_notarg_50k_ft job started on $(hostname)"
+echo "$(date) - lpr9x_a1_notarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs
+mkdir -p logs f_finetune/outputs/lpr9x_a1_notarg_50k_ft
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -93,6 +93,7 @@ $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
@@ -105,17 +106,29 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
+RUN_SCRIPT="f_finetune/src/finetuning_50k.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --prompts_path a_data/alpaca/50k_phrxed.json \
-  --answers_path c_assess_inf/output50k/answers.json \
-  --model_path f_finetune/model \
-  ¶¶¶¶####--output_path f_finetune/outputs_lap/cached_tokenized_data_prompts_answers \
+  --data_paths a_data/alpaca/50k_phrxed.json \
   --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
   instruct_future_tense instruct_coord_to_subord instruct_dramatic \
   instruct_polite_request instruct_one_typo_punctuation \
-  --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/l_tokenized_data_9x_pr_aw
+  --target_modules none \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --num_epochs 2 \
+  --learning_rate 8e-6 \
+  --warmup_ratio 0.05 \
+  --lr_scheduler_type cosine_with_restarts \
+  --weight_decay 0.1 \
+  --bf16 \
+  --eval_steps 500 \
+  --save_steps 500 \
+  --early_stopping_patience 3 \
+  --logging_steps 100 \
+  --run_name lpr9x_a1_notarg_50k_ft \
+  --output_dir f_finetune/outputs/lpr9x_a1_notarg_50k_ft \
+  --wandb_project paraphrx_ft_50k \
+  $WANDB_FLAG
 
-echo "$(date) - lprc_9x_pr_aw job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - lprc_9x_pr_aw job finished OK"
+echo "$(date) - lpr9x_a1_notarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lpr9x_a1_notarg_50k_ft job finished OK"

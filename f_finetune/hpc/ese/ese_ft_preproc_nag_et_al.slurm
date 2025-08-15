@@ -1,19 +1,19 @@
 #!/bin/bash -l
-#SBATCH --job-name=lprc_9x_pr_aw
+#SBATCH --job-name=lprc_nag_et_al
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_low
+#SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_9x_pr_aw_%j_.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_9x_pr_aw_%j_.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_nag_et_al_%j_.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/lprc_nag_et_al_%j_.err
 
 set -euo pipefail
-echo "$(date) - lprc_9x_pr_aw job started on $(hostname)"
-echo "$(date) - lprc_9x_pr_aw job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lprc_nag_et_al job started on $(hostname)"
+echo "$(date) - lprc_nag_et_al job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -105,17 +105,11 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
+RUN_SCRIPT="f_finetune/src/ft_preprocess_nag_et_al.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --prompts_path a_data/alpaca/50k_phrxed.json \
-  --answers_path c_assess_inf/output50k/answers.json \
+  --data_paths c_assess_inf/output50k/answers.json \
   --model_path f_finetune/model \
-  ¶¶¶¶####--output_path f_finetune/outputs_lap/cached_tokenized_data_prompts_answers \
-  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
-  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
-  instruct_polite_request instruct_one_typo_punctuation \
-  --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/l_tokenized_data_9x_pr_aw
+  --output_path f_finetune/outputs_lap/tokenized_nag_et_al
 
-echo "$(date) - lprc_9x_pr_aw job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - lprc_9x_pr_aw job finished OK"
+echo "$(date) - lprc_nag_et_al job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lprc_nag_et_al job finished OK"
