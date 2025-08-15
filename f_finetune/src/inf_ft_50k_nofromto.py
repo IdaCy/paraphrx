@@ -88,8 +88,6 @@ def load_examples_with_resume(
     seed: int,
     split: str,
     max_samples: int,
-    from_prompt_id: int,
-    upto_prompt_id: int,
     resume_json_path: str | None,
 ) -> Tuple[List[Tuple[int, str, str, str]], Dict[int, Dict]]:
     """
@@ -115,23 +113,8 @@ def load_examples_with_resume(
     else:  # held-out = val ∪ test
         keep_ids = val_ids | test_ids
 
-    # Filter by prompt_count ID ranges
-    sorted_keep_ids = sorted(list(keep_ids))
-
-    if from_prompt_id > 0:
-        sorted_keep_ids = [pc for pc in sorted_keep_ids if pc >= from_prompt_id]
-        logging.info("Filtering from prompt_count >= %d, %d IDs remain.", from_prompt_id, len(sorted_keep_ids))
-
-
-    if upto_prompt_id > 0:
-        sorted_keep_ids = [pc for pc in sorted_keep_ids if pc <= upto_prompt_id]
-        logging.info("Filtering up to prompt_count <= %d, %d IDs remain.", upto_prompt_id, len(sorted_keep_ids))
-
-    if max_samples > 0:
-        sorted_keep_ids = sorted_keep_ids[:max_samples]
-        logging.info("Applying max_samples=%d, final group count is %d.", max_samples, len(sorted_keep_ids))
-
-    keep_ids = set(sorted_keep_ids)
+    if max_samples:
+        keep_ids = set(sorted(keep_ids)[: max_samples])
 
     # Init results_map with prompt_count + input for all kept IDs
     results_map: Dict[int, Dict] = {}
@@ -263,8 +246,6 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=42, help="Must match training")
     p.add_argument("--split", choices=["val", "test", "heldout"], default="heldout", help="'val', 'test', or both (heldout)")
     p.add_argument("--max_samples", type=int, default=0, help="Process at most this many prompt_count groups (0 = all)")
-    p.add_argument("--from_prompt_id", type=int, default=0, help="Start processing from this prompt_count ID (inclusive)")
-    p.add_argument("--upto_prompt_id", type=int, default=0, help="Process up to this prompt_count ID (inclusive, 0 = no limit)")
 
     p.add_argument("--base_model_path", required=True)
     p.add_argument("--lora_path", help="Path to LoRA adapter; omit for full-FT")
@@ -324,8 +305,6 @@ def main() -> None:
         seed=args.seed,
         split=args.split,
         max_samples=args.max_samples,
-        from_prompt_id=args.from_prompt_id,
-        upto_prompt_id=args.upto_prompt_id,
         resume_json_path=args.output_json,
     )
     if not flat_queue:
@@ -421,7 +400,7 @@ def main() -> None:
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    # Generation helpers
+    # --- Generation helpers ---
     def _save_partial():
         out_items = sorted(results_map.values(), key=lambda d: d["prompt_count"])
         Path(args.output_json).write_text(json.dumps(out_items, indent=2, ensure_ascii=False))

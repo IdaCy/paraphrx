@@ -125,7 +125,7 @@ RUN_NAME="lgreat_nolap"
 srun "$PYBIN" "$RUN_SCRIPT" \
     --data_path a_data/alpaca/50k_phrxed.json \
     --base_model_path "$MAIN_DIR/final" \
-    --output_json "$MAIN_DIR/hanswers.json" \
+    --output_json "$MAIN_DIR/xxanswers.json" \
     --log_name "$RUN_NAME" \
     --batch 4 \
     --quant 4bit

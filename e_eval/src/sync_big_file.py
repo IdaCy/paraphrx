@@ -56,6 +56,10 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
         f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap \
         lpr9x_full_stable5_lap
 
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/data/tokenized_data_9x_pr_aw \
+        tokenized_data_no9xbutall_pr_aw
+
 
 python sync_big_file.py download the_artifact_name /path/to/save
 python3 e_eval/src/sync_big_file.py download \
@@ -102,6 +106,10 @@ python3 e_eval/src/sync_big_file.py download_folder \
 python3 e_eval/src/sync_big_file.py download_folder \
         lpr9x_full_stable5_lap \
         f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        tokenized_data_no9xbutall_pr_aw \
+        f_finetune/data/tokenized_data_9x_pr_aw
 
 
         
