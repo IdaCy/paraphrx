@@ -36,18 +36,10 @@ def build_chat_prompt(instruction: str, inp: Union[str, None] = "") -> str:
         return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     return f"<start_of_turn>user\n{user_msg}<end_of_turn>\n<start_of_turn>model\n"
 
-def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str], use_prompt_output_as_answer: bool = False) -> List[Example]:
+def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str]) -> List[Example]:
     """
     Loads examples by combining instructions from a prompts file and answers
-    from a corresponding answers file.
-
-    Args:
-        prompts_path: Path to the JSON file with instructions.
-        answers_path: Path to the JSON file with answers.
-        instruct_types: A list of specific instruction types to include.
-        use_prompt_output_as_answer: If True, use the 'output' field from the prompts JSON
-                                     as the answer. Otherwise, use 'instruction_original'
-                                     from the answers JSON.
+    from a corresponding answers file
     """
     examples = []
     
@@ -65,12 +57,12 @@ def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str
     for prompt_item in prompts_data:
         pc_id = prompt_item["prompt_count"]
         
-        # Skip if there's no corresponding answer entry and we need it
-        if not use_prompt_output_as_answer and pc_id not in answers_map:
+        # Skip if there's no corresponding answer entry
+        if pc_id not in answers_map:
             logging.warning(f"Skipping prompt_count {pc_id} as it was not found in the answers file.")
             continue
             
-        answer_item = answers_map.get(pc_id)
+        answer_item = answers_map[pc_id]
         
         inp = prompt_item.get("input", "")
         
@@ -89,12 +81,8 @@ def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str
         for key in keys_to_process:
             # The instruction comes from the PROMPT file
             instruction = prompt_item.get(key)
-            
-            # The answer is sourced based on the flag
-            if use_prompt_output_as_answer:
-                answer = prompt_item.get("output")
-            else:
-                answer = answer_item.get("instruction_original") if answer_item else None
+            # The answer comes from the corresponding key in the ANSWER file
+            answer = answer_item.get("instruction_original")
 
             # Ensure both the instruction and its corresponding answer exist
             if instruction and answer:
@@ -171,8 +159,6 @@ def main():
     parser.add_argument("--model_path", required=True)
     parser.add_argument("--output_path", required=True)
     parser.add_argument("--instruct_types", nargs="+", default=[])
-    # ADDED: New argument to control the answer source
-    parser.add_argument("--use_prompt_output_as_answer", action="store_true", help="If set, use the 'output' field from the prompts JSON as the target answer.")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -187,8 +173,7 @@ def main():
     logging.info("Starting data preprocessing.")
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
     
-    # CHANGED: Pass the new argument to the load_examples function
-    all_examples = load_examples(args.prompts_path, args.answers_path, args.instruct_types, args.use_prompt_output_as_answer)
+    all_examples = load_examples(args.prompts_path, args.answers_path, args.instruct_types)
     logging.info(f"Loaded {len(all_examples)} total examples.")
 
     # 1. Define sizes for both validation and test sets. 90/5/5 is a standard split
