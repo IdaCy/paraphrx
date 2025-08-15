@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=l9x_full_stable2_lap
+#SBATCH --job-name=lpr9x_full_stable5_lap
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_full_stable2_lap.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l9x_full_stable2_lap.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lpr9x_full_stable5_lap.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lpr9x_full_stable5_lap.err
 
 set -euo pipefail
-echo "$(date) - l9x_full_stable2_lap job started on $(hostname)"
-echo "$(date) - l9x_full_stable2_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lpr9x_full_stable5_lap job started on $(hostname)"
+echo "$(date) - lpr9x_full_stable5_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs_lap/l9x_full_stable2_lap
+mkdir -p logs f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -111,11 +111,11 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x_wstyle"
+TOKENIZED_DATA="f_finetune/data/tokenized_data_9x_pr_aw"
 MODEL_PATH="f_finetune/model"
-OUTPUT_DIR="f_finetune/outputs_lap/l9x_full_stable2_lap"
+OUTPUT_DIR="f_finetune/outputs_outputs_lap_prlap/lpr9x_full_stable5_lap"
 WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="l9x_full_stable2_lap"
+RUN_NAME="lpr9x_full_stable5_lap"
 
 srun "$PYBIN" "$RUN_SCRIPT" \
   --tokenized_data_path "$TOKENIZED_DATA" \
@@ -145,5 +145,5 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --seed 42
   $WANDB_FLAG
 
-echo "$(date) - l9x_full_stable2_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - l9x_full_stable2_lap job finished OK"
+echo "$(date) - lpr9x_full_stable5_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lpr9x_full_stable5_lap job finished OK"

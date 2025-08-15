@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=hi9x_full_stable2_lap
+#SBATCH --job-name=hil9x_full_stable2_lap
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
@@ -8,12 +8,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hi9x_full_stable2_lap.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hi9x_full_stable2_lap.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hil9x_full_stable2_lap.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hil9x_full_stable2_lap.err
 
 set -euo pipefail
-echo "$(date) - hi9x_full_stable2_lap job started on $(hostname)"
-echo "$(date) - hi9x_full_stable2_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hil9x_full_stable2_lap job started on $(hostname)"
+echo "$(date) - hil9x_full_stable2_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
@@ -113,14 +113,14 @@ export MPLBACKEND=Agg
 
 # sbatch --dependency=afterok:28003 f_finetune/hpc/ese/ese_ft_inf_lap_9x_full_stable2.slurm
 
-echo "$(date) - i9x_3lap_notarg initial setup OK"
+echo "$(date) - hil9x_full_stable2_lap initial setup OK"
 RUN_SCRIPT="f_finetune/src/inf_ft_50k_frompreproc.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount"
+TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x"
 
-MAIN_DIR="f_finetune/outputs_lap/hi9x_full_stable2_lap"
+MAIN_DIR="f_finetune/outputs_lap/l9x_full_stable2_lap"
 MODEL_PATH="$MAIN_DIR/final"
 WANDB_PROJECT="paraphrx_lap_inf"
-RUN_NAME="i9x_3lap_notarg"
+RUN_NAME="hil9x_full_stable2_lap"
 
 srun "$PYBIN" "$RUN_SCRIPT" \
     --data_path a_data/alpaca/50k_phrxed.json \
@@ -131,5 +131,5 @@ srun "$PYBIN" "$RUN_SCRIPT" \
     --quant 4bit
   $WANDB_FLAG
 
-echo "$(date) - hi9x_full_stable2_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - hi9x_full_stable2_lap job finished OK"
+echo "$(date) - hil9x_full_stable2_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - hil9x_full_stable2_lap job finished OK"
