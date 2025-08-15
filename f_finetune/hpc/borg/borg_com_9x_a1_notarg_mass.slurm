@@ -16,7 +16,7 @@ echo "$(date) – com_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.l
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs/cp_9x_a1_notarg_best/mass_20test
+mkdir -p logs
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -103,15 +103,15 @@ TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
 ############### IS LIMITED ################
 ############### IS LIMITED ################
 ############### IS LIMITED ################
+#  --paraphrase_keys "instruct_joke" "instruct_sardonic" \
 srun $PYBIN "$RUN_SCRIPT" \
   --run_mode aggregate \
   --data_split test \
-  --paraphrase_keys "instruct_joke" "instruct_sardonic" \
   --base_model_path "f_finetune/model" \
   --ft_model_path "f_finetune/outputs/cp_9x_a1_notarg_best/final" \
-  --prompts_json_path c_assess_inf/output50k/answers.json \
-  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/mass_20test" \
-  --limit 20
+  --prompts_json_path a_data/alpaca/50k_phrxed.json \
+  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/mass_1000" \
+  --limit 1000
 
 echo "$(date) – com_9x_a1_notarg job itself finished OK"
 

@@ -1,34 +1,37 @@
 #!/bin/bash -l
-#SBATCH --job-name=iopt_9x_3lap_notarg_lap
+#SBATCH --job-name=ft_preprocess_nag_et_al
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
+#SBATCH --mem=64G
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
-#SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_iopt_9x_3lap_notarg_lap.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_iopt_9x_3lap_notarg_lap.err
+#SBATCH --time=10:00:00
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_ft_preprocess_data.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_ft_preprocess_data.err
 
 set -euo pipefail
-echo "$(date) - iopt_9x_3lap_notarg_lap job started on $(hostname)"
-echo "$(date) - iopt_9x_3lap_notarg_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_preprocess_nag_et_al job started on $(hostname)"
+echo "$(date) – ft_preprocess_nag_et_al job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs
+mkdir -p logs f_finetune/outputs_lap/ft_preprocess_nag_et_al
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
 mkdir -p "$TMPDIR"
 echo "Using scratch-backed TMPDIR=$TMPDIR"
 
+# Shared HF cache
 export HF_HOME="$PROJ/hf_cache"
 export HUGGINGFACE_HUB_CACHE="$HF_HOME/hub"
 export TRANSFORMERS_CACHE="$HF_HOME/transformers"
 mkdir -p "$HF_HOME"
+
 export TRITON_CACHE_DIR="$TMPDIR/triton_cache_${SLURM_JOB_ID}"
 mkdir -p "$TRITON_CACHE_DIR"
+
 export PIP_CACHE_DIR="$TMPDIR/pip_cache_${SLURM_JOB_ID}"
 export XDG_CACHE_HOME="$TMPDIR/xdg_cache_${SLURM_JOB_ID}"
 export WANDB_DIR="$TMPDIR/wandb_cache_${SLURM_JOB_ID}"
@@ -38,8 +41,12 @@ export PYTHONPATH=
 export PATH=$HOME/.local/bin:$PATH
 
 cleanup () {
-  echo "$(date) - cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
-  rm -rf "$TMPDIR"
+  echo "$(date) – cleaning up only my directories for $SLURM_JOB_ID"
+  rm -rf \
+    "$PIP_CACHE_DIR" \
+    "$XDG_CACHE_HOME" \
+    "$WANDB_DIR" \
+    "$TRITON_CACHE_DIR"
 }
 trap cleanup EXIT ERR INT TERM
 
@@ -50,60 +57,63 @@ for P in python3.11 python3.10 python3.9 python3; do
 done
 [ -z "${PYBIN:-}" ] && { echo "No python3 on PATH"; exit 1; }
 echo "Using $($PYBIN -V)"
+
 export PYTHON_PKGS="$TMPDIR/python-packages"
 mkdir -p "$PYTHON_PKGS"
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
+
 curl -sSL https://bootstrap.pypa.io/get-pip.py -o "$TMPDIR/get-pip.py"
 $PYBIN "$TMPDIR/get-pip.py" --target "$PYTHON_PKGS" --no-cache-dir
-$PYBIN -m pip install --upgrade "importlib_metadata>=5.2.0" "testresources==2.0.1" --no-cache-dir --target "$PYTHON_PKGS"
-$PYBIN -m pip install --upgrade pip wheel --no-cache-dir --target "$PYTHON_PKGS"
-$PYBIN -m pip install --upgrade setuptools --no-cache-dir --target "$PYTHON_PKGS"
+
+$PYBIN -m pip install --upgrade "importlib_metadata>=5.2.0" \
+                                "testresources==2.0.1" \
+    --no-cache-dir --target "$PYTHON_PKGS"
+
+$PYBIN -m pip install --upgrade pip wheel \
+  --no-cache-dir --target "$PYTHON_PKGS"
+
+$PYBIN -m pip install --upgrade setuptools \
+  --no-cache-dir --target "$PYTHON_PKGS"
+
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
-  torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
-  transformers==4.45.0 \
-  peft==0.11.1 \
+  torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cpu \
+  transformers==4.41.2 \
   datasets==2.19.0 \
   numpy==1.26.4 \
   sentencepiece \
+  loguru \
   protobuf==3.20.* \
-  wandb \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
+
 $PYBIN - <<'PY'
-import torch, transformers, pathlib, importlib.util, numpy as np, safetensors
+import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
-print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("CUDA?       :", torch.cuda.is_available()) # Will print False, which is correct
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
+
 source /scratch_root/ifc24/.hf_token || true
 [ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
+
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-# sbatch --dependency=afterok:1745 f_finetune/hpc/borg/borg_ft_inf_lap_9x_3lap_notarg_optim.slurm
+# Run
+echo "$(date) – ft_preprocess_nag_et_al initial setup OK"
+RUN_SCRIPT="f_finetune/src/ft_preprocess_nag_et_al.py"
+srun $PYBIN "$RUN_SCRIPT" \
+  --data_paths c_assess_inf/output50k/answers.json \
+  --model_path f_finetune/model \
+  --output_path f_finetune/outputs_lap/cached_tokenized_nag_et_al
 
-echo "$(date) - iopt_9x_3lap_notarg_lap initial setup OK"
-RUN_SCRIPT="f_finetune/src/inf_ft_50k_frompreproc.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x"
+echo "$(date) – ft_preprocess_nag_et_al job itself finished OK"
 
-MAIN_DIR="f_finetune/outputs_lap/opt_9x_3lap_notarg_lap"
-MODEL_PATH="$MAIN_DIR/final"
-WANDB_PROJECT="paraphrx_lap_inf"
-RUN_NAME="iopt_9x_3lap_notarg_lap"
+rm -rf "$TMPDIR" \
+       "$PIP_CACHE_DIR" \
+       "$XDG_CACHE_HOME"
 
-srun "$PYBIN" "$RUN_SCRIPT" \
-    --data_path a_data/alpaca/50k_phrxed.json \
-    --tokenized_data_path "$TOKENIZED_DATA" \
-    --base_model_path "$MAIN_DIR/final" \
-    --output_json "$MAIN_DIR/answers.json" \
-    --batch 4 \
-    --quant 4bit
-  $WANDB_FLAG
-
-echo "$(date) - iopt_9x_3lap_notarg_lap job itself finished OK"
-
-echo "$(date) - iopt_9x_3lap_notarg_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - iopt_9x_3lap_notarg_lap job finished & stuff cleaned OK"
+echo "$(date) – ft_preprocess_nag_et_al job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – ft_preprocess_nag_et_al job finished & stuff cleaned OK"

@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=com_9x_a1_notarg
+#SBATCH --job-name=casest_9x_a1_notarg
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_com_9x_a1_notarg.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_com_9x_a1_notarg.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_casest_9x_a1_notarg.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_casest_9x_a1_notarg.err
 
 set -euo pipefail
-echo "$(date) – com_9x_a1_notarg job started on $(hostname)"
-echo "$(date) – com_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – casest_9x_a1_notarg job started on $(hostname)"
+echo "$(date) – casest_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs/cp_9x_a1_notarg_best/case_studies_test
+mkdir -p logs
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -92,7 +92,7 @@ source /scratch_root/ifc24/.hf_token || true
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) – com_9x_a1_notarg initial setup OK"
+echo "$(date) – casest_9x_a1_notarg initial setup OK"
 RUN_SCRIPT="f_finetune/src/compare_activat_sim.py"
 TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
 
@@ -101,12 +101,12 @@ srun $PYBIN "$RUN_SCRIPT" \
   --data_split all \
   --base_model_path "f_finetune/model" \
   --ft_model_path "f_finetune/outputs/cp_9x_a1_notarg_best/final" \
-  --prompts_json_path c_assess_inf/output50k/answers.json \
-  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/case_studies_test" \
-  --prompt_ids 1 3 5 \
-  --paraphrase_keys "instruct_polite_request" "instruct_sardonic" "instruct_one_typo_punctuation"
+  --prompts_json_path a_data/alpaca/50k_phrxed.json \
+  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/cases_outliers_mass1000" \
+  --prompt_ids 4 32 125 219 516 850 \
+  --paraphrase_keys "instruct_leet_speak" "instruct_joke" "instruct_output_markdown" "instruct_dramatic"  \
 
-echo "$(date) – com_9x_a1_notarg job itself finished OK"
+echo "$(date) – casest_9x_a1_notarg job itself finished OK"
 
-echo "$(date) – com_9x_a1_notarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – com_9x_a1_notarg job finished & stuff cleaned OK"
+echo "$(date) – casest_9x_a1_notarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – casest_9x_a1_notarg job finished & stuff cleaned OK"

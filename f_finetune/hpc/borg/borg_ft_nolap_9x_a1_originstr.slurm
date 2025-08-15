@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=iopt_9x_3lap_notarg_lap
+#SBATCH --job-name=nolap_9x_a1_originst
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_iopt_9x_3lap_notarg_lap.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_iopt_9x_3lap_notarg_lap.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_nolap_9x_a1_originst.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_nolap_9x_a1_originst.err
 
 set -euo pipefail
-echo "$(date) - iopt_9x_3lap_notarg_lap job started on $(hostname)"
-echo "$(date) - iopt_9x_3lap_notarg_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - nolap_9x_a1_originst job started on $(hostname)"
+echo "$(date) - nolap_9x_a1_originst job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs
+mkdir -p logs f_finetune/outputs_nolap/nolap_9x_a1_originst
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -61,19 +61,26 @@ $PYBIN -m pip install --upgrade setuptools --no-cache-dir --target "$PYTHON_PKGS
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
+  safetensors==0.4.3 \
   peft==0.11.1 \
+  bitsandbytes==0.43.2 \
+  mpi4py \
   datasets==2.19.0 \
   numpy==1.26.4 \
   sentencepiece \
+  loguru \
   protobuf==3.20.* \
   wandb \
+  matplotlib \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np, safetensors
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
+print("Safetensors :", safetensors.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
@@ -83,27 +90,43 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-# sbatch --dependency=afterok:1745 f_finetune/hpc/borg/borg_ft_inf_lap_9x_3lap_notarg_optim.slurm
+echo "$(date) - nolap_9x_a1_originst initial setup OK"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
 
-echo "$(date) - iopt_9x_3lap_notarg_lap initial setup OK"
-RUN_SCRIPT="f_finetune/src/inf_ft_50k_frompreproc.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x"
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/nolap_9x_a1_originst"
+WANDB_PROJECT="paraphrx_ft_lap"
+RUN_NAME="nolap_9x_a1_originst"
 
-MAIN_DIR="f_finetune/outputs_lap/opt_9x_3lap_notarg_lap"
-MODEL_PATH="$MAIN_DIR/final"
-WANDB_PROJECT="paraphrx_lap_inf"
-RUN_NAME="iopt_9x_3lap_notarg_lap"
+# sbatch --dependency=afterany:1793 f_finetune/hpc/borg/borg_ft_nolap_9x_a1_originstr.slurm
 
+RUN_SCRIPT="f_finetune/src/finetuning_50k_resume.py"
 srun "$PYBIN" "$RUN_SCRIPT" \
-    --data_path a_data/alpaca/50k_phrxed.json \
-    --tokenized_data_path "$TOKENIZED_DATA" \
-    --base_model_path "$MAIN_DIR/final" \
-    --output_json "$MAIN_DIR/answers.json" \
-    --batch 4 \
-    --quant 4bit
+  --data_paths a_data/alpaca/50k_phrxed.json \
+  --answers_path c_assess_inf/output50k/answers.json \
+  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
+  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
+  instruct_polite_request instruct_one_typo_punctuation \
+  --resume_checkpoint f_finetune/outputs_lap_pr/real9x_stable5/checkpoint-1000 \
+  --target_modules none \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --num_epochs 2 \
+  --learning_rate 8e-6 \
+  --warmup_ratio 0.05 \
+  --lr_scheduler_type cosine_with_restarts \
+  --weight_decay 0.1 \
+  --bf16 \
+  --eval_steps 500 \
+  --save_steps 500 \
+  --early_stopping_patience 3 \
+  --logging_steps 100 \
+  --run_name nolap_9x_a1_originst \
+  --output_dir f_finetune/outputs_nolap/nolap_9x_a1_originst \
+  --wandb_project paraphrx_ft_50k \
   $WANDB_FLAG
 
-echo "$(date) - iopt_9x_3lap_notarg_lap job itself finished OK"
+echo "$(date) - nolap_9x_a1_originst job itself finished OK"
 
-echo "$(date) - iopt_9x_3lap_notarg_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - iopt_9x_3lap_notarg_lap job finished & stuff cleaned OK"
+echo "$(date) - nolap_9x_a1_originst job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - nolap_9x_a1_originst job finished & stuff cleaned OK"

@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=iopt_9x_3lap_notarg_lap
+#SBATCH --job-name=opt_9x_topa
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_iopt_9x_3lap_notarg_lap.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_iopt_9x_3lap_notarg_lap.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_opt_9x_topa.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_opt_9x_topa.err
 
 set -euo pipefail
-echo "$(date) - iopt_9x_3lap_notarg_lap job started on $(hostname)"
-echo "$(date) - iopt_9x_3lap_notarg_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - opt_9x_topa job started on $(hostname)"
+echo "$(date) - opt_9x_topa job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs
+mkdir -p logs f_finetune/outputs_lap_pr/opt_9x_topa
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -61,19 +61,26 @@ $PYBIN -m pip install --upgrade setuptools --no-cache-dir --target "$PYTHON_PKGS
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
+  safetensors==0.4.3 \
   peft==0.11.1 \
+  bitsandbytes==0.43.2 \
+  mpi4py \
   datasets==2.19.0 \
   numpy==1.26.4 \
   sentencepiece \
+  loguru \
   protobuf==3.20.* \
   wandb \
+  matplotlib \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np, safetensors
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
+print("Safetensors :", safetensors.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
@@ -83,27 +90,44 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-# sbatch --dependency=afterok:1745 f_finetune/hpc/borg/borg_ft_inf_lap_9x_3lap_notarg_optim.slurm
+echo "$(date) - opt_9x_topa initial setup OK"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
+TOKENIZED_DATA="f_finetune/data/tokenized_data_9x_pr_aw"
 
-echo "$(date) - iopt_9x_3lap_notarg_lap initial setup OK"
-RUN_SCRIPT="f_finetune/src/inf_ft_50k_frompreproc.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/tokenized_data_9x"
-
-MAIN_DIR="f_finetune/outputs_lap/opt_9x_3lap_notarg_lap"
-MODEL_PATH="$MAIN_DIR/final"
-WANDB_PROJECT="paraphrx_lap_inf"
-RUN_NAME="iopt_9x_3lap_notarg_lap"
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/opt_9x_topa"
+WANDB_PROJECT="paraphrx_ft_lap"
+RUN_NAME="opt_9x_topa"
 
 srun "$PYBIN" "$RUN_SCRIPT" \
-    --data_path a_data/alpaca/50k_phrxed.json \
-    --tokenized_data_path "$TOKENIZED_DATA" \
-    --base_model_path "$MAIN_DIR/final" \
-    --output_json "$MAIN_DIR/answers.json" \
-    --batch 4 \
-    --quant 4bit
+  --tokenized_data_path "$TOKENIZED_DATA" \
+  --model_path "$MODEL_PATH" \
+  --output_dir "$OUTPUT_DIR" \
+  --run_name "$RUN_NAME" \
+  --wandb_project "$WANDB_PROJECT" \
+  --target_modules none \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --num_epochs 2 \
+  --learning_rate 1.2e-05 \
+  --warmup_ratio 0.06 \
+  --lr_scheduler_type cosine \
+  --weight_decay 0.01 \
+  --bf16 \
+  --use_lap \
+  --lap_layer 12 \
+  --lap_t_inner 3 \
+  --lap_p_sample 0.55 \
+  --lap_epsilon 0.07 \
+  --lap_delta_lr 0.015 \
+  --lap_lambda_lr 0.0015 \
+  --early_stopping_patience 3 \
+  --save_steps 1000 \
+  --logging_steps 50 \
+  --seed 42 \
   $WANDB_FLAG
 
-echo "$(date) - iopt_9x_3lap_notarg_lap job itself finished OK"
+echo "$(date) - opt_9x_topa job itself finished OK"
 
-echo "$(date) - iopt_9x_3lap_notarg_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - iopt_9x_3lap_notarg_lap job finished & stuff cleaned OK"
+echo "$(date) - opt_9x_topa job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - opt_9x_topa job finished & stuff cleaned OK"

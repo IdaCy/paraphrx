@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=ft_preprocess_data
+#SBATCH --job-name=real9x_preproc
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --gres=gpu:1
 #SBATCH --time=10:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_ft_preprocess_data.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_ft_preprocess_data.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_real9x_preproc.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_real9x_preproc.err
 
 set -euo pipefail
-echo "$(date) – ft_preprocess_data job started on $(hostname)"
-echo "$(date) – ft_preprocess_data job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – real9x_preproc job started on $(hostname)"
+echo "$(date) – real9x_preproc job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap/ft_preprocess_data
+mkdir -p logs f_finetune/outputs_lap/real9x_preproc
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -102,18 +102,23 @@ export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
 # Run
-echo "$(date) – ft_preprocess_data initial setup OK"
+echo "$(date) – real9x_preproc initial setup OK"
 RUN_SCRIPT="f_finetune/src/ft_preprocess_data.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
+  --prompts_path a_data/alpaca/50k_phrxed.json \
+  --answers_path c_assess_inf/output50k/answers.json \
   --model_path f_finetune/model \
-  --output_path f_finetune/outputs_lap/cached_tokenized_data
+  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
+  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
+  instruct_polite_request instruct_one_typo_punctuation \
+  --model_path f_finetune/model \
+  --output_path f_finetune/outputs_lap/tokenized_real9x_preproc
 
-echo "$(date) – ft_preprocess_data job itself finished OK"
+echo "$(date) – real9x_preproc job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) – ft_preprocess_data job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – ft_preprocess_data job finished & stuff cleaned OK"
+echo "$(date) – real9x_preproc job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) – real9x_preproc job finished & stuff cleaned OK"
