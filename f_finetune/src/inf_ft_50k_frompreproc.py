@@ -171,6 +171,7 @@ def parse_args() -> argparse.Namespace:
     # Logging
     p.add_argument("--wandb_project", default="paraphrx_50k_inf_ft")
     p.add_argument("--log_name", help="A unique name for this inference run (used in log filename and wandb)", default=None)
+    p.add_argument("--save_every", type=int, default=100, help="Save answers every X steps")
     return p.parse_args()
 
 
@@ -272,6 +273,15 @@ def main() -> None:
     for _sig in (signal.SIGINT, signal.SIGTERM): signal.signal(_sig, _handler)
 
     _INFER_CTX = getattr(torch, "inference_mode", torch.no_grad)
+
+
+    SAVE_EVERY_N_BATCHES = args.save_every
+    if SAVE_EVERY_N_BATCHES <= 0:
+        SAVE_EVERY_N_BATCHES = len(flat_queue)  # Save only once at the end
+
+    logging.info("Starting inference loop with %d prompts", len(flat_queue))
+    logging.info("Batch size: %d, Max tokens: %d, Temperature: %.2f", args.batch, args.max_tokens, args.temperature)
+
     for start in tqdm(range(0, len(flat_queue), args.batch), desc="generating"):
         batch = flat_queue[start : start + args.batch]
         pcs, keys, instrs, inputs = zip(*batch)
@@ -291,6 +301,10 @@ def main() -> None:
         del tokenised, outputs
         torch.cuda.empty_cache()
         gc.collect()
+        
+        if (start // args.batch + 1) % SAVE_EVERY_N_BATCHES == 0:
+            logging.info("Saving partial results after %d batches", (start // args.batch + 1))
+            save_partial()
 
     save_partial()
     logging.info("Finished - wrote %d groups → %s", len(results_map), args.output_json)

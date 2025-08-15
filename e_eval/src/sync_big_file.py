@@ -32,13 +32,18 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
         f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount \
         tokenized_data_9x_wstyle_wcount
 
-srun "$PYBIN" e_eval/src/sync_big_file.py upload_folder \
-  f_finetune/outputs_lap/tokenized_data_9x_wstyle \
-  tokenized_data_9x_wstyle
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/data/tokenized_data_9x_pr_aw \
+        tokenized_data_9x_pr_aw
 
     python3 e_eval/src/sync_big_file.py upload \
         c_assess_inf/output50k/answers.json \
         answers_50k
+
+    srun "$PYBIN" e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/data/tokenized_real9x_preproc \
+        tokenized_real9x_preproc
+
 
 python sync_big_file.py download the_artifact_name /path/to/save
 python3 e_eval/src/sync_big_file.py download \
@@ -65,14 +70,16 @@ python3 e_eval/src/sync_big_file.py download_folder \
     9x_a1_notarg_best \
     f_finetune/outputs/l9x_a1_notarg_50k_ft
 
-python3 e_eval/src/sync_big_file.py download_folder \
-    tokenized_data_9x_wstyle_wcount \
-    f_finetune/outputs_lap/tokenized_data_9x_wstyle_wcount
 
 python3 e_eval/src/sync_big_file.py download \
     answers_50k \
     c_assess_inf/output50k/answers.json
 
+python3 e_eval/src/sync_big_file.py download_folder \
+        tokenized_real9x_preproc \
+        f_finetune/data/tokenized_real9x_preproc
+
+        
   Upload file:        python sync_big_file.py upload <file_path> <artifact_name>
   Download file:      python sync_big_file.py download <artifact_name> <output_dir>
   Upload folder:      python sync_big_file.py upload_folder <folder_path> <artifact_name>

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 """
+!allows both: using the answers from "output" key in prompts JSON,
+or using the answers from the "instruction_original" key in answers JSON
+
 Full-parameter fine-tune (2 B params, BF16)
 
 srun python finetuning_50k.py \
@@ -186,6 +189,63 @@ def load_examples(
     random.shuffle(examples)
     return examples
 
+def load_examples_with_answers(
+    prompts_path: str,
+    answers_path: str,
+    instruct_types: List[str],
+    use_para_ans: bool
+) -> List[Example]:
+    """
+    Build examples where the *targets* come from the answers JSON.
+    If use_para_ans=True, we use the paraphrase-specific answer when present,
+    otherwise we fall back to answers['instruction_original'].
+    """
+    examples: List[Example] = []
+
+    # read prompts
+    with open(prompts_path, "r", encoding="utf-8") as fh:
+        prompts_data = json.load(fh)
+
+    # read answers → map by prompt_count
+    with open(answers_path, "r", encoding="utf-8") as fh:
+        answers_data = json.load(fh)
+    answers_map = {a["prompt_count"]: a for a in answers_data}
+
+    for item in prompts_data:
+        pc_id = item["prompt_count"]
+        if pc_id not in answers_map:
+            continue
+        ans_rec = answers_map[pc_id]
+        inp = item.get("input", "")
+
+        # always include the original instruction
+        orig_inst = item["instruction_original"]
+        # target for original
+        orig_ans = ans_rec.get("instruction_original", "")
+        if orig_inst and orig_ans:
+            examples.append(Example(pc_id, orig_inst, inp, orig_ans, "instruction_original"))
+
+        # Decide which paraphrase keys to keep
+        if instruct_types:
+            keep_keys = [k for k in instruct_types if k in item]
+        else:
+            keep_keys = [k for k in item.keys() if k.startswith("instruct_")]
+
+        for k in keep_keys:
+            inst = item.get(k, "")
+            if not inst:
+                continue
+            if use_para_ans:
+                # prefer paraphrase-specific answer if present, else original
+                ans = ans_rec.get(k, ans_rec.get("instruction_original", ""))
+            else:
+                ans = ans_rec.get("instruction_original", "")
+            if ans:
+                examples.append(Example(pc_id, inst, inp, ans, k))
+
+    random.shuffle(examples)
+    return examples
+
 
 # CLI arguments
 
@@ -195,6 +255,8 @@ def make_arg_parser():
     p.add_argument("--model_path", default="f_finetune/model")
     p.add_argument("--output_dir", required=True)
     p.add_argument("--run_name", default="gemma_paraphrx")
+    p.add_argument("--answers_path", default=None,
+                help="Optional: path to answers JSON. If set, use answers[...] as targets instead of prompts[...]['output'].")
 
     p.add_argument(
         "--instruct_types",
@@ -233,6 +295,14 @@ def make_arg_parser():
         "--logging_steps", type=int, default=100, help="Log training loss every N steps"
     )
     p.add_argument("--seed", type=int, default=42)
+    p.add_argument(
+        "--resume_checkpoint",
+        default=None,
+        help=(
+            "Path to a Trainer checkpoint directory to resume from "
+            "(e.g. checkpoint-6600). If omitted, training starts from scratch."
+        ),
+    )
     p.add_argument("--wandb_project", default="paraphrx_ft_50k")
 
     p.add_argument("--early_stopping_patience", type=int, default=9,
@@ -398,9 +468,21 @@ def main(argv=None):
     model.config.use_cache = False  # needed for checkpointing
 
     # Load examples
-    examples = load_examples(
-        dataset_paths, instruct_types=args.instruct_types, use_para_ans=args.use_paraphrase_answer
-    )
+    if args.answers_path:
+        # Use answers JSON as the single source of truth for targets
+        if len(dataset_paths) != 1:
+            raise ValueError("When --answers_path is provided, please pass exactly one prompts JSON in --data_paths.")
+        examples = load_examples_with_answers(
+            prompts_path=dataset_paths[0],
+            answers_path=args.answers_path,
+            instruct_types=args.instruct_types,
+            use_para_ans=args.use_paraphrase_answer
+        )
+    else:
+        # Backwards-compatible: use prompts['output'] as target
+        examples = load_examples(
+            dataset_paths, instruct_types=args.instruct_types, use_para_ans=args.use_paraphrase_answer
+        )
 
     if args.debug_n_samples > 0:
         random.seed(args.debug_seed)
@@ -542,7 +624,7 @@ def main(argv=None):
         wandb.log({"eval_loss/step0": init_metrics["eval_loss"]})
 
     # Train
-    trainer.train()
+    trainer.train(resume_from_checkpoint=args.resume_checkpoint)
     logging.info("Total training steps: %d", trainer.state.max_steps)
     trainer.save_model(Path(args.output_dir)/'final')
     tokenizer.save_pretrained(Path(args.output_dir)/'final')
