@@ -35,6 +35,18 @@ The output file is a list of dicts like:
       ...
     }
 One entry per prompt_count covering every prompt phrasing
+
+python3 f_finetune/src/inf_ft_50k_frompreproc.py \
+    --data_path a_data/alpaca/50k_phrxed.json \
+    --tokenized_data_path f_finetune/data/tokenized_data_9x_pr_aw \
+    --base_model_path f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap/final \
+    --output_json f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap/answers.json \
+    --from_prompt_id 4347 \
+    --max_samples 1000 \
+    --batch 32 \
+    --quant 4bit \
+    --wandb_project paraphrx_lap_inf \
+    --log_name inf_lpr9x_full_stable5_lap
 """
 from __future__ import annotations
 
