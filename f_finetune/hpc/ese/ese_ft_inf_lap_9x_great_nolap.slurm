@@ -106,7 +106,7 @@ PY
 
 source /scratch_dgxl/ifc24/.hf_token || true
 [ -f /scratch_dgxl/ifc24/.wandb_idacasp_key ] && source /scratch_dgxl/ifc24/.wandb_idacasp_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_nolap_inf}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg

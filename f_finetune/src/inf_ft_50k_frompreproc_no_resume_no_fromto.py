@@ -2,8 +2,7 @@
 """
 Inference on the held-out split (val + test) for paraphrase-robust fine-tuning.
 
-allows
---from_prompt_id and --upto_prompt_id to limit the range of prompt_count IDs processed
+Usage examples (same as before):
 
 # - LoRA run (run #1)
 python $RUN_SCRIPT \
@@ -67,8 +66,6 @@ def load_examples(
     tokenized_data_path: str,
     instruct_types: List[str] | None,
     max_samples: int,
-    from_prompt_id: int,
-    upto_prompt_id: int,
 ) -> Tuple[List[Tuple[int, str, str, str]], Dict[int, Dict]]:
     """
     Loads examples from the raw data file that are part of the held-out
@@ -93,16 +90,6 @@ def load_examples(
     # is definitive set of held-out prompt group IDs
     keep_ids = set(tokenized_datasets["test"]["prompt_count"])
     logging.info(f"Identified {len(keep_ids)} prompt groups in the 'test' split.")
-
-    # Apply prompt_count ID filtering
-    original_id_count = len(keep_ids)
-    if from_prompt_id > 0:
-        keep_ids = {pid for pid in keep_ids if pid >= from_prompt_id}
-    if upto_prompt_id > 0:
-        keep_ids = {pid for pid in keep_ids if pid <= upto_prompt_id}
-    
-    if len(keep_ids) < original_id_count:
-        logging.info(f"Filtered prompt IDs from {original_id_count} down to {len(keep_ids)} based on --from_prompt_id/--upto_prompt_id.")
 
 
     # Load the raw JSON to get the original text
@@ -170,9 +157,6 @@ def parse_args() -> argparse.Namespace:
     # Data Selection
     p.add_argument("--instruct_types", nargs="+", default=[], help="Optional explicit list of instruct_* keys to use (default = ALL found in source).")
     p.add_argument("--max_samples", type=int, default=0, help="Process at most this many prompt_count groups from the held-out set (0 = all).")
-    p.add_argument("--from_prompt_id", type=int, default=0, help="Process prompt_count IDs starting from this value (inclusive).")
-    p.add_argument("--upto_prompt_id", type=int, default=0, help="Process prompt_count IDs up to this value (inclusive).")
-
 
     # Generation Config
     p.add_argument("--batch", type=int, default=4)
@@ -218,45 +202,11 @@ def main() -> None:
         args.tokenized_data_path,
         instruct_types=args.instruct_types,
         max_samples=args.max_samples,
-        from_prompt_id=args.from_prompt_id,
-        upto_prompt_id=args.upto_prompt_id,
     )
     
-    # LOGIC TO DETECT AND SKIP ALREADY-COMPLETED PROMPTS
-    completed_tasks = set()
-    if os.path.exists(args.output_json):
-        logging.info(f"Output file found at {args.output_json}. Loading existing results to resume.")
-        try:
-            with open(args.output_json, 'r', encoding='utf-8') as f:
-                existing_results = json.load(f)
-            
-            # Re-populate results_map and identify completed tasks
-            for item in existing_results:
-                pc = item.get("prompt_count")
-                if pc is None: continue
-                
-                # Ensure the entry exists in our current results_map
-                if pc not in results_map:
-                    results_map[pc] = {"prompt_count": pc, "input": item.get("input", "")}
-                
-                for key, value in item.items():
-                    if key not in ["prompt_count", "input"]:
-                        completed_tasks.add((pc, key))
-                        results_map[pc][key] = value
-
-            logging.info(f"Loaded {len(existing_results)} existing prompt groups with {len(completed_tasks)} individual completions.")
-            
-            # Filter the flat_queue to remove completed tasks
-            original_queue_size = len(flat_queue)
-            flat_queue = [item for item in flat_queue if (item[0], item[1]) not in completed_tasks]
-            logging.info(f"Removed {original_queue_size - len(flat_queue)} already completed tasks from the queue.")
-
-        except (json.JSONDecodeError, IOError) as e:
-            logging.error(f"Could not load or parse existing output file: {e}. Starting from scratch.")
-    
     if not flat_queue:
-        logging.error("No prompts to process - check data paths, filters, or if all work is already done!")
-        sys.exit(0) # Changed to exit 0, as this is not an error if work is just done
+        logging.error("No prompts to process - check data paths and ensure the test split is not empty!")
+        sys.exit(1)
 
     if wb_run:
         wb_run.config.update({"total_prompts": len(flat_queue)}, allow_val_change=True)

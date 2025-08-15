@@ -44,6 +44,18 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
         f_finetune/data/tokenized_real9x_preproc \
         tokenized_real9x_preproc
 
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft \
+        lpr9x_a1_notarg_50k_ft
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_aw/l9x_a1_notarg_50k_ft \
+        cp_l9x_a1_notarg_50k_ft
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap \
+        lpr9x_full_stable5_lap
+
 
 python sync_big_file.py download the_artifact_name /path/to/save
 python3 e_eval/src/sync_big_file.py download \
@@ -78,6 +90,19 @@ python3 e_eval/src/sync_big_file.py download \
 python3 e_eval/src/sync_big_file.py download_folder \
         tokenized_real9x_preproc \
         f_finetune/data/tokenized_real9x_preproc
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        lpr9x_a1_notarg_50k_ft \
+        f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        cp_l9x_a1_notarg_50k_ft \
+        f_finetune/outputs_aw/l9x_a1_notarg_50k_ft
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        lpr9x_full_stable5_lap \
+        f_finetune/outputs_lap_pr/lpr9x_full_stable5_lap
+
 
         
   Upload file:        python sync_big_file.py upload <file_path> <artifact_name>
