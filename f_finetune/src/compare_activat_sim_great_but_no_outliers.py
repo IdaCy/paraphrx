@@ -17,6 +17,7 @@ It now includes four distinct analysis modules:
 4.  **Activation Norm Analysis**: Investigates if the fine-tuned model uses higher-norm
     activations, potentially indicating more salient features.
 
+---
 MODES:
 1.  case_study: Generates multi-panel plots and detailed numerical reports
     for specific prompt/paraphrase pairs.
@@ -37,26 +38,26 @@ srun python robustness_analyzer.py \
 # For a detailed look at the first 5 prompts in the validation set (using --limit)
 srun python robustness_analyzer.py \
   --run_mode case_study \
-  --data_split test \
+  --data_split val \
   --limit 5 \
   --base_model_path "f_finetune/model" \
   --ft_model_path "f_finetune/outputs/l9x_a1_notarg_50k_ft/final" \
   --prompts_json_path "/path/to/your/prompts.json" \
   --output_dir "analysis_results/case_studies_limited"
 
-# For a broad, statistical analysis on 100 prompts from the test set
+# For a broad, statistical analysis on 100 prompts from the validation set
 srun python robustness_analyzer.py \
   --run_mode aggregate \
-  --data_split test \
+  --data_split val \
   --limit 100 \
   --base_model_path "f_finetune/model" \
   --ft_model_path "f_finetune/outputs/l9x_a1_notarg_50k_ft/final" \
   --prompts_json_path "/path/to/your/prompts.json" \
-  --output_dir "analysis_results/aggregate_test_set"
+  --output_dir "analysis_results/aggregate_val_set"
 
 python3 f_finetune/src/compare_activat_sim.py \
   --run_mode aggregate \
-  --data_split test \
+  --data_split val \
   --limit 5 \
   --base_model_path "f_finetune/model" \
   --ft_model_path "f_finetune/outputs/l9x_a1_notarg_50k_ft/final" \
@@ -83,7 +84,7 @@ from transformers import (AutoModelForCausalLM, AutoTokenizer,
                           PreTrainedModel)
 
 
-# Logging Setup
+# --- Robust Logging Setup ---
 class SafeFormatter(logging.Formatter):
     def format(self, record):
         record_copy = logging.makeLogRecord(record.__dict__)
@@ -107,12 +108,12 @@ transformers_logger.handlers.clear()
 transformers_logger.addHandler(safe_handler)
 transformers_logger.propagate = False
 
-# Matplotlib and Style Setup
+# --- Matplotlib and Style Setup ---
 plt.switch_backend('Agg')
 plt.style.use('seaborn-v0_8-whitegrid')
 
 
-# Standalone Model Analysis
+# --- Standalone Model Analysis ---
 def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTrainedModel, output_path: Path):
     script_logger.info("Comparing model weights layer by layer...")
     deltas = {}
@@ -147,7 +148,7 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
     plt.close(fig)
 
 
-# Core Analysis Logic
+# --- Core Analysis Logic ---
 class ActivationExtractor:
     def __init__(self, model: PreTrainedModel):
         self._model = model
@@ -198,7 +199,7 @@ def run_and_analyze_pair(base_model: PreTrainedModel, ft_model: PreTrainedModel,
     return results
 
 
-# Model Loading and Data Splitting
+# --- Model Loading and Data Splitting ---
 def load_model_and_tokenizer(model_path: str, base_model_path: str, device: str) -> tuple[PreTrainedModel, AutoTokenizer]:
     path, base_path = Path(model_path), Path(base_model_path)
     if not base_path.exists(): script_logger.error(f"Base model path not found: {base_path}"); sys.exit(1)
@@ -226,7 +227,7 @@ def get_group_wise_split_ids(all_prompt_ids: List[int], val_size: float, test_si
     return train_ids, val_ids, test_ids
 
 
-# Visualisation and Reporting Functions
+# --- Visualization and Reporting Functions ---
 def plot_case_study(results: Dict, prompt_id: int, p_key: str, output_path: Path):
     layers = list(results['base_cos_sims'].keys())
     base_sims, ft_sims = np.array(list(results['base_cos_sims'].values())), np.array(list(results['ft_cos_sims'].values()))
@@ -257,6 +258,7 @@ def plot_aggregate_results(agg_data: Dict, num_samples: int, output_path: Path):
         script_logger.warning("No data for aggregation plot. Skipping.")
         return
     
+    # --- Create DataFrames from the collected data ---
     sim_base_records = [(pkey, layer, val) for pkey, layers in agg_data['base_sims'].items() for layer, vals in layers.items() for val in vals]
     df_sim_base = pd.DataFrame(sim_base_records, columns=['paraphrase', 'layer', 'value'])
     sim_ft_records = [(pkey, layer, val) for pkey, layers in agg_data['ft_sims'].items() for layer, vals in layers.items() for val in vals]
@@ -278,6 +280,8 @@ def plot_aggregate_results(agg_data: Dict, num_samples: int, output_path: Path):
     df_emb_delta = df_emb_ft['value'] - df_emb_base['value']
     df_emb_delta = pd.concat([df_emb_base[['paraphrase']], df_emb_delta.rename('delta')], axis=1)
 
+    # --- Plotting ---
+    # RESTORED: Plot 1: Line plot of overall average SIMILARITY delta
     if not df_sim_delta.empty:
         mean_by_layer = df_sim_delta.groupby('layer')['delta'].mean()
         sem_by_layer = df_sim_delta.groupby('layer')['delta'].sem()
@@ -289,6 +293,7 @@ def plot_aggregate_results(agg_data: Dict, num_samples: int, output_path: Path):
         ax.set_xlabel('Decoder Layer'); ax.set_ylabel('Average Δ Cosine Similarity (FT - Base)')
         plt.tight_layout(); fig.savefig(output_path / "aggregate_lineplot_sim_delta.png"); plt.close(fig)
 
+    # Plot 2: Heatmap of Average Cosine Similarity Delta
     if not df_sim_delta.empty:
         heatmap_data = df_sim_delta.groupby(['paraphrase', 'layer'])['delta'].mean().unstack(level='layer')
         fig, ax = plt.subplots(figsize=(16, max(8, len(heatmap_data.index) * 0.5)))
@@ -297,6 +302,7 @@ def plot_aggregate_results(agg_data: Dict, num_samples: int, output_path: Path):
         ax.set_xlabel('Decoder Layer'); ax.set_ylabel('Paraphrase Type')
         plt.xticks(rotation=45); plt.tight_layout(); fig.savefig(output_path / "aggregate_heatmap_sim_delta.png"); plt.close(fig)
 
+    # Plot 3: Line plot of overall average NORM delta
     if not df_norm_delta.empty:
         mean_by_layer = df_norm_delta.groupby('layer')['delta'].mean()
         sem_by_layer = df_norm_delta.groupby('layer')['delta'].sem()
@@ -308,6 +314,7 @@ def plot_aggregate_results(agg_data: Dict, num_samples: int, output_path: Path):
         ax.set_xlabel('Decoder Layer'); ax.set_ylabel('Average Δ Mean L2 Norm (FT - Base)')
         plt.tight_layout(); fig.savefig(output_path / "aggregate_lineplot_norm_delta.png"); plt.close(fig)
 
+    # Plot 4: Boxplot of Embedding Similarity Deltas
     if not df_emb_delta.empty:
         fig, ax = plt.subplots(figsize=(14, max(8, len(df_emb_delta['paraphrase'].unique()) * 0.6)))
         sns.boxplot(data=df_emb_delta, x='delta', y='paraphrase', orient='h', ax=ax, palette='coolwarm')
@@ -334,6 +341,8 @@ def report_case_study_numerics(results: Dict, prompt_id: int, p_key: str, output
 
 def report_aggregate_numerics(agg_data: Dict, num_samples: int, output_path: Path):
     if not any(agg_data.values()): return
+
+    # ENHANCED: Create comprehensive DataFrames for each metric
     all_dfs = {
         "Embedding Similarity": pd.DataFrame([(p, v, 'base') for p, V in agg_data['base_emb_sims'].items() for v in V] + 
                                             [(p, v, 'ft') for p, V in agg_data['ft_emb_sims'].items() for v in V], 
@@ -347,27 +356,35 @@ def report_aggregate_numerics(agg_data: Dict, num_samples: int, output_path: Pat
     }
     report_md = ["# Aggregate Numerical Analysis Report", f"Based on **{num_samples}** processed prompts.", "---"]
     report_json = {"num_samples": num_samples, "analyses": {}}
+
     for analysis_name, df in all_dfs.items():
         if df.empty: continue
         report_md.append(f"## Analysis: `{analysis_name}`")
+        # ENHANCED: New, more detailed table structure
         report_md.append("| Paraphrase Type | Mean Base | Mean FT | Mean Delta | Median Delta | Std Dev Delta | T-test p-value (on Delta) | Significant? |")
         report_md.append("|---|---|---|---|---|---|---|---|")
+        
         analysis_stats = {}
         all_base_vals, all_ft_vals = [], []
-        p_keys = df['paraphrase'].unique()
-        for p_key in sorted(p_keys):
+        
+        for p_key in sorted(df['paraphrase'].unique()):
             base_series = df[(df['paraphrase'] == p_key) & (df['model'] == 'base')]['value']
             ft_series = df[(df['paraphrase'] == p_key) & (df['model'] == 'ft')]['value']
             if len(base_series) < 2 or len(ft_series) < 2: continue
+            
             all_base_vals.extend(base_series)
             all_ft_vals.extend(ft_series)
+            
             delta_series = ft_series.values - base_series.values
             mean_base, mean_ft = base_series.mean(), ft_series.mean()
             mean_delta, median_delta, std_delta = delta_series.mean(), np.median(delta_series), delta_series.std()
             ttest_res = stats.ttest_1samp(delta_series, 0)
             is_sig = ttest_res.pvalue < 0.05
+            
             report_md.append(f"| `{p_key}` | `{mean_base:.6f}` | `{mean_ft:.6f}` | `{mean_delta:+.6f}` | `{median_delta:+.6f}` | `{std_delta:.6f}` | `{ttest_res.pvalue:.6f}` | **{'YES' if is_sig else 'NO'}** |")
             analysis_stats[p_key] = {"mean_base": mean_base, "mean_ft": mean_ft, "mean_delta": mean_delta, "median_delta": median_delta, "std_dev_delta": std_delta, "p_value_delta": ttest_res.pvalue}
+
+        # Grand total
         if len(all_base_vals) >= 2:
             g_delta = np.array(all_ft_vals) - np.array(all_base_vals)
             g_mean_base, g_mean_ft = np.mean(all_base_vals), np.mean(all_ft_vals)
@@ -376,14 +393,16 @@ def report_aggregate_numerics(agg_data: Dict, num_samples: int, output_path: Pat
             g_is_sig = g_ttest.pvalue < 0.05
             report_md.append(f"| **_GRAND TOTAL_** | `{g_mean_base:.6f}` | `{g_mean_ft:.6f}` | `{g_mean_delta:+.6f}` | `{g_median_delta:+.6f}` | `{g_std_delta:.6f}` | `{g_ttest.pvalue:.6f}` | **{'YES' if g_is_sig else 'NO'}** |")
             analysis_stats["__grand_total__"] = {"mean_base": g_mean_base, "mean_ft": g_mean_ft, "mean_delta": g_mean_delta, "median_delta": g_median_delta, "std_dev_delta": g_std_delta, "p_value_delta": g_ttest.pvalue}
+            
         report_md.append("\n---\n")
         report_json["analyses"][analysis_name] = analysis_stats
+        
     (output_path / "aggregate_summary.md").write_text("\n".join(report_md), encoding="utf-8")
     (output_path / "aggregate_summary.json").write_text(json.dumps(report_json, indent=2), encoding="utf-8")
     script_logger.info("Saved aggregate numerical reports (MD and JSON).")
 
 
-# Main impl
+# --- Main Orchestration ---
 def main():
     parser = argparse.ArgumentParser(description="Advanced Robustness Analyzer for LLM Activations.", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("--base_model_path", type=str, required=True)
@@ -426,14 +445,12 @@ def main():
 
     if args.run_mode == 'aggregate':
         analyze_and_plot_weight_deltas(base_model, ft_model, output_path)
+        # EXPANDED: New data structure to hold raw base/ft values
         aggregate_data = {
             'base_emb_sims': defaultdict(list), 'ft_emb_sims': defaultdict(list),
             'base_sims': defaultdict(lambda: defaultdict(list)), 'ft_sims': defaultdict(lambda: defaultdict(list)),
             'base_norms': defaultdict(lambda: defaultdict(list)), 'ft_norms': defaultdict(lambda: defaultdict(list))
         }
-        # List to store outlier data for the report
-        outlier_records = []
-        
         num_processed = 0
         for i, prompt_item in enumerate(prompts_data):
             pid, original_text = prompt_item.get('prompt_count'), prompt_item.get('instruction_original')
@@ -445,18 +462,20 @@ def main():
                 script_logger.info(f"Processing... [Prompt {i+1}/{len(prompts_data)}] [ID: {pid}] [{p_key}]")
                 try:
                     results = run_and_analyze_pair(base_model, ft_model, tokenizer, original_text, paraphrase_text)
-                    
-                    # Outlier tracking - stores data for the report
+
+                    # OUTLIER TRACKING LOGIC
                     emb_sim_delta = results['ft_emb_sim'] - results['base_emb_sim']
+                    # Define a threshold for what counts as a meaningful outlier
                     OUTLIER_THRESHOLD = 0.001 
                     if abs(emb_sim_delta) > OUTLIER_THRESHOLD:
-                        outlier_info = {
-                            "pid": pid, "p_key": p_key, "delta": emb_sim_delta,
-                            "original": original_text, "paraphrase": paraphrase_text
-                        }
-                        outlier_records.append(outlier_info)
-                        script_logger.warning(f"Outlier detected for Prompt ID {pid} ({p_key}). Delta: {emb_sim_delta:+.6f}")
-                    
+                        script_logger.warning(f"--- OUTLIER DETECTED ---")
+                        script_logger.warning(f"  Prompt ID: {pid}, Paraphrase Key: {p_key}")
+                        script_logger.warning(f"  Embedding Similarity Delta: {emb_sim_delta:+.6f}")
+                        script_logger.warning(f"  Original: {original_text[:100]}...")
+                        script_logger.warning(f"  Paraphrase: {paraphrase_text[:100]}...")
+                        script_logger.warning(f"--------------------------")
+
+                    # EXPANDED: Store raw values instead of just deltas
                     aggregate_data['base_emb_sims'][p_key].append(results['base_emb_sim'])
                     aggregate_data['ft_emb_sims'][p_key].append(results['ft_emb_sim'])
                     for layer_idx in results['base_cos_sims']:
@@ -467,25 +486,8 @@ def main():
                 except Exception as e:
                     script_logger.error(f"Failed on Prompt ID {pid}, Paraphrase '{p_key}'. Error: {e}")
             num_processed += 1
-            
         if num_processed > 0:
             script_logger.info(f"Aggregation complete. Processed {num_processed} prompts.")
-            
-            # Write the outlier report file
-            if outlier_records:
-                report_path = output_path / "embedding_similarity_outliers.md"
-                script_logger.info(f"Writing {len(outlier_records)} outliers to {report_path}")
-                with open(report_path, "w", encoding="utf-8") as f:
-                    f.write("# Embedding Similarity Outlier Report\n\n")
-                    f.write("This report details prompts where the change in embedding-level cosine similarity between the original and paraphrased text exceeded the defined threshold.\n\n")
-                    for record in sorted(outlier_records, key=lambda x: x['pid']):
-                        f.write(f"## Prompt ID: {record['pid']}\n\n")
-                        f.write(f"- **Paraphrase Type:** `{record['p_key']}`\n")
-                        f.write(f"- **Similarity Delta (FT - Base):** `{record['delta']:+.6f}`\n\n")
-                        f.write(f"**Original Text:**\n```\n{record['original']}\n```\n\n")
-                        f.write(f"**Paraphrase Text:**\n```\n{record['paraphrase']}\n```\n")
-                        f.write("\n---\n\n")
-            
             plot_aggregate_results(aggregate_data, num_processed, output_path)
             report_aggregate_numerics(aggregate_data, num_processed, output_path)
         else:

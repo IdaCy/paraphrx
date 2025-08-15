@@ -36,69 +36,23 @@ def build_chat_prompt(instruction: str, inp: Union[str, None] = "") -> str:
         return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     return f"<start_of_turn>user\n{user_msg}<end_of_turn>\n<start_of_turn>model\n"
 
-def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str]) -> List[Example]:
-    """
-    Loads examples by combining instructions from a prompts file and answers
-    from a corresponding answers file
-    """
+def load_examples(paths: List[str], instruct_types: List[str]) -> List[Example]:
     examples = []
-    
-    # Load both instruction and answer data
-    with open(prompts_path, "r", encoding="utf-8") as fh:
-        prompts_data = json.load(fh)
-    with open(answers_path, "r", encoding="utf-8") as fh:
-        answers_data = json.load(fh)
-        
-    # Create a lookup dictionary for answers by prompt_count for efficiency
-    answers_map = {item['prompt_count']: item for item in answers_data}
-    
-    logging.info(f"Loaded {len(prompts_data)} prompts and {len(answers_map)} answers.")
-
-    for prompt_item in prompts_data:
-        pc_id = prompt_item["prompt_count"]
-        
-        # Skip if there's no corresponding answer entry
-        if pc_id not in answers_map:
-            logging.warning(f"Skipping prompt_count {pc_id} as it was not found in the answers file.")
-            continue
-            
-        answer_item = answers_map[pc_id]
-        
-        inp = prompt_item.get("input", "")
-        
-        # Keys to process for this prompt_id
-        if instruct_types:
-            # Only include the requested paraphrase keys that actually exist in this item
-            keys_to_process = [k for k in instruct_types if k in prompt_item]
-        else:
-            # Fallback: include all available paraphrase keys
-            keys_to_process = [k for k in prompt_item.keys() if k.startswith("instruct_")]
-
-        # Always include the original once (if present)
-        if "instruction_original" in prompt_item:
-            keys_to_process.append("instruction_original")
-        
-        for key in keys_to_process:
-            # The instruction comes from the PROMPT file
-            instruction = prompt_item.get(key)
-            # The answer comes from the corresponding key in the ANSWER file
-            answer = answer_item.get("instruction_original")
-
-            # Ensure both the instruction and its corresponding answer exist
-            if instruction and answer:
-                examples.append(Example(
-                    prompt_count=pc_id,
-                    instruction=instruction,
-                    inp=inp,
-                    answer=answer,
-                    style=key
-                ))
-            else:
-                logging.debug(f"Skipping style '{key}' for prompt_count {pc_id} due to missing instruction or answer.")
-                
+    load_all = not instruct_types
+    for p in paths:
+        with open(p, "r", encoding="utf-8") as fh: data = json.load(fh)
+        for item in data:
+            pc_id, inp, base_ans = item["prompt_count"], item.get("input", ""), item.get("output", "")
+            if "instruction_original" in item:
+                examples.append(Example(pc_id, item["instruction_original"], inp, base_ans, "instruction_original"))
+            keys_to_process = [k for k in item if k.startswith("instruct_")] if load_all else instruct_types
+            for k in keys_to_process:
+                if k in item and item[k] and k != "instruction_original":
+                    examples.append(Example(pc_id, item[k], inp, base_ans, k))
     return examples
 
-# The function signature's return type is updated, and the return statement is modified
+# --- START OF THE ONLY FUNCTIONAL CHANGE ---
+# The function signature's return type is updated, and the return statement is modified.
 def tokenise_example(example: Dict[str, Any]) -> Dict[str, Any]:
     MAX_TOTAL_LENGTH = 512
     prompt_ids = tokenizer(build_chat_prompt(example['instruction'], example['inp']), add_special_tokens=False)["input_ids"]
@@ -108,26 +62,28 @@ def tokenise_example(example: Dict[str, Any]) -> Dict[str, Any]:
     answer_ids.append(tokenizer.eos_token_id)
     input_ids = prompt_ids + answer_ids
     labels = [-100] * len(prompt_ids) + answer_ids
-
-    # This now returns the original columns we need to keep, solving the bug
+    
+    # THE FIX: This now returns the original columns we need to keep, solving the bug.
     return {
         "input_ids": input_ids,
         "labels": labels,
         "prompt_count": example["prompt_count"],
         "style": example["style"]
     }
+# --- END OF THE ONLY FUNCTIONAL CHANGE ---
+
 
 def get_group_wise_split_ids(
     examples: List[Example], val_size: float, test_size: float, seed: int
 ) -> Tuple[Set[int], Set[int], Set[int]]:
     """
-    Splits data by 'prompt_count' into train, validation, and test sets
+    Splits data by 'prompt_count' into train, validation, and test sets.
 
     Args:
-        examples: The list of all loaded Example objects
-        val_size: The fraction of groups to allocate to the validation set
-        test_size: The fraction of groups to allocate to the test set
-        seed: The random seed for reproducibility
+        examples: The list of all loaded Example objects.
+        val_size: The fraction of groups to allocate to the validation set.
+        test_size: The fraction of groups to allocate to the test set.
+        seed: The random seed for reproducibility.
 
     Returns:
         A tuple containing three sets: (train_prompt_ids, val_prompt_ids, test_prompt_ids)
@@ -154,8 +110,7 @@ def get_group_wise_split_ids(
 def main():
     global tokenizer
     parser = argparse.ArgumentParser(description="Pre-tokenize the dataset for training.")
-    parser.add_argument("--prompts_path", required=True, help="Path to the JSON file with instructions.")
-    parser.add_argument("--answers_path", required=True, help="Path to the JSON file with answers.")
+    parser.add_argument("--data_paths", nargs="+", required=True)
     parser.add_argument("--model_path", required=True)
     parser.add_argument("--output_path", required=True)
     parser.add_argument("--instruct_types", nargs="+", default=[])
@@ -166,17 +121,17 @@ def main():
     output_path = Path(args.output_path)
     if os.path.exists(output_path):
         # NOTE: This safety feature means you MUST delete the old output directory
-        # manually before re-running this script
+        # manually before re-running this script.
         logging.warning(f"Output directory {output_path} already exists. Skipping.")
         return
 
     logging.info("Starting data preprocessing.")
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
     
-    all_examples = load_examples(args.prompts_path, args.answers_path, args.instruct_types)
+    all_examples = load_examples(args.data_paths, args.instruct_types)
     logging.info(f"Loaded {len(all_examples)} total examples.")
 
-    # 1. Define sizes for both validation and test sets. 90/5/5 is a standard split
+    # 1. Define sizes for both validation and test sets. 90/5/5 is a standard split.
     VALIDATION_SET_SIZE = 0.05
     TEST_SET_SIZE = 0.05
     RANDOM_SEED = 42
@@ -214,7 +169,7 @@ def main():
     
     tokenized_datasets = raw_datasets.map(
             tokenise_example,
-            # This line is now correct, as it runs *after* tokenise_example has preserved the other columns
+            # This line is now correct, as it runs *after* tokenise_example has preserved the other columns.
             remove_columns=["instruction", "inp", "answer"],
             num_proc=num_workers,
             desc="Tokenizing dataset"
@@ -229,6 +184,7 @@ def main():
     logging.info(f"Saving tokenized dataset to {output_path}")
     final_datasets.save_to_disk(str(output_path))
 
+    # --- START OF NEW VERIFICATION BLOCK ---
     logging.info("\n" + "="*80)
     logging.info("STARTING POST-PROCESSING VERIFICATION")
     logging.info("="*80)
@@ -266,6 +222,7 @@ def main():
     logging.info("="*80)
     logging.info("VERIFICATION COMPLETE")
     logging.info("="*80 + "\n")
+    # --- END OF NEW VERIFICATION BLOCK ---
 
     logging.info("Preprocessing finished successfully.")
 
