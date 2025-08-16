@@ -3,6 +3,33 @@
 preprocessing the data for the finetuning with LAP
 - compatible with latest version of ft_lap_optim_continue
 (continue was for allowing to go on with stopped checkpoints)
+
+python3 f_finetune/src/ft_preprocess_data.py \
+    --prompts_path a_data/alpaca/50k_phrxed.json \
+    --answers_path c_assess_inf/output50k/xx_dummy_answers.json \
+    --model_path f_finetune/model \
+    --use_prompt_output_as_answer True \
+    --output_path f_finetune/data/tokenized_real9x_output_preproc \
+    --instruct_types \
+        instruct_formal_memo \
+        instruct_joke \
+        instruct_sardonic \
+        instruct_future_tense \
+        instruct_coord_to_subord \
+        instruct_dramatic \
+        instruct_polite_request \
+        instruct_one_typo_punctuation \
+    >> logs/starter_$(date +%F_%T).log 2>&1 &
+
+python3 f_finetune/src/ft_preprocess_data.py \
+    --prompts_path a_data/alpaca/50k_phrxed.json \
+    --answers_path c_assess_inf/output50k/xx_dummy_answers.json \
+    --model_path f_finetune/model \
+    --use_prompt_output_as_answer True \
+    --output_path f_finetune/data/tokenized_real1x_output_preproc \
+    --instruct_types \
+        instruction_original \
+    >> logs/starter_real1x_$(date +%F_%T).log 2>&1 &
 """
 import argparse
 import dataclasses
@@ -62,6 +89,12 @@ def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str
     
     logging.info(f"Loaded {len(prompts_data)} prompts and {len(answers_map)} answers.")
 
+    logging.info(f"Loaded {len(prompts_data)} prompts and {len(answers_map)} answers.")
+    if use_prompt_output_as_answer:
+        logging.info("DECISION: Using 'output' field from PROMPTS as target answers")
+    else:
+        logging.info("DECISION: Using 'instruction_original' field from ANSWERS as target answers")
+
     for prompt_item in prompts_data:
         pc_id = prompt_item["prompt_count"]
         
@@ -83,7 +116,8 @@ def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str
             keys_to_process = [k for k in prompt_item.keys() if k.startswith("instruct_")]
 
         # Always include the original once (if present)
-        if "instruction_original" in prompt_item:
+        #if "instruction_original" in prompt_item:
+        if "instruction_original" in prompt_item and "instruction_original" not in keys_to_process:
             keys_to_process.append("instruction_original")
         
         for key in keys_to_process:
@@ -163,6 +197,16 @@ def get_group_wise_split_ids(
     logging.info(f"Split complete. Train groups: {len(train_ids)}, Validation groups: {len(val_ids)}, Test groups: {len(test_ids)}")
     return train_ids, val_ids, test_ids
 
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 def main():
     global tokenizer
     parser = argparse.ArgumentParser(description="Pre-tokenize the dataset for training.")
@@ -172,8 +216,8 @@ def main():
     parser.add_argument("--output_path", required=True)
     parser.add_argument("--instruct_types", nargs="+", default=[])
     # control the answer source
-    parser.add_argument("--use_prompt_output_as_answer", action="store_true",
-                        default=True,
+    parser.add_argument("--use_prompt_output_as_answer",
+                        type=str2bool, default=True,
                         help="If True, use the 'output' field from the prompts JSON as the target answer."
                         "Otherwise, use 'instruction_original' from the answers JSON.")
     args = parser.parse_args()

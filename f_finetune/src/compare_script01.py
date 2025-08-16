@@ -33,24 +33,6 @@ python3 f_finetune/src/compare_script01.py \
     --compute_pii --compute_svd \
     --scores_base_json_path c_assess_inf/output/alpaca_answer_scores/gemma-2-2b-it.json \
     --scores_ft_json_path f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/scores.json
-
-    parser.add_argument("--base_model_path", type=str, required=True)
-    parser.add_argument("--ft_model_path", type=str, required=True)
-    parser.add_argument("--prompts_json_path", type=str, required=True)
-    parser.add_argument("--output_dir", type=str, default="robustness_analysis_results")
-    parser.add_argument("--run_mode", type=str, choices=['case_study', 'aggregate'], required=True)
-    parser.add_argument("--limit", type=int, default=0)
-    parser.add_argument("--paraphrase_keys", type=str, nargs='+')
-    parser.add_argument("--prompt_ids", type=int, nargs='+')
-    parser.add_argument("--data_split", type=str, choices=['all', 'train', 'val', 'test'], default='test')
-    parser.add_argument("--val_size", type=float, default=0.05)
-    parser.add_argument("--test_size", type=float, default=0.05)
-    parser.add_argument("--seed", type=int, default=42)
-    # options
-    parser.add_argument("--compute_pii", action="store_true", help="Compute Paraphrase Invariance Index per layer (Base & FT).")
-    parser.add_argument("--compute_svd", action="store_true", help="Compute SVD summaries for 2D weight deltas.")
-    parser.add_argument("--scores_base_json_path", type=str, default="", help="Scores JSON for base (TF at index 0).")
-    parser.add_argument("--scores_ft_json_path", type=str, default="", help="Scores JSON for FT (TF at index 0).")
 """
 
 import argparse

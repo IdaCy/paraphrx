@@ -33,6 +33,64 @@ srun python $RUN_SCRIPT \
   --lora_rank 16 --lora_alpha 32 \
   --bnb_8bit_optim --bf16 \
   --use_lap --lap_layer 12
+
+first run, a100, fine but not great:
+python3 f_finetune/src/ft_lap_optim_continue.py \
+  --tokenized_data_path "f_finetune/data/tokenized_real1x_output_preproc" \
+  --model_path "f_finetune/model" \
+  --output_dir "f_finetune/outputs_onlylap" \
+  --run_name "onlylap_real1x" \
+  --wandb_project "paraphrax_5k_onlylap" \
+  --target_modules none \
+  --batch_size 2 \
+  --gradient_accumulation_steps 8 \
+  --num_epochs 2 \
+  --learning_rate 8e-06 \
+  --warmup_ratio 0.05 \
+  --lr_scheduler_type "cosine_with_restarts" \
+  --weight_decay 0.1 \
+  --bf16 \
+  --use_lap \
+  --lap_layer 10 \
+  --lap_t_inner 2 \
+  --lap_p_sample 0.5 \
+  --lap_epsilon 0.05 \
+  --lap_delta_lr 0.01 \
+  --lap_lambda_lr 0.001 \
+  --early_stopping_patience 3 \
+  --save_steps 500 \
+  --logging_steps 100 \
+  --seed 42 \
+  >> logs/startonlylap_$(date +%F_%T).log 2>&1 &
+
+supposedly more stable:
+python3 f_finetune/src/ft_lap_optim_continue.py \
+  --tokenized_data_path "f_finetune/data/tokenized_real1x_output_preproc" \
+  --model_path "f_finetune/model" \
+  --output_dir "f_finetune/outputs_onlylap_stable" \
+  --run_name "onlylap_real1x_stable" \
+  --wandb_project "paraphrax_5k_onlylap" \
+ --target_modules none \
+ --batch_size 2 \
+ --gradient_accumulation_steps 8 \
+ --num_epochs 3 \
+ --learning_rate 6e-06 \
+ --warmup_ratio 0.10 \
+ --lr_scheduler_type "cosine" \
+ --weight_decay 0.10 \
+ --bf16 \
+ --use_lap \
+ --lap_layer 12 \
+ --lap_t_inner 2 \
+ --lap_p_sample 0.75 \
+ --lap_epsilon 0.08 \
+ --lap_delta_lr 0.005 \
+ --lap_lambda_lr 0.0015 \
+ --early_stopping_patience 4 \
+ --save_steps 500 \
+ --logging_steps 100 \
+ --seed 42 \
+  >> logs/startonlylap_stable_$(date +%F_%T).log 2>&1 &
 """
 import argparse
 import contextlib
@@ -184,10 +242,13 @@ class LAPTtrainer(Trainer):
             logging.info("LAP Config:\n" + json.dumps(self.lap_kwargs, indent=2))
 
     # training step
-    def training_step(self, model: torch.nn.Module, inputs: Dict[str, torch.Tensor]) -> torch.Tensor:
+    #def training_step(self, model: torch.nn.Module, inputs: Dict[str, torch.Tensor]) -> torch.Tensor:
+    #    use_lap_for_batch = self.lap_kwargs.get('use_lap', False) and \
+    #                        random.random() < self.lap_kwargs.get('lap_p_sample', 0.5)
+    def training_step(self, model: torch.nn.Module, inputs: Dict[str, torch.Tensor], num_items_in_batch: int = None) -> torch.Tensor:
         use_lap_for_batch = self.lap_kwargs.get('use_lap', False) and \
                             random.random() < self.lap_kwargs.get('lap_p_sample', 0.5)
-
+                            
         model.train()
         inputs = self._prepare_inputs(inputs)
 

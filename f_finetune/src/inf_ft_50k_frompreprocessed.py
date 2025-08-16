@@ -47,6 +47,17 @@ python3 f_finetune/src/inf_ft_50k_frompreproc.py \
     --quant 4bit \
     --wandb_project paraphrx_lap_inf \
     --log_name inf_lpr9x_full_stable5_lap
+
+python3 f_finetune/src/inf_ft_50k_frompreprocessed.py \
+    --data_path a_data/alpaca/50k_phrxed.json \
+    --tokenized_data_path f_finetune/data/tokenized_real1x_output_preproc \
+    --base_model_path f_finetune/outputs_onlylap/final \
+    --output_json f_finetune/outputs_onlylap/answers.json \
+    --max_samples 1000 \
+    --batch 32 \
+    --quant 4bit \
+    --wandb_project paraphrx_lap_inf \
+    --log_name inf_outputs_onlylap
 """
 from __future__ import annotations
 
