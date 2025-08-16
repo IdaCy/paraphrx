@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=hgreat_nolap
+#SBATCH --job-name=h1x_onlylap_stable
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hgreat_nolap.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_hgreat_nolap.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1x_onlylap_stable.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h1x_onlylap_stable.err
 
 set -euo pipefail
-echo "$(date) - hgreat_nolap job started on $(hostname)"
-echo "$(date) - hgreat_nolap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h1x_onlylap_stable job started on $(hostname)"
+echo "$(date) - h1x_onlylap_stable job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs
+mkdir -p logs f_finetune/outputs_lap_pr/h1x_onlylap_stable
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -106,30 +106,42 @@ PY
 
 source /scratch_dgxl/ifc24/.hf_token || true
 [ -f /scratch_dgxl/ifc24/.wandb_idacasp_key ] && source /scratch_dgxl/ifc24/.wandb_idacasp_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_nolap_inf}
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_lap}
 
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
-
-# sbatch --dependency=afterok:28003 f_finetune/hpc/ese/ese_ft_inf_lap_9x_full_stable2.slurm
-
-echo "$(date) - hgreat_nolap initial setup OK"
-RUN_SCRIPT="f_finetune/src/inf_ft_50k_fromprompts.py"
-TOKENIZED_DATA="f_finetune/data/tokenized_data_9x_pr_aw"
-
-MAIN_DIR="f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft"
-MODEL_PATH="$MAIN_DIR/final"
-WANDB_PROJECT="paraphrx_nolap_inf"
-RUN_NAME="hgreat_nolap"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
+TOKENIZED_DATA="f_finetune/data/tokenized_real1x_output_preproc"
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/h1x_onlylap_stable"
+RUN_NAME="h1x_onlylap_stable"
 
 srun "$PYBIN" "$RUN_SCRIPT" \
-    --data_path a_data/alpaca/50k_phrxed.json \
-    --base_model_path "$MAIN_DIR/final" \
-    --output_json "$MAIN_DIR/answers.json" \
-    --log_name "$RUN_NAME" \
-    --batch 4 \
-    --quant 4bit
+  --tokenized_data_path "$TOKENIZED_DATA" \
+  --model_path "$MODEL_PATH" \
+  --output_dir "$OUTPUT_DIR" \
+  --run_name "$RUN_NAME" \
+ --target_modules none \
+ --batch_size 2 \
+ --gradient_accumulation_steps 8 \
+ --num_epochs 3 \
+ --learning_rate 6e-06 \
+ --warmup_ratio 0.10 \
+ --lr_scheduler_type "cosine" \
+ --weight_decay 0.10 \
+ --bf16 \
+ --use_lap \
+ --lap_layer 12 \
+ --lap_t_inner 2 \
+ --lap_p_sample 0.75 \
+ --lap_epsilon 0.08 \
+ --lap_delta_lr 0.005 \
+ --lap_lambda_lr 0.0015 \
+ --early_stopping_patience 4 \
+ --save_steps 500 \
+ --logging_steps 100 \
+ --seed 42 \
   $WANDB_FLAG
 
-echo "$(date) - hgreat_nolap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - hgreat_nolap job finished OK"
+echo "$(date) - h1x_onlylap_stable job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h1x_onlylap_stable job finished OK"
