@@ -75,7 +75,7 @@ struct Cli {
     max_attempts: u8,
 
     // Milliseconds to wait after every successful request (avoid 429s)
-    #[arg(long = "delay-ms", default_value_t = 250)]
+    #[arg(long = "delay-ms", default_value_t = 200)]
     delay_ms: u64,
 
     // Google API key (overrides $GOOGLE_API_KEY)

@@ -33,15 +33,37 @@ cargo robust_alpaca_eval llm-judge \
 running:
 cargo robust_alpaca_eval llm-judge \
     --prompts a_data/alpaca/50k_phrxed.json \
-    --answers-original c_assess_inf/output50k/gpt4_answers_1440.json \
-    --answers-paraphrased f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/hanswers.json \
-    --output f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/robustalpaca_against_gpt4.json \
+    --answers-original e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/answers_onlylap.json \
+    --answers-paraphrased e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/answers_phrx.json \
+    --output e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/onlap_vs_phrx.json \
     --judging-model gemini-2.0-flash \
     --delay-ms 4000 \
     --api-call-max 200 \
     --api-key "xxx" \
     --num-judge-votes 3 \
-    >> logs/robalev_6_$(date +%F_%T).log 2>&1 &
+    >> logs/start_onlap_vs_phrx_2_$(date +%F_%T).log 2>&1 &
+cargo robust_alpaca_eval llm-judge \
+    --prompts a_data/alpaca/50k_phrxed.json \
+    --answers-original c_assess_inf/output50k/gpt4_answers_1440.json \
+    --answers-paraphrased e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/answers_onlylap.json \
+    --output e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/gpt_vs_onlylap.json \
+    --judging-model gemini-2.0-flash \
+    --delay-ms 4000 \
+    --api-call-max 200 \
+    --api-key "xxx" \
+    --num-judge-votes 3 \
+    >> logs/start_onlap_$(date +%F_%T).log 2>&1 &
+cargo robust_alpaca_eval llm-judge \
+    --prompts a_data/alpaca/50k_phrxed.json \
+    --answers-original c_assess_inf/output50k/gpt4_answers_1440.json \
+    --answers-paraphrased e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/answers_phrx.json \
+    --output e_eval/output_robust_alpaca_eval/phrx_vs_onlylap/gpt_vs_phrx.json \
+    --judging-model gemini-2.0-flash \
+    --delay-ms 4000 \
+    --api-call-max 200 \
+    --api-key "xxx" \
+    --num-judge-votes 3 \
+    >> logs/start_phrx_$(date +%F_%T).log 2>&1 &
 
     
 
