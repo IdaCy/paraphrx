@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=real9x_stable5
+#SBATCH --job-name=real9x_output_stable5
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_real9x_stable5.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_real9x_stable5.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_real9x_output_stable5.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_real9x_output_stable5.err
 
 set -euo pipefail
-echo "$(date) - real9x_stable5 job started on $(hostname)"
-echo "$(date) - real9x_stable5 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - real9x_output_stable5 job started on $(hostname)"
+echo "$(date) - real9x_output_stable5 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap_pr/real9x_stable5
+mkdir -p logs f_finetune/outputs_lap_pr/real9x_output_stable5
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -86,18 +86,18 @@ print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').ori
 PY
 source /scratch_root/ifc24/.hf_token || true
 [ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_lap}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) - real9x_stable5 initial setup OK"
+echo "$(date) - real9x_output_stable5 initial setup OK"
 RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
-TOKENIZED_DATA="f_finetune/data/tokenized_real9x_preproc"
+TOKENIZED_DATA="f_finetune/data/tokenized_real9x_output_preproc"
 
 MODEL_PATH="f_finetune/model"
-OUTPUT_DIR="f_finetune/outputs_lap_pr/real9x_stable5"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/real9x_output_stable5"
 WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="real9x_stable5"
+RUN_NAME="real9x_output_stable5"
 
 # sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
 
@@ -106,11 +106,9 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --model_path "$MODEL_PATH" \
   --output_dir "$OUTPUT_DIR" \
   --run_name "$RUN_NAME" \
-  --wandb_project "$WANDB_PROJECT" \
-  --resume_from_checkpoint f_finetune/outputs_lap_pr/real9x_stable5/checkpoint-11000 \
   --target_modules none \
-  --batch_size 2 \
-  --gradient_accumulation_steps 8 \
+  --batch_size 4 \
+  --gradient_accumulation_steps 4 \
   --num_epochs 2 \
   --learning_rate 8e-06 \
   --warmup_ratio 0.05 \
@@ -130,7 +128,7 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --seed 42
   $WANDB_FLAG
 
-echo "$(date) - real9x_stable5 job itself finished OK"
+echo "$(date) - real9x_output_stable5 job itself finished OK"
 
-echo "$(date) - real9x_stable5 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - real9x_stable5 job finished & stuff cleaned OK"
+echo "$(date) - real9x_output_stable5 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - real9x_output_stable5 job finished & stuff cleaned OK"

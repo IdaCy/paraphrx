@@ -106,7 +106,7 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
   instruct_future_tense instruct_coord_to_subord instruct_dramatic \
   instruct_polite_request instruct_one_typo_punctuation \
-  --resume_checkpoint f_finetune/outputs_nolap/nolap_9x_a1_originst/checkpoint-16500 \
+  --resume_checkpoint f_finetune/outputs_nolap/nolap_9x_a1_originst/checkpoint-18500 \
   --target_modules none \
   --batch_size 2 \
   --gradient_accumulation_steps 8 \
