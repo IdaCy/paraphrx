@@ -284,6 +284,8 @@ def make_arg_parser():
         "--target_modules",
         default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj",
     )
+    p.add_argument("--lora_layer_idx", type=int, default=None,
+                   help="If set, enable LoRA only on this transformer layer index (e.g., 6).")
 
     p.add_argument("--use_deepspeed", action="store_true")
     p.add_argument("--deepspeed_config", default="ds_zero2.json")
@@ -456,6 +458,18 @@ def main(argv=None):
         )
         model = get_peft_model(model, lcfg)
         logging.info("LoRA on modules: %s", mods)
+
+        if args.lora_layer_idx is not None:
+            needle = f".layers.{args.lora_layer_idx}."
+            kept, frozen = 0, 0
+            for n, p in model.named_parameters():
+                if "lora_" in n:
+                    if needle in n:
+                        p.requires_grad_(True); kept += p.numel()
+                    else:
+                        p.requires_grad_(False); frozen += p.numel()
+            logging.info("LoRA single-layer mode: kept %d params in %s; froze %d elsewhere",
+                         kept, needle, frozen)
     else:
         logging.info("Full‑parameter fine‑tune (no LoRA)")
 
