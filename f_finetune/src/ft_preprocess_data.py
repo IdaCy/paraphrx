@@ -220,6 +220,12 @@ def main():
                         type=str2bool, default=True,
                         help="If True, use the 'output' field from the prompts JSON as the target answer."
                         "Otherwise, use 'instruction_original' from the answers JSON.")
+    parser.add_argument(
+        "--max_samples",
+        type=int,
+        default=None,
+        help="If set, randomly limit the number of *training* examples to this value after the split."
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -252,7 +258,20 @@ def main():
     train_examples = [ex for ex in all_examples if ex.prompt_count in train_prompt_ids]
     val_examples = [ex for ex in all_examples if ex.prompt_count in val_prompt_ids]
     test_examples = [ex for ex in all_examples if ex.prompt_count in test_prompt_ids]
-    
+
+    # Optionally cap the size of the training set (validation/test unchanged)
+    if args.max_samples is not None:
+        if args.max_samples <= 0:
+            logging.warning(f"--max_samples={args.max_samples} ignored (must be > 0).")
+        elif args.max_samples < len(train_examples):
+            rng = np.random.default_rng(42)  # or reuse RANDOM_SEED if you prefer
+            idx = rng.choice(len(train_examples), size=args.max_samples, replace=False)
+            # keep a stable order after sampling (optional)
+            train_examples = [train_examples[i] for i in sorted(idx.tolist())]
+            logging.info(f"Subsampled training set to {len(train_examples)} examples via --max_samples.")
+        else:
+            logging.info(f"--max_samples ({args.max_samples}) >= train size ({len(train_examples)}); keeping all.")
+
     # Update logging to show all three set sizes
     logging.info(f"Created train set with {len(train_examples)}, validation set with {len(val_examples)}, and test set with {len(test_examples)} examples.")
 
