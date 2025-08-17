@@ -150,11 +150,11 @@ def cosine(a: torch.Tensor, b: torch.Tensor, upcast_fp32: bool = False) -> float
         b = b.float()
     a = a.view(1, -1)
     b = b.view(1, -1)
-    # Handle zero-norm gracefully
     an = torch.linalg.vector_norm(a, dim=1)
     bn = torch.linalg.vector_norm(b, dim=1)
     denom = (an * bn).clamp_min(1e-12)
-    return torch.sum(a * b, dim=1).div(denom).item()
+    val = torch.sum(a * b, dim=1).div(denom)
+    return torch.clamp(val, -1.0, 1.0).item()
 
 def to_numpy(x):
     if isinstance(x, torch.Tensor):
@@ -532,7 +532,8 @@ def module_bucket(name: str) -> Tuple[str, str, int]:
     if 'down_proj' in name: return ('layer', 'mlp_down_proj', layer_idx)
 
     if 'norm' in name: return ('layer', 'norms', layer_idx)
-    if 'embed' in name or 'tok_embeddings' in name: return ('global', 'embeddings', -1)
+    if ('embed' in name) or ('tok_embeddings' in name) or ('embed_tokens' in name) or ('wte' in name):
+        return ('global', 'embeddings', -1)
     if 'lm_head' in name: return ('global', 'lm_head', -1)
     return ('other', 'other', layer_idx)
 
@@ -579,20 +580,24 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
             ft_flat = ft_param.detach()
             d_flat  = diff.detach()
 
-            if args.cosine_upcast_fp32:
-                b_flat  = b_flat.float()
-                ft_flat = ft_flat.float()
-                d_flat  = d_flat.float()
+            #if args.cosine_upcast_fp32:
+            #    b_flat  = b_flat.float()
+            #    ft_flat = ft_flat.float()
+            #    d_flat  = d_flat.float()
 
             b_flat  = b_flat.view(1, -1)
             ft_flat = ft_flat.view(1, -1)
             d_flat  = d_flat.view(1, -1)
 
             def _safe_cos(u, v):
+                # ALWAYS compute in fp32 and clamp
+                u = u.float()
+                v = v.float()
                 un = torch.linalg.vector_norm(u, dim=1)
                 vn = torch.linalg.vector_norm(v, dim=1)
                 denom = (un * vn).clamp_min(1e-12)
-                return torch.sum(u * v, dim=1).div(denom).item()
+                val = torch.sum(u * v, dim=1).div(denom)
+                return float(torch.clamp(val, -1.0, 1.0).item())
 
             cos_base_ft    = _safe_cos(b_flat,  ft_flat)
             cos_delta_base = _safe_cos(d_flat,  b_flat)
@@ -640,9 +645,22 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
         script_logger.warning("No comparable parameters for ΔW analysis.")
         return
     
+    # include embeddings in per-layer views and add an 'E' tick ---
+    # Treat embeddings as a pseudo-layer -1 (already set in module_bucket). Build a convenience mask.
+    is_layer_or_embedding = (df["layer_idx"] >= 0) | (df["bucket"] == "embeddings")
+
+    def _format_layer_axis(ax):
+        """Make sure -1 is shown as 'E' on x-axis."""
+        xs = list(sorted(set(int(x) for x in df.loc[is_layer_or_embedding, "layer_idx"].unique())))
+        if -1 in xs:
+            # keep -1 first
+            xs = [-1] + [x for x in xs if x != -1]
+        ax.set_xticks(xs)
+        ax.set_xticklabels([("E" if x == -1 else str(x)) for x in xs])
+    
     # Per-layer absolute ||W||_F (sum over params in that layer)
     agg_layer_abs = (
-        df[df["layer_idx"] >= 0]
+        df[is_layer_or_embedding]
         .groupby("layer_idx")[["base_fro","ft_fro"]]
         .sum()
         .reset_index()
@@ -652,7 +670,8 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
     plt.plot(agg_layer_abs["layer_idx"], agg_layer_abs["base_fro"], label="Base ||W||₍F₎")
     plt.plot(agg_layer_abs["layer_idx"], agg_layer_abs["ft_fro"],   label="FT ||W||₍F₎")
     plt.xlabel("Layer"); plt.ylabel("Frobenius Norm (sum)"); plt.title("Absolute Weight Size per Layer")
-    plt.legend(); plt.tight_layout()
+    plt.legend(); _format_layer_axis(plt.gca())
+    plt.tight_layout()
     plt.savefig(output_path / "weights_abs_fro_per_layer.png", dpi=180)
     plt.close()
 
@@ -676,9 +695,99 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
 
     df.to_csv(output_path / "weight_deltas_detailed.csv", index=False)
 
+    # parameter-count weighted cosine similarity per (layer × component)
+    # We weight cosines by n_params so giant matrices count proportionally.
+    sub_df = df[is_layer_or_embedding].copy()
+    if not sub_df.empty:
+        def _wavg(g, key):
+            vals = g[key].to_numpy()
+            wts  = g["n_params"].to_numpy()
+            return float(np.average(vals, weights=wts)) if wts.sum() > 0 else float(np.nan)
+
+        # Weighted averages for the three cosine metrics you already compute
+        wtd = (
+            sub_df
+            .groupby(["layer_idx", "bucket"])
+            .apply(lambda g: pd.Series({
+                "wtd_cos_base_ft":    _wavg(g, "cos_base_ft"),
+                "wtd_cos_delta_base": _wavg(g, "cos_delta_base"),
+                "wtd_cos_delta_ft":   _wavg(g, "cos_delta_ft"),
+                "n_params_sum":       int(g["n_params"].sum()),
+            }))
+            .reset_index()
+            .sort_values(["bucket", "layer_idx"])
+        )
+        # Distances (1 − cosine) so easier to read
+        # Clamp before taking (1 - cos)
+        for col in ("wtd_cos_base_ft", "wtd_cos_delta_base", "wtd_cos_delta_ft"):
+            wtd[col] = wtd[col].clip(-1.0, 1.0)
+
+        wtd["one_minus_cos_base_ft"]    = 1.0 - wtd["wtd_cos_base_ft"]
+        wtd["one_minus_cos_delta_base"] = 1.0 - wtd["wtd_cos_delta_base"]
+        wtd["one_minus_cos_delta_ft"]   = 1.0 - wtd["wtd_cos_delta_ft"]
+
+        # Save CSVs
+        wtd.to_csv(output_path / "weights_cosine_per_layer_component__weighted.csv", index=False)
+
+        # Heatmap of (1 − cosine) for base vs ft alignment
+        heat = wtd.pivot(index="bucket", columns="layer_idx", values="one_minus_cos_base_ft").fillna(0.0)
+        if not heat.empty:
+            cols = sorted(heat.columns)
+            if -1 in cols:
+                cols = [-1] + [c for c in cols if c != -1]
+            heat = heat[cols]
+
+        if not heat.empty:
+            fig, ax = plt.subplots(figsize=(14, 8))
+            sns.heatmap(heat, cmap="viridis", cbar_kws={'label': '1 − cos(W_base, W_ft)'})
+            ax.set_title("Weighted (1 − cosine) by Component × Layer")
+            ax.set_xlabel("Layer"); ax.set_ylabel("Component")
+            plt.tight_layout(); fig.savefig(output_path / "weights_one_minus_cosine_heatmap.png", dpi=180); plt.close(fig)
+
+        # Line plots: (1 − cosine) per component across layers
+        if not getattr(args, "skip_weights_one_minus_cosine_per_layer_plots", False):
+            for bname in sorted(wtd["bucket"].unique()):
+                sub = wtd[wtd["bucket"] == bname].sort_values("layer_idx")
+                plt.figure()
+                plt.plot(sub["layer_idx"], sub["one_minus_cos_base_ft"],    label="1 − cos(W_base, W_ft)")
+                plt.plot(sub["layer_idx"], sub["one_minus_cos_delta_base"], label="1 − cos(ΔW, W_base)")
+                plt.plot(sub["layer_idx"], sub["one_minus_cos_delta_ft"],   label="1 − cos(ΔW, W_ft)")
+                plt.xlabel("Layer"); plt.ylabel("1 − cosine")
+                plt.title(f"Directional Change (weighted) — {bname}")
+                plt.legend(); _format_layer_axis(plt.gca()); plt.tight_layout()
+                plt.savefig(output_path / f"weights_one_minus_cosine_per_layer__{bname}.png", dpi=180)
+                plt.close()
+
+        # overall weighted cosine by layer (collapsed across components)
+        overall = (
+            wtd.groupby("layer_idx")
+            .apply(lambda g: pd.Series({
+                "wtd_cos_base_ft":    np.average(g["wtd_cos_base_ft"],    weights=g["n_params_sum"]),
+                "wtd_cos_delta_base": np.average(g["wtd_cos_delta_base"], weights=g["n_params_sum"]),
+                "wtd_cos_delta_ft":   np.average(g["wtd_cos_delta_ft"],   weights=g["n_params_sum"]),
+            }))
+            .reset_index()
+            .sort_values("layer_idx")
+        )
+        overall["one_minus_cos_base_ft"]    = 1.0 - overall["wtd_cos_base_ft"]
+        overall["one_minus_cos_delta_base"] = 1.0 - overall["wtd_cos_delta_base"]
+        overall["one_minus_cos_delta_ft"]   = 1.0 - overall["wtd_cos_delta_ft"]
+        overall.to_csv(output_path / "weights_cosine_per_layer__overall_weighted.csv", index=False)
+
+        if not getattr(args, "skip_weights_one_minus_cosine_per_layer_plots", False):
+            plt.figure()
+            plt.plot(overall["layer_idx"], overall["one_minus_cos_base_ft"],    label="1 − cos(W_base, W_ft)")
+            plt.plot(overall["layer_idx"], overall["one_minus_cos_delta_base"], label="1 − cos(ΔW, W_base)")
+            plt.plot(overall["layer_idx"], overall["one_minus_cos_delta_ft"],   label="1 − cos(ΔW, W_ft)")
+            plt.xlabel("Layer"); plt.ylabel("1 − cosine")
+            plt.title("Directional Change (weighted) — Overall")
+            plt.legend(); _format_layer_axis(plt.gca()); plt.tight_layout()
+            plt.savefig(output_path / "weights_one_minus_cosine_per_layer__overall.png", dpi=180)
+            plt.close()
+
     # per-component, per-layer absolute/Δ/relative metrics
     layer_bucket_abs = (
-        df[df["layer_idx"] >= 0]
+        df[is_layer_or_embedding]
         .groupby(["layer_idx", "bucket"])[["base_fro", "ft_fro", "delta_fro"]]
         .sum()
         .reset_index()
@@ -707,7 +816,9 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
         plt.plot(sub["layer_idx"], sub["ft_fro"],   label="FT ||W||₍F₎")
         plt.xlabel("Layer"); plt.ylabel("Frobenius Norm")
         plt.title(f"Absolute Weight Size per Layer — {bname}")
-        plt.legend(); plt.tight_layout()
+        plt.legend()
+        _format_layer_axis(plt.gca())
+        plt.tight_layout()
         plt.savefig(output_path / f"weights_abs_fro_per_layer__{bname}.png", dpi=180)
         plt.close()
 
@@ -718,28 +829,32 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
         plt.axhline(0.0, color="k", linestyle="--", linewidth=1)
         plt.xlabel("Layer"); plt.ylabel("Δ Frobenius Norm")
         plt.title(f"Absolute Weight *Difference* per Layer — {bname}")
-        plt.legend(); plt.tight_layout()
+        plt.legend()
+        _format_layer_axis(plt.gca())
+        plt.tight_layout()
         plt.savefig(output_path / f"weights_abs_diff_per_layer__{bname}.png", dpi=180)
         plt.close()
 
         # Absolute change ||ΔW||_F per layer
-        plt.figure()
-        plt.plot(sub["layer_idx"], sub["delta_fro"], label="||ΔW||₍F₎ (FT − Base)")
-        plt.xlabel("Layer"); plt.ylabel("Frobenius Norm of Change")
-        plt.title(f"Weight Change Size per Layer — {bname}")
-        plt.legend(); plt.tight_layout()
-        plt.savefig(output_path / f"weights_delta_fro_per_layer__{bname}.png", dpi=180)
-        plt.close()
+        if not getattr(args, "skip_weights_delta_per_layer_plots", False):
+            plt.figure()
+            plt.plot(sub["layer_idx"], sub["delta_fro"], label="||ΔW||₍F₎ (FT − Base)")
+            plt.xlabel("Layer"); plt.ylabel("Frobenius Norm of Change")
+            plt.title(f"Weight Change Size per Layer — {bname}")
+            plt.legend(); _format_layer_axis(plt.gca()); plt.tight_layout()
+            plt.savefig(output_path / f"weights_delta_fro_per_layer__{bname}.png", dpi=180)
+            plt.close()
 
         # Relative change ||ΔW||_F / ||W_base||_F per layer
-        rel = sub["delta_fro"] / np.maximum(sub["base_fro"], 1e-12)
-        plt.figure()
-        plt.plot(sub["layer_idx"], rel, label="||ΔW||₍F₎ / ||W_base||₍F₎")
-        plt.xlabel("Layer"); plt.ylabel("Relative Change")
-        plt.title(f"Relative Weight Change per Layer — {bname}")
-        plt.legend(); plt.tight_layout()
-        plt.savefig(output_path / f"weights_rel_delta_per_layer__{bname}.png", dpi=180)
-        plt.close()
+        if not getattr(args, "skip_weights_rel_delta_per_layer_plots", False):
+            rel = (sub["delta_fro"] / np.maximum(sub["base_fro"], 1e-12))
+            plt.figure()
+            plt.plot(sub["layer_idx"], rel, label="||ΔW||₍F₎ / ||W_base||₍F₎")
+            plt.xlabel("Layer"); plt.ylabel("Relative Change")
+            plt.title(f"Relative Weight Change per Layer — {bname}")
+            plt.legend(); _format_layer_axis(plt.gca()); plt.tight_layout()
+            plt.savefig(output_path / f"weights_rel_delta_per_layer__{bname}.png", dpi=180)
+            plt.close()
 
         # percent change (zoomed)
         rel = 100.0 * (sub["ft_fro"] - sub["base_fro"]) / np.maximum(sub["base_fro"], 1e-12)
@@ -752,7 +867,9 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
         plt.axhline(0, color="k", linestyle="--", linewidth=1)
         plt.xlabel("Layer"); plt.ylabel("Percent change (%)")
         plt.title(f"Relative Weight Size Change per Layer — {bname}")
-        plt.legend(); plt.tight_layout()
+        plt.legend()
+        _format_layer_axis(plt.gca())
+        plt.tight_layout()
         plt.savefig(output_path / f"weights_abs_percent_change_per_layer__{bname}.png", dpi=180)
         plt.close()
 
@@ -777,7 +894,7 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
     # inner product <W_base, W_ft> = ||W_base||_F * ||W_ft||_F * cos_base_ft.
     df["base_ft_alignment"] = df["cos_base_ft"] * df["base_fro"] * df["ft_fro"]
     align_layer_bucket = (
-        df[df["layer_idx"] >= 0]
+        df[is_layer_or_embedding]
         .groupby(["layer_idx", "bucket"])["base_ft_alignment"]
         .sum()
         .reset_index()
@@ -790,7 +907,7 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
         plt.plot(sub["layer_idx"], sub["base_ft_alignment"], label="<W_base, W_ft>")
         plt.xlabel("Layer"); plt.ylabel("Frobenius Inner Product")
         plt.title(f"Raw Alignment (not normalized) per Layer — {bname}")
-        plt.legend(); plt.tight_layout()
+        plt.legend(); _format_layer_axis(plt.gca()); plt.tight_layout()
         plt.savefig(output_path / f"weights_alignment_per_layer__{bname}.png", dpi=180)
         plt.close()
 
@@ -801,36 +918,39 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
     layer_comp.to_csv(output_path / "weight_deltas_per_layer_component_long.csv", index=False)
     layer_comp_pivot.to_csv(output_path / "weight_deltas_per_layer_component.csv", index=True)
 
-    # per-layer × component cosine (mean), plus 1 - cos for a "distance-like" view
+    # per-layer × component cosine (WEIGHTED by parameter count)
     if not df.empty and "cos_base_ft" in df.columns:
-        layer_cos = df[df["layer_idx"] >= 0].groupby(["layer_idx","bucket"])["cos_base_ft"].mean().reset_index()
-        layer_cos = layer_cos.rename(columns={"cos_base_ft": "mean_cos_base_ft"})
-        layer_cos["one_minus_cos"] = 1.0 - layer_cos["mean_cos_base_ft"]
-        layer_cos.to_csv(output_path / "weight_cosine_per_layer_component.csv", index=False)
+        g = df[df["layer_idx"] >= 0].groupby(["layer_idx","bucket"])
 
-        # Top-k lowest cosine (largest directional change) per component
-        topk_cos_rows = []
-        for bname in sorted(df["bucket"].unique()):
-            sub = df[df["bucket"] == bname].sort_values("cos_base_ft", ascending=True).head(topk)
-            for _, r in sub.iterrows():
-                topk_cos_rows.append({
-                    "bucket": bname,
-                    "param_name": r["param_name"],
-                    "layer_idx": int(r["layer_idx"]),
-                    "cos_base_ft": float(r["cos_base_ft"])
-                })
-        if topk_cos_rows:
-            pd.DataFrame(topk_cos_rows).to_csv(output_path / "weight_cosine_topk_lowest_per_bucket.csv", index=False)
+        def _wavg_cos(series, weights):
+            # both are pandas Series
+            v = np.asarray(series, dtype=np.float64)
+            w = np.asarray(weights, dtype=np.float64)
+            if w.sum() <= 0: 
+                return np.nan
+            val = np.average(v, weights=w)
+            # clamp tiny numeric drift
+            return float(np.clip(val, -1.0, 1.0))
+
+        layer_cos = (
+            g.apply(lambda d: pd.Series({
+                "mean_cos_base_ft": _wavg_cos(d["cos_base_ft"], d["n_params"])
+            }))
+            .reset_index()
+            .sort_values(["bucket","layer_idx"])
+        )
+        layer_cos["one_minus_cos"] = 1.0 - layer_cos["mean_cos_base_ft"]
+        layer_cos.to_csv(output_path / "weight_cosine_per_layer_component__weightedMean.csv", index=False)
 
         for metric, fname in [("mean_cos_base_ft", "plot_weight_mean_cosine_per_layer.png"),
-                              ("one_minus_cos",   "plot_weight_one_minus_cos_per_layer.png")]:
+                            ("one_minus_cos",   "plot_weight_one_minus_cos_per_layer.png")]:
             plt.figure()
             for bname in sorted(layer_cos["bucket"].unique()):
                 sub = layer_cos[layer_cos["bucket"] == bname].sort_values("layer_idx")
                 plt.plot(sub["layer_idx"], sub[metric], label=bname)
             plt.xlabel("Layer")
             plt.ylabel(metric.replace("_", " "))
-            plt.title("Weights: " + metric.replace("_", " "))
+            plt.title("Weights (param-weighted): " + metric.replace("_", " "))
             plt.legend()
             plt.tight_layout()
             plt.savefig(output_path / fname, dpi=180)
@@ -893,6 +1013,16 @@ def analyze_and_plot_weight_deltas(base_model: PreTrainedModel, ft_model: PreTra
         plt.tight_layout()
         fig.savefig(output_path / "weight_deltas_layer_component_heatmap.png")
         plt.close(fig)
+
+    # heatmap of RELATIVE change (||ΔW|| / ||W_base||) by layer × component
+    # Uses the pivot you already computed above (pivot_rel_delta)
+    rel_heat = pivot_rel_delta.T  # components as rows, layers as columns
+    if not rel_heat.empty:
+        fig, ax = plt.subplots(figsize=(14, 8))
+        sns.heatmap(rel_heat, cmap="viridis", cbar_kws={'label': '||ΔW||₍F₎ / ||W_base||₍F₎'})
+        ax.set_title("Relative Weight Change by Component × Layer")
+        ax.set_xlabel("Layer"); ax.set_ylabel("Component")
+        plt.tight_layout(); fig.savefig(output_path / "weights_relative_change_heatmap.png", dpi=180); plt.close(fig)
 
 # PII
 @torch.no_grad()
@@ -974,14 +1104,15 @@ def load_model_and_tokenizer(model_path, base_model_path, device, attn_impl=None
         base = _apply_attn_impl(base)
         peft = PeftModel.from_pretrained(base, model_path)
 
-        # NEW: optionally merge adapters so named_parameters() reflect effective weights
-        if getattr(args, "merge_lora_for_weights", False):
+        # optionally merge adapters so named_parameters() reflect effective weights
+        if merge_lora_for_weights:
             script_logger.info("Merging LoRA adapters into the base weights for analysis…")
             try:
-                peft = peft.merge_and_unload()  # folds ΔW into module.weight and removes LoRA modules
+                peft = peft.merge_and_unload()
                 script_logger.info("Merge successful; proceeding with merged effective weights.")
             except Exception as e:
                 script_logger.warning(f"Merge failed, continuing without merge (will not see ΔW in raw weights): {e}")
+
         model = peft
     else:
         script_logger.info("Detected a full model. Loading directly.")
@@ -1174,13 +1305,11 @@ def run_best_worst_experiment(base_model: PreTrainedModel, ft_model: PreTrainedM
         batch_ft   = collate_batch([enc_o_ft, enc_p_ft], device)
 
         with ActivationExtractor(base_model) as ex:
-            _ = base_model(batch_base.input_ids,
-                        attention_mask=batch_base.attention_mask,
-                        use_cache=True)
+            _ = base_model(batch_base.input_ids, attention_mask=batch_base.attention_mask, use_cache=True)
+            hs_base = dict(sorted(ex.hidden_states.items()))
         with ActivationExtractor(ft_model) as ex:
-            _ = ft_model(batch_ft.input_ids,
-                        attention_mask=batch_ft.attention_mask,
-                        use_cache=True)
+            _ = ft_model(batch_ft.input_ids, attention_mask=batch_ft.attention_mask, use_cache=True)
+            hs_ft = dict(sorted(ex.hidden_states.items()))
 
         mb1 = batch_base.seg_answer; mb2 = batch_base.seg_answer
         mf1 = batch_ft.seg_answer;   mf2 = batch_ft.seg_answer
@@ -1794,6 +1923,13 @@ def main():
                         help="Print all parameter names containing this substring and exit.")
     parser.add_argument("--inspect_param", type=str, default="",
                         help="Print norms for an exact parameter name and exit.")
+
+    parser.add_argument("--skip_weights_delta_per_layer_plots", action="store_true",
+                        help="Skip generating weights_delta_fro_per_layer__*.png plots.")
+    parser.add_argument("--skip_weights_one_minus_cosine_per_layer_plots", action="store_true",
+                        help="Skip generating weights_one_minus_cosine_per_layer__*.png plots (including overall).")
+    parser.add_argument("--skip_weights_rel_delta_per_layer_plots", action="store_true",
+                        help="Skip generating weights_rel_delta_per_layer__*.png plots.")
 
     args = parser.parse_args()
 
