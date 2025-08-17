@@ -430,8 +430,11 @@ def make_arg_parser():
     p.add_argument("--lora_rank", type=int, default=16)
     p.add_argument("--lora_alpha", type=int, default=32)
     p.add_argument("--lora_dropout", type=float, default=0.05)
-    p.add_argument("--target_modules", default="q_proj,k_proj,v_proj,o_proj",
+    p.add_argument("--target_modules",
+                   default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj",
                    help="Comma-separated LoRA target modules; use 'none' or 'all' for full-FT.")
+    p.add_argument("--lora_layer_idx", type=int, default=None,
+                   help="If set, enable LoRA only on this transformer layer index (e.g., 6).")
 
     # Hardware / precision
     p.add_argument("--bf16", action="store_true")
@@ -539,6 +542,18 @@ def main():
         )
         model = get_peft_model(model, lcfg)
         logging.info(f"LoRA on modules: {mods}")
+
+        if args.lora_layer_idx is not None:
+            needle = f".layers.{args.lora_layer_idx}."
+            kept, frozen = 0, 0
+            for n, p in model.named_parameters():
+                if "lora_" in n:
+                    if needle in n:
+                        p.requires_grad_(True); kept += p.numel()
+                    else:
+                        p.requires_grad_(False); frozen += p.numel()
+            logging.info(f"LoRA single-layer mode: kept {kept} trainable params in {needle}; froze {frozen} elsewhere")
+            
         # Optional: print trainable param count quietly
         with open(os.devnull, 'w') as f, contextlib.redirect_stdout(f):
             model.print_trainable_parameters()
@@ -557,7 +572,7 @@ def main():
         eval_steps=args.save_steps,
         save_strategy="steps",
         save_steps=args.save_steps,
-        save_total_limit=2,
+        save_total_limit=1,
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         greater_is_better=False,
