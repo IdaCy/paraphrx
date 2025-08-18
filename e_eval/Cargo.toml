@@ -78,3 +78,4 @@ statrs = "0.16"
 plotters = { version = "0.3", default-features = false, features = ["bitmap_backend"] }
 png = "0.17"
 once_cell     = "1"
+rand = "0.8"
