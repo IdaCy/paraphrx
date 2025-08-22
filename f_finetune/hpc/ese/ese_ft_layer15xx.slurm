@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=h9x_opt_sptarg_50k_ft
+#SBATCH --job-name=l_ft_15layer
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l_ft_15layer.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_l_ft_15layer.err
 
 set -euo pipefail
-echo "$(date) - h9x_opt_sptarg_50k_ft job started on $(hostname)"
-echo "$(date) - h9x_opt_sptarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l_ft_15layer job started on $(hostname)"
+echo "$(date) - l_ft_15layer job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/h9x_opt_sptarg_50k_ft
+mkdir -p logs f_finetune/outputs_great_nolap/l_ft_15layer
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -79,8 +79,9 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
+  "bitsandbytes>=0.43.2" \
   mpi4py \
-  --only-binary=deepspeed deepspeed==0.3.1.dev5 \
+  deepspeed \
   datasets==2.19.0 \
   numpy==1.24.4 \
   sentencepiece \
@@ -108,40 +109,36 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_50k_resume.py"
+echo "$(date) - ft_15layer initial setup OK"
+RUN_SCRIPT="f_finetune/src/finetuning_50k_resume_any_aw.py"
+
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_great_nolap/ft_15layer"
+RUN_NAME="ft_15layer"
+
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types \
-    instruct_formal_memo \
-    instruct_joke \
-    instruct_sardonic \
-    instruct_future_tense \
-    instruct_coord_to_subord \
-    instruct_dramatic \
-    instruct_polite_request \
-    instruct_one_typo_punctuation \
-  --target_modules q_proj,k_proj,v_proj,o_proj \
-  --val_pct 0.05 \
-  --test_pct 0.05 \
-  --batch_size 2 \
-  --gradient_accumulation_steps 8 \
-  --num_epochs 3 \
-  --learning_rate 3e-05 \
-  --warmup_ratio 0.05 \
-  --lr_scheduler_type cosine \
-  --weight_decay 0.0 \
-  --lora_rank 8 \
-  --lora_alpha 32 \
+  --data_paths a_data/alpaca/50k_phrxed.json \
+  --model_path "$MODEL_PATH" \
+  --output_dir "$OUTPUT_DIR" \
+  --run_name ft_lora_layer6 \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --lora_layer_idx 6 \
+  --lora_rank 32 \
+  --lora_alpha 64 \
   --lora_dropout 0.05 \
-  --bf16 \
-  --eval_steps 600 \
-  --save_steps 600 \
-  --resume_checkpoint f_finetune/outputs/h9x_opt_sptarg_50k_ft/checkpoint-6600 \
+  --batch_size 8 \
+  --gradient_accumulation_steps 4 \
+  --num_epochs 3 \
+  --learning_rate 2e-4 \
+  --warmup_ratio 0.1 \
+  --lr_scheduler_type cosine_with_restarts \
+  --weight_decay 0.0 \
+  --bnb_8bit_optim --bf16 \
+  --eval_steps 500 --save_steps 500 \
+  --early_stopping_patience 3 \
   --logging_steps 100 \
-  --run_name h9x_opt_sptarg_50k_ft \
-  --output_dir f_finetune/outputs/h9x_opt_sptarg_50k_ft \
-  --wandb_project paraphrx_ft_50k \
   $WANDB_FLAG
 
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK"
+
+echo "$(date) - l_ft_15layer job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - l_ft_15layer job finished OK"

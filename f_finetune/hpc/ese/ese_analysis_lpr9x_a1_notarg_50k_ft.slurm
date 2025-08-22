@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=h9x_opt_sptarg_50k_ft
+#SBATCH --job-name=an_lpr9x_a1_notarg_50k_ft
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_an_lpr9x_a1_notarg_50k_ft.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_an_lpr9x_a1_notarg_50k_ft.err
 
 set -euo pipefail
-echo "$(date) - h9x_opt_sptarg_50k_ft job started on $(hostname)"
-echo "$(date) - h9x_opt_sptarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - an_lpr9x_a1_notarg_50k_ft job started on $(hostname)"
+echo "$(date) - an_lpr9x_a1_notarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/h9x_opt_sptarg_50k_ft
+mkdir -p logs f_finetune/output_inf_ft_50k
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -59,16 +59,8 @@ done
 echo "Using $($PYBIN -V)"
 
 export PYTHON_PKGS="$TMPDIR/python-packages"
-echo "Forcing clean package directory at $PYTHON_PKGS"
-rm -rf "$PYTHON_PKGS"
 mkdir -p "$PYTHON_PKGS"
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
-
-# DEEP-SEED compatible metadata libs
-$PYBIN -m pip install --upgrade "importlib_metadata>=5.2.0" \
-                                   "setuptools==65.5.1" \
-                                   "testresources==2.0.1" \
-    --no-cache-dir --target "$PYTHON_PKGS"
 
 # install pip & wheel (keep your pinned setuptools)
 $PYBIN -m pip install --upgrade pip wheel \
@@ -79,15 +71,15 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
-  mpi4py \
-  --only-binary=deepspeed deepspeed==0.3.1.dev5 \
   datasets==2.19.0 \
   numpy==1.24.4 \
-  sentencepiece \
-  loguru \
-  protobuf==3.20.* \
-  wandb \
+  pandas \
+  scipy \
+  seaborn \
+  tqdm \
   matplotlib \
+  bitsandbytes==0.43.2 \
+  wandb \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -95,7 +87,6 @@ $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
-print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
@@ -108,40 +99,21 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_50k_resume.py"
+RUN_SCRIPT="f_finetune/src/compare_script02.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types \
-    instruct_formal_memo \
-    instruct_joke \
-    instruct_sardonic \
-    instruct_future_tense \
-    instruct_coord_to_subord \
-    instruct_dramatic \
-    instruct_polite_request \
-    instruct_one_typo_punctuation \
-  --target_modules q_proj,k_proj,v_proj,o_proj \
-  --val_pct 0.05 \
-  --test_pct 0.05 \
-  --batch_size 2 \
-  --gradient_accumulation_steps 8 \
-  --num_epochs 3 \
-  --learning_rate 3e-05 \
-  --warmup_ratio 0.05 \
-  --lr_scheduler_type cosine \
-  --weight_decay 0.0 \
-  --lora_rank 8 \
-  --lora_alpha 32 \
-  --lora_dropout 0.05 \
-  --bf16 \
-  --eval_steps 600 \
-  --save_steps 600 \
-  --resume_checkpoint f_finetune/outputs/h9x_opt_sptarg_50k_ft/checkpoint-6600 \
-  --logging_steps 100 \
-  --run_name h9x_opt_sptarg_50k_ft \
-  --output_dir f_finetune/outputs/h9x_opt_sptarg_50k_ft \
-  --wandb_project paraphrx_ft_50k \
-  $WANDB_FLAG
+    --base_model_path f_finetune/model \
+    --ft_model_path f_finetune/outputs_lap_pr/real9x_stable5/final \
+    --prompts_json_path a_data/alpaca/50k_phrxed.json \
+    --output_dir f_finetune/outputs_lap_pr/real9x_stable5/masstest50 \
+    --run_mode aggregate \
+    --pairs_per_batch 16 \
+    --dtype bfloat16 \
+    --limit 50 \
+    --focus_on_answer_tokens \
+    --compute_pii \
+    --flash_attention auto \
+    --capture_component_activations --capture_attn_qkv --capture_mlp_up_gate \
+    --compute_pii --pii_focus_on_answer
 
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK"
+echo "$(date) - an_lpr9x_a1_notarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - an_lpr9x_a1_notarg_50k_ft job finished OK"

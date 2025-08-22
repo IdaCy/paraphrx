@@ -1,8 +1,8 @@
 """
-python3 a_data/preproc/downloads/convert_ultrafeedback_binarized.py \
+python3 script.py \
   --split train_sft \
-  --out_prompts_json a_data/ultrafeedback_binarized/ufb_train_prompts.json \
-  --out_answers_json a_data/ultrafeedback_binarized/ufb_train_answers.json
+  --out_prompts_json a_data/<new-data>/<data>_train_prompts.json \
+  --out_answers_json a_data/<new-data>/<data>_train_answers.json
 """
 
 import argparse, json
@@ -11,7 +11,7 @@ from datasets import load_dataset
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", default="train_sft",
-                    help="One of: train_sft, test_sft (from ultrafeedback_binarized)")
+                    help="One of: train_sft, test_sft (from <new-data>)")
     ap.add_argument("--revision", default=None,
                     help="Optional HF revision hash if you want the older version")
     ap.add_argument("--out_prompts_json", required=True)
@@ -19,10 +19,10 @@ def main():
     args = ap.parse_args()
 
     # Load the dataset split
-    ds = load_dataset("HuggingFaceH4/ultrafeedback_binarized",
+    ds = load_dataset("HuggingFaceH4/<new-data>",
                       split=args.split,
                       revision=args.revision) if args.revision \
-        else load_dataset("HuggingFaceH4/ultrafeedback_binarized",
+        else load_dataset("HuggingFaceH4/<new-data>",
                           split=args.split)
 
     # Build format:

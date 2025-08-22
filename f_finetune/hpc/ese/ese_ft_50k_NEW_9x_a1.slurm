@@ -1,23 +1,23 @@
 #!/bin/bash -l
-#SBATCH --job-name=h9x_opt_sptarg_50k_ft
+#SBATCH --job-name=lnewft_9x_smlr_stop
 #SBATCH --partition=dgxl_irp
-#SBATCH --qos=dgxl_irp_high
+#SBATCH --qos=dgxl_irp_low
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lnewft_9x_smlr_stop.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_lnewft_9x_smlr_stop.err
 
 set -euo pipefail
-echo "$(date) - h9x_opt_sptarg_50k_ft job started on $(hostname)"
-echo "$(date) - h9x_opt_sptarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lnewft_9x_smlr_stop job started on $(hostname)"
+echo "$(date) - lnewft_9x_smlr_stop job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/h9x_opt_sptarg_50k_ft
+mkdir -p logs f_finetune/outputs/lnewft_9x_smlr_stop
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -81,6 +81,7 @@ $PYBIN -m pip install --prefer-binary \
   peft==0.11.1 \
   mpi4py \
   --only-binary=deepspeed deepspeed==0.3.1.dev5 \
+  "bitsandbytes>=0.43.2" \
   datasets==2.19.0 \
   numpy==1.24.4 \
   sentencepiece \
@@ -108,40 +109,37 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_50k_resume.py"
-srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types \
-    instruct_formal_memo \
-    instruct_joke \
-    instruct_sardonic \
-    instruct_future_tense \
-    instruct_coord_to_subord \
-    instruct_dramatic \
-    instruct_polite_request \
-    instruct_one_typo_punctuation \
-  --target_modules q_proj,k_proj,v_proj,o_proj \
-  --val_pct 0.05 \
-  --test_pct 0.05 \
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_clean/lnewft_9x_smlr_stop"
+DATA_PATH="a_data/alpaca/50k_phrxed_trimmed.json"
+ANSWER_PATH="c_assess_inf/output50k/answers.json"
+RUN_NAME="lnewft_9x_smlr_stop_clean"
+
+RUN_SCRIPT="f_finetune/src/finetuning_50k_resume_short.py"
+srun "$PYBIN" "$RUN_SCRIPT" \
+  --data_paths "$DATA_PATH" \
+  --model_path "$MODEL_PATH" \
+  --output_dir "$OUTPUT_DIR" \
+  --answers_path "$ANSWER_PATH" \
+  --run_name "$RUN_NAME" \
+  --instruct_types instruct_formal_memo instruct_joke instruct_sardonic \
+  instruct_future_tense instruct_coord_to_subord instruct_dramatic \
+  instruct_polite_request instruct_one_typo_punctuation \
+  --target_modules none \
   --batch_size 2 \
-  --gradient_accumulation_steps 8 \
-  --num_epochs 3 \
-  --learning_rate 3e-05 \
-  --warmup_ratio 0.05 \
+  --gradient_accumulation_steps 16 \
+  --num_epochs 2 \
+  --learning_rate 8e-6 \
+  --warmup_ratio 0.03 \
   --lr_scheduler_type cosine \
-  --weight_decay 0.0 \
-  --lora_rank 8 \
-  --lora_alpha 32 \
-  --lora_dropout 0.05 \
+  --weight_decay 0.01 \
   --bf16 \
-  --eval_steps 600 \
-  --save_steps 600 \
-  --resume_checkpoint f_finetune/outputs/h9x_opt_sptarg_50k_ft/checkpoint-6600 \
+  --eval_steps 500 \
+  --save_steps 500 \
+  --early_stopping_patience 2 \
   --logging_steps 100 \
-  --run_name h9x_opt_sptarg_50k_ft \
-  --output_dir f_finetune/outputs/h9x_opt_sptarg_50k_ft \
-  --wandb_project paraphrx_ft_50k \
+  --resume_checkpoint "$OUTPUT_DIR/checkpoint-9500" \
   $WANDB_FLAG
 
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK"
+echo "$(date) - lnewft_9x_smlr_stop job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - lnewft_9x_smlr_stop job finished OK"
