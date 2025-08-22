@@ -4,74 +4,31 @@ cargo robust_alpaca_eval \
   --prompts a_data/alpaca/50k_phrxed.json \
   --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
   --answers-target e_eval/output_robust_alpaca_eval/answers_phrx.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores \
+  --output-file e_eval/output_robust_alpaca_eval/scores/phrx.json \
+  --api-key "xxx" \
+  --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --max-per-key 200 \
   --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
+  --delay-ms 8000 \
   --length-control \
   --seed 42 \
   >> e_eval/output_robust_alpaca_eval/phrx_$(date +%F_%T).log 2>&1 &
-cargo robust_alpaca_eval \
-  llm-judge \
-  --prompts a_data/alpaca/50k_phrxed.json \
-  --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
-  --answers-target e_eval/output_robust_alpaca_eval/answers_phrx.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores \
-  --api-key "xxx" \
-  --max-per-key 200 \
-  --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
-  --length-control \
-  --seed 42 \
-  >> e_eval/output_robust_alpaca_eval/phrx_$(date +%F_%T).log 2>&1 &
-cargo run --release -- \
-  llm-judge \
-  --prompts a_data/alpaca/50k_phrxed.json \
-  --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
-  --answers-target e_eval/output_robust_alpaca_eval/answers_phrx.json \
-  --outout-file e_eval/output_robust_alpaca_eval/scores_phrx.json \
-  --log-name phrx_eval \
-  --api-key "xxx" \
-  --api-key "xxx" \
-  --api-key "xxx" \
-  --api-key "xxx" \
-  --max-per-key 200 \
-  --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
-  --length-control \
-  --seed 42 \
-  > e_eval/output_robust_alpaca_eval/phrx_$(date +%F_%T).stdout.log 2>&1 &
 
 cargo robust_alpaca_eval \
   llm-judge \
   --prompts a_data/alpaca/50k_phrxed.json \
   --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
   --answers-target e_eval/output_robust_alpaca_eval/answers_onlylap.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores_onlylap \
+  --output-file e_eval/output_robust_alpaca_eval/scores/onlylap.json \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --max-per-key 200 \
   --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
-  --length-control \
-  --seed 42 \
-  >> e_eval/output_robust_alpaca_eval/onlylap_$(date +%F_%T).log 2>&1 &
-cargo robust_alpaca_eval \
-  llm-judge \
-  --prompts a_data/alpaca/50k_phrxed.json \
-  --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
-  --answers-target e_eval/output_robust_alpaca_eval/answers_onlylap.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores_onlylap \
-  --api-key "xxx" \
-  --api-key "xxx" \
-  --api-key "xxx" \
-  --max-per-key 200 \
-  --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
+  --delay-ms 8000 \
   --length-control \
   --seed 42 \
   >> e_eval/output_robust_alpaca_eval/onlylap_$(date +%F_%T).log 2>&1 &
@@ -81,7 +38,7 @@ cargo robust_alpaca_eval \
   --prompts a_data/alpaca/50k_phrxed.json \
   --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
   --answers-target f_finetune/outputs_great_nolap/h_ultrafeedback_binarized_nolap/answers.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores \
+  --output-file e_eval/output_robust_alpaca_eval/scores \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
@@ -98,27 +55,14 @@ cargo robust_alpaca_eval \
   --prompts a_data/alpaca/50k_phrxed.json \
   --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
   --answers-target f_finetune/model/answers.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores_base \
+  --output-file e_eval/output_robust_alpaca_eval/scores/base.json \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --max-per-key 200 \
   --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
-  --length-control \
-  --seed 42 \
-  >> e_eval/output_robust_alpaca_eval/base_$(date +%F_%T).log 2>&1 &
-cargo robust_alpaca_eval \
-  llm-judge \
-  --prompts a_data/alpaca/50k_phrxed.json \
-  --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
-  --answers-target f_finetune/model/answers.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores_base \
-  --api-key "xxx" \
-  --max-per-key 1 \
-  --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
+  --delay-ms 12000 \
   --length-control \
   --seed 42 \
   >> e_eval/output_robust_alpaca_eval/base_$(date +%F_%T).log 2>&1 &
@@ -128,14 +72,14 @@ cargo robust_alpaca_eval \
   --prompts a_data/alpaca/50k_phrxed.json \
   --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
   --answers-target f_finetune/outputs_lap_pr/real9x_output_stable5/answers.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores \
+  --output-file e_eval/output_robust_alpaca_eval/scores/real9x_output_stable5.json \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --max-per-key 200 \
   --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
+  --delay-ms 12000 \
   --length-control \
   --seed 42 \
   >> e_eval/output_robust_alpaca_eval/real9x_output_stable5_$(date +%F_%T).log 2>&1 &
@@ -145,17 +89,17 @@ cargo robust_alpaca_eval \
   --prompts a_data/alpaca/50k_phrxed.json \
   --answers-reference c_assess_inf/output50k/gpt4_answers_1440.json \
   --answers-target f_finetune/outputs_great_nolap/ft_spec6layer/answers.json \
-  --output-dir e_eval/output_robust_alpaca_eval/scores_ft_spec6layer \
+  --output-file e_eval/output_robust_alpaca_eval/scores/ft_spec6layer.json \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --api-key "xxx" \
   --max-per-key 200 \
   --judging-model gemini-2.0-flash \
-  --delay-ms 4000 \
+  --delay-ms 12000 \
   --length-control \
   --seed 42 \
-  >> e_eval/output_robust_alpaca_eval/ft_spec6layer_$(date +%F_%T).log 2>&1 &
+  >> e_eval/output_robust_alpaca_eval/great_nolap_$(date +%F_%T).log 2>&1 &
 */
 use anyhow::{anyhow, Context, Result};
 use chrono::Local;
@@ -170,8 +114,10 @@ use std::{
     fs,
     io::{BufWriter, Write},
     path::{Path, PathBuf},
-    time::Duration,
 };
+
+use std::collections::VecDeque;
+use std::time::{Duration, Instant};
 use tokio::time::sleep;
 
 const ENDPOINT: &str = "https://generativelanguage.googleapis.com/v1beta";
@@ -186,7 +132,8 @@ impl Logger {
         Ok(Self { writer: BufWriter::new(file) })
     }
     fn log(&mut self, msg: &str) {
-        let ts = Local::now().format("%Y-%m-%d %H:%M%S");
+        //let ts = Local::now().format("%Y-%m-%d %H:%M%S");
+        let ts = Local::now().format("%Y-%m-%d %H:%M:%S");
         let _ = writeln!(self.writer, "[{ts}] {msg}");
         println!("[{ts}] {msg}");
         let _ = self.writer.flush();
@@ -213,6 +160,18 @@ where
         }
     }
     de.deserialize_any(Visitor)
+}
+
+fn extract_retry_after_seconds(s: &str) -> Option<u64> {
+    // Looks for: "retryDelay":"53s"  (or  "2.5s")
+    let needle = "\"retryDelay\":\"";
+    let start = s.find(needle)?;
+    let rest = &s[start + needle.len()..];
+    let end = rest.find('"')?;
+    let val = &rest[..end]; // e.g., "53s" or "2.5s"
+    let trimmed = val.trim_end_matches('s');
+    let secs: f64 = trimmed.parse().ok()?;
+    Some(secs.max(0.0).round() as u64)
 }
 
 // Data structures (prompts / answers / scores / verdicts)
@@ -301,11 +260,11 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Evaluate using an LLM as judge (RobustAlpacaEval-compatible)
+    // Evaluate using an LLM as judge (RobustAlpacaEval-compatible)
     LlmJudge(LlmJudgeArgs),
-    /// Evaluate from pre-computed numerical scores
+    // Evaluate from pre-computed numerical scores
     FromScores(FromScoresArgs),
-    /// Report from a pre-computed Win/Loss/Tie file
+    // Report from a pre-computed Win/Loss/Tie file
     FromLlmScores(FromLlmScoresArgs),
 }
 
@@ -320,8 +279,8 @@ struct LlmJudgeArgs {
     #[arg(long = "answers-target", value_name = "ANSWERS_TARGET", num_args = 1..)]
     answers_targets: Vec<PathBuf>,
 
-    #[arg(long = "output-dir", value_name = "OUTPUT_DIR")]
-    output_dir: PathBuf,
+    #[arg(long = "output-file", value_name = "OUTPUT_FILE")]
+    output_file: PathBuf,
 
     #[arg(long, default_value = "gemini-1.5-flash-latest")]
     judging_model: String,
@@ -347,15 +306,15 @@ struct LlmJudgeArgs {
     #[arg(long = "delay-ms", default_value_t = 100)]
     delay_ms: u64,
 
-    /// Enable length-controlled debiasing via OLS (legacy)
+    // Enable length-controlled debiasing via OLS (legacy)
     #[arg(long = "length-control")]
     length_control: bool,
 
-    /// Limit the TOTAL number of prompt_count records across all targets
+    // Limit the TOTAL number of prompt_count records across all targets
     #[arg(long = "max-records", value_name = "N")]
     max_records: Option<usize>,
 
-    /// Deterministic shuffling for reproducibility
+    // Deterministic shuffling for reproducibility
     #[arg(long = "seed")]
     seed: Option<u64>,
 }
@@ -571,7 +530,10 @@ fn run_from_scores(args: FromScoresArgs) -> Result<()> {
 async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
     // Setup logging
     let ts = Local::now().format("%Y%m%d-%H%M%S");
-    fs::create_dir_all(&args.output_dir)?;
+    if let Some(p) = args.output_file.parent() {
+        fs::create_dir_all(p)?;
+    }
+
     let log_path = Path::new("logs").join(format!("SCORING_LLM_JUDGE_{}.log", ts));
     let mut logger = Logger::new(&log_path)?;
 
@@ -605,7 +567,7 @@ async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
     }
 
     // API keys rotation
-    let mut key_pool = ApiKeyPool::new(args.api_keys.clone(), args.max_per_key)?;
+    let mut key_pool = ApiKeyPool::new(args.api_keys.clone(), args.max_per_key, 14)?;
     let client = build_client()?;
 
     // RNG for deterministic shuffling if seed supplied
@@ -622,9 +584,28 @@ async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
             .unwrap_or("target")
             .to_string();
         logger.log(&format!("\n=== Evaluating target: {} ===", target_name));
-        let out_path = args
-            .output_dir
-            .join(format!("robust_alpacaeval__{}.json", sanitize_for_fs(&target_name)));
+        // Decide output path per target, based on --output-file and number of targets.
+        // If there is only one target, write exactly to output_file.
+        // If there are multiple targets, suffix the file name with "__{target}" before the extension.
+        let out_path = {
+            let base = &args.output_file;
+            let targets_count = args.answers_targets.len();
+
+            if targets_count == 1 {
+                base.clone()
+            } else {
+                let mut stem = base.file_stem()
+                    .and_then(|s| s.to_str())
+                    .unwrap_or("output")
+                    .to_string();
+                let ext = base.extension().and_then(|e| e.to_str()).unwrap_or("json");
+                stem.push_str("__");
+                stem.push_str(&sanitize_for_fs(&target_name));
+                let mut p = base.clone();
+                p.set_file_name(format!("{stem}.{ext}"));
+                p
+            }
+        };
 
         let all_ans_target_records: Vec<AnswerRecord> =
             read_records(target_path, &mut logger)?;
@@ -822,7 +803,7 @@ async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
                     let mut last_err: Option<anyhow::Error> = None;
 
                     for attempt in 1..=3u8 {
-                        let api_key = match key_pool.take_key_for_call() {
+                        let api_key = match key_pool.take_key_for_call().await {
                             Ok(k) => k,
                             Err(_) => {
                                 logger.log("All API keys exhausted -> aborting early");
@@ -844,14 +825,38 @@ async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
                                 break;
                             }
                             Err(e) if attempt < 3 => {
-                                last_err = Some(e);
+                                let msg = e.to_string();
+
+                                // If it's a 429, parse RetryInfo and suspend this key; count a strike.
+                                if msg.contains(" 429") || msg.contains("RESOURCE_EXHAUSTED") {
+                                    let suspend_secs = extract_retry_after_seconds(&msg).unwrap_or(60);
+                                    key_pool.handle_429(&api_key, Some(Duration::from_secs(suspend_secs)));
+                                    logger.log(&format!(
+                                        "ID {id} key {key}: 429 -> suspending key for {}s (attempt {attempt}/{})",
+                                        suspend_secs, 3
+                                    ));
+                                }
+
+                                last_err = Some(anyhow!(msg));
                                 logger.log(&format!(
                                     "ID {id} key {key}: vote {vote_num} attempt {attempt} failed; retrying..."
                                 ));
                                 sleep(Duration::from_millis(300 * (attempt as u64))).await;
                             }
                             Err(e) => {
-                                last_err = Some(e);
+                                let msg = e.to_string();
+
+                                // Final attempt also honors 429 suspension/retirement.
+                                if msg.contains(" 429") || msg.contains("RESOURCE_EXHAUSTED") {
+                                    let suspend_secs = extract_retry_after_seconds(&msg).unwrap_or(60);
+                                    key_pool.handle_429(&api_key, Some(Duration::from_secs(suspend_secs)));
+                                    logger.log(&format!(
+                                        "ID {id} key {key}: 429 -> suspending key for {}s (final attempt for this vote)",
+                                        suspend_secs
+                                    ));
+                                }
+
+                                last_err = Some(anyhow!(msg));
                                 logger.log(&format!(
                                     "ID {id} key {key}: vote {vote_num} failed after retries."
                                 ));
@@ -1298,8 +1303,8 @@ fn build_client() -> Result<reqwest::Client> {
     Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
 
-/// Judge prompt: strict rubric, TF/Relevance priority, style/length neutrality.
-/// Also asks for optional confidence in [0,1] for weighted WR.
+// Judge prompt: strict rubric, TF/Relevance priority, style/length neutrality.
+// Also asks for optional confidence in [0,1] for weighted WR.
 fn build_judge_prompt(instruction: &str, answer_1: &str, answer_2: &str) -> String {
     format!(
 r#"You are an expert evaluator. Compare two answers to the user's instruction.
@@ -1389,17 +1394,27 @@ async fn query_gemini_for_judgment(
 }
 
 // API key pool with strict rotation/exhaustion
-// Replace your ApiKeyPool with this version:
 
+// Rate-limited, 429-aware key pool
 struct ApiKeyPool {
     keys: Vec<String>,
-    max_per: u32,
-    usage: Vec<u32>,
-    alive: Vec<bool>,
-    idx: usize,
+    max_per: u32,                 // hard cap on total attempts per key (success or failure)
+    usage: Vec<u32>,              // attempts used per key
+    alive: Vec<bool>,             // key usable?
+    idx: usize,                   // round-robin pointer
+
+    // per-minute rate limit
+    per_min_limit: u32,           // e.g., 14 to stay under 15 RPM safely
+    windows: Vec<VecDeque<Instant>>, // sliding window timestamps per key (last 60s)
+
+    // 429 handling
+    suspended_until: Vec<Option<Instant>>, // per-key temporary suspension deadline
+    consecutive_429: Vec<u8>,              // per-key consecutive 429 strike counter
+    max_429_strikes: u8,                   // after N strikes, disable key permanently
 }
+
 impl ApiKeyPool {
-    fn new(mut keys: Vec<String>, max_per: u32) -> Result<Self> {
+    fn new(mut keys: Vec<String>, max_per: u32, per_min_limit: u32) -> Result<Self> {
         if keys.is_empty() {
             if let Ok(k) = std::env::var("GOOGLE_API_KEY") { keys.push(k); }
         }
@@ -1410,8 +1425,13 @@ impl ApiKeyPool {
         Ok(Self {
             usage: vec![0; n],
             alive: vec![true; n],
+            windows: vec![VecDeque::new(); n],
+            suspended_until: vec![None; n],
+            consecutive_429: vec![0; n],
+            max_429_strikes: 4, // <-- after 4 suspensions, retire the key
             keys,
             max_per,
+            per_min_limit: per_min_limit.max(1),
             idx: 0,
         })
     }
@@ -1432,20 +1452,104 @@ impl ApiKeyPool {
         }
     }
 
-    /// Reserve a key for exactly ONE API call attempt (success OR failure).
-    /// Returns Err if all keys are exhausted.
-    fn take_key_for_call(&mut self) -> Result<String> {
-        if self.exhausted() { return Err(anyhow!("All API keys exhausted")); }
-        if !self.alive[self.idx] { self.advance_to_next_alive(); }
-        if self.exhausted() { return Err(anyhow!("All API keys exhausted")); }
-
-        let key = self.keys[self.idx].clone(); // <— OWN the string (no borrow)
-
-        self.usage[self.idx] += 1;
-        if self.usage[self.idx] >= self.max_per {
-            self.alive[self.idx] = false;
-            self.advance_to_next_alive();
+    /// Record a 429 on `key`: suspend it (if duration given), increment strikes,
+    /// and permanently disable if strikes >= max_429_strikes.
+    fn handle_429(&mut self, key: &str, suspend_for: Option<Duration>) {
+        if let Some(i) = self.keys.iter().position(|k| k == key) {
+            if let Some(dur) = suspend_for {
+                self.suspended_until[i] = Some(Instant::now() + dur);
+            }
+            // Bump strike count and kill key if exceeded
+            self.consecutive_429[i] = self.consecutive_429[i].saturating_add(1);
+            if self.consecutive_429[i] >= self.max_429_strikes {
+                self.alive[i] = false;
+            }
         }
-        Ok(key)
+    }
+
+    /// Clear the 429 strike counter for a key (called on a successful reservation).
+    fn clear_429_strikes(&mut self, i: usize) {
+        self.consecutive_429[i] = 0;
+    }
+
+    /// Reserve a key for exactly ONE API attempt, with per-key RPM and suspension.
+    /// Waits (sleeps) if all keys are temporarily rate-limited; returns Err only
+    /// when every key is permanently exhausted (max_per reached or retired by 429s).
+    async fn take_key_for_call(&mut self) -> Result<String> {
+        if self.exhausted() {
+            return Err(anyhow!("All API keys exhausted"));
+        }
+
+        loop {
+            let now = Instant::now();
+            let mut earliest_ready: Option<Instant> = None;
+
+            for _ in 0..self.keys.len() {
+                if !self.alive[self.idx] {
+                    self.advance_to_next_alive();
+                    continue;
+                }
+                let i = self.idx;
+
+                // If suspended, compute when it becomes available
+                if let Some(until) = self.suspended_until[i] {
+                    if until > now {
+                        earliest_ready = Some(earliest_ready.map_or(until, |t| t.min(until)));
+                        self.advance_to_next_alive();
+                        continue;
+                    } else {
+                        self.suspended_until[i] = None; // suspension over
+                    }
+                }
+
+                // prune calls older than 60s in the RPM window
+                while let Some(&t) = self.windows[i].front() {
+                    if now.duration_since(t) >= Duration::from_secs(60) {
+                        self.windows[i].pop_front();
+                    } else {
+                        break;
+                    }
+                }
+
+                // max-per-key enforcement
+                if self.usage[i] >= self.max_per {
+                    self.alive[i] = false;
+                    self.advance_to_next_alive();
+                    continue;
+                }
+
+                // RPM gate
+                if (self.windows[i].len() as u32) < self.per_min_limit {
+                    // Reserve immediately
+                    self.windows[i].push_back(now);
+                    self.usage[i] += 1;
+                    if self.usage[i] >= self.max_per {
+                        self.alive[i] = false;
+                    }
+                    self.clear_429_strikes(i);
+                    let key = self.keys[i].clone();
+                    self.advance_to_next_alive();
+                    return Ok(key);
+                } else {
+                    // compute when the oldest call falls out of window
+                    if let Some(&oldest) = self.windows[i].front() {
+                        let ready_at = oldest + Duration::from_secs(60);
+                        earliest_ready = Some(earliest_ready.map_or(ready_at, |t| t.min(ready_at)));
+                    }
+                    self.advance_to_next_alive();
+                }
+            }
+
+            // No key is ready right now: wait until the earliest frees up
+            if let Some(until) = earliest_ready {
+                let now2 = Instant::now();
+                if until > now2 {
+                    sleep(until - now2).await;
+                }
+            } else {
+                // All keys are permanently dead
+                return Err(anyhow!("All API keys exhausted"));
+            }
+        }
     }
 }

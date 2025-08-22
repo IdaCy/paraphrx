@@ -72,6 +72,34 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
         f_finetune/data \
         f_finetune_data
 
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft \
+        outputs_great_nolap_lpr9x_a1_notarg_50k_ft
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/data/ultrafeedback_binarized \
+        ultrafeedback_binarized
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_great_nolap/ft_15layer \
+        ft_15layer
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_great_nolap/h_ultrafeedback_binarized_nolap \
+        h_ultrafeedback_binarized_nolap
+
+    python3 e_eval/src/sync_big_file.py upload \
+        e_eval/data/alpaca_gemma-2-2b-it.json \
+        alpaca_500_327paraphrases
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_clean/9xlay6_a1stop_ft/final \
+        9xlay6_a1stop_ft
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_great_nolap/cp_ft_spec6layer \
+        cp_ft_spec6layer
+
 # UPLOADED AND NOT DOWNLOADED YET
     python3 e_eval/src/sync_big_file.py upload_folder \
         f_finetune/outputs_lap_pr/opt_all_topa \
@@ -134,6 +162,35 @@ python3 e_eval/src/sync_big_file.py download_folder \
 python3 e_eval/src/sync_big_file.py download_folder \
         tokenized_real1x_output_preproc \
         f_finetune/data/tokenized_real1x_output_preproc
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        outputs_great_nolap_lpr9x_a1_notarg_50k_ft \
+        f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft
+        f_finetune/data/tokenized_real1x_output_preproc
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        ultrafeedback_binarized \
+        f_finetune/data/ultrafeedback_binarized
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        ft_15layer \
+        f_finetune/outputs_great_nolap/ft_15layer
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        h_ultrafeedback_binarized_nolap \
+        f_finetune/outputs_great_nolap/h_ultrafeedback_binarized_nolap
+
+python3 e_eval/src/sync_big_file.py download \
+        alpaca_500_327paraphrases \
+        e_eval/data/alpaca_gemma-2-2b-it.json
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        9xlay6_a1stop_ft \
+        f_finetune/outputs_clean/9xlay6_a1stop_ft/final
+
+python3 e_eval/src/sync_big_file.py download_folder \
+        cp_ft_spec6layer \
+        f_finetune/outputs_great_nolap/cp_ft_spec6layer
 
         
   Upload file:        python sync_big_file.py upload <file_path> <artifact_name>
