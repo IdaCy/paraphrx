@@ -54,15 +54,9 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: wandb --no-cache-dir -
 
 echo "$(date) - safetensors_download initial setup OK"
 
-srun "$PYBIN" e_eval/src/sync_big_file.py download \
-  safetensors00002 \
-  f_finetune/outputs/cp_9x_a1_notarg_best/final/model-00001-of-00002.safetensors
-
-echo "$(date) - safetensors_download part 1 finished OK"
-
 python3 e_eval/src/sync_big_file.py download \
-    safetensors00001 \
-    f_finetune/outputs/cp_9x_a1_notarg_best/final/model-00002-of-00002.safetensors
+        alpaca_500_327paraphrases \
+        e_eval/data/alpaca_gemma-2-2b-it.json
 
 echo "$(date) - safetensors_download part 2 finished OK"
 

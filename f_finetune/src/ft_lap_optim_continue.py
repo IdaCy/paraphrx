@@ -113,7 +113,7 @@ from transformers import (
     EarlyStoppingCallback, logging as hf_logging,
     TrainerCallback
 )
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, PeftModel
 
 import matplotlib
 matplotlib.use('Agg')  # headless-safe
@@ -406,6 +406,14 @@ class LAPTtrainer(Trainer):
 
         return outer_loss
 
+def str_or_bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ("yes", "true", "t", "1"):
+        return True
+    if v.lower() in ("no", "false", "f", "0"):
+        return False
+    return v 
 
 # CLI / main
 def make_arg_parser():
@@ -415,7 +423,12 @@ def make_arg_parser():
     p.add_argument("--model_path", required=True, help="Base or checkpoint model path.")
     p.add_argument("--output_dir", required=True)
     p.add_argument("--run_name", required=True)
-    p.add_argument("--resume_from_checkpoint", type=str, default=None)
+    p.add_argument(
+        "--resume_from_checkpoint",
+        type=str_or_bool,
+        default=None,
+        help="Set to True to auto-resume from latest checkpoint in output_dir, or provide a path.",
+    )
 
     # SFT hyperparams
     p.add_argument("--batch_size", type=int, default=2)
@@ -502,8 +515,34 @@ def main():
     tokenizer.pad_token = tokenizer.eos_token
 
     full_ft = not args.target_modules or args.target_modules.lower() in {"all", "none", "null", "false"}
-    model_load_path = args.resume_from_checkpoint if args.resume_from_checkpoint else args.model_path
 
+    # If user passed boolean True, we will warm-start: load model weights from latest checkpoint
+    # but DO NOT restore optimizer/scheduler state (avoid param-group mismatch).
+    _warmstart_only = (args.resume_from_checkpoint is True)
+    warmstart_adapter_dir = None
+
+    if _warmstart_only:
+        _ckpts = [d for d in Path(args.output_dir).glob("checkpoint-*") if d.is_dir()]
+        if not _ckpts:
+            raise RuntimeError(
+                f"--resume_from_checkpoint true was passed, but no checkpoints found under {args.output_dir}"
+            )
+        _ckpts.sort(key=lambda p: int(p.name.split("-")[-1]))
+        _latest_ckpt = _ckpts[-1]
+
+        if full_ft:
+            # full fine-tune warm start = load model weights from checkpoint dir
+            model_load_path = str(_latest_ckpt)
+            logging.info(f"WARM-START (full-FT): loading model weights from '{model_load_path}'")
+        else:
+            # LoRA warm start = keep base model path; remember adapter dir for later
+            model_load_path = args.model_path
+            warmstart_adapter_dir = str(_latest_ckpt)
+            logging.info(f"WARM-START (LoRA): will load adapter from '{warmstart_adapter_dir}' after init.")
+    else:
+        model_load_path = args.resume_from_checkpoint if isinstance(args.resume_from_checkpoint, str) else args.model_path
+
+    # build base model
     if full_ft:
         logging.info(f"Configuring FULL-parameter fine-tuning from '{model_load_path}'.")
         model = AutoModelForCausalLM.from_pretrained(
@@ -523,7 +562,7 @@ def main():
             model_load_path, device_map="auto", quantization_config=bnb_cfg
         )
         model = prepare_model_for_kbit_training(model)
-
+        
     # Enable checkpointing; non-reentrant is friendlier to hooks
     if hasattr(model, "gradient_checkpointing_enable"):
         model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
@@ -532,17 +571,35 @@ def main():
 
     if not full_ft:
         mods = [m.strip() for m in args.target_modules.split(",")]
-        lcfg = LoraConfig(
-            r=args.lora_rank,
-            lora_alpha=args.lora_alpha,
-            target_modules=mods,
-            lora_dropout=args.lora_dropout,
-            bias="none",
-            task_type="CAUSAL_LM",
-        )
-        model = get_peft_model(model, lcfg)
-        logging.info(f"LoRA on modules: {mods}")
+        if warmstart_adapter_dir is not None:
+            # Load existing LoRA adapter from checkpoint (warm-start without optimizer state)
+            try:
+                model = PeftModel.from_pretrained(
+                    model, warmstart_adapter_dir, is_trainable=True
+                )
+                logging.info(f"Loaded LoRA adapter weights from {warmstart_adapter_dir}")
+            except Exception as e:
+                logging.warning(f"Failed to warm-load LoRA adapter from {warmstart_adapter_dir}: {e}")
+                # fall back to fresh adapter init
+                from peft import LoraConfig, get_peft_model
+                lcfg = LoraConfig(
+                    r=args.lora_rank, lora_alpha=args.lora_alpha,
+                    target_modules=mods, lora_dropout=args.lora_dropout,
+                    bias="none", task_type="CAUSAL_LM",
+                )
+                model = get_peft_model(model, lcfg)
+                logging.info(f"LoRA on modules: {mods} (fresh init fallback)")
+        else:
+            # Fresh adapter init
+            lcfg = LoraConfig(
+                r=args.lora_rank, lora_alpha=args.lora_alpha,
+                target_modules=mods, lora_dropout=args.lora_dropout,
+                bias="none", task_type="CAUSAL_LM",
+            )
+            model = get_peft_model(model, lcfg)
+            logging.info(f"LoRA on modules: {mods}")
 
+        # Optional: single-layer LoRA mask
         if args.lora_layer_idx is not None:
             needle = f".layers.{args.lora_layer_idx}."
             kept, frozen = 0, 0
@@ -553,7 +610,7 @@ def main():
                     else:
                         p.requires_grad_(False); frozen += p.numel()
             logging.info(f"LoRA single-layer mode: kept {kept} trainable params in {needle}; froze {frozen} elsewhere")
-            
+
         # Optional: print trainable param count quietly
         with open(os.devnull, 'w') as f, contextlib.redirect_stdout(f):
             model.print_trainable_parameters()
@@ -604,7 +661,36 @@ def main():
     else:
         logging.info("Starting training from scratch...")
 
-    trainer.train(resume_from_checkpoint=args.resume_from_checkpoint)
+    # PEFT adapter-restore guard: skip if checkpoint does not contain adapters
+    from pathlib import Path as _Path
+    import os as _os
+
+    def _checkpoint_has_adapters(_path: str) -> bool:
+        return any(_os.path.exists(_os.path.join(_path, fn)) for fn in (
+            "adapter_config.json", "adapter_model.safetensors", "adapter_model.bin"
+        ))
+
+    # using PEFT and resuming, ensure we don't try to load adapters from a non-PEFT checkpoint
+    if isinstance(model, PeftModel) and args.resume_from_checkpoint:
+        if isinstance(args.resume_from_checkpoint, str):
+            _ckpt_dir = args.resume_from_checkpoint
+        else:
+            # Boolean True: Trainer will pick the latest checkpoint under output_dir
+            _ckpts = [d for d in _Path(args.output_dir).glob("checkpoint-*") if d.is_dir()]
+            _ckpt_dir = str(max(_ckpts, key=lambda p: int(p.name.split("-")[-1]))) if _ckpts else None
+
+        if _ckpt_dir and not _checkpoint_has_adapters(_ckpt_dir):
+            # Monkey-patch load_adapter to a no-op to avoid HFValidationError
+            _orig_load_adapter = getattr(model, "load_adapter", None)
+            if _orig_load_adapter is not None:
+                def _safe_load_adapter(*a, **kw):
+                    logging.warning(f"No PEFT adapter files found in '{_ckpt_dir}'. Skipping adapter restore.")
+                    return
+                model.load_adapter = _safe_load_adapter  # type: ignore
+
+    _resume_arg = None if _warmstart_only else args.resume_from_checkpoint
+    trainer.train(resume_from_checkpoint=_resume_arg)
+
     logging.info("Training finished.")
 
     # Outputs
