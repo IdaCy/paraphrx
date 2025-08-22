@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=h9x_opt_sptarg_50k_ft
+#SBATCH --job-name=h_lap_ultrafeedback_binarized
 #SBATCH --partition=dgxl_irp
 #SBATCH --qos=dgxl_irp_high
 #SBATCH --nodes=1
@@ -8,16 +8,16 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=40G
 #SBATCH --time=16:00:00
-#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.out
-#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h9x_opt_sptarg_50k_ft.err
+#SBATCH --output=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h_lap_ultrafeedback_binarized.out
+#SBATCH --error=/scratch_dgxl/ifc24/proj/paraphrx/logs/%x_%j_h_lap_ultrafeedback_binarized.err
 
 set -euo pipefail
-echo "$(date) - h9x_opt_sptarg_50k_ft job started on $(hostname)"
-echo "$(date) - h9x_opt_sptarg_50k_ft job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h_lap_ultrafeedback_binarized job started on $(hostname)"
+echo "$(date) - h_lap_ultrafeedback_binarized job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_dgxl/ifc24/proj/paraphrx
 cd "$PROJ"
-mkdir -p logs f_finetune/outputs/h9x_opt_sptarg_50k_ft
+mkdir -p logs f_finetune/outputs_lap/h_lap_ultrafeedback_binarized
 
 export TMPDIR="${SLURM_LOCALTMP:-/tmp}"
 
@@ -79,8 +79,9 @@ $PYBIN -m pip install --prefer-binary \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
   peft==0.11.1 \
+  "bitsandbytes>=0.43.2" \
   mpi4py \
-  --only-binary=deepspeed deepspeed==0.3.1.dev5 \
+  deepspeed \
   datasets==2.19.0 \
   numpy==1.24.4 \
   sentencepiece \
@@ -108,40 +109,45 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_50k}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-RUN_SCRIPT="f_finetune/src/finetuning_50k_resume.py"
+RUN_SCRIPT="f_finetune/src/ft_lap_optim_continue.py"
+TOKENIZED_DATA="f_finetune/data/ultrafeedback_binarized"
+
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/ft_lap_ultrafeedback_binarized"
+WANDB_PROJECT="paraphrx_ft_ultrafeedback_binarized"
+RUN_NAME="ft_lap_ultrafeedback_binarized"
+
+# sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
+
 srun $PYBIN "$RUN_SCRIPT" \
-  --data_paths c_assess_inf/output50k/answers.json \
-  --instruct_types \
-    instruct_formal_memo \
-    instruct_joke \
-    instruct_sardonic \
-    instruct_future_tense \
-    instruct_coord_to_subord \
-    instruct_dramatic \
-    instruct_polite_request \
-    instruct_one_typo_punctuation \
-  --target_modules q_proj,k_proj,v_proj,o_proj \
-  --val_pct 0.05 \
-  --test_pct 0.05 \
-  --batch_size 2 \
-  --gradient_accumulation_steps 8 \
-  --num_epochs 3 \
-  --learning_rate 3e-05 \
-  --warmup_ratio 0.05 \
-  --lr_scheduler_type cosine \
-  --weight_decay 0.0 \
-  --lora_rank 8 \
+  --tokenized_data_path "$TOKENIZED_DATA" \
+  --model_path "$MODEL_PATH" \
+  --output_dir "$OUTPUT_DIR" \
+  --run_name "$RUN_NAME" \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --lora_rank 16 \
   --lora_alpha 32 \
   --lora_dropout 0.05 \
+  --batch_size 1 \
+  --gradient_accumulation_steps 16 \
+  --num_epochs 2 \
+  --learning_rate 1e-4 \
+  --warmup_ratio 0.1 \
+  --lr_scheduler_type cosine_with_restarts \
+  --weight_decay 0.0 \
   --bf16 \
-  --eval_steps 600 \
-  --save_steps 600 \
-  --resume_checkpoint f_finetune/outputs/h9x_opt_sptarg_50k_ft/checkpoint-6600 \
+  --use_lap \
+  --lap_layer 12 \
+  --lap_t_inner 2 \
+  --lap_p_sample 0.75 \
+  --lap_epsilon 0.08 \
+  --lap_delta_lr 0.005 \
+  --lap_lambda_lr 0.0015 \
+  --bnb_8bit_optim --bf16 \
+  --save_steps 500 \
+  --early_stopping_patience 3 \
   --logging_steps 100 \
-  --run_name h9x_opt_sptarg_50k_ft \
-  --output_dir f_finetune/outputs/h9x_opt_sptarg_50k_ft \
-  --wandb_project paraphrx_ft_50k \
   $WANDB_FLAG
 
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - h9x_opt_sptarg_50k_ft job finished OK"
+echo "$(date) - h_lap_ultrafeedback_binarized job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - h_lap_ultrafeedback_binarized job finished OK"
