@@ -1,30 +1,27 @@
 #!/bin/bash -l
-#SBATCH --job-name=comp_actv_sim
+#SBATCH --job-name=i_h_ultrafeedback_binarized_nolap
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_comp_actv_sim.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_comp_actv_sim.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_ft_6layer.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_ft_6layer.err
 
 set -euo pipefail
-echo "$(date) – comp_actv_sim job started on $(hostname)"
-echo "$(date) – comp_actv_sim job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - i_h_ultrafeedback_binarized_nolap job started on $(hostname)"
+echo "$(date) - i_h_ultrafeedback_binarized_nolap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap/9x_a1_notarg_lap/prefinal_comp_sim/comp_actv_sim
+mkdir -p logs f_finetune/outputs_great_nolap/i_h_ultrafeedback_binarized_nolap
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
 mkdir -p "$TMPDIR"
 echo "Using scratch-backed TMPDIR=$TMPDIR"
-
-export MPLCONFIGDIR="$TMPDIR/matplotlib_config"
-mkdir -p "$MPLCONFIGDIR"
 
 export HF_HOME="$PROJ/hf_cache"
 export HUGGINGFACE_HUB_CACHE="$HF_HOME/hub"
@@ -41,7 +38,7 @@ export PYTHONPATH=
 export PATH=$HOME/.local/bin:$PATH
 
 cleanup () {
-  echo "$(date) – cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
+  echo "$(date) - cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
   rm -rf "$TMPDIR"
 }
 trap cleanup EXIT ERR INT TERM
@@ -64,17 +61,12 @@ $PYBIN -m pip install --upgrade setuptools --no-cache-dir --target "$PYTHON_PKGS
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
-  safetensors==0.4.3 \
   peft==0.11.1 \
   bitsandbytes==0.43.2 \
-  mpi4py \
   datasets==2.19.0 \
   numpy==1.26.4 \
-  sentencepiece \
-  loguru \
-  protobuf==3.20.* \
+  wandb \
   matplotlib \
-  seaborn \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
@@ -83,28 +75,30 @@ print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
 print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
-print("Safetensors :", safetensors.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
 source /scratch_root/ifc24/.hf_token || true
+[ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_ft_nolap_inf}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) – comp_actv_sim initial setup OK"
-RUN_SCRIPT="f_finetune/src/compare_activat_sim.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
+echo "$(date) - i_h_ultrafeedback_binarized_nolap initial setup OK"
+RUN_SCRIPT="f_finetune/src/inf_ft_50k_fromprompts.py"
 
 srun $PYBIN "$RUN_SCRIPT" \
-  --run_mode case_study \
-  --base_model_path "f_finetune/model" \
-  --ft_model_path "f_finetune/outputs_lap/9x_a1_notarg_lap/prefinal-checkpoint-27500" \
-  --prompts_json_path c_assess_inf/output50k/answers.json \
-  --output_dir "f_finetune/outputs_lap/9x_a1_notarg_lap/prefinal_comp_sim/case_studies" \
-  --prompt_ids 1 3 \
-  --paraphrase_keys "instruct_polite_request" "instruct_sardonic" "instruct_one_typo_punctuation"
+    --data_path a_data/alpaca/50k_phrxed.json \
+    --base_model_path "f_finetune/model" \
+    --lora_path "f_finetune/outputs_great_nolap/h_ultrafeedback_binarized_nolap/final" \
+    --output_json "f_finetune/outputs_great_nolap/h_ultrafeedback_binarized_nolap/answers.json" \
+    --log_name "i_h_ultrafeedback_binarized_nolap" \
+    --batch 256 \
+    --quant 4bit \
+    --max_samples 800 \
+  $WANDB_FLAG
 
-echo "$(date) – comp_actv_sim job itself finished OK"
+echo "$(date) - i_h_ultrafeedback_binarized_nolap job itself finished OK"
 
-echo "$(date) – comp_actv_sim job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – comp_actv_sim job finished & stuff cleaned OK"
+echo "$(date) - i_h_ultrafeedback_binarized_nolap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - i_h_ultrafeedback_binarized_nolap job finished & stuff cleaned OK"

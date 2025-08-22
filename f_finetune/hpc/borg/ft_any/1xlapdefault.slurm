@@ -1,30 +1,27 @@
 #!/bin/bash -l
-#SBATCH --job-name=casest_9x_a1_notarg
+#SBATCH --job-name=defaultlap1x
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_casest_9x_a1_notarg.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_casest_9x_a1_notarg.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_defaultlap1x.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_defaultlap1x.err
 
 set -euo pipefail
-echo "$(date) – casest_9x_a1_notarg job started on $(hostname)"
-echo "$(date) – casest_9x_a1_notarg job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - defaultlap1x job started on $(hostname)"
+echo "$(date) - defaultlap1x job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs
+mkdir -p logs f_finetune/outputs_lap_pr/defaultlap1x
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
 mkdir -p "$TMPDIR"
 echo "Using scratch-backed TMPDIR=$TMPDIR"
-
-export MPLCONFIGDIR="$TMPDIR/matplotlib_config"
-mkdir -p "$MPLCONFIGDIR"
 
 export HF_HOME="$PROJ/hf_cache"
 export HUGGINGFACE_HUB_CACHE="$HF_HOME/hub"
@@ -41,7 +38,7 @@ export PYTHONPATH=
 export PATH=$HOME/.local/bin:$PATH
 
 cleanup () {
-  echo "$(date) – cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
+  echo "$(date) - cleaning up ENTIRE temp directory for $SLURM_JOB_ID: $TMPDIR"
   rm -rf "$TMPDIR"
 }
 trap cleanup EXIT ERR INT TERM
@@ -73,9 +70,8 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   sentencepiece \
   loguru \
   protobuf==3.20.* \
+  wandb \
   matplotlib \
-  seaborn \
-  scipy \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
@@ -89,24 +85,35 @@ print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
 source /scratch_root/ifc24/.hf_token || true
+[ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrax_ft_nolap}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) – casest_9x_a1_notarg initial setup OK"
-RUN_SCRIPT="f_finetune/src/compare_activat_sim.py"
-TOKENIZED_DATA="f_finetune/outputs_lap/cached_tokenized_data_9x"
+echo "$(date) - defaultlap1x initial setup OK"
+RUN_SCRIPT="f_finetune/src/ft.py"
+TOKENIZED_DATA="f_finetune/data/tokenized_data_1xlikenolap"
 
-srun $PYBIN "$RUN_SCRIPT" \
-  --run_mode case_study \
-  --data_split all \
-  --base_model_path "f_finetune/model" \
-  --ft_model_path "f_finetune/outputs/cp_9x_a1_notarg_best/final" \
-  --prompts_json_path a_data/alpaca/50k_phrxed.json \
-  --output_dir "f_finetune/outputs/cp_9x_a1_notarg_best/cases_outliers_mass1000" \
-  --prompt_ids 4 32 125 219 516 850 \
-  --paraphrase_keys "instruct_leet_speak" "instruct_joke" "instruct_output_markdown" "instruct_dramatic"  \
+MODEL_PATH="f_finetune/model"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/defaultlap1x"
+WANDB_PROJECT="paraphrx_ft_lap"
+RUN_NAME="defaultlap1x"
 
-echo "$(date) – casest_9x_a1_notarg job itself finished OK"
+# sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
 
-echo "$(date) – casest_9x_a1_notarg job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) – casest_9x_a1_notarg job finished & stuff cleaned OK"
+srun "$PYBIN" "$RUN_SCRIPT" \
+  --data_paths "$TOKENIZED_DATA" \
+  --output_dir "$OUTPUT_DIR" \
+  --run_name "$RUN_NAME" \
+  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
+  --batch_size 8 \
+  --gradient_accumulation_steps 4 \
+  --bf16 \
+  --use_lap \
+  --early_stopping_patience 2 \
+  $WANDB_FLAG
+
+echo "$(date) - defaultlap1x job itself finished OK"
+
+echo "$(date) - defaultlap1x job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - defaultlap1x job finished & stuff cleaned OK"
