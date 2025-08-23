@@ -410,6 +410,29 @@ class ParaphrxTrainer(Trainer):
                 ce = ce + lam * cons_loss
 
         return ce
+    
+    def prediction_step(
+        self,
+        model,
+        inputs,
+        prediction_loss_only: bool = False,
+        ignore_keys=None,
+    ):
+        # Use the same filtering + custom loss path as training
+        model.eval()
+        with torch.no_grad():
+            loss = self.compute_loss(model, inputs)
+
+        if prediction_loss_only:
+            return (loss, None, None)
+
+        # Optionally pass labels back if present (not required)
+        labels = None
+        if isinstance(inputs, dict):
+            labels = inputs.get("labels", None)
+            # ORPO pair stage: no single labels tensor; leave None
+        return (loss, None, labels)
+
 
     # Trainer API overrides
     def compute_loss(self, model: torch.nn.Module, inputs: Dict[str, torch.Tensor], return_outputs=False):
@@ -1295,6 +1318,7 @@ def main(argv=None):
         report_to=["wandb"],
         deepspeed=ds_cfg,
         seed=args.seed,
+        remove_unused_columns=False,
     )
 
     # attach custom attributes used in Trainer
