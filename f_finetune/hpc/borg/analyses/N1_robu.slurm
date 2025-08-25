@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=E1_variance_amplitude_premlp
+#SBATCH --job-name=N1_robu
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
@@ -10,8 +10,8 @@
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - E1_variance_amplitude_premlp job started on $(hostname)"
-echo "$(date) - E1_variance_amplitude_premlp job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - N1_robu job started on $(hostname)"
+echo "$(date) - N1_robu job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -90,6 +90,8 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   tqdm \
   wandb \
   matplotlib \
+  jsonlines \
+  scikit-learn \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -119,24 +121,31 @@ mkdir -p "$(dirname "$OUTPUT_JSON")"
 # sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
 
 # Run
-echo "$(date) - E1_variance_amplitude_premlp initial setup OK"
-RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/variance_amplitude_premlp.py"
+echo "$(date) - N1_robu initial setup OK"
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/N_robu.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
-  --base_model_name_or_path f_finetune/model \
-  --ft_model_name_or_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
-  --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/variance_amplitude_premlp_5 \
-  --pooling mean \
-  --topk_eigs 16 \
-  --max_prompts 800
+  --data_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --base_model f_finetune/model \
+  --ft_lora_path f_finetune/outputs_great_nolap/ft_spec7layer/final \
+  --merge_lora \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/N1_robu8 \
+  --batch_size 42 \
+  --max_groups 40 \
+  --max_paraphrases 20 \
+  --do_A --do_B --do_C --do_D --do_E --do_F --do_G \
+  --do_A_sweep --A_layers "6,10,14,18,22" \
+  --do_B_sweep --B_layers "6,10,14" \
+  --do_C_sweep --C_layers "6,14,22" \
+  --do_H_rmsnorm --H_layers "6,14" \
+  --do_I_attn_patch --I_layers "6,10" \
+  --batch_size 32 --max_length 512
 
-echo "$(date) - E1_variance_amplitude_premlp job itself finished OK"
+echo "$(date) - N1_robu job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) - E1_variance_amplitude_premlp job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - E1_variance_amplitude_premlp job finished & stuff cleaned OK"
+echo "$(date) - N1_robu job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - N1_robu job finished & stuff cleaned OK"

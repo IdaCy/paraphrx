@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=likenolap1x
+#SBATCH --job-name=inf_lap
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_likenolap1x.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_likenolap1x.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%j_%x.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - likenolap1x job started on $(hostname)"
-echo "$(date) - likenolap1x job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - inf_lap job started on $(hostname)"
+echo "$(date) - inf_lap job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap_pr/likenolap1x
+mkdir -p logs f_finetune/outputs_ft_2/bigpipe
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -61,15 +61,10 @@ $PYBIN -m pip install --upgrade setuptools --no-cache-dir --target "$PYTHON_PKGS
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
   transformers==4.45.0 \
-  safetensors==0.4.3 \
   peft==0.11.1 \
   bitsandbytes==0.43.2 \
-  mpi4py \
   datasets==2.19.0 \
   numpy==1.26.4 \
-  sentencepiece \
-  loguru \
-  protobuf==3.20.* \
   wandb \
   matplotlib \
   --no-cache-dir \
@@ -80,57 +75,83 @@ print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
 print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
-print("Safetensors :", safetensors.__version__)
 print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
 source /scratch_root/ifc24/.hf_token || true
 [ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
-WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrax_ft_nolap}
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_inf_2}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) - likenolap1x initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft.py"
-TOKENIZED_DATA="f_finetune/data/tokenized_data_1xlikenolap"
+echo "$(date) - inf_lap initial setup OK"
+RUN_SCRIPT="f_finetune/src/ft_2.py"
+BASE_MODEL="f_finetune/model"
 
-MODEL_PATH="f_finetune/model"
-OUTPUT_DIR="f_finetune/outputs_lap_pr/likenolap1x"
-WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="likenolap1x"
+echo "$(date) - stage 1 starting"
 
-# sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
+PROMPTS_SECOND="a_data/alpaca/50k_phrxed_nofirst500.json"
+PROMPTS_FIRST="a_data/alpaca/paraphrases_500.json"
+STYLES_SECOND="a_data/alpaca/selections/50k_phrxed_nofirst500.json"
+STYLES_FIRST="a_data/alpaca/selections/paraphrases_500.json"
+ANSWERS_SECOND="c_assess_inf/output50k/answers.json"
 
-srun "$PYBIN" "$RUN_SCRIPT" \
-  --data_paths "$TOKENIZED_DATA" \
-  --model_path "$MODEL_PATH" \
-  --output_dir "$OUTPUT_DIR" \
-  --run_name "$RUN_NAME" \
-  --resume_checkpoint "f_finetune/outputs_lap_pr/likenolap1x/checkpoint-14000" \
-  --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
-  --batch_size 4 \
-  --gradient_accumulation_steps 4 \
-  --num_epochs 3 \
-  --learning_rate 6e-06 \
-  --warmup_ratio 0.10 \
-  --lr_scheduler_type "cosine" \
-  --weight_decay 0.10 \
+echo "$(date) - Stage 1 (SFT) starting"
+
+srun $PYBIN "$RUN_SCRIPT" \
+  --data_paths "$PROMPTS_SECOND" "$PROMPTS_FIRST" \
+  --styles_paths "$STYLES_SECOND" "$STYLES_FIRST" \
+  --model_path "$BASE_MODEL" \
+  --output_dir f_finetune/outputs_ft_2/bigpipe/stage1_sft \
+  --run_name s1_sft_consistency \
   --bf16 \
-  --use_lap \
-  --lap_layer 12 \
-  --lap_t_inner 2 \
-  --lap_p_sample 0.75 \
-  --lap_epsilon 0.08 \
-  --lap_delta_lr 0.005 \
-  --lap_lambda_lr 0.0015 \
-  --early_stopping_patience 2 \
-  --eval_steps 500 \
-  --save_steps 500 \
-  --logging_steps 100 \
-  --seed 42 \
-    $WANDB_FLAG
+  --consistency_lambda 0.05 \
+  --rebalance_by_style \
+  --batch_size 16 --gradient_accumulation_steps 16 \
+  --learning_rate 1e-4 --num_epochs 3 \
+  $WANDB_FLAG
 
-echo "$(date) - likenolap1x job itself finished OK"
+# Get best checkpoint dir (adjust if you know the ID)
+CKPT_DIR=$(ls -d f_finetune/outputs_ft_2/bigpipe/stage1_sft/checkpoint-* | sort -V | tail -n1)
 
-echo "$(date) - likenolap1x job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - likenolap1x job finished & stuff cleaned OK"
+echo "$(date) - Stage 1.5 (GroupDRO) starting"
+
+srun $PYBIN "$RUN_SCRIPT" \
+  --data_paths "$PROMPTS_SECOND" "$PROMPTS_FIRST" \
+  --styles_paths "$STYLES_SECOND" "$STYLES_FIRST" \
+  --model_path "$BASE_MODEL" \
+  --resume_checkpoint "$CKPT_DIR" \
+  --output_dir f_finetune/outputs_ft_2/bigpipe/stage1p5_groupdro \
+  --run_name s1p5_groupdro \
+  --bf16 \
+  --use_groupdro --groupdro_eta 0.05 \
+  --batch_size 16 --gradient_accumulation_steps 16 \
+  --learning_rate 2e-5 --num_epochs 1 \
+  $WANDB_FLAG
+
+# Optional Stage 2 (ORPO) — needs answers JSON and only ONE prompts JSON (SECOND)
+echo "$(date) - Stage 2 (ORPO) starting"
+
+CKPT_DIR2=$(ls -d f_finetune/outputs_ft_2/bigpipe/stage1p5_groupdro/checkpoint-* | sort -V | tail -n1)
+
+srun $PYBIN "$RUN_SCRIPT" \
+  --stage orpo \
+  --data_paths "$PROMPTS_SECOND" \
+  --styles_paths "$STYLES_SECOND" \
+  --answers_path "$ANSWERS_SECOND" \
+  --model_path "$BASE_MODEL" \
+  --resume_checkpoint "$CKPT_DIR2" \
+  --output_dir f_finetune/outputs_ft_2/bigpipe/stage2_orpo \
+  --run_name s2_orpo \
+  --bf16 \
+  --orpo_beta 0.1 \
+  --batch_size 8 --gradient_accumulation_steps 16 \
+  --learning_rate 5e-5 --num_epochs 1 \
+  $WANDB_FLAG
+
+echo "$(date) - stage 3 completed"
+
+echo "$(date) - inf_lap job itself finished OK"
+
+echo "$(date) - inf_lap job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - inf_lap job finished & stuff cleaned OK"
