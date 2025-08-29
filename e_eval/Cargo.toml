@@ -52,6 +52,10 @@ name = "robust_alpaca_eval"
 path = "src/robust_alpaca_eval.rs"
 
 [[bin]]
+name = "xxrobust_alpaca_eval_2"
+path = "src/xxrobust_alpaca_eval_2.rs"
+
+[[bin]]
 name = "robust_alpaca_genbasline"
 path = "src/robust_alpaca_genbasline.rs"
 
