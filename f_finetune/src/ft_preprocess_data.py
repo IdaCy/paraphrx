@@ -1,53 +1,28 @@
-#!/usr/bin/env python
-"""
-preprocessing the data for the finetuning with LAP
-- compatible with latest version of ft_lap_optim_continue
-(continue was for allowing to go on with stopped checkpoints)
 
-python3 f_finetune/src/ft_preprocess_data.py \
-    --prompts_path a_data/alpaca/50k_phrxed.json \
-    --answers_path c_assess_inf/output50k/xx_dummy_answers.json \
-    --model_path f_finetune/model \
-    --use_prompt_output_as_answer True \
-    --output_path f_finetune/data/tokenized_real9x_output_preproc \
-    --instruct_types \
-        instruct_formal_memo \
-        instruct_joke \
-        instruct_sardonic \
-        instruct_future_tense \
-        instruct_coord_to_subord \
-        instruct_dramatic \
-        instruct_polite_request \
-        instruct_one_typo_punctuation \
-    >> logs/starter_$(date +%F_%T).log 2>&1 &
+#!/usr/bin/env python3
+from __future__ import annotations
 
-python3 f_finetune/src/ft_preprocess_data.py \
-    --prompts_path a_data/alpaca/50k_phrxed.json \
-    --answers_path c_assess_inf/output50k/xx_dummy_answers.json \
-    --model_path f_finetune/model \
-    --use_prompt_output_as_answer True \
-    --output_path f_finetune/data/tokenized_real1x_output_preproc \
-    --instruct_types \
-        instruction_original \
-    >> logs/starter_real1x_$(date +%F_%T).log 2>&1 &
-"""
 import argparse
 import dataclasses
 import json
 import logging
+import math
 import os
 import random
+import sys
+import time
 from pathlib import Path
-from typing import List, Dict, Any, Union, Set, Tuple
+from typing import List, Tuple
 
+import numpy as np
 from datasets import Dataset, DatasetDict
 from transformers import AutoTokenizer
-import numpy as np
 
-# Global variables
-tokenizer = None
+# Env defaults to make tqdm/logging less spammy unless overridden
+os.environ.setdefault("TQDM_MININTERVAL", "30")
+os.environ.setdefault("TQDM_MINITER", "500")
 
-# Data Structures and utilities
+
 @dataclasses.dataclass
 class Example:
     prompt_count: int
@@ -56,299 +31,297 @@ class Example:
     answer: str
     style: str
 
-def build_chat_prompt(instruction: str, inp: Union[str, None] = "") -> str:
-    user_msg = instruction if not inp else f"{instruction}\n\nInput:\n{inp}"
-    messages = [{"role": "user", "content": user_msg}]
-    if tokenizer:
+    def to_prompt(self) -> str:
+        # Must match the fine-tuning script's chat template & meta usage
+        meta = "Answer concisely and directly. Focus on task semantics; ignore stylistic tone cues. End after the answer."
+        user_core = self.instruction if not self.inp else f"{self.instruction}\n\nInput:\n{self.inp}"
+        user_msg = f"{meta}\n\n{user_core}"
+        messages = [{"role": "user", "content": user_msg}]
         return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    return f"<start_of_turn>user\n{user_msg}<end_of_turn>\n<start_of_turn>model\n"
 
-def load_examples(prompts_path: str, answers_path: str, instruct_types: List[str], use_prompt_output_as_answer: bool = True) -> List[Example]:
-    """
-    Loads examples by combining instructions from a prompts file and answers
-    from a corresponding answers file.
 
-    Args:
-        prompts_path: Path to the JSON file with instructions.
-        answers_path: Path to the JSON file with answers.
-        instruct_types: A list of specific instruction types to include.
-        use_prompt_output_as_answer: If True, use the 'output' field from the prompts JSON
-                                     as the answer. Otherwise, use 'instruction_original'
-                                     from the answers JSON.
+def three_way_split(
+    ds: Dataset, *, val_pct: float = 0.05, test_pct: float = 0.05, seed: int = 42
+) -> Tuple[Dataset, Dataset, Dataset]:
     """
-    examples = []
-    
-    # Load both instruction and answer data
+    Group-wise split guaranteeing each prompt_count appears in exactly one split.
+    IMPORTANT: Ordering aligns with fine-tuning script:
+      - validation first fraction, then test, then train = rest
+    """
+    rng = np.random.default_rng(seed)
+    pcs = list({ex["prompt_count"] for ex in ds})
+    rng.shuffle(pcs)
+    n = len(pcs)
+    n_val = int(n * val_pct)
+    n_test = int(n * test_pct)
+    val_ids = set(pcs[:n_val])
+    test_ids = set(pcs[n_val: n_val + n_test])
+    train_ids = set(pcs[n_val + n_test:])
+
+    train = ds.filter(lambda ex: ex["prompt_count"] in train_ids)
+    val = ds.filter(lambda ex: ex["prompt_count"] in val_ids)
+    test = ds.filter(lambda ex: ex["prompt_count"] in test_ids)
+    return train, val, test
+
+
+def load_examples(
+    paths: List[str],
+    instruct_types: List[str],
+    use_para_ans: bool,
+) -> List[Example]:
+    examples: List[Example] = []
+    for p in paths:
+        logging.info("Loading %s", p)
+        with open(p, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        for item in data:
+            pc_id = item["prompt_count"]
+            base_ans = item.get("output", "")
+            inp = item.get("input", "")
+
+            # original instruction
+            examples.append(
+                Example(pc_id, item["instruction_original"], inp, base_ans, "instruction_original")
+            )
+
+            # paraphrases
+            keep_keys = instruct_types if instruct_types else [k for k in item.keys() if k.startswith("instruct_")]
+            for k in keep_keys:
+                if k not in item: 
+                    continue
+                paraphrase = item.get(k, "")
+                if not paraphrase:
+                    continue
+                ans = item.get("output_paraphrase", base_ans) if use_para_ans else base_ans
+                examples.append(Example(pc_id, paraphrase, inp, ans, k))
+    random.shuffle(examples)
+    return examples
+
+
+def load_examples_with_answers(
+    prompts_path: str,
+    answers_path: str,
+    instruct_types: List[str],
+    use_para_ans: bool,
+) -> List[Example]:
+    examples: List[Example] = []
     with open(prompts_path, "r", encoding="utf-8") as fh:
         prompts_data = json.load(fh)
     with open(answers_path, "r", encoding="utf-8") as fh:
         answers_data = json.load(fh)
-        
-    # Create a lookup dictionary for answers by prompt_count for efficiency
-    answers_map = {item['prompt_count']: item for item in answers_data}
-    
-    logging.info(f"Loaded {len(prompts_data)} prompts and {len(answers_map)} answers.")
+    answers_map = {a["prompt_count"]: a for a in answers_data}
 
-    logging.info(f"Loaded {len(prompts_data)} prompts and {len(answers_map)} answers.")
-    if use_prompt_output_as_answer:
-        logging.info("DECISION: Using 'output' field from PROMPTS as target answers")
-    else:
-        logging.info("DECISION: Using 'instruction_original' field from ANSWERS as target answers")
-
-    for prompt_item in prompts_data:
-        pc_id = prompt_item["prompt_count"]
-        
-        # Skip if there's no corresponding answer entry and we need it
-        if not use_prompt_output_as_answer and pc_id not in answers_map:
-            logging.warning(f"Skipping prompt_count {pc_id} as it was not found in the answers file.")
+    for item in prompts_data:
+        pc_id = item["prompt_count"]
+        if pc_id not in answers_map:
             continue
-            
-        answer_item = answers_map.get(pc_id)
-        
-        inp = prompt_item.get("input", "")
-        
-        # Keys to process for this prompt_id
-        if instruct_types:
-            # Only include the requested paraphrase keys that actually exist in this item
-            keys_to_process = [k for k in instruct_types if k in prompt_item]
-        else:
-            # Fallback: include all available paraphrase keys
-            keys_to_process = [k for k in prompt_item.keys() if k.startswith("instruct_")]
-
-        # Always include the original once (if present)
-        #if "instruction_original" in prompt_item:
-        if "instruction_original" in prompt_item and "instruction_original" not in keys_to_process:
-            keys_to_process.append("instruction_original")
-        
-        for key in keys_to_process:
-            # The instruction comes from the PROMPT file
-            instruction = prompt_item.get(key)
-            
-            # The answer is sourced based on the flag
-            if use_prompt_output_as_answer:
-                answer = prompt_item.get("output")
+        ans_rec = answers_map[pc_id]
+        inp = item.get("input", "")
+        # original instruction
+        orig_inst = item["instruction_original"]
+        orig_ans = ans_rec.get("instruction_original", "")
+        if orig_inst and orig_ans:
+            examples.append(Example(pc_id, orig_inst, inp, orig_ans, "instruction_original"))
+        # paraphrases
+        keep_keys = [k for k in (instruct_types or item.keys()) if str(k).startswith("instruct_") and k in item]
+        for k in keep_keys:
+            inst = item.get(k, "")
+            if not inst:
+                continue
+            if use_para_ans:
+                ans = ans_rec.get(k, ans_rec.get("instruction_original", ""))
             else:
-                answer = answer_item.get("instruction_original") if answer_item else None
-
-            # Ensure both the instruction and its corresponding answer exist
-            if instruction and answer:
-                examples.append(Example(
-                    prompt_count=pc_id,
-                    instruction=instruction,
-                    inp=inp,
-                    answer=answer,
-                    style=key
-                ))
-            else:
-                logging.debug(f"Skipping style '{key}' for prompt_count {pc_id} due to missing instruction or answer.")
-                
+                ans = ans_rec.get("instruction_original", "")
+            if ans:
+                examples.append(Example(pc_id, inst, inp, ans, k))
+    random.shuffle(examples)
     return examples
 
-# The function signature's return type is updated, and the return statement is modified
-def tokenise_example(example: Dict[str, Any]) -> Dict[str, Any]:
-    MAX_TOTAL_LENGTH = 512
-    prompt_ids = tokenizer(build_chat_prompt(example['instruction'], example['inp']), add_special_tokens=False)["input_ids"]
-    answer_ids = tokenizer(example['answer'], add_special_tokens=False)["input_ids"]
-    if len(prompt_ids) + len(answer_ids) + 1 > MAX_TOTAL_LENGTH:
-        answer_ids = answer_ids[:MAX_TOTAL_LENGTH - len(prompt_ids) - 1]
-    answer_ids.append(tokenizer.eos_token_id)
-    input_ids = prompt_ids + answer_ids
-    labels = [-100] * len(prompt_ids) + answer_ids
 
-    # This now returns the original columns we need to keep, solving the bug
-    return {
-        "input_ids": input_ids,
-        "labels": labels,
-        "prompt_count": example["prompt_count"],
-        "style": example["style"]
-    }
-
-def get_group_wise_split_ids(
-    examples: List[Example], val_size: float, test_size: float, seed: int
-) -> Tuple[Set[int], Set[int], Set[int]]:
+def batch_tokenise_examples(examples: List[Example], batch_size: int, max_answer_tokens: int):
     """
-    Splits data by 'prompt_count' into train, validation, and test sets
-
-    Args:
-        examples: The list of all loaded Example objects
-        val_size: The fraction of groups to allocate to the validation set
-        test_size: The fraction of groups to allocate to the test set
-        seed: The random seed for reproducibility
-
-    Returns:
-        A tuple containing three sets: (train_prompt_ids, val_prompt_ids, test_prompt_ids)
+    High-throughput batch tokenization that EXACTLY mirrors the fine-tuning script:
+      - Build prompt with chat template + brevity meta.
+      - Tokenize prompt with add_special_tokens=False.
+      - Tokenize answer ONLY with truncation to --max_answer_tokens.
+      - Append exactly one <end_of_turn> (fallback to eos) to the answer ids.
+      - Labels mask the prompt ids as -100, answer ids are labels.
     """
-    logging.info(f"Performing group-wise split with val_size={val_size}, test_size={test_size}, and seed={seed}.")
-    
-    all_prompt_ids = sorted(list({ex.prompt_count for ex in examples}))
-    
-    rng = np.random.default_rng(seed)
-    rng.shuffle(all_prompt_ids)
-    
-    # Determine the split indices
-    n_test = int(len(all_prompt_ids) * test_size)
-    n_val = int(len(all_prompt_ids) * val_size)
-    
-    # Create the sets of identifiers for all three splits
-    test_ids = set(all_prompt_ids[:n_test])
-    val_ids = set(all_prompt_ids[n_test : n_test + n_val])
-    train_ids = set(all_prompt_ids[n_test + n_val:])
-    
-    logging.info(f"Split complete. Train groups: {len(train_ids)}, Validation groups: {len(val_ids)}, Test groups: {len(test_ids)}")
-    return train_ids, val_ids, test_ids
+    total = len(examples)
+    input_ids_all = []
+    labels_all = []
+    styles_all = []
+    pcs_all = []
 
-def str2bool(v):
-    if isinstance(v, bool):
-        return v
-    if v.lower() in ('yes', 'true', 't', 'y', '1'):
-        return True
-    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
-        return False
-    else:
-        raise argparse.ArgumentTypeError('Boolean value expected.')
+    start = time.time()
+    last_log = start
+
+    for start_idx in range(0, total, batch_size):
+        end_idx = min(start_idx + batch_size, total)
+        batch = examples[start_idx:end_idx]
+
+        # Prepare lists
+        prompts_txt = [ex.to_prompt() for ex in batch]
+        answers_txt = [ex.answer.strip() for ex in batch]
+
+        # Tokenize in batch
+        prompt_tok = tokenizer(prompts_txt, add_special_tokens=False)["input_ids"]
+        answer_tok = tokenizer(
+            answers_txt, add_special_tokens=False, truncation=True, max_length=max_answer_tokens
+        )["input_ids"]
+
+        # Compose input/labels
+        for ex, p_ids, a_ids in zip(batch, prompt_tok, answer_tok):
+            # exactly one EOT
+            a_ids = list(a_ids) + [EOT_ID]
+            ids = p_ids + a_ids
+            labs = [-100] * len(p_ids) + a_ids
+            input_ids_all.append(ids)
+            labels_all.append(labs)
+            styles_all.append(ex.style)
+            pcs_all.append(ex.prompt_count)
+
+        # Logging progress every batch
+        now = time.time()
+        if now - last_log >= 0.5 or end_idx == total:
+            done = end_idx
+            pct = 100.0 * done / total if total else 100.0
+            rate = done / max(1e-6, (now - start))
+            eta_s = (total - done) / max(1e-6, rate)
+            logging.info(f"[tokenize] {done:,}/{total:,} ({pct:.1f}%) | {rate:.1f} ex/s | ETA {eta_s:.1f}s")
+            last_log = now
+
+    # Build tokenized Dataset
+    tok_ds = Dataset.from_dict({
+        "input_ids": input_ids_all,
+        "labels": labels_all,
+        "style": styles_all,
+        "prompt_count": pcs_all,
+    })
+    return tok_ds
+
 
 def main():
-    global tokenizer
-    parser = argparse.ArgumentParser(description="Pre-tokenize the dataset for training.")
-    parser.add_argument("--prompts_path", required=True, help="Path to the JSON file with instructions.")
-    parser.add_argument("--answers_path", required=True, help="Path to the JSON file with answers.")
-    parser.add_argument("--model_path", required=True)
-    parser.add_argument("--output_path", required=True)
-    parser.add_argument("--instruct_types", nargs="+", default=[])
-    # control the answer source
-    parser.add_argument("--use_prompt_output_as_answer",
-                        type=str2bool, default=True,
-                        help="If True, use the 'output' field from the prompts JSON as the target answer."
-                        "Otherwise, use 'instruction_original' from the answers JSON.")
-    parser.add_argument(
-        "--max_samples",
-        type=int,
-        default=None,
-        help="If set, randomly limit the number of *training* examples to this value after the split."
+    ap = argparse.ArgumentParser("Fast tokenizer+splitter aligned with fine-tuning script")
+    ap.add_argument("--prompts_path", nargs="+", required=True, help="One or more JSON prompt files (or shards)")
+    ap.add_argument("--answers_path", default=None, help="Optional answers JSON to source targets from")
+    ap.add_argument("--instruct_types", nargs="+", default=[], help="Restrict to these instruct_* keys (empty = all)")
+    ap.add_argument("--use_paraphrase_answer", action="store_true", help="Use paraphrase-specific answers when available")
+
+    ap.add_argument("--model_path", required=True, help="Tokenizer/model path to ensure identical chat template")
+    ap.add_argument("--output_path", required=True, help="Directory for DatasetDict.save_to_disk")
+
+    ap.add_argument("--val_pct", type=float, default=0.05)
+    ap.add_argument("--test_pct", type=float, default=0.05)
+    ap.add_argument("--seed", type=int, default=42)
+
+    ap.add_argument("--max_answer_tokens", type=int, default=512)
+    ap.add_argument("--batch_size", type=int, default=1024, help="Examples per tokenization batch")
+    ap.add_argument("--log_file", default=None, help="Optional path to log file in addition to stdout")
+
+    args = ap.parse_args()
+
+    # Logging setup
+    handlers = [logging.StreamHandler(sys.stdout)]
+    if args.log_file:
+        Path(args.log_file).parent.mkdir(parents=True, exist_ok=True)
+        handlers.append(logging.FileHandler(args.log_file))
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(message)s",
+        handlers=handlers,
+        force=True
     )
-    args = parser.parse_args()
+    logging.info("Starting tokenizer-splitter (batched).")
+    logging.info("Args:\n%s", json.dumps(vars(args), indent=2))
 
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-    
-    output_path = Path(args.output_path)
-    if os.path.exists(output_path):
-        # NOTE: This safety feature means you MUST delete the old output directory
-        # manually before re-running this script
-        logging.warning(f"Output directory {output_path} already exists. Skipping.")
-        return
+    # Seed
+    random.seed(args.seed)
+    np.random.seed(args.seed)
 
-    logging.info("Starting data preprocessing.")
+    # Tokenizer init (fast)
+    global tokenizer, EOT_ID
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, use_fast=True)
-    
-    # Pass to the load_examples function
-    all_examples = load_examples(args.prompts_path, args.answers_path, args.instruct_types, args.use_prompt_output_as_answer)
-    logging.info(f"Loaded {len(all_examples)} total examples.")
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.pad_token_id = tokenizer.eos_token_id
 
-    # 1. Define sizes for both validation and test sets. 90/5/5 is a standard split
-    VALIDATION_SET_SIZE = 0.05
-    TEST_SET_SIZE = 0.05
-    RANDOM_SEED = 42
-    
-    # Unpack all three sets of IDs from the updated function
-    train_prompt_ids, val_prompt_ids, test_prompt_ids = get_group_wise_split_ids(
-        all_examples, val_size=VALIDATION_SET_SIZE, test_size=TEST_SET_SIZE, seed=RANDOM_SEED
-    )
+    # end-of-turn id (fallback to eos if token not known by tokenizer)
+    tid = tokenizer.convert_tokens_to_ids("<end_of_turn>")
+    EOT_ID = tid if (tid is not None and tid != tokenizer.unk_token_id) else tokenizer.eos_token_id
 
-    # 2. Create three datasets based on the split IDs
-    train_examples = [ex for ex in all_examples if ex.prompt_count in train_prompt_ids]
-    val_examples = [ex for ex in all_examples if ex.prompt_count in val_prompt_ids]
-    test_examples = [ex for ex in all_examples if ex.prompt_count in test_prompt_ids]
-
-    # Optionally cap the size of the training set (validation/test unchanged)
-    if args.max_samples is not None:
-        if args.max_samples <= 0:
-            logging.warning(f"--max_samples={args.max_samples} ignored (must be > 0).")
-        elif args.max_samples < len(train_examples):
-            rng = np.random.default_rng(42)  # or reuse RANDOM_SEED if you prefer
-            idx = rng.choice(len(train_examples), size=args.max_samples, replace=False)
-            # keep a stable order after sampling (optional)
-            train_examples = [train_examples[i] for i in sorted(idx.tolist())]
-            logging.info(f"Subsampled training set to {len(train_examples)} examples via --max_samples.")
-        else:
-            logging.info(f"--max_samples ({args.max_samples}) >= train size ({len(train_examples)}); keeping all.")
-
-    # Update logging to show all three set sizes
-    logging.info(f"Created train set with {len(train_examples)}, validation set with {len(val_examples)}, and test set with {len(test_examples)} examples.")
-
-    train_ds = Dataset.from_list([dataclasses.asdict(e) for e in train_examples])
-    val_ds = Dataset.from_list([dataclasses.asdict(e) for e in val_examples])
-    test_ds = Dataset.from_list([dataclasses.asdict(e) for e in test_examples])
-
-    # Create the DatasetDict with the 'validation' key included
-    raw_datasets = DatasetDict({
-        "train": train_ds,
-        "validation": val_ds,
-        "test": test_ds
-    })
-    
-    # 3. Tokenize all datasets
-    #num_workers = min(8, os.cpu_count() or 1)
-    num_workers = max(1, (os.cpu_count() or 1) - 2)
-    # num_workers = max(1, (os.cpu_count() or 1) - 2)  # use all, reserve 2
-    # num_workers = max(1, (os.cpu_count() or 1) // 2) # reserve 50%
-    logging.info(f"Tokenizing with {num_workers} processes...")
-    
-    tokenized_datasets = raw_datasets.map(
-            tokenise_example,
-            # This line is now correct, as it runs *after* tokenise_example has preserved the other columns
-            remove_columns=["instruction", "inp", "answer"],
-            num_proc=num_workers,
-            desc="Tokenizing dataset"
+    # Load examples from JSON(s)
+    if args.answers_path:
+        if len(args.prompts_path) != 1:
+            raise ValueError("When --answers_path is provided, pass exactly one prompts JSON in --prompts_path.")
+        examples = load_examples_with_answers(
+            prompts_path=args.prompts_path[0],
+            answers_path=args.answers_path,
+            instruct_types=args.instruct_types,
+            use_para_ans=args.use_paraphrase_answer,
         )
-    
-    # 4. Filter empty examples
-    final_datasets = tokenized_datasets.filter(lambda example: len(example['input_ids']) > 0)
-    
-    # Update final logging to include the validation set size
-    logging.info(f"Tokenization complete. Final dataset sizes: Train={len(final_datasets['train'])}, Validation={len(final_datasets['validation'])}, Test={len(final_datasets['test'])}")
-    
-    logging.info(f"Saving tokenized dataset to {output_path}")
-    final_datasets.save_to_disk(str(output_path))
-
-    logging.info("\n" + "="*80)
-    logging.info("STARTING POST-PROCESSING VERIFICATION")
-    logging.info("="*80)
-
-    # Check 1: Final dataset structure and sizes
-    logging.info(f"Final columns in dataset: {final_datasets['train'].column_names}")
-    if "prompt_count" not in final_datasets['train'].column_names:
-        logging.error("CRITICAL ERROR: 'prompt_count' column is MISSING from the final dataset.")
     else:
-        logging.info("SUCCESS: 'prompt_count' column is present.")
-    
-    logging.info(f"Final example counts -> Train: {len(final_datasets['train'])}, Validation: {len(final_datasets['validation'])}, Test: {len(final_datasets['test'])}")
+        examples = load_examples(
+            paths=args.prompts_path,
+            instruct_types=args.instruct_types,
+            use_para_ans=args.use_paraphrase_answer,
+        )
 
-    # Check 2: Verify that there is no data leakage between splits
-    logging.info("\nChecking for ID overlap between splits (data leakage)...")
-    train_ids = set(final_datasets['train']['prompt_count'])
-    val_ids = set(final_datasets['validation']['prompt_count'])
-    test_ids = set(final_datasets['test']['prompt_count'])
+    logging.info("Loaded %d examples before split.", len(examples))
 
-    train_val_overlap = train_ids.intersection(val_ids)
-    train_test_overlap = train_ids.intersection(test_ids)
-    val_test_overlap = val_ids.intersection(test_ids)
+    # Build a raw Dataset with the minimal columns required for splitting
+    raw = Dataset.from_list([{
+        "prompt_count": ex.prompt_count,
+        "instruction": ex.instruction,
+        "inp": ex.inp,
+        "answer": ex.answer,
+        "style": ex.style,
+    } for ex in examples])
 
-    if not train_val_overlap and not train_test_overlap and not val_test_overlap:
-        logging.info("SUCCESS: No overlap found between train, validation, and test sets.")
-    else:
-        logging.error("CRITICAL ERROR: Overlap detected between splits! This is a data leak.")
-        if train_val_overlap:
-            logging.error(f"  - Train/Validation Overlap IDs: {train_val_overlap}")
-        if train_test_overlap:
-            logging.error(f"  - Train/Test Overlap IDs: {train_test_overlap}")
-        if val_test_overlap:
-            logging.error(f"  - Validation/Test Overlap IDs: {val_test_overlap}")
-            
-    logging.info("="*80)
-    logging.info("VERIFICATION COMPLETE")
-    logging.info("="*80 + "\n")
+    # Split exactly like fine-tuning (val first, then test, then train)
+    train_raw, val_raw, test_raw = three_way_split(
+        raw, val_pct=args.val_pct, test_pct=args.test_pct, seed=args.seed
+    )
+    logging.info("Split sizes (raw) — train: %d | val: %d | test: %d", len(train_raw), len(val_raw), len(test_raw))
 
-    logging.info("Preprocessing finished successfully.")
+    # Tokenize each split with batch processing & constant progress logging
+    t0 = time.time()
+    logging.info("Tokenizing TRAIN...")
+    train_examples = [Example(pc, ins, inp, ans, sty) for pc, ins, inp, ans, sty in zip(
+        train_raw["prompt_count"], train_raw["instruction"], train_raw["inp"], train_raw["answer"], train_raw["style"]
+    )]
+    train_tok = batch_tokenise_examples(train_examples, args.batch_size, args.max_answer_tokens)
+    logging.info("TRAIN tokenized: %d examples.", len(train_tok))
+
+    logging.info("Tokenizing VAL...")
+    val_examples = [Example(pc, ins, inp, ans, sty) for pc, ins, inp, ans, sty in zip(
+        val_raw["prompt_count"], val_raw["instruction"], val_raw["inp"], val_raw["answer"], val_raw["style"]
+    )]
+    val_tok = batch_tokenise_examples(val_examples, args.batch_size, args.max_answer_tokens)
+    logging.info("VAL tokenized: %d examples.", len(val_tok))
+
+    logging.info("Tokenizing TEST...")
+    test_examples = [Example(pc, ins, inp, ans, sty) for pc, ins, inp, ans, sty in zip(
+        test_raw["prompt_count"], test_raw["instruction"], test_raw["inp"], test_raw["answer"], test_raw["style"]
+    )]
+    test_tok = batch_tokenise_examples(test_examples, args.batch_size, args.max_answer_tokens)
+    logging.info("TEST tokenized: %d examples.", len(test_tok))
+
+    total_time = time.time() - t0
+    total_ex = len(train_tok) + len(val_tok) + len(test_tok)
+    logging.info("All splits tokenized. Total: %d examples in %.1fs (%.1f ex/s)",
+                 total_ex, total_time, total_ex / max(1e-6, total_time))
+
+    # Save DatasetDict to disk (load_from_disk compatible)
+    out_dir = Path(args.output_path)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    dsd = DatasetDict({
+        "train": train_tok,
+        "validation": val_tok,
+        "test": test_tok,
+    })
+    dsd.save_to_disk(out_dir.as_posix())
+    logging.info("Saved tokenized DatasetDict to %s", out_dir)
+
 
 if __name__ == "__main__":
     main()

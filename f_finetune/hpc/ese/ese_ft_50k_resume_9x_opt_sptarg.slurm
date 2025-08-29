@@ -59,6 +59,8 @@ done
 echo "Using $($PYBIN -V)"
 
 export PYTHON_PKGS="$TMPDIR/python-packages"
+echo "Forcing clean package directory at $PYTHON_PKGS"
+rm -rf "$PYTHON_PKGS"
 mkdir -p "$PYTHON_PKGS"
 export PYTHONPATH="$PYTHON_PKGS:$PYTHONPATH"
 
