@@ -1,107 +1,12 @@
 #!/usr/bin/env python3
-"""
-SCRIPT G
-
-run_mlp_diff_of_diffs.py
-
-End-to-end analysis for "diff-of-diffs at all MLP stations" + Jacobian overlays.
-
-WHAT THIS DOES
-==============
-Given a prefiltered selection file (as produced by SCRIPT A sampler; e.g., `jacobian_prompts.jsonl`)
-and two models (BASE and FT), this script:
-
-1) Captures pooled activations for each prompt (original + paraphrases) at layer L at the following
-   MLP "stations":
-   - RES  : residual stream *just before* the MLP (i.e., the MLP's input)
-   - UP   : upstream linear output (SwiGLU: up_proj; GeLU: wi/fc_in/dense_h_to_4h)
-   - POST : post-nonlinearity output (SwiGLU: silu(gate)*up; GeLU: gelu(up))
-   - DOWN : downstream linear output (SwiGLU/GeLU downstream linear)
-
-2) Computes, for each prompt and station, the *average cosine similarity to the original* across its
-   paraphrases, plus the complementary 1−cos distance. We then compute diff-of-diffs per station:
-       ΔΔ_cos(S)  = mean_cos_FT(S)  − mean_cos_BASE(S)
-       ΔΔ_dist(S) = mean_dist_FT(S) − mean_dist_BASE(S)   where dist = 1 − cos
-   Negative ΔΔ_dist indicates the FT model *brings paraphrases closer* to the original in station S.
-   We also compute stage deltas (POST−UP, DOWN−UP) per model and ΔΔ of those deltas.
-
-3) Reproduces the "Jacobian sensitivity" probes, Base vs FT, along three sets of directions in the
-   paraphrase subspace (reusing the approach from your SCRIPT D):
-   - MEAN     : the normalized mean paraphrase direction
-   - VARIANCE : top-k PCs of the paraphrase-centered cloud (or raw centered directions)
-   - RANDOM   : random unit vectors as control
-   and compares UPSTREAM vs DOWNSTREAM sensitivities. Produces joint overlays:
-   - combined bars with BASE vs FT (colors), upstream vs downstream (shade), mean/var/random (linestyle)
-
-4) Emits CSV/JSON summaries and well-labeled graphics (hist overlays, paired scatters, multi-series
-   overlays), plus a compact text/markdown summary.
-
-USAGE (examples)
-================
-CUDA example, layer 6, limit to 200 prompts and 16 paraphrases, with Jacobians:
-    python run_mlp_diff_of_diffs.py \
-        --selection_jsonl /path/to/jacobian_prompts.jsonl \
-        --base_model_name_or_path google/gemma-2-2b-it \
-        --ft_model_name_or_path /path/to/ft-merged \
-        --layer_index 6 \
-        --device cuda \
-        --outdir ./diff_of_diffs_L6 \
-        --max_prompts 200 \
-        --max_paraphrases 16 \
-        --enable_batching 1 \
-        --batch_size 8 \
-        --compute_jacobians 1 \
-        --jacobian_mode pca \
-        --topk_pca 8
-
-If your FT is a LoRA adapter directory (unmerged), pass it with --ft_lora_adapter and also pass
---ft_model_name_or_path (the merged FT *or* the base model path to host the adapter):
-    python run_mlp_diff_of_diffs.py \
-        --selection_jsonl /path/to/jacobian_prompts.jsonl \
-        --base_model_name_or_path google/gemma-2-2b-it \
-        --ft_model_name_or_path google/gemma-2-2b-it \
-        --ft_lora_adapter /path/to/lora-adapter \
-        --layer_index 6 \
-        --outdir ./diff_of_diffs_L6_lora \
-        --compute_jacobians 1
-
-OUTPUTS
-=======
-- CSVs:
-    BASE_mlp_station_metrics_layer{L}.csv
-    FT_mlp_station_metrics_layer{L}.csv
-    merged_mlp_station_metrics_layer{L}.csv  (per-prompt BASE+FT with Δ and ΔΔ)
-    jacobian_BASE_layer{L}.csv
-    jacobian_FT_layer{L}.csv
-    summaries.json  (means / medians / stdev / min / max / t-tests / effect sizes)
-- Figures:
-    ddiff_dist_by_station_bars.png          (ΔΔ of 1−cos distance at RES/UP/POST/DOWN)
-    ddiff_dist_by_station_hist.png          (hist overlay BASE vs FT per station, as Δ values)
-    stage_delta_ddiff_bars.png              (ΔΔ of (POST−UP) and (DOWN−UP))
-    base_vs_ft_scatter_deltas.png           (paired scatter of BASE vs FT stage deltas)
-    jacobian_combined_overlay.png           (BASE vs FT colors; upstream/downstream shades; mean/var/random linestyles)
-    pca_evr_overlay.png                     (if jacobian_mode=pca)
-
-NOTES
-=====
-- Strong, continuous logging. Every phase reports progress and ETA.
-- Built to *reuse* the code style/patterns from your SCRIPT D and SCRIPT F; function names & outputs
-  will look familiar.
-- Designed to run on the same selection file you already create with SCRIPT A.
-
-"""
-
 from __future__ import annotations
 
 import argparse
 import csv
-import gc
 import json
 import logging
 import math
-import os
 import random
-import signal
 import sys
 import time
 from dataclasses import dataclass
@@ -118,18 +23,11 @@ import matplotlib.pyplot as plt
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# ----------------
-# Optional PEFT
-# ----------------
 try:
     from peft import PeftModel
     _HAS_PEFT = True
 except Exception:
     _HAS_PEFT = False
-
-# ----------------
-# Logging utils
-# ----------------
 
 def set_seed(seed: int = 42):
     np.random.seed(seed)
@@ -141,19 +39,12 @@ def set_seed(seed: int = 42):
 def ensure_dir(path: str | Path) -> Path:
     p = Path(path); p.mkdir(parents=True, exist_ok=True); return p
 
-def nowts() -> str:
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-
 def format_eta(done: int, total: int, start_time: float) -> str:
     if done == 0: return "ETA --:--"
     elapsed = time.time() - start_time
     rate = done / max(elapsed, 1e-6)
     remain = (total - done) / max(rate, 1e-6)
     return f"ETA {int(remain//60):02d}:{int(remain%60):02d} (elapsed {int(elapsed//60):02d}:{int(elapsed%60):02d})"
-
-# ----------------
-# Selection I/O (SCRIPT A shape)
-# ----------------
 
 @dataclass
 class PromptSet:
@@ -181,29 +72,49 @@ def load_selection_jsonl(path: str | Path, max_prompts: Optional[int] = None) ->
                 break
     return items
 
-# ----------------
-# Tokenization / pooling (SCRIPT F style)
-# ----------------
-
 def encode(tokenizer, text: str, device: torch.device):
     out = tokenizer(text, return_tensors="pt", padding=False, truncation=True)
     return out["input_ids"].to(device), out["attention_mask"].to(device)
 
 def mean_pool_tokens(x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
-    # x: [1, T, D], mask: [1, T]
     m = mask.to(x.dtype)
     s = (x * m.unsqueeze(-1)).sum(1)  # [1,D]
     c = m.sum(1).clamp(min=1.0)       # [1]
     return (s / c.unsqueeze(-1)).squeeze(0).to(torch.float32)  # [D]
 
-# ----------------
-# MLP accessors + residual pre-MLP hook (SCRIPT F core)
-# ----------------
+def mean_pool_tokens_for_slices(x: torch.Tensor, mask: torch.Tensor, n_slices: int) -> List[Optional[np.ndarray]]:
+    """
+    Mean-pool x over contiguous slices along valid (mask==1) token positions.
+    Returns a list of length n_slices with np.ndarray vectors (or None if slice is empty).
+    x: [B=1, T, D]; mask: [B=1, T].
+    """
+    assert x.dim() == 3 and mask.dim() == 2 and x.size(0) == 1 and mask.size(0) == 1
+    with torch.no_grad():
+        pos = (mask[0] > 0).nonzero(as_tuple=False).squeeze(1).cpu().numpy()
+        n = int(pos.size)
+        if n == 0 or n_slices <= 0:
+            return [None] * max(n_slices, 0)
+        cuts = np.linspace(0, n, n_slices + 1).astype(int)
+        out: List[Optional[np.ndarray]] = []
+        for i in range(n_slices):
+            sel = pos[cuts[i]:cuts[i + 1]]
+            if sel.size == 0:
+                out.append(None)
+            else:
+                m = torch.zeros_like(mask[0], dtype=x.dtype)
+                m[torch.from_numpy(sel).to(m.device)] = 1
+                s = (x[0] * m.unsqueeze(-1)).sum(dim=0)  # [D]
+                c = m.sum().clamp(min=1.0)
+                out.append( (s / c).to(torch.float32).cpu().numpy() )
+        return out
 
 class MLPAccessor:
     """
-    Access layer-L MLP internals and compute UP, POST, DOWN spaces.
-    Supports SwiGLU (up/gate/down) and GeLU (wi/wo or fc_in/fc_out).
+    Accessor that (1) finds the model's MLP module at a layer, and
+    (2) uses the MLP's *actual* nonlinearity as defined by the module.
+
+    For SwiGLU MLPs (e.g., Gemma/LLaMA families), we honor `mlp.act_fn` if present;
+    fallback is SiLU. For GeLU-style MLPs, POST = gelu(pre), as in standard HF modules.
     """
     def __init__(self, model, layer: int):
         self.model = model
@@ -214,8 +125,21 @@ class MLPAccessor:
         self.device = p.device
         self.dtype = p.dtype
 
+        # Try to get the module's own activation function
+        # Common HF patterns: act_fn (callable), activation_fn (callable)
+        self._act_fn = getattr(self.mlp, "act_fn", None)
+        if self._act_fn is None:
+            self._act_fn = getattr(self.mlp, "activation_fn", None)
+
+        # Robust fallback:
+        if self._act_fn is None:
+            import torch.nn.functional as F
+            if self.kind == "swiglu":
+                self._act_fn = F.silu
+            else:
+                self._act_fn = F.gelu
+
     def _get_mlp_module(self, model, i: int):
-        # common HF paths
         for stem, leaf in [("model.model.layers","mlp"), ("model.layers","mlp"), ("transformer.h","mlp")]:
             try:
                 base = model
@@ -245,27 +169,54 @@ class MLPAccessor:
             raise RuntimeError("Cannot find GeLU upstream linear")
 
     @torch.no_grad()
-    def GATE(self, h: torch.Tensor) -> Optional[torch.Tensor]:
-        if self.kind != "swiglu":
-            return None
+    def GATE_PRE(self, h: torch.Tensor) -> torch.Tensor:
+        """Linear gate branch (pre-activation). For GeLU MLPs this equals the UP preact."""
         h = h.to(self.device, self.dtype)
-        return self.mlp.gate_proj(h)
+        if self.kind == "swiglu":
+            return self.mlp.gate_proj(h)
+        else:
+            # GeLU-style MLP has a single pre-activation; mirror UP()
+            if hasattr(self.mlp, "wi"): return self.mlp.wi(h)
+            if hasattr(self.mlp, "fc_in"): return self.mlp.fc_in(h)
+            if hasattr(self.mlp, "dense_h_to_4h"): return self.mlp.dense_h_to_4h(h)
+            raise RuntimeError("Cannot find GeLU upstream linear")
+
+    @torch.no_grad()
+    def GATE_ACT(self, h: torch.Tensor) -> torch.Tensor:
+        """Gate branch after nonlinearity, before multiplication with UP."""
+        h = h.to(self.device, self.dtype)
+        if self.kind == "swiglu":
+            gate_lin = self.mlp.gate_proj(h)
+            return self._act_fn(gate_lin)
+        else:
+            # GeLU MLP: activation is GeLU(pre), which is also the POST input.
+            if   hasattr(self.mlp, "wi"):            pre = self.mlp.wi(h)
+            elif hasattr(self.mlp, "fc_in"):         pre = self.mlp.fc_in(h)
+            elif hasattr(self.mlp, "dense_h_to_4h"): pre = self.mlp.dense_h_to_4h(h)
+            else:
+                raise RuntimeError("Cannot find GeLU upstream linear")
+            import torch.nn.functional as F
+            return F.gelu(pre)
 
     @torch.no_grad()
     def POST(self, h: torch.Tensor) -> torch.Tensor:
         h = h.to(self.device, self.dtype)
         if self.kind == "swiglu":
             up = self.mlp.up_proj(h)
-            gate = torch.sigmoid(self.mlp.gate_proj(h))
+            gate_lin = self.mlp.gate_proj(h)
+            gate = self._act_fn(gate_lin)
             return up * gate
         else:
             if hasattr(self.mlp, "wi"):
-                return torch.nn.functional.gelu(self.mlp.wi(h))
+                import torch.nn.functional as F
+                return F.gelu(self.mlp.wi(h))
             if hasattr(self.mlp, "fc_in"):
-                return torch.nn.functional.gelu(self.mlp.fc_in(h))
+                import torch.nn.functional as F
+                return F.gelu(self.mlp.fc_in(h))
             if hasattr(self.mlp, "dense_h_to_4h"):
-                return torch.nn.functional.gelu(self.mlp.dense_h_to_4h(h))
-            raise RuntimeError("Cannot find GeLU upstream linear")
+                import torch.nn.functional as F
+                return F.gelu(self.mlp.dense_h_to_4h(h))
+            raise RuntimeError("Cannot find GeLU downstream POST")
 
     @torch.no_grad()
     def DOWN(self, post: torch.Tensor) -> torch.Tensor:
@@ -277,7 +228,6 @@ class MLPAccessor:
         raise RuntimeError("Cannot find GeLU downstream linear")
 
 class ResidualHook:
-    """Capture residual just before MLP at layer L."""
     def __init__(self, model, layer):
         self.model = model
         self.layer = layer
@@ -303,20 +253,11 @@ class ResidualHook:
         try: self.hook.remove()
         except Exception: pass
 
-# ----------------
-# Cosine similarity helpers
-# ----------------
-
 def cosine_to_original(mat: np.ndarray) -> float:
-    """
-    mat: [N, D] rows are [x_orig, x_1, ..., x_n] in SAME space
-    returns mean cosine(x_i, x_orig) over i>=1
-    """
     if mat.shape[0] < 2:
         return float("nan")
     x0 = mat[0]
     X  = mat[1:]
-    # normalize
     x0n = x0 / (np.linalg.norm(x0) + 1e-12)
     Xn  = X  / (np.linalg.norm(X, axis=1, keepdims=True) + 1e-12)
     cos = (Xn @ x0n)
@@ -330,24 +271,16 @@ def avg_l2_to_original(mat: np.ndarray) -> float:
     d = np.sqrt((diffs**2).sum(axis=1))
     return float(d.mean())
 
-# ----------------
-# Stage capture per model
-# ----------------
-
 @torch.no_grad()
 def capture_stations_for_model(model, tokenizer, items: List[PromptSet], layer: int, device: torch.device,
-                               max_prompts: Optional[int], max_paraphrases: Optional[int]) -> Dict[str, Any]:
-    results = {
-        "layer": layer,
-        "per_prompt": [],
-        "n_used": 0,
-    }
+                               max_prompts: Optional[int], max_paraphrases: Optional[int],
+                               token_slices: int = 0) -> Dict[str, Any]:
+    results = {"layer": layer, "per_prompt": [], "n_used": 0}
     accessor = MLPAccessor(model, layer)
     res_hook = ResidualHook(model, layer)
 
     start = time.time()
     for idx, ps in enumerate(items):
-        # Original + subset of paraphrases
         texts = [ps.instruction_original] + [t for _, t in ps.paraphrases]
         if max_paraphrases is not None:
             texts = texts[: 1 + max_paraphrases]
@@ -355,33 +288,84 @@ def capture_stations_for_model(model, tokenizer, items: List[PromptSet], layer: 
             logging.warning("Prompt %s has <2 texts; skipping.", ps.prompt_count)
             continue
 
+        S = int(token_slices) if token_slices and token_slices > 0 else 0
+        if S > 0:
+            # For each stage, keep a list per-slice, each holding per-text vectors (None if unavailable)
+            per_slice = {
+                "RES":       [[None] * len(texts) for _ in range(S)],
+                "UP":        [[None] * len(texts) for _ in range(S)],
+                "GATE_PRE":  [[None] * len(texts) for _ in range(S)],
+                "GATE_ACT":  [[None] * len(texts) for _ in range(S)],
+                "POST":      [[None] * len(texts) for _ in range(S)],
+                "DOWN":      [[None] * len(texts) for _ in range(S)],
+            }
+
         UP_rows: List[np.ndarray] = []
         POST_rows: List[np.ndarray] = []
+
+        GATEPRE_rows: List[np.ndarray] = []
+        GATEACT_rows: List[np.ndarray] = []
+
         DOWN_rows: List[np.ndarray] = []
         RES_rows: List[np.ndarray] = []
 
-        for t in texts:
+        for j, t in enumerate(texts):
             input_ids, attention_mask = encode(tokenizer, t, device)
             _ = model(input_ids=input_ids, attention_mask=attention_mask)
 
-            H = res_hook.buffer  # [1,T,D]
+            H = res_hook.buffer
             res_vec = mean_pool_tokens(H, attention_mask).cpu().numpy()
             RES_rows.append(res_vec)
 
-            up = accessor.UP(H)        # [1,T,D_ff]
-            post = accessor.POST(H)    # [1,T,D_ff]
-            down = accessor.DOWN(post) # [1,T,D_model]
+            up = accessor.UP(H)
+            gate_pre = accessor.GATE_PRE(H)
+            gate_act = accessor.GATE_ACT(H)
+            post = accessor.POST(H)   # equals up * gate_act (SwiGLU) or GeLU(pre) (GeLU)
+            down = accessor.DOWN(post)
+
+            if S > 0:
+                # Per-slice pooling per stage for this text index j
+                res_s   = mean_pool_tokens_for_slices(H,        attention_mask, S)
+                up_s    = mean_pool_tokens_for_slices(up,       attention_mask, S)
+                gpre_s  = mean_pool_tokens_for_slices(gate_pre, attention_mask, S)
+                gact_s  = mean_pool_tokens_for_slices(gate_act, attention_mask, S)
+                post_s  = mean_pool_tokens_for_slices(post,     attention_mask, S)
+                down_s  = mean_pool_tokens_for_slices(down,     attention_mask, S)
+                for si in range(S):
+                    if res_s[si]  is not None: per_slice["RES"][si][j]      = res_s[si]
+                    if up_s[si]   is not None: per_slice["UP"][si][j]       = up_s[si]
+                    if gpre_s[si] is not None: per_slice["GATE_PRE"][si][j] = gpre_s[si]
+                    if gact_s[si] is not None: per_slice["GATE_ACT"][si][j] = gact_s[si]
+                    if post_s[si] is not None: per_slice["POST"][si][j]     = post_s[si]
+                    if down_s[si] is not None: per_slice["DOWN"][si][j]     = down_s[si]
 
             up_vec   = mean_pool_tokens(up, attention_mask).cpu().numpy()
             post_vec = mean_pool_tokens(post, attention_mask).cpu().numpy()
+            gatepre_vec = mean_pool_tokens(gate_pre, attention_mask).cpu().numpy()
+            gateact_vec = mean_pool_tokens(gate_act, attention_mask).cpu().numpy()
+
             down_vec = mean_pool_tokens(down, attention_mask).cpu().numpy()
 
+            GATEPRE_rows.append(gatepre_vec); GATEACT_rows.append(gateact_vec)
             UP_rows.append(up_vec); POST_rows.append(post_vec); DOWN_rows.append(down_vec)
 
-        RES  = np.stack(RES_rows,  axis=0)  # [N, D]
-        UP   = np.stack(UP_rows,   axis=0)  # [N, D_ff]
-        POST = np.stack(POST_rows, axis=0)  # [N, D_ff]
-        DOWN = np.stack(DOWN_rows, axis=0)  # [N, D]
+        RES  = np.stack(RES_rows,  axis=0)
+        UP   = np.stack(UP_rows,   axis=0)
+
+        POST = np.stack(POST_rows, axis=0)
+
+        GATE_PRE = np.stack(GATEPRE_rows, axis=0)
+        GATE_ACT = np.stack(GATEACT_rows, axis=0)
+
+        DOWN = np.stack(DOWN_rows, axis=0)
+
+        # Ensure we have L2 for all six stages, including RES:
+        l2_RES  = avg_l2_to_original(RES)
+        l2_UP   = avg_l2_to_original(UP)
+        l2_POST = avg_l2_to_original(POST)
+        l2_DOWN = avg_l2_to_original(DOWN)
+        l2_GATE_PRE = avg_l2_to_original(GATE_PRE)
+        l2_GATE_ACT = avg_l2_to_original(GATE_ACT)
 
         row = {
             "prompt_index": idx,
@@ -395,13 +379,48 @@ def capture_stations_for_model(model, tokenizer, items: List[PromptSet], layer: 
             "dist_UP": float(1.0 - cosine_to_original(UP)),
             "dist_POST": float(1.0 - cosine_to_original(POST)),
             "dist_DOWN": float(1.0 - cosine_to_original(DOWN)),
-            "l2_UP": avg_l2_to_original(UP),
-            "l2_POST": avg_l2_to_original(POST),
-            "l2_DOWN": avg_l2_to_original(DOWN),
-            # Stage deltas in distance space (1-cos): POST−UP, DOWN−UP
+            "l2_RES": l2_RES,
+            "l2_UP": l2_UP,
+            "l2_POST": l2_POST,
+            "l2_DOWN": l2_DOWN,
             "delta_dist_POST_minus_UP": float((1.0 - cosine_to_original(POST)) - (1.0 - cosine_to_original(UP))),
             "delta_dist_DOWN_minus_UP": float((1.0 - cosine_to_original(DOWN)) - (1.0 - cosine_to_original(UP))),
         }
+        row.update({
+            "cos_GATE_PRE": cosine_to_original(GATE_PRE),
+            "cos_GATE_ACT": cosine_to_original(GATE_ACT),
+            "dist_GATE_PRE": float(1.0 - cosine_to_original(GATE_PRE)),
+            "dist_GATE_ACT": float(1.0 - cosine_to_original(GATE_ACT)),
+            "l2_GATE_PRE": l2_GATE_PRE,
+            "l2_GATE_ACT": l2_GATE_ACT,
+        })
+
+        # Per-token-slice metrics (six stages)
+        if S > 0:
+            stages6 = ["RES", "UP", "GATE_PRE", "GATE_ACT", "POST", "DOWN"]
+            for si in range(S):
+                # We only compute slice metrics if the ORIGINAL (text index 0) has tokens in this slice.
+                for st in stages6:
+                    vecs = per_slice[st][si]  # list length = len(texts), entries np.ndarray or None
+                    if vecs[0] is None:
+                        # No baseline for this slice; store NaNs
+                        row[f"cos_{st}_S{si+1}"]  = float("nan")
+                        row[f"dist_{st}_S{si+1}"] = float("nan")
+                        row[f"l2_{st}_S{si+1}"]   = float("nan")
+                        continue
+                    # Build matrix: original first, then any paraphrase that has this slice
+                    mat_list = [vecs[0]] + [v for v in vecs[1:] if v is not None]
+                    if len(mat_list) < 2:
+                        row[f"cos_{st}_S{si+1}"]  = float("nan")
+                        row[f"dist_{st}_S{si+1}"] = float("nan")
+                        row[f"l2_{st}_S{si+1}"]   = float("nan")
+                        continue
+                    MAT = np.stack(mat_list, axis=0)
+                    c = cosine_to_original(MAT)
+                    row[f"cos_{st}_S{si+1}"]  = c
+                    row[f"dist_{st}_S{si+1}"] = float(1.0 - c)
+                    row[f"l2_{st}_S{si+1}"]   = avg_l2_to_original(MAT)
+
         results["per_prompt"].append(row)
         results["n_used"] += 1
 
@@ -410,10 +429,6 @@ def capture_stations_for_model(model, tokenizer, items: List[PromptSet], layer: 
 
     res_hook.close()
     return results
-
-# ----------------
-# Jacobian probes (SCRIPT D style, compacted)
-# ----------------
 
 def normalize_t(v: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
     v = v.to(torch.float32)
@@ -429,13 +444,6 @@ def jacobian_norms_for_model(model, tokenizer, items: List[PromptSet], layer: in
                              device: torch.device, topk_pca: int, mode: str,
                              max_prompts: Optional[int], max_paraphrases: Optional[int],
                              eps: float = 1e-3, directions_random: int = 8) -> Dict[str, Any]:
-    """
-    For each prompt, build the paraphrase matrix at pre-MLP (H), compute:
-      - mean direction
-      - variance directions (top-k PCs or a subsample of centered raws)
-      - random directions
-    Then estimate Jacobian norms of UPSTREAM and DOWNSTREAM maps via central differences.
-    """
     accessor = MLPAccessor(model, layer)
     res_hook = ResidualHook(model, layer)
 
@@ -445,50 +453,40 @@ def jacobian_norms_for_model(model, tokenizer, items: List[PromptSet], layer: in
         texts = [ps.instruction_original] + [t for _, t in ps.paraphrases]
         if max_paraphrases is not None:
             texts = texts[: 1 + max_paraphrases]
-        if len(texts) < 3:  # need at least a few to form variance space
+        if len(texts) < 3:
             continue
 
-        # Collect pre-MLP activations and pool
         H_rows = []
         for t in texts:
             input_ids, attention_mask = encode(tokenizer, t, device)
             _ = model(input_ids=input_ids, attention_mask=attention_mask)
-            H = res_hook.buffer  # [1,T,D]
-            vec = mean_pool_tokens(H, attention_mask).to(torch.float32)  # [D]
+            H = res_hook.buffer
+            vec = mean_pool_tokens(H, attention_mask).to(torch.float32)
             H_rows.append(vec)
-        H_mat = torch.stack(H_rows, dim=0)  # [N, D]
+        H_mat = torch.stack(H_rows, dim=0)
         Xc = H_mat - H_mat.mean(dim=0, keepdim=True)
 
-        # Directions
         mean_dir = normalize_t(H_mat.mean(dim=0))
         dirs = [mean_dir]
 
         if mode == "pca":
-            # Top-k PCs of centered Xc
-            # SVD of [N, D] with N relatively small is OK
             U, S, Vh = torch.linalg.svd(Xc, full_matrices=False)
             k = min(topk_pca, Vh.shape[0])
             for i in range(k):
                 dirs.append(normalize_t(Vh[i]))
         else:
-            # raw centered rows (subsample)
             idxs = torch.randperm(Xc.shape[0])[:max(1, topk_pca)]
             for i in idxs:
                 dirs.append(normalize_t(Xc[i]))
 
-        # Random unit directions
         for _ in range(directions_random):
             dirs.append(unit_random_like(mean_dir))
 
-        # Stack directions [K, D]
-        D = torch.stack(dirs, dim=0)  # [K, D]
-
-        # Finite-diff Jacobian norms for UPSTREAM (H->UP) and DOWNSTREAM (H->POST->DOWN)
-        # We'll evaluate at the mean point C = mean(H).
-        C = H_mat.mean(dim=0, keepdim=True)  # [1, D]
+        D = torch.stack(dirs, dim=0)
+        C = H_mat.mean(dim=0, keepdim=True)
 
         def f_up(H_):
-            return accessor.UP(H_.unsqueeze(0)).squeeze(0)  # [T,D_ff]? We fed pooled [1,D]; so emulate token-level via [1,1,D]
+            return accessor.UP(H_.unsqueeze(0)).squeeze(0)
         def f_down(H_):
             post = accessor.POST(H_.unsqueeze(0)).squeeze(0)
             return accessor.DOWN(post)
@@ -496,14 +494,12 @@ def jacobian_norms_for_model(model, tokenizer, items: List[PromptSet], layer: in
         norms_up = []
         norms_down = []
         for j in range(D.shape[0]):
-            d = D[j].unsqueeze(0)  # [1, D]
-            Yp = f_up(C + eps * d)
-            Ym = f_up(C - eps * d)
+            d = D[j].unsqueeze(0)
+            Yp = f_up(C + eps * d); Ym = f_up(C - eps * d)
             G = (Yp - Ym) / (2.0 * eps)
             norms_up.append(float(torch.linalg.vector_norm(G).item()))
 
-            Yp2 = f_down(C + eps * d)
-            Ym2 = f_down(C - eps * d)
+            Yp2 = f_down(C + eps * d); Ym2 = f_down(C - eps * d)
             G2 = (Yp2 - Ym2) / (2.0 * eps)
             norms_down.append(float(torch.linalg.vector_norm(G2).item()))
 
@@ -514,7 +510,6 @@ def jacobian_norms_for_model(model, tokenizer, items: List[PromptSet], layer: in
             "jac_MEAN_up": norms_up[0],
             "jac_MEAN_down": norms_down[0],
         }
-        # Add aggregates for variance/random (skip the first MEAN direction)
         var_slice = norms_up[1:1+topk_pca]
         rnd_slice = norms_up[1+topk_pca:]
         row["jac_VAR_up_mean"] = float(np.mean(var_slice)) if len(var_slice)>0 else float("nan")
@@ -533,18 +528,12 @@ def jacobian_norms_for_model(model, tokenizer, items: List[PromptSet], layer: in
     res_hook.close()
     return {"per_prompt": out_rows, "layer": layer}
 
-# ----------------
-# Stats & plotting utilities
-# ----------------
-
 def ttest_paired(a: np.ndarray, b: np.ndarray) -> float:
-    # simple paired t-test p-value (two-sided)
     if len(a) != len(b) or len(a) < 2: return float("nan")
     d = a - b
     m = float(np.mean(d)); s = float(np.std(d, ddof=1))
     t = m / (s / max(np.sqrt(len(d)),1.0)) if s > 0 else np.inf
-    # approximate two-sided p via survival of t -> normal for large n; good enough for summaries
-    from math import erf, sqrt
+    from math import erf
     p = 2.0 * (1.0 - 0.5*(1.0+erf(abs(t)/math.sqrt(2))))
     return p
 
@@ -563,84 +552,388 @@ def mean_ci(vals: np.ndarray) -> Tuple[float,float]:
     ci = 1.96 * s / max(1.0, math.sqrt(vals.size))
     return m, ci
 
-def bars_ci(labels, base_vals, ft_vals, out_path, ylabel, title):
-    mB, cB = mean_ci(np.array(base_vals)); mF, cF = mean_ci(np.array(ft_vals))
-    plt.figure(figsize=(6.8,4.2))
-    plt.bar(["BASE","FT"], [mB,mF], yerr=[cB,cF], alpha=0.9)
-    plt.ylabel(ylabel); plt.title(title)
-    plt.tight_layout(); plt.savefig(out_path, dpi=160); plt.close()
+def _summarize_rows_numeric(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    if not rows:
+        return []
+    # Collect numeric keys
+    nums: Dict[str, List[float]] = {}
+    for r in rows:
+        for k, v in r.items():
+            if isinstance(v, (int, float)) and np.isfinite(v):
+                nums.setdefault(k, []).append(float(v))
+    stats = {
+        "mean":  lambda x: float(np.mean(x)) if x else float("nan"),
+        "median":lambda x: float(np.median(x)) if x else float("nan"),
+        "std":   lambda x: float(np.std(x, ddof=1)) if len(x) > 1 else 0.0,
+        "min":   lambda x: float(np.min(x)) if x else float("nan"),
+        "max":   lambda x: float(np.max(x)) if x else float("nan"),
+    }
+    out = []
+    for sname, fn in stats.items():
+        row = {"stat": sname}
+        for k, vals in nums.items():
+            row[k] = fn(vals)
+        out.append(row)
+    return out
 
-def multi_stage_ddiff_bar(stages, ddiff_vals, out_path, ylabel, title):
-    m, c = mean_ci(np.array(ddiff_vals))
-    # bars per stage (mean ± CI)
-    means = [np.mean(ddiff_vals[s]) for s in stages]
-    cis   = [mean_ci(np.array(ddiff_vals[s]))[1] for s in stages]
-    plt.figure(figsize=(8.4,4.2))
-    plt.bar(stages, means, yerr=cis, alpha=0.9)
-    plt.ylabel(ylabel); plt.title(title)
-    plt.tight_layout(); plt.savefig(out_path, dpi=160); plt.close()
+def _write_summary_csv(rows: List[Dict[str, Any]], path: Path) -> None:
+    rows = _summarize_rows_numeric(rows)
+    if not rows: 
+        return
+    # stable union of keys
+    keys = sorted(set().union(*[r.keys() for r in rows]))
+    with open(path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=keys)
+        w.writeheader()
+        w.writerows(rows)
 
-def hist_overlay(x, y, out_path, xlabel, title, labx="BASE", laby="FT"):
-    plt.figure(figsize=(7.5,4.5))
-    bins = max(10, int(np.sqrt(max(len(x), len(y)))))
-    plt.hist(x, bins=bins, alpha=0.6, density=True, label=labx)
-    plt.hist(y, bins=bins, alpha=0.6, density=True, label=laby)
-    plt.axvline(np.mean(x), linestyle="--", label=f"{labx} mean")
-    plt.axvline(np.mean(y), linestyle="--", label=f"{laby} mean")
-    plt.xlabel(xlabel); plt.ylabel("Density"); plt.title(title); plt.legend()
-    plt.tight_layout(); plt.savefig(out_path, dpi=160); plt.close()
+def _write_rows_csv(rows: List[Dict[str, Any]], path: Path) -> None:
+    """Write arbitrary dict rows to CSV (used for merged per-prompt detail)."""
+    if not rows:
+        return
+    keys = sorted(set().union(*[r.keys() for r in rows]))
+    with open(path, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=keys)
+        w.writeheader()
+        w.writerows(rows)
 
-def joint_jacobian_overlay(df_base, df_ft, out_path):
+def _hex_to_rgb(hex_color: str):
+    hex_color = hex_color.lstrip("#")
+    return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+def _rgb_to_hex(rgb):
+    return "#{:02x}{:02x}{:02x}".format(*rgb)
+
+def _lighten(hex_color: str, factor: float):
+    r,g,b = _hex_to_rgb(hex_color)
+    r = int(r + (255 - r) * factor)
+    g = int(g + (255 - g) * factor)
+    b = int(b + (255 - b) * factor)
+    return _rgb_to_hex((r,g,b))
+
+def plot_mlp_steps_ddiff(means, cis, out_path):
+    # means/cis ordered as: ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]
+    ft_green = "#0b5d1e"
+    labels = ["RES","UP\n(after pre)","GATE_PRE\n(before nonlin)","GATE_ACT\n(after nonlin)","POST\n(before down)","DOWN\n(after down)"]
+    plt.figure(figsize=(11.5, 4.8))
+    plt.bar(labels, means, yerr=cis, color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
+    plt.ylabel("ΔΔ L2 (FT−BASE)")
+    plt.title("Diff-of-diffs across MLP micro-steps (L2 distance; negative = FT closer)")
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=170)
+    plt.close()
+
+def plot_mlp_paths_individual(vec_fn, outdir, layer_idx):
+    ft_green = "#0b5d1e"
+    # UP path view
+    steps_up   = ["RES","UP","POST","DOWN"]
+    ddiff_up   = [vec_fn(f"ddiff_l2_{s}") for s in steps_up]
+    means_up   = [float(np.mean(v)) for v in ddiff_up]
+    cis_up     = [mean_ci(v)[1] for v in ddiff_up]
+    plt.figure(figsize=(7.6,4.0))
+    plt.bar(steps_up, means_up, yerr=cis_up, color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
+    plt.ylabel("ΔΔ L2 (FT−BASE)")
+    plt.title(f"UP path — layer {layer_idx} (negative = FT closer)")
+    plt.tight_layout(); plt.savefig(outdir / "mlp_up_path_ddiff_bars.png", dpi=170); plt.close()
+
+    # GATE branch view
+    steps_gate = ["GATE_PRE","GATE_ACT"]
+    ddiff_gate = [vec_fn(f"ddiff_l2_{s}") for s in steps_gate]
+    means_gate = [float(np.mean(v)) for v in ddiff_gate]
+    cis_gate   = [mean_ci(v)[1] for v in ddiff_gate]
+    plt.figure(figsize=(6.5,4.0))
+    plt.bar(steps_gate, means_gate, yerr=cis_gate, color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
+    plt.ylabel("ΔΔ L2 (FT−BASE)")
+    plt.title(f"GATE branch — layer {layer_idx} (negative = FT closer)")
+    plt.tight_layout(); plt.savefig(outdir / "mlp_gate_branch_ddiff_bars.png", dpi=170); plt.close()
+
+def plot_mlp_steps_ddiff_bars_single(means, cis, title, out_path):
+    ft_green = "#0b5d1e"
+    labels = ["RES","UP\n(after pre)","GATE_PRE\n(before nonlin)","GATE_ACT\n(after nonlin)","POST\n(before down)","DOWN\n(after down)"]
+    plt.figure(figsize=(10.5, 4.6))
+    plt.bar(labels, means, yerr=cis, color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
+    plt.ylabel("ΔΔ L2 (FT−BASE)")
+    plt.title(title + " (negative = FT closer)")
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=170)
+    plt.close()
+
+def plot_mlp_steps_ddiff_slices_grid(vec_fn, num_slices: int, outdir: Path):
     """
-    One figure with:
-      - Colors: BASE (gray) vs FT (forest green)
-      - Shades: Upstream (darker) vs Downstream (lighter)
-      - Linestyles: Mean (solid), Variance (dashed), Random (dotted)
+    Builds one panel per slice + saves per-slice figures.
+    Reads ddiff arrays with keys ddiff_l2_{STEP}_S{slice}.
     """
+    steps6 = ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]
+    # Save per-slice files and aggregate for grid
+    per_means = []
+    per_cis   = []
+    for si in range(1, num_slices+1):
+        vals6 = [vec_fn(f"ddiff_l2_{st}_S{si}") for st in steps6]
+        means = [float(np.mean(v)) if v.size > 0 else float("nan") for v in vals6]
+        cis   = [mean_ci(v)[1] for v in vals6]
+        per_means.append(means); per_cis.append(cis)
+        plot_mlp_steps_ddiff_bars_single(
+            means, cis,
+            title=f"Six-step ΔΔ L2 by token slice {si}/{num_slices}",
+            out_path=outdir / f"mlp_steps_ddiff_bars_slice{si:02d}.png",
+        )
+
+    # Grid figure
+    cols = min(3, num_slices)
+    rows = int(math.ceil(num_slices / cols))
+    ft_green = "#0b5d1e"
+    labels = ["RES","UP","G_PRE","G_ACT","POST","DOWN"]  # compact for grid
+    plt.figure(figsize=(min(16, 5.0*cols), 3.6*rows))
+    for i in range(num_slices):
+        ax = plt.subplot(rows, cols, i+1)
+        ax.bar(labels, per_means[i], yerr=per_cis[i], color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+        ax.axhline(0.0, color="#6e6e6e", linewidth=0.9)
+        ax.set_title(f"Slice {i+1}/{num_slices}", fontsize=10)
+        if i % cols == 0:
+            ax.set_ylabel("ΔΔ L2 (FT−BASE)")
+        ax.tick_params(axis="x", labelrotation=20)
+    plt.suptitle("Six-step ΔΔ L2 by token slices", y=0.995, fontsize=12, fontweight="bold")
+    plt.tight_layout(rect=[0, 0, 1, 0.97])
+    plt.savefig(outdir / "mlp_steps_ddiff_bars_slices_grid.png", dpi=170)
+    plt.close()
+
+def plot_jacobian_up_bars(df_base, df_ft, out_path):
+    import numpy as np
     import matplotlib.pyplot as plt
-    plt.figure(figsize=(8.6,5.0))
 
-    # Aggregate across prompts: mean ± CI
-    def agg(col): 
-        v = np.array(df_base[col].values, dtype=float); mB,cB=mean_ci(v)
-        v2 = np.array(df_ft[col.replace("_up","_up")].values, dtype=float); mF,cF=mean_ci(v2)  # placeholder to keep structure
-        return (mB,cB),(mF,cF)
+    base_color = "#6e6e6e"       # gray
+    ft_color   = "#0b5d1e"       # forest green
 
-    # Prepare series
-    series = [
-        ("jac_MEAN_up",       "MEAN (UP)",  "solid", True),
-        ("jac_MEAN_down",     "MEAN (DOWN)","solid", False),
-        ("jac_VAR_up_mean",   "VAR (UP)",   "dashed", True),
-        ("jac_VAR_down_mean", "VAR (DOWN)", "dashed", False),
-        ("jac_RND_up_mean",   "RND (UP)",   "dotted", True),
-        ("jac_RND_down_mean", "RND (DOWN)", "dotted", False),
+    val_var_base = float(np.nanmean(df_base["jac_VAR_up_mean"].values))
+    val_var_ft   = float(np.nanmean(df_ft["jac_VAR_up_mean"].values))
+    val_mean_base= float(np.nanmean(df_base["jac_MEAN_up"].values))
+    val_mean_ft  = float(np.nanmean(df_ft["jac_MEAN_up"].values))
+    val_rnd_base = float(np.nanmean(df_base["jac_RND_up_mean"].values))
+    val_rnd_ft   = float(np.nanmean(df_ft["jac_RND_up_mean"].values))
+
+    groups = ["VAR", "MEAN", "RANDOM"]
+    base_vals = [val_var_base, val_mean_base, val_rnd_base]
+    ft_vals   = [val_var_ft,   val_mean_ft,   val_rnd_ft]
+
+    x = np.arange(len(groups))
+    w = 0.35
+    shades = {"VAR":0.25, "MEAN":0.05, "RANDOM":0.45}
+
+    plt.figure(figsize=(7.6, 4.6))
+    for i, g in enumerate(groups):
+        shade = shades[g]
+        bc = _lighten(base_color, shade)
+        fc = _lighten(ft_color,   shade*0.8)
+        plt.bar(x[i]-w/2, base_vals[i], width=w, color=bc, edgecolor="black", label="BASE" if i==0 else None)
+        plt.bar(x[i]+w/2, ft_vals[i],   width=w, color=fc, edgecolor="none",  label="FT"   if i==0 else None)
+
+    plt.xticks(x, groups)
+    plt.ylabel("Avg Jacobian norm")
+    plt.title("Jacobian (UP) — mean / variance / random\nBASE (gray, black edge) vs FT (forest green)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=170)
+    plt.close()
+
+def plot_jacobian_down_bars(df_base, df_ft, out_path):
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    base_color = "#6e6e6e"
+    ft_color   = "#0b5d1e"
+
+    val_var_base = float(np.nanmean(df_base["jac_VAR_down_mean"].values))
+    val_var_ft   = float(np.nanmean(df_ft["jac_VAR_down_mean"].values))
+    val_mean_base= float(np.nanmean(df_base["jac_MEAN_down"].values))
+    val_mean_ft  = float(np.nanmean(df_ft["jac_MEAN_down"].values))
+    val_rnd_base = float(np.nanmean(df_base["jac_RND_down_mean"].values))
+    val_rnd_ft   = float(np.nanmean(df_ft["jac_RND_down_mean"].values))
+
+    groups = ["VAR", "MEAN", "RANDOM"]
+    base_vals = [val_var_base, val_mean_base, val_rnd_base]
+    ft_vals   = [val_var_ft,   val_mean_ft,   val_rnd_ft]
+
+    x = np.arange(len(groups))
+    w = 0.35
+    shades = {"VAR":0.25, "MEAN":0.05, "RANDOM":0.45}
+
+    plt.figure(figsize=(7.6, 4.6))
+    for i, g in enumerate(groups):
+        shade = shades[g]
+        bc = _lighten(base_color, shade)
+        fc = _lighten(ft_color,   shade*0.8)
+        plt.bar(x[i]-w/2, base_vals[i], width=w, color=bc, edgecolor="black", label="BASE" if i==0 else None)
+        plt.bar(x[i]+w/2, ft_vals[i],   width=w, color=fc, edgecolor="none",  label="FT"   if i==0 else None)
+
+    plt.xticks(x, groups)
+    plt.ylabel("Avg Jacobian norm")
+    plt.title("Jacobian (DOWN) — mean / variance / random\nBASE (gray, black edge) vs FT (forest green)")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=170)
+    plt.close()
+
+def plot_jacobian_updown_combo(df_base, df_ft, out_path):
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    base_color = "#6e6e6e"
+    ft_color   = "#0b5d1e"
+
+    vals = dict(
+        up_var_base   = float(np.nanmean(df_base["jac_VAR_up_mean"].values)),
+        up_var_ft     = float(np.nanmean(df_ft["jac_VAR_up_mean"].values)),
+        up_mean_base  = float(np.nanmean(df_base["jac_MEAN_up"].values)),
+        up_mean_ft    = float(np.nanmean(df_ft["jac_MEAN_up"].values)),
+        up_rnd_base   = float(np.nanmean(df_base["jac_RND_up_mean"].values)),
+        up_rnd_ft     = float(np.nanmean(df_ft["jac_RND_up_mean"].values)),
+
+        down_var_base = float(np.nanmean(df_base["jac_VAR_down_mean"].values)),
+        down_var_ft   = float(np.nanmean(df_ft["jac_VAR_down_mean"].values)),
+        down_mean_base= float(np.nanmean(df_base["jac_MEAN_down"].values)),
+        down_mean_ft  = float(np.nanmean(df_ft["jac_MEAN_down"].values)),
+        down_rnd_base = float(np.nanmean(df_base["jac_RND_down_mean"].values)),
+        down_rnd_ft   = float(np.nanmean(df_ft["jac_RND_down_mean"].values)),
+    )
+
+    left = ["up_var_base","up_var_ft","up_mean_base","up_mean_ft","up_rnd_base","up_rnd_ft"]
+    right= ["down_var_base","down_var_ft","down_mean_base","down_mean_ft","down_rnd_base","down_rnd_ft"]
+
+    labels_left  = ["VAR BASE","VAR FT","MEAN BASE","MEAN FT","RANDOM BASE","RANDOM FT"]
+    labels_right = ["VAR BASE","VAR FT","MEAN BASE","MEAN FT","RANDOM BASE","RANDOM FT"]
+
+    def bar_style(key):
+        is_ft = key.endswith("_ft")
+        is_base = not is_ft
+        color = ft_color if is_ft else base_color
+        edgecolor = "black" if is_base else "none"
+        lw = 1.0 if is_base else 0.0
+        if "mean" in key:
+            hatch = "///"
+            shade = 0.05
+        elif "var" in key:
+            hatch = None
+            shade = 0.20
+        else:
+            hatch = None
+            shade = 0.45
+        return _lighten(color, shade), edgecolor, lw, hatch
+
+    plt.figure(figsize=(12.0, 4.8))
+    n = 6
+    x_left = np.arange(n)
+    gap = 1.5
+    x_right = x_left + n + gap
+
+    for i, key in enumerate(left):
+        c, ec, lw, h = bar_style(key)
+        plt.bar(x_left[i], vals[key], color=c, edgecolor=ec, linewidth=lw, hatch=h)
+
+    for i, key in enumerate(right):
+        c, ec, lw, h = bar_style(key)
+        plt.bar(x_right[i], vals[key], color=c, edgecolor=ec, linewidth=lw, hatch=h)
+
+    ticks = list(x_left) + list(x_right)
+    tick_labels = labels_left + labels_right
+    plt.xticks(ticks, tick_labels, rotation=25)
+
+    mid_left  = (x_left[0] + x_left[-1]) / 2
+    mid_right = (x_right[0] + x_right[-1]) / 2
+    ymax = plt.gca().get_ylim()[1]
+    plt.text(mid_left,  ymax*1.02, "UP",   ha="center", va="bottom", fontsize=11, fontweight="bold")
+    plt.text(mid_right, ymax*1.02, "DOWN", ha="center", va="bottom", fontsize=11, fontweight="bold")
+    plt.axvline(x_left[-1]+0.5, color="k", linestyle=":", linewidth=0.8, alpha=0.6)
+
+    from matplotlib.patches import Patch
+    legend_labels = [
+        f"UP VAR BASE = {vals['up_var_base']:.3f}",
+        f"UP VAR FT   = {vals['up_var_ft']:.3f}",
+        f"UP MEAN BASE= {vals['up_mean_base']:.3f}",
+        f"UP MEAN FT  = {vals['up_mean_ft']:.3f}",
+        f"UP RANDOM BASE = {vals['up_rnd_base']:.3f}",
+        f"UP RANDOM FT   = {vals['up_rnd_ft']:.3f}",
+        f"DOWN VAR BASE = {vals['down_var_base']:.3f}",
+        f"DOWN VAR FT   = {vals['down_var_ft']:.3f}",
+        f"DOWN MEAN BASE= {vals['down_mean_base']:.3f}",
+        f"DOWN MEAN FT  = {vals['down_mean_ft']:.3f}",
+        f"DOWN RANDOM BASE = {vals['down_rnd_base']:.3f}",
+        f"DOWN RANDOM FT   = {vals['down_rnd_ft']:.3f}",
+    ]
+    leg_elems = []
+    all_keys = left + right
+    for i, key in enumerate(all_keys):
+        color, edgecolor, _, hatch = bar_style(key)
+        leg_elems.append(Patch(facecolor=color, edgecolor=edgecolor, hatch=hatch, label=legend_labels[i]))
+
+    plt.legend(handles=leg_elems, loc="upper right", ncol=1, frameon=False)
+    plt.ylabel("Avg Jacobian norm")
+    plt.title("Jacobian — UP (left) vs DOWN (right)")
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=170, bbox_inches="tight")
+    plt.close()
+
+def plot_jacobian_updown_pair_diffs(df_base, df_ft, out_path):
+    """
+    Plot the difference (FT - BASE) for Jacobian norms, for UP and DOWN,
+    separately for VAR / MEAN / RANDOM directions.
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    ft_green = "#0b5d1e"
+
+    diffs_up = [
+        float(np.nanmean(df_ft["jac_VAR_up_mean"].values)  - np.nanmean(df_base["jac_VAR_up_mean"].values)),
+        float(np.nanmean(df_ft["jac_MEAN_up"].values)      - np.nanmean(df_base["jac_MEAN_up"].values)),
+        float(np.nanmean(df_ft["jac_RND_up_mean"].values)  - np.nanmean(df_base["jac_RND_up_mean"].values)),
+    ]
+    diffs_down = [
+        float(np.nanmean(df_ft["jac_VAR_down_mean"].values)  - np.nanmean(df_base["jac_VAR_down_mean"].values)),
+        float(np.nanmean(df_ft["jac_MEAN_down"].values)      - np.nanmean(df_base["jac_MEAN_down"].values)),
+        float(np.nanmean(df_ft["jac_RND_down_mean"].values)  - np.nanmean(df_base["jac_RND_down_mean"].values)),
     ]
 
-    x = np.arange(len(series))
-    # Plot as two lines (BASE, FT) across the 6 series positions
-    base_means = [np.mean(df_base[s[0]].values) for s in series]
-    ft_means   = [np.mean(df_ft[s[0]].values)   for s in series]
+    labels = ["VAR","MEAN","RANDOM"]
+    x = np.arange(len(labels))
+    w = 0.35
 
-    # Colors
-    base_color = "#6e6e6e"  # gray
-    ft_color   = "#0b5d1e"  # dark forest green
-
-    # Markers to distinguish
-    markers = ["o","s","^","D","v","P"]
-
-    plt.plot(x, base_means, marker="o", linestyle="-", color=base_color, label="BASE")
-    plt.plot(x, ft_means,   marker="s", linestyle="-", color=ft_color,   label="FT")
-
-    # X tick labels
-    plt.xticks(x, [s[1] for s in series], rotation=20)
-    plt.ylabel("Avg Jacobian norm")
-    plt.title("Jacobian norms — BASE vs FT; upstream vs downstream; mean/var/random")
+    plt.figure(figsize=(8.8, 4.6))
+    # UP on left positions, DOWN on right positions
+    plt.bar(x - w/2, diffs_up,   width=w, label="UP (FT−BASE)",   color=_lighten(ft_green, 0.20), edgecolor="none")
+    plt.bar(x + w/2, diffs_down, width=w, label="DOWN (FT−BASE)", color=_lighten(ft_green, 0.45), edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
+    plt.xticks(x, labels)
+    plt.ylabel("Δ Jacobian norm (FT−BASE)")
+    plt.title("Jacobian differences by direction type (UP vs DOWN)")
     plt.legend()
-    plt.tight_layout(); plt.savefig(out_path, dpi=170); plt.close()
+    plt.tight_layout()
+    plt.savefig(out_path, dpi=170)
+    plt.close()
 
-# ----------------
-# Model loader (SCRIPT D/F style)
-# ----------------
+def paired_scatter(x, y, out_path, xlabel, ylabel, title):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    base_gray = "#6e6e6e"
+    ft_green  = "#0b5d1e"
+    x = np.asarray(x); y = np.asarray(y)
+    plt.figure(figsize=(6.0,6.0))
+    plt.scatter(x, y, s=14, alpha=0.6, color=ft_green)
+    mn = min(np.min(x), np.min(y)); mx = max(np.max(x), np.max(y))
+    pad = 0.05*(mx-mn if mx>mn else 1.0)
+    a = mn - pad; b = mx + pad
+    plt.plot([a,b],[a,b], linestyle="--", linewidth=1.0, color=base_gray, alpha=0.9, label="y = x")
+    if np.isfinite(x).all() and np.isfinite(y).all() and len(x) > 1:
+        xm = x - x.mean(); ym = y - y.mean()
+        r = float((xm*ym).sum() / (np.sqrt((xm*xm).sum()) * np.sqrt((ym*ym).sum()) + 1e-12))
+        plt.text(0.02, 0.98, f"r = {r:.3f}\nn = {len(x)}", transform=plt.gca().transAxes,
+                 ha="left", va="top", fontsize=10,
+                 bbox=dict(boxstyle="round,pad=0.2", fc="white", ec=base_gray, alpha=0.8))
+    plt.xlabel(xlabel); plt.ylabel(ylabel); plt.title(title)
+    plt.tight_layout(); plt.savefig(out_path, dpi=170); plt.close()
 
 def build_models_and_tokenizers(
     base_model_name_or_path: str,
@@ -656,7 +949,6 @@ def build_models_and_tokenizers(
     base = AutoModelForCausalLM.from_pretrained(base_model_name_or_path, torch_dtype=dtype).to(device).eval()
 
     if ft_lora_adapter is not None:
-        # Try loading the adapter onto a base/FT host
         host_name = ft_model_name_or_path or base_model_name_or_path
         ft_host = AutoModelForCausalLM.from_pretrained(host_name, torch_dtype=dtype).to(device).eval()
         if _HAS_PEFT:
@@ -674,12 +966,8 @@ def build_models_and_tokenizers(
 
     return (base, tokenizer_base), (ft, tokenizer_ft)
 
-# ----------------
-# Main
-# ----------------
-
 def main():
-    ap = argparse.ArgumentParser(description="Diff-of-diffs across MLP stations + Jacobian overlays")
+    ap = argparse.ArgumentParser(description="Diff-of-diffs across MLP stations + Jacobian overlays (L2 micro-steps)")
     ap.add_argument("--selection_jsonl", type=str, required=True, help="From SCRIPT A sampler")
     ap.add_argument("--base_model_name_or_path", type=str, required=True)
     ap.add_argument("--ft_model_name_or_path", type=str, default=None)
@@ -689,181 +977,192 @@ def main():
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--outdir", type=str, required=True)
 
-    # Limits / speed
     ap.add_argument("--max_prompts", type=int, default=None)
     ap.add_argument("--max_paraphrases", type=int, default=None)
 
-    # Jacobian extras
     ap.add_argument("--compute_jacobians", type=int, default=1, help="0/1")
     ap.add_argument("--jacobian_mode", type=str, default="pca", choices=["pca","raw"])
     ap.add_argument("--topk_pca", type=int, default=8)
     ap.add_argument("--eps_jacobian", type=float, default=1e-3)
+    ap.add_argument(
+        "--token_slices",
+        type=int,
+        default=0,
+        help="If >0, split each sequence into this many equal token-position slices and compute per-slice six-step ΔΔ figures."
+    )
 
     args = ap.parse_args()
 
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s.%(msecs)03d | %(levelname)s | %(message)s",
-        datefmt="%H:%M:%S",
+        datefmt=":%H:%M:%S",
     )
     set_seed(args.seed)
     outdir = ensure_dir(args.outdir)
 
-    # Read selection
     logging.info("Reading selection: %s", args.selection_jsonl)
     items = load_selection_jsonl(args.selection_jsonl, max_prompts=args.max_prompts)
     logging.info("Loaded %d prompts from selection.", len(items))
 
-    # Load BASE + FT
     device = torch.device(args.device) if args.device else torch.device("cuda" if torch.cuda.is_available() else "cpu")
     (base, tok_base), (ft, tok_ft) = build_models_and_tokenizers(
         args.base_model_name_or_path, args.ft_model_name_or_path, args.ft_lora_adapter, device
     )
+
     logging.info("Models ready. Layer index = %d", args.layer_index)
 
-    # Compute station metrics
     logging.info("Capturing MLP stations: BASE")
     base_res = capture_stations_for_model(base, tok_base, items, args.layer_index, device,
-                                          args.max_prompts, args.max_paraphrases)
+                                          args.max_prompts, args.max_paraphrases, token_slices=args.token_slices)
+
     logging.info("Capturing MLP stations: FT")
     ft_res = capture_stations_for_model(ft, tok_ft, items, args.layer_index, device,
-                                        args.max_prompts, args.max_paraphrases)
+                                        args.max_prompts, args.max_paraphrases, token_slices=args.token_slices)
 
-    # Save per-model CSVs
-    def write_csv(rows, path):
-        if not rows:
-            return
-        keys = sorted(rows[0].keys())
-        with open(path, "w", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=keys); w.writeheader(); w.writerows(rows)
+    _write_summary_csv(base_res["per_prompt"], outdir / f"BASE_mlp_station_metrics_layer{args.layer_index}.csv")
+    _write_summary_csv(ft_res["per_prompt"],   outdir / f"FT_mlp_station_metrics_layer{args.layer_index}.csv")
 
-    write_csv(base_res["per_prompt"], outdir / f"BASE_mlp_station_metrics_layer{args.layer_index}.csv")
-    write_csv(ft_res["per_prompt"],   outdir / f"FT_mlp_station_metrics_layer{args.layer_index}.csv")
-
-    # Merge per-prompt BASE vs FT
-    from collections import defaultdict
     bmap = {r["prompt_count"]: r for r in base_res["per_prompt"]}
     fmap = {r["prompt_count"]: r for r in ft_res["per_prompt"]}
     merged_rows = []
     for pc in sorted(set(bmap.keys()) & set(fmap.keys())):
         rb, rf = bmap[pc], fmap[pc]
         row = {"prompt_count": pc, "N": rb["N"]}
-        for k in ["cos_RES","cos_UP","cos_POST","cos_DOWN","dist_RES","dist_UP","dist_POST","dist_DOWN",
-                  "l2_UP","l2_POST","l2_DOWN",
-                  "delta_dist_POST_minus_UP","delta_dist_DOWN_minus_UP"]:
-            row[k+"_BASE"] = rb[k]; row[k+"_FT"] = rf[k]
-        # diff-of-diffs per station in distance space
-        for s in ["RES","UP","POST","DOWN"]:
+        for k in [
+            "cos_RES","cos_UP","cos_GATE_PRE","cos_GATE_ACT","cos_POST","cos_DOWN",
+            "dist_RES","dist_UP","dist_GATE_PRE","dist_GATE_ACT","dist_POST","dist_DOWN",
+            "l2_RES","l2_UP","l2_GATE_PRE","l2_GATE_ACT","l2_POST","l2_DOWN",
+            "delta_dist_POST_minus_UP","delta_dist_DOWN_minus_UP"
+        ]:
+            row[k + "_BASE"] = rb.get(k, float("nan")); row[k + "_FT"] = rf.get(k, float("nan"))
+
+        for s in ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]:
             row[f"ddiff_dist_{s}"] = row[f"dist_{s}_FT"] - row[f"dist_{s}_BASE"]
             row[f"ddiff_cos_{s}"]  = row[f"cos_{s}_FT"]  - row[f"cos_{s}_BASE"]
-        # ΔΔ of stage deltas
+            row[f"ddiff_l2_{s}"]   = row[f"l2_{s}_FT"]   - row[f"l2_{s}_BASE"]
+
         row["ddiff_delta_POST_minus_UP"] = row["delta_dist_POST_minus_UP_FT"] - row["delta_dist_POST_minus_UP_BASE"]
         row["ddiff_delta_DOWN_minus_UP"] = row["delta_dist_DOWN_minus_UP_FT"] - row["delta_dist_DOWN_minus_UP_BASE"]
+
+        # Per-slice ΔΔ
+        S = int(args.token_slices) if args.token_slices and args.token_slices > 0 else 0
+        if S > 0:
+            stages6 = ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]
+            for si in range(1, S+1):
+                for st in stages6:
+                    # copy BASE/FT (may be NaN if missing)
+                    base_key = f"dist_{st}_S{si}"
+                    row[base_key + "_BASE"] = rb.get(base_key, float("nan"))
+                    row[base_key + "_FT"]   = rf.get(base_key, float("nan"))
+                    # ddiff for this slice (dist)
+                    row[f"ddiff_dist_{st}_S{si}"] = row[base_key + "_FT"] - row[base_key + "_BASE"]
+                    # L2 per-slice
+                    l2_key = f"l2_{st}_S{si}"
+                    row[l2_key + "_BASE"] = rb.get(l2_key, float("nan"))
+                    row[l2_key + "_FT"]   = rf.get(l2_key, float("nan"))
+                    row[f"ddiff_l2_{st}_S{si}"] = row[l2_key + "_FT"] - row[l2_key + "_BASE"]
+
         merged_rows.append(row)
 
-    write_csv(merged_rows, outdir / f"merged_mlp_station_metrics_layer{args.layer_index}.csv")
+    _write_rows_csv(merged_rows, outdir / f"merged_mlp_station_metrics_layer{args.layer_index}.csv")
 
-    # Summaries
-    import numpy as np, json as _json
     merged = merged_rows
     summaries = {}
     def vec(key): return np.array([r[key] for r in merged if np.isfinite(r[key])], dtype=float)
 
-    # Station ΔΔ (distance and cosine)
-    for s in ["RES","UP","POST","DOWN"]:
-        dd = vec(f"ddiff_dist_{s}")
-        cc = vec(f"ddiff_cos_{s}")
+    for s in ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]:
+        dd = vec(f"ddiff_dist_{s}"); cc = vec(f"ddiff_cos_{s}")
         summaries[f"ddiff_dist_{s}"] = summarize_vec(dd)
         summaries[f"ddiff_cos_{s}"]  = summarize_vec(cc)
 
-    # Stage delta ΔΔ
     for k in ["ddiff_delta_POST_minus_UP","ddiff_delta_DOWN_minus_UP"]:
         summaries[k] = summarize_vec(vec(k))
 
-    # Also paired tests BASE vs FT for per-station distances
-    for s in ["RES","UP","POST","DOWN"]:
+    for s in ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]:
         b = vec(f"dist_{s}_BASE"); f = vec(f"dist_{s}_FT")
         summaries[f"paired_p_base_vs_ft_dist_{s}"] = float(ttest_paired(f, b))
 
     with open(outdir / "summaries.json", "w") as f:
-        _json.dump(summaries, f, indent=2)
+        json.dump(summaries, f, indent=2)
 
-    # ---------------- Figures ----------------
-
-    # ΔΔ (1−cos) per station bars
+    # Figure
+    logging.info("Plotting station ΔΔ bars")
     stages = ["RES","UP","POST","DOWN"]
     ddiff_dict = {s: vec(f"ddiff_dist_{s}") for s in stages}
     means = [float(np.mean(ddiff_dict[s])) for s in stages]
     cis   = [mean_ci(ddiff_dict[s])[1] for s in stages]
+    ft_green = "#0b5d1e"
     plt.figure(figsize=(8.4,4.2))
-    plt.bar(stages, means, yerr=cis, alpha=0.9)
-    plt.axhline(0.0, color="k", linewidth=0.8)
+    plt.bar(stages, means, yerr=cis, color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
     plt.ylabel("ΔΔ (FT−BASE) of (1−cos)")
     plt.title(f"Diff-of-diffs across MLP stations — layer {args.layer_index}\n(negative = FT closer / denoising)")
     plt.tight_layout(); plt.savefig(outdir / "ddiff_dist_by_station_bars.png", dpi=170); plt.close()
 
-    # Stage delta ΔΔ bars
+    logging.info("Plotting stage delta ΔΔ bars")
     deltas = ["ddiff_delta_POST_minus_UP","ddiff_delta_DOWN_minus_UP"]
     vals = [vec(k) for k in deltas]
     means = [float(np.mean(v)) for v in vals]
     cis   = [mean_ci(v)[1] for v in vals]
+    ft_green = "#0b5d1e"
     plt.figure(figsize=(7.6,4.0))
-    plt.bar(["POST−UP", "DOWN−UP"], means, yerr=cis, alpha=0.9)
-    plt.axhline(0.0, color="k", linewidth=0.8)
+    plt.bar(["POST−UP", "DOWN−UP"], means, yerr=cis, color=_lighten(ft_green, 0.20), alpha=0.95, edgecolor="none")
+    plt.axhline(0.0, color="#6e6e6e", linewidth=0.9)
     plt.ylabel("ΔΔ of stage delta in (1−cos)")
     plt.title(f"Stage deltas (POST−UP, DOWN−UP) — ΔΔ (FT−BASE), layer {args.layer_index}")
     plt.tight_layout(); plt.savefig(outdir / "stage_delta_ddiff_bars.png", dpi=170); plt.close()
 
-    # Paired scatter of BASE vs FT for POST−UP stage delta
-    def paired_scatter(x, y, out_path, xlabel, ylabel, title):
-        plt.figure(figsize=(5.6,5.6))
-        plt.scatter(x, y, s=12, alpha=0.7)
-        mn = min(np.min(x), np.min(y)); mx = max(np.max(x), np.max(y))
-        pad = 0.05*(mx-mn if mx>mn else 1.0)
-        a = mn - pad; b = mx + pad
-        plt.plot([a,b],[a,b], linestyle="--", linewidth=1.0, color="k", alpha=0.6)
-        plt.xlabel(xlabel); plt.ylabel(ylabel); plt.title(title)
-        plt.tight_layout(); plt.savefig(out_path, dpi=160); plt.close()
+    # Six-step micro-view combined + individual path views (NOW L2)
+    logging.info("Plotting MLP micro-step ΔΔ bars (six steps, L2)")
+    steps6 = ["RES","UP","GATE_PRE","GATE_ACT","POST","DOWN"]
+    vals6  = [vec(f"ddiff_l2_{s}") for s in steps6]
+    means6 = [float(np.mean(v)) for v in vals6]
+    cis6   = [mean_ci(v)[1] for v in vals6]
+    plot_mlp_steps_ddiff(means6, cis6, outdir / "mlp_steps_ddiff_bars.png")
 
+    # Helpful breakdowns (L2-based)
+    plot_mlp_paths_individual(vec, outdir, args.layer_index)
+
+    # Token-slice six-step ΔΔ figures (L2)
+    if args.token_slices and args.token_slices > 0:
+        logging.info("Plotting token-slice six-step ΔΔ bars (%d slices)", args.token_slices)
+        plot_mlp_steps_ddiff_slices_grid(vec, args.token_slices, outdir)
+
+    logging.info("Plotting BASE vs FT stage-delta scatter")
     x = vec("delta_dist_POST_minus_UP_BASE"); y = vec("delta_dist_POST_minus_UP_FT")
     paired_scatter(x, y, outdir / "base_vs_ft_scatter_deltas.png",
                    xlabel="BASE Δ(POST−UP) in (1−cos)",
                    ylabel="FT Δ(POST−UP) in (1−cos)",
                    title=f"BASE vs FT: Stage delta Δ(POST−UP), layer {args.layer_index}")
 
-    # Jacobians (optional)
     if args.compute_jacobians:
-        logging.info("Computing Jacobians (mode=%s, topk_pca=%d, eps=%.1e) — BASE", args.jacobian_mode, args.topk_pca, args.eps_jacobian)
-        jac_base = jacobian_norms_for_model(base, tok_base, items, args.layer_index, device,
-                                            args.topk_pca, args.jacobian_mode,
-                                            args.max_prompts, args.max_paraphrases, eps=args.eps_jacobian)
+        logging.info("Computing Jacobians — BASE")
+        jac_base = jacobian_norms_for_model(
+            base, tok_base, items, args.layer_index, device,
+            args.topk_pca, args.jacobian_mode,
+            args.max_prompts, args.max_paraphrases, eps=args.eps_jacobian
+        )
         logging.info("Computing Jacobians — FT")
-        jac_ft   = jacobian_norms_for_model(ft, tok_ft, items, args.layer_index, device,
-                                            args.topk_pca, args.jacobian_mode,
-                                            args.max_prompts, args.max_paraphrases, eps=args.eps_jacobian)
+        jac_ft = jacobian_norms_for_model(
+            ft, tok_ft, items, args.layer_index, device,
+            args.topk_pca, args.jacobian_mode,
+            args.max_prompts, args.max_paraphrases, eps=args.eps_jacobian
+        )
 
-        write_csv(jac_base["per_prompt"], outdir / f"jacobian_BASE_layer{args.layer_index}.csv")
-        write_csv(jac_ft["per_prompt"],   outdir / f"jacobian_FT_layer{args.layer_index}.csv")
+        _write_summary_csv(jac_base["per_prompt"], outdir / f"jacobian_BASE_layer{args.layer_index}.csv")
+        _write_summary_csv(jac_ft["per_prompt"],   outdir / f"jacobian_FT_layer{args.layer_index}.csv")
 
-        # Joint overlay
         import pandas as pd
         dfB = pd.DataFrame(jac_base["per_prompt"])
         dfF = pd.DataFrame(jac_ft["per_prompt"])
 
-        joint_jacobian_overlay(dfB, dfF, outdir / "jacobian_combined_overlay.png")
+        logging.info("Plotting Jacobian UP / DOWN / COMBO bars")
+        plot_jacobian_up_bars(dfB, dfF, outdir / "jacobian_up_bars.png")
+        plot_jacobian_down_bars(dfB, dfF, outdir / "jacobian_down_bars.png")
+        plot_jacobian_updown_combo(dfB, dfF, outdir / "jacobian_updown_combo_bars.png")
+        plot_jacobian_updown_pair_diffs(dfB, dfF, outdir / "jacobian_updown_pair_diffs.png")
 
-        # (Optional) simple EVR overlay if PCA mode: compute from SVD singular values per prompt
-        # We approximate by re-running a cheap SVD to get explained variance ratios; kept minimal.
-        try:
-            evr_vals_B = []; evr_vals_F = []
-            # Reuse pre-MLP H again quickly for first ~min(100, n) prompts for speed:
-            for df, mod, tok, tag, dst in [(evr_vals_B, base, tok_base, "BASE", dfB),
-                                           (evr_vals_F, ft, tok_ft, "FT", dfF)]:
-                pass  # Skipped here (already heavy); keep placeholder to align with your SCRIPT D outputs.
-        except Exception as e:
-            logging.warning("EVR overlay skipped: %s", e)
-
-    # Done
     logging.info("All done. Outputs in %s", outdir)
 
 if __name__ == "__main__":
