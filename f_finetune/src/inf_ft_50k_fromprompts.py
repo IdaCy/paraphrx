@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Inference on the held-out split (val + test) for paraphrase-robust fine-tuning
-with automatic RESUME support
+with RESUME support
 
 If --output_json already exists and contains partial results, this script will:
   - read it,
@@ -9,9 +9,7 @@ If --output_json already exists and contains partial results, this script will:
   - queue ONLY the missing (or empty) answers for generation,
   - and keep writing back merged results as it progresses.
 
-Usage examples (same as before):
-
-# - LoRA run (run #1)
+# - LoRA run
 python $RUN_SCRIPT \
   --data_path a_data/alpaca/50k_phrxed.json \
   --base_model_path f_finetune/model \
@@ -22,7 +20,7 @@ python $RUN_SCRIPT \
   --log_name h9x_attn8_sptarg_held \
   --wandb_project paraphrx_inference
 
-# - Full-parameter run (run #2 - no LoRA)
+# - Full-parameter run
 python $RUN_SCRIPT \
   --data_path a_data/alpaca/50k_phrxed.json \
   --base_model_path f_finetune/outputs/8x_notarg_50k_ft/final \
@@ -40,17 +38,6 @@ The output file is a list of dicts like:
       "instruct_polite_request": "<answer text>",
       ...
     }
-One entry per prompt_count covering every prompt phrasing.
-
-python3 f_finetune/src/inf_ft_50k.py \
-    --data_path a_data/alpaca/50k_phrxed.json \
-    --base_model_path "f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/final" \
-    --output_json "f_finetune/outputs_great_nolap/lpr9x_a1_notarg_50k_ft/hanswers.json" \
-    --log_name "lgreat_nolap" \
-    --batch 32 \
-    --quant 4bit \
-    --max_samples 200 \
-    --wandb_project paraphrx_ft_nolap_inf
 """
 from __future__ import annotations
 
@@ -70,7 +57,7 @@ from datasets import Dataset
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Split helper (MUST match training)
+# Split helper 
 def three_way_split(
     ds: Dataset, *, val_pct: float, test_pct: float, seed: int
 ) -> Tuple[set[int], set[int], set[int]]:
@@ -101,13 +88,14 @@ def load_examples_with_resume(
     from_prompt_id: int,
     upto_prompt_id: int,
     resume_json_path: str | None,
-) -> Tuple[List[Tuple[int, str, str, str]], Dict[int, Dict]]:
+) -> Tuple[List[Tuple[int, str, str, str]], Dict[int, Dict], int]:
     """
     Returns:
         flat_queue - list of (prompt_count, key_name, prompt_text, raw_input)
                      containing ONLY the missing/empty keys to generate.
         results_map - dict keyed by prompt_count with merged existing results:
                       {"prompt_count", "input", <answer fields...>}
+        prefilled_answers - count of answers taken from resume_json_path
     """
     # Load prompts JSON
     with open(data_path, "r", encoding="utf-8") as f:
@@ -130,16 +118,27 @@ def load_examples_with_resume(
 
     if from_prompt_id > 0:
         sorted_keep_ids = [pc for pc in sorted_keep_ids if pc >= from_prompt_id]
-        logging.info("Filtering from prompt_count >= %d, %d IDs remain.", from_prompt_id, len(sorted_keep_ids))
-
+        logging.info(
+            "Filtering from prompt_count >= %d, %d IDs remain.",
+            from_prompt_id,
+            len(sorted_keep_ids),
+        )
 
     if upto_prompt_id > 0:
         sorted_keep_ids = [pc for pc in sorted_keep_ids if pc <= upto_prompt_id]
-        logging.info("Filtering up to prompt_count <= %d, %d IDs remain.", upto_prompt_id, len(sorted_keep_ids))
+        logging.info(
+            "Filtering up to prompt_count <= %d, %d IDs remain.",
+            upto_prompt_id,
+            len(sorted_keep_ids),
+        )
 
     if max_samples > 0:
         sorted_keep_ids = sorted_keep_ids[:max_samples]
-        logging.info("Applying max_samples=%d, final group count is %d.", max_samples, len(sorted_keep_ids))
+        logging.info(
+            "Applying max_samples=%d, final group count is %d.",
+            max_samples,
+            len(sorted_keep_ids),
+        )
 
     keep_ids = set(sorted_keep_ids)
 
@@ -171,7 +170,10 @@ def load_examples_with_resume(
                         continue
                     # Ensure record exists
                     if pc not in results_map:
-                        results_map[pc] = {"prompt_count": pc, "input": rec.get("input", "")}
+                        results_map[pc] = {
+                            "prompt_count": pc,
+                            "input": rec.get("input", ""),
+                        }
                     # Merge non-empty answers
                     for k, v in rec.items():
                         if k in {"prompt_count", "input"}:
@@ -181,13 +183,21 @@ def load_examples_with_resume(
                             continue
                         if isinstance(v, str) and v.strip():
                             # keep existing non-empty answer
-                            if k not in results_map[pc] or not str(results_map[pc][k]).strip():
+                            if k not in results_map[pc] or not str(
+                                results_map[pc][k]
+                            ).strip():
                                 results_map[pc][k] = v
                                 prefilled_answers += 1
             else:
-                logging.warning("Existing output file is not a list; ignoring resume data.")
+                logging.warning(
+                    "Existing output file is not a list; ignoring resume data."
+                )
         except Exception as e:
-            logging.warning("Failed to read/merge existing output_json (%s): %s", resume_json_path, e)
+            logging.warning(
+                "Failed to read/merge existing output_json (%s): %s",
+                resume_json_path,
+                e,
+            )
 
     # Build the generation queue of MISSING (or empty) keys
     flat_queue: List[Tuple[int, str, str, str]] = []
@@ -197,7 +207,9 @@ def load_examples_with_resume(
     explicit_types = None
     if instruct_types:
         # Ensure "instruction_original" is included and first
-        explicit_types = ["instruction_original"] + [k for k in instruct_types if k != "instruction_original"]
+        explicit_types = ["instruction_original"] + [
+            k for k in instruct_types if k != "instruction_original"
+        ]
 
     held_groups = 0
     for item in raw_data:
@@ -212,7 +224,9 @@ def load_examples_with_resume(
             keep_keys = explicit_types
         else:
             # Default: original + all instruct_* keys present in the item
-            keep_keys = ["instruction_original"] + [k for k in item.keys() if k.startswith("instruct_")]
+            keep_keys = ["instruction_original"] + [
+                k for k in item.keys() if k.startswith("instruct_")
+            ]
 
         # De-duplicate while preserving order
         seen = set()
@@ -238,19 +252,27 @@ def load_examples_with_resume(
 
     logging.info(
         "Loaded %d held-out groups (val∪test) | prompts to generate now: %d | prefilled answers: %d",
-        held_groups, len(flat_queue), prefilled_answers
+        held_groups,
+        len(flat_queue),
+        prefilled_answers,
     )
     if resume_json_path and Path(resume_json_path).exists():
         # Quick sanity: if existing file had prompt_counts outside (val∪test), tell the user
         extra = sorted(pc for pc in resume_seen if pc not in keep_ids)
         if extra:
-            logging.warning("Existing output contained %d prompt_count IDs NOT in this run's held-out split (ignored). Example: %s",
-                            len(extra), extra[:10])
+            logging.warning(
+                "Existing output contained %d prompt_count IDs NOT in this run's held-out split (ignored). Example: %s",
+                len(extra),
+                extra[:10],
+            )
 
     if missing_keys_counter:
-        logging.warning("Some items were missing paraphrase keys (count by key): %s", missing_keys_counter)
+        logging.warning(
+            "Some items were missing paraphrase keys (count by key): %s",
+            missing_keys_counter,
+        )
 
-    return flat_queue, results_map
+    return flat_queue, results_map, prefilled_answers
 
 
 # Prompt formatting (MUST match training)
@@ -265,20 +287,51 @@ def build_chat_prompt(tokenizer, instruction: str, inp: str = "") -> str:
 
 # CLI
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Held-out inference for paraphrx fine-tuning (with resume)")
+    p = argparse.ArgumentParser(
+        description="Held-out inference for paraphrx fine-tuning (with resume + reporting)"
+    )
     p.add_argument("--data_path", required=True, help="JSON file used in fine-tuning")
-    p.add_argument("--instruct_types", nargs="+", default=[], help="Optional explicit list of instruct_* keys to use (default = ALL)")
+    p.add_argument(
+        "--instruct_types",
+        nargs="+",
+        default=[],
+        help="Optional explicit list of instruct_* keys to use (default = ALL)",
+    )
     p.add_argument("--val_pct", type=float, default=0.05, help="Must match training")
     p.add_argument("--test_pct", type=float, default=0.05, help="Must match training")
     p.add_argument("--seed", type=int, default=42, help="Must match training")
-    p.add_argument("--split", choices=["val", "test", "heldout"], default="heldout", help="'val', 'test', or both (heldout)")
-    p.add_argument("--max_samples", type=int, default=0, help="Process at most this many prompt_count groups (0 = all)")
-    p.add_argument("--from_prompt_id", type=int, default=0, help="Start processing from this prompt_count ID (inclusive)")
-    p.add_argument("--upto_prompt_id", type=int, default=0, help="Process up to this prompt_count ID (inclusive, 0 = no limit)")
+    p.add_argument(
+        "--split",
+        choices=["val", "test", "heldout"],
+        default="heldout",
+        help="'val', 'test', or both (heldout)",
+    )
+    p.add_argument(
+        "--max_samples",
+        type=int,
+        default=0,
+        help="Process at most this many prompt_count groups (0 = all)",
+    )
+    p.add_argument(
+        "--from_prompt_id",
+        type=int,
+        default=0,
+        help="Start processing from this prompt_count ID (inclusive)",
+    )
+    p.add_argument(
+        "--upto_prompt_id",
+        type=int,
+        default=0,
+        help="Process up to this prompt_count ID (inclusive, 0 = no limit)",
+    )
 
     p.add_argument("--base_model_path", required=True)
     p.add_argument("--lora_path", help="Path to LoRA adapter; omit for full-FT")
-    p.add_argument("--merge_lora", action="store_true", help="Merge adapter into base weights for faster inference")
+    p.add_argument(
+        "--merge_lora",
+        action="store_true",
+        help="Merge adapter into base weights for faster inference",
+    )
 
     p.add_argument("--batch", type=int, default=4)
     p.add_argument("--max_tokens", type=int, default=128)
@@ -286,9 +339,29 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--device", default="auto")
     p.add_argument("--quant", choices=["none", "8bit", "4bit"], default="none")
 
-    p.add_argument("--output_json", required=True, help="Where to write merged results (also used for resume if exists)")
+    p.add_argument(
+        "--queue_order",
+        choices=["length", "id"],
+        default="length",
+        help="Order to process the missing prompts: by 'length' (default) or by 'id'.",
+    )
+    p.add_argument(
+        "--dry_run",
+        action="store_true",
+        help="Exit after building the queue and print a summary of what would be generated.",
+    )
+
+    p.add_argument(
+        "--output_json",
+        required=True,
+        help="Where to write merged results (also used for resume if exists)",
+    )
     p.add_argument("--wandb_project", default="paraphrx_50k_inf_ft")
-    p.add_argument("--log_name", help="Unique name for this inference run (used in log filename and wandb)", default=None)
+    p.add_argument(
+        "--log_name",
+        help="Unique name for this inference run (used in log filename and wandb)",
+        default=None,
+    )
     p.add_argument("--save_every", type=int, default=100, help="Save answers every X batches")
     return p.parse_args()
 
@@ -313,6 +386,7 @@ def main() -> None:
     if args.wandb_project:
         try:
             import wandb
+
             wb_run = wandb.init(
                 project=args.wandb_project,
                 name=f"infer_{log_name}",
@@ -326,7 +400,7 @@ def main() -> None:
         wb_run = None
 
     # Data (+ RESUME merge)
-    flat_queue, results_map = load_examples_with_resume(
+    flat_queue, results_map, prefilled_answers = load_examples_with_resume(
         args.data_path,
         instruct_types=args.instruct_types,
         val_pct=args.val_pct,
@@ -338,21 +412,66 @@ def main() -> None:
         upto_prompt_id=args.upto_prompt_id,
         resume_json_path=args.output_json,
     )
+
+    kept_group_ids = sorted(results_map.keys())
+    run_summary = {
+        "groups_kept": len(results_map),
+        "first_group_ids": kept_group_ids[:10],
+        "last_group_ids": kept_group_ids[-10:],
+        "prompts_pending_now": len(flat_queue),
+        "prefilled_answers_from_resume": prefilled_answers,
+        "resume_file_used": args.output_json,
+        "split": args.split,
+        "seed": args.seed,
+        "queue_order": args.queue_order,
+    }
+    logging.info("RUN SUMMARY:\n%s", json.dumps(run_summary, indent=2))
+    print(json.dumps(run_summary, indent=2))
+
+    if args.dry_run:
+        # Show a few IDs that would be processed
+        example_ids = sorted({pc for (pc, _, _, _) in flat_queue})[:10]
+        example_keys = sorted({key for (_, key, _, _) in flat_queue})[:10]
+        dry = {
+            "example_prompt_count_ids_to_process": example_ids,
+            "example_instruction_keys_to_process": example_keys,
+            "note": "Dry-run requested, exiting before model load.",
+        }
+        logging.info("DRY RUN DETAILS:\n%s", json.dumps(dry, indent=2))
+        print(json.dumps(dry, indent=2))
+        # Still write canonical sorted output to keep resume pipeline deterministic.
+        out_items = sorted(results_map.values(), key=lambda d: d["prompt_count"])
+        Path(args.output_json).write_text(
+            json.dumps(out_items, indent=2, ensure_ascii=False)
+        )
+        if wb_run:
+            wb_run.finish()
+        return
+
     if not flat_queue:
-        logging.info("Nothing to do: all held-out prompts already completed (or no prompts in split).")
+        msg = "Nothing to do: all held-out prompts already completed (or no prompts in split)."
+        logging.info(msg)
+        print(json.dumps({"status": msg, "groups_kept": len(results_map)}, indent=2))
         # Still write a canonical, sorted output for reproducibility
         out_items = sorted(results_map.values(), key=lambda d: d["prompt_count"])
-        Path(args.output_json).write_text(json.dumps(out_items, indent=2, ensure_ascii=False))
-        print(f"Saved {len(results_map)} prompt_count groups → {args.output_json}")
+        Path(args.output_json).write_text(
+            json.dumps(out_items, indent=2, ensure_ascii=False)
+        )
         if wb_run:
             wb_run.finish()
         return
 
     if wb_run:
-        wb_run.config.update({"total_prompts_pending": len(flat_queue)}, allow_val_change=True)
+        try:
+            wb_run.config.update({"total_prompts_pending": len(flat_queue)}, allow_val_change=True)
+        except Exception:
+            pass
 
-    # Sort shortest → longest to maximise batch utilisation
-    flat_queue.sort(key=lambda t: len(t[2]))
+    # Choose processing order
+    if args.queue_order == "length":
+        flat_queue.sort(key=lambda t: len(t[2]))  # shortest instruction first
+    else:  # "id"
+        flat_queue.sort(key=lambda t: (t[0], t[1]))  # (prompt_count, key)
 
     # Model & Tokeniser
     model_kwargs: dict = dict(device_map=args.device)
@@ -360,6 +479,7 @@ def main() -> None:
     # Flash Attention 2 (if available and not explicitly disabled)
     try:
         import importlib
+
         _FLASH2_OK = importlib.util.find_spec("flash_attn") is not None
     except Exception:
         _FLASH2_OK = False
@@ -373,6 +493,7 @@ def main() -> None:
     # Quantisation (bitsandbytes)
     try:
         import importlib
+
         _BNB_OK = importlib.util.find_spec("bitsandbytes") is not None
     except Exception:
         _BNB_OK = False
@@ -384,6 +505,7 @@ def main() -> None:
         model_kwargs["torch_dtype"] = torch.bfloat16
     else:
         from transformers import BitsAndBytesConfig
+
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_8bit=args.quant == "8bit",
             load_in_4bit=args.quant == "4bit",
@@ -393,11 +515,14 @@ def main() -> None:
         )
 
     logging.info("Loading base model from %s", args.base_model_path)
-    base_model = AutoModelForCausalLM.from_pretrained(args.base_model_path, **model_kwargs)
+    base_model = AutoModelForCausalLM.from_pretrained(
+        args.base_model_path, **model_kwargs
+    )
 
     # LoRA?
     try:
         import importlib
+
         _PEFT_OK = importlib.util.find_spec("peft") is not None
     except Exception:
         _PEFT_OK = False
@@ -407,6 +532,7 @@ def main() -> None:
             logging.error("peft is not installed but --lora_path provided")
             sys.exit(1)
         from peft import PeftModel
+
         logging.info("Loading LoRA adapter from %s", args.lora_path)
         model = PeftModel.from_pretrained(base_model, args.lora_path, is_trainable=False)
         if args.merge_lora:
@@ -424,7 +550,8 @@ def main() -> None:
 
     tok_path = (
         args.lora_path
-        if args.lora_path and (Path(args.lora_path) / "tokenizer_config.json").exists()
+        if args.lora_path
+        and (Path(args.lora_path) / "tokenizer_config.json").exists()
         else args.base_model_path
     )
     tokenizer = AutoTokenizer.from_pretrained(tok_path, model_max_length=4096)
@@ -434,10 +561,14 @@ def main() -> None:
     # Generation helpers
     def _save_partial():
         out_items = sorted(results_map.values(), key=lambda d: d["prompt_count"])
-        Path(args.output_json).write_text(json.dumps(out_items, indent=2, ensure_ascii=False))
+        Path(args.output_json).write_text(
+            json.dumps(out_items, indent=2, ensure_ascii=False)
+        )
         if wb_run:
             try:
-                wb_run.log({"completed_groups": len([d for d in out_items if len(d) > 2])})
+                wb_run.log(
+                    {"completed_groups": len([d for d in out_items if len(d) > 2])}
+                )
             except Exception:
                 pass
 
@@ -451,12 +582,28 @@ def main() -> None:
 
     _INFER_CTX = getattr(torch, "inference_mode", torch.no_grad)
 
-    SAVE_EVERY_N_BATCHES = args.save_every if args.save_every > 0 else (len(flat_queue) + args.batch - 1) // args.batch
+    SAVE_EVERY_N_BATCHES = (
+        args.save_every
+        if args.save_every > 0
+        else (len(flat_queue) + args.batch - 1) // args.batch
+    )
 
-    logging.info("Starting inference loop with %d missing prompts", len(flat_queue))
-    logging.info("Batch size: %d, Max tokens: %d, Temperature: %.2f", args.batch, args.max_tokens, args.temperature)
+    logging.info(
+        "Starting inference loop with %d missing prompts", len(flat_queue)
+    )
+    logging.info(
+        "Batch size: %d, Max tokens: %d, Temperature: %.2f",
+        args.batch,
+        args.max_tokens,
+        args.temperature,
+    )
 
+    # New detailed counters
+    generated_now = 0
+    echo_skips = 0
+    per_key_counts: Dict[str, int] = {}
     batches_done = 0
+
     for start in tqdm(range(0, len(flat_queue), args.batch), desc="generating"):
         batch = flat_queue[start : start + args.batch]
         pcs, keys, instrs, inputs = zip(*batch)
@@ -493,10 +640,17 @@ def main() -> None:
             text = tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
 
             # Robust cleanup: strip echoed user content / role marker if present
-            original_user_message = instrs[i] if not inputs[i] else f"{instrs[i]}\n\nInput:\n{inputs[i]}"
+            original_user_message = (
+                instrs[i] if not inputs[i] else f"{instrs[i]}\n\nInput:\n{inputs[i]}"
+            )
             if text.strip() == original_user_message.strip():
-                logging.warning("Empty generation for prompt_count %s-%s (echoed prompt).", pcs[i], keys[i])
+                logging.warning(
+                    "Empty generation for prompt_count %s-%s (echoed prompt).",
+                    pcs[i],
+                    keys[i],
+                )
                 text = ""
+                echo_skips += 1
             else:
                 model_turn_marker = "model\n"
                 marker_pos = text.find(model_turn_marker)
@@ -508,7 +662,11 @@ def main() -> None:
             if isinstance(existing_text, str) and existing_text.strip():
                 # Already had a non-empty answer (from resume); keep it.
                 continue
+
             results_map[pcs[i]][keys[i]] = text
+            if text:
+                generated_now += 1
+                per_key_counts[keys[i]] = per_key_counts.get(keys[i], 0) + 1
 
         # housekeeping
         del tokenised, outputs
@@ -525,13 +683,18 @@ def main() -> None:
             _save_partial()
 
     _save_partial()
-    logging.info("Finished - wrote %d groups → %s", len(results_map), args.output_json)
-    print(f"Saved {len(results_map)} prompt_count groups → {args.output_json}")
+    logging.info(
+        "Finished - wrote %d groups → %s", len(results_map), args.output_json
+    )
+    print(
+        f"Saved {len(results_map)} prompt_count groups → {args.output_json}"
+    )
 
-    # W&B artifact (optional)
+    # W&B artifact
     if wb_run:
         try:
             import wandb
+
             art = wandb.Artifact(
                 name=f"generations_{Path(args.base_model_path).stem}",
                 type="inference-results",
@@ -552,6 +715,17 @@ def main() -> None:
     missing_any = [k for k, v in results_map.items() if len(v) < 3]  # only prompt_count+input present
     if missing_any:
         logging.warning("Some groups have missing generations: %s", missing_any[:10])
+
+    final_report = {
+        "groups_saved": len(results_map),
+        "answers_generated_now": generated_now,
+        "empty_or_echoed": echo_skips,
+        "per_key_generated": per_key_counts,
+        "output_path": args.output_json,
+        "missing_groups_example": missing_any[:10],
+    }
+    logging.info("FINAL REPORT:\n%s", json.dumps(final_report, indent=2))
+    print(json.dumps(final_report, indent=2))
     logging.info("All done.")
 
 

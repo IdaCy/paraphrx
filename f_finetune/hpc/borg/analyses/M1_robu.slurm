@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=E1_variance_amplitude_premlp
+#SBATCH --job-name=M1_robu
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
@@ -10,8 +10,8 @@
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - E1_variance_amplitude_premlp job started on $(hostname)"
-echo "$(date) - E1_variance_amplitude_premlp job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - M1_robu job started on $(hostname)"
+echo "$(date) - M1_robu job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -90,6 +90,9 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   tqdm \
   wandb \
   matplotlib \
+  jsonlines \
+  scikit-learn \
+  statsmodels \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -118,25 +121,72 @@ mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
 
-# Run
-echo "$(date) - E1_variance_amplitude_premlp initial setup OK"
-RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/variance_amplitude_premlp.py"
-srun $PYBIN "$RUN_SCRIPT" \
-  --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
-  --base_model_name_or_path f_finetune/model \
-  --ft_model_name_or_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
-  --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/variance_amplitude_premlp_5 \
-  --pooling mean \
-  --topk_eigs 16 \
-  --max_prompts 800
+mkdir -p f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/M1_robu9/layer5
+mkdir -p f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/M1_robu9/layer6
+mkdir -p f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/M1_robu9/layer7
 
-echo "$(date) - E1_variance_amplitude_premlp job itself finished OK"
+# Run
+echo "$(date) - M1_robu initial setup OK"
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/M_robust_invariance_experiments.py"
+
+echo "$(date) - FIRST RUN STARTING"
+
+srun $PYBIN "$RUN_SCRIPT" \
+  --jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --model_base f_finetune/model \
+  --lora_ft f_finetune/outputs_great_nolap/ft_spec6layer/final \
+  --merge_lora \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/M1_robu9/layer5 \
+  --layer_index 5 \
+  --max_prompts 40 \
+  --max_paraphrases 20 \
+  --max_length 512 --batch_size 41 \
+  --dtype float16 \
+  --include_input_tag
+
+echo "$(date) - FIRST RUN FINISHED"
+
+echo "$(date) - SECOND RUN STARTING"
+
+srun $PYBIN "$RUN_SCRIPT" \
+  --jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --model_base f_finetune/model \
+  --lora_ft f_finetune/outputs_great_nolap/ft_spec6layer/final \
+  --merge_lora \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/M1_robu9/layer6 \
+  --layer_index 6 \
+  --max_prompts 40 \
+  --max_paraphrases 20 \
+  --max_length 512 --batch_size 41 \
+  --dtype float16 \
+  --include_input_tag
+
+echo "$(date) - SECOND RUN FINISHED"
+
+echo "$(date) - THIRD RUN STARTING"
+
+
+srun $PYBIN "$RUN_SCRIPT" \
+  --jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --model_base f_finetune/model \
+  --lora_ft f_finetune/outputs_great_nolap/ft_spec6layer/final \
+  --merge_lora \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/M1_robu9/layer7 \
+  --layer_index 7 \
+  --max_prompts 40 \
+  --max_paraphrases 20 \
+  --max_length 512 --batch_size 41 \
+  --dtype float16 \
+  --include_input_tag
+
+echo "$(date) - THIRD RUN FINISHED"
+
+echo "$(date) - M1_robu job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) - E1_variance_amplitude_premlp job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - E1_variance_amplitude_premlp job finished & stuff cleaned OK"
+echo "$(date) - M1_robu job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - M1_robu job finished & stuff cleaned OK"

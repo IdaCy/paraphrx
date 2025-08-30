@@ -301,11 +301,11 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    /// Evaluate using an LLM as judge (RobustAlpacaEval-compatible)
+    // Evaluate using an LLM as judge (RobustAlpacaEval-compatible)
     LlmJudge(LlmJudgeArgs),
-    /// Evaluate from pre-computed numerical scores
+    // Evaluate from pre-computed numerical scores
     FromScores(FromScoresArgs),
-    /// Report from a pre-computed Win/Loss/Tie file
+    // Report from a pre-computed Win/Loss/Tie file
     FromLlmScores(FromLlmScoresArgs),
 }
 
@@ -347,15 +347,15 @@ struct LlmJudgeArgs {
     #[arg(long = "delay-ms", default_value_t = 100)]
     delay_ms: u64,
 
-    /// Enable length-controlled debiasing via OLS (legacy)
+    // Enable length-controlled debiasing via OLS
     #[arg(long = "length-control")]
     length_control: bool,
 
-    /// Limit the TOTAL number of prompt_count records across all targets
+    // Limit the TOTAL number of prompt_count records across all targets
     #[arg(long = "max-records", value_name = "N")]
     max_records: Option<usize>,
 
-    /// Deterministic shuffling for reproducibility
+    // Deterministic shuffling for reproducibility
     #[arg(long = "seed")]
     seed: Option<u64>,
 }
@@ -402,7 +402,7 @@ async fn main() -> Result<()> {
     }
 }
 
-// From pre-computed verdicts (unchanged from your intent; cleaned up)
+// From pre-computed verdicts
 fn run_from_llm_scores(args: FromLlmScoresArgs) -> Result<()> {
     let ts = Local::now().format("%Y%m%d-%H%M%S");
     let log_path = Path::new("logs").join(format!("{}_{}.log", args.log_name, ts));
@@ -440,7 +440,7 @@ fn run_from_llm_scores(args: FromLlmScoresArgs) -> Result<()> {
     Ok(())
 }
 
-// From pre-computed numeric scores (unchanged logic; removed stray cap code)
+// From pre-computed numeric scores
 fn run_from_scores(args: FromScoresArgs) -> Result<()> {
     let ts = Local::now().format("%Y%m%d-%H%M%S");
     let log_path = Path::new("logs").join(format!("{}_{}.log", args.log_name, ts));
@@ -799,7 +799,7 @@ async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
                     continue;
                 }
 
-                // Randomize order (deterministic if --seed)
+                // Randomise order (deterministic if --seed)
                 let mut pair = vec![("target", a_target.as_str()), ("reference", a_ref.as_str())];
                 pair.shuffle(&mut rng);
                 let ans1 = pair[0].1;
@@ -996,7 +996,7 @@ async fn run_llm_judge(args: LlmJudgeArgs) -> Result<()> {
             }
         }
 
-        // After finishing this target, decrement the global cap and stop if exhausted.
+        // After finishing this target, decrement the global cap and stop if exhausted
         if remaining_records != usize::MAX {
             remaining_records = remaining_records.saturating_sub(selected_len);
             logger.log(&format!(
@@ -1298,8 +1298,8 @@ fn build_client() -> Result<reqwest::Client> {
     Ok(reqwest::Client::builder().default_headers(headers).build()?)
 }
 
-/// Judge prompt: strict rubric, TF/Relevance priority, style/length neutrality.
-/// Also asks for optional confidence in [0,1] for weighted WR.
+// Judge prompt: strict rubric, TF/Relevance priority, style/length neutrality
+// Also asks for optional confidence in [0,1] for weighted WR
 fn build_judge_prompt(instruction: &str, answer_1: &str, answer_2: &str) -> String {
     format!(
 r#"You are an expert evaluator. Compare two answers to the user's instruction.
@@ -1389,7 +1389,6 @@ async fn query_gemini_for_judgment(
 }
 
 // API key pool with strict rotation/exhaustion
-// Replace your ApiKeyPool with this version:
 
 struct ApiKeyPool {
     keys: Vec<String>,
@@ -1432,8 +1431,8 @@ impl ApiKeyPool {
         }
     }
 
-    /// Reserve a key for exactly ONE API call attempt (success OR failure).
-    /// Returns Err if all keys are exhausted.
+    // Reserve a key for exactly ONE API call attempt (success OR failure)
+    // Returns Err if all keys are exhausted
     fn take_key_for_call(&mut self) -> Result<String> {
         if self.exhausted() { return Err(anyhow!("All API keys exhausted")); }
         if !self.alive[self.idx] { self.advance_to_next_alive(); }

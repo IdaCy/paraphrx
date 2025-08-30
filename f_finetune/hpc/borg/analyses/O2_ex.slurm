@@ -1,17 +1,17 @@
 #!/bin/bash -l
-#SBATCH --job-name=E1_variance_amplitude_premlp
+#SBATCH --job-name=O2_ex
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --time=10:00:00
 #SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%j_%x.out
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - E1_variance_amplitude_premlp job started on $(hostname)"
-echo "$(date) - E1_variance_amplitude_premlp job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - O2_ex job started on $(hostname)"
+echo "$(date) - O2_ex job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -90,6 +90,8 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   tqdm \
   wandb \
   matplotlib \
+  jsonlines \
+  scikit-learn \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -117,26 +119,40 @@ LORA_PATH="$FT_PATH/final"
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
 # sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
+export TORCH_BACKEND_CUDA_ALLOC_CONF=expandable_segments:True
+export NVIDIA_TF32_OVERRIDE=0     # keep bf16
+export CUDA_DEVICE_MAX_CONNECTIONS=1
 
 # Run
-echo "$(date) - E1_variance_amplitude_premlp initial setup OK"
-RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/variance_amplitude_premlp.py"
+echo "$(date) - O2_ex initial setup OK"
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/O_extN_damp.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
-  --base_model_name_or_path f_finetune/model \
-  --ft_model_name_or_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
-  --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/variance_amplitude_premlp_5 \
-  --pooling mean \
-  --topk_eigs 16 \
-  --max_prompts 800
+  --data_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --base_model f_finetune/model \
+  --ft_lora_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
+  --merge_lora \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/O2_ex8_2 \
+  --seed 42 \
+  --device cuda --dtype bf16 \
+  --do_dampening \
+  --patch_sites layer_input,attn_in,mlp_in \
+  --window_size 1 \
+  --max_groups 20 \
+  --max_paraphrases 12 \
+  --batch_size 128 \
+  --max_length 448 \
+  --alpha_layers 6,-1 \
+  --alpha_values 0,0.5,1.0 \
+  --anchor_layer 6 \
+  --survival_site layer_input \
+  --attn_implementation flash_attention_2
 
-echo "$(date) - E1_variance_amplitude_premlp job itself finished OK"
+echo "$(date) - O2_ex job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) - E1_variance_amplitude_premlp job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - E1_variance_amplitude_premlp job finished & stuff cleaned OK"
+echo "$(date) - O2_ex job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - O2_ex job finished & stuff cleaned OK"

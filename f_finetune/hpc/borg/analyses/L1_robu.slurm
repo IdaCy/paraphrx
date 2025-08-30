@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=E1_variance_amplitude_premlp
+#SBATCH --job-name=L1_robu
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
@@ -10,8 +10,8 @@
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - E1_variance_amplitude_premlp job started on $(hostname)"
-echo "$(date) - E1_variance_amplitude_premlp job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - L1_robu job started on $(hostname)"
+echo "$(date) - L1_robu job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -90,6 +90,7 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   tqdm \
   wandb \
   matplotlib \
+  jsonlines \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -119,24 +120,27 @@ mkdir -p "$(dirname "$OUTPUT_JSON")"
 # sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
 
 # Run
-echo "$(date) - E1_variance_amplitude_premlp initial setup OK"
-RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/variance_amplitude_premlp.py"
+echo "$(date) - L1_robu initial setup OK"
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/L_robust_paraphrase_mechanism.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
-  --base_model_name_or_path f_finetune/model \
-  --ft_model_name_or_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
-  --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/variance_amplitude_premlp_5 \
-  --pooling mean \
-  --topk_eigs 16 \
-  --max_prompts 800
+  --data-json f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --base-model f_finetune/model \
+  --lora-adapter f_finetune/outputs_great_nolap/ft_spec6layer/final \
+  --merge-lora \
+  --layers 5,6,7 \
+  --output-dir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/L1_robu_10 \
+  --device cuda --dtype float16 \
+  --max-families 20 --max-paraphrases 40 --batch-size 41 \
+  --heads-to-test 4,7 \
+  --topk-vocab 128 --subspace-k 8 --jacobian-mode jacobian --jacobian-eps 1e-3 \
+  --run-H1 --run-H2 --run-H3 --run-H4 --run-H5
 
-echo "$(date) - E1_variance_amplitude_premlp job itself finished OK"
+echo "$(date) - L1_robu job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) - E1_variance_amplitude_premlp job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - E1_variance_amplitude_premlp job finished & stuff cleaned OK"
+echo "$(date) - L1_robu job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - L1_robu job finished & stuff cleaned OK"

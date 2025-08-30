@@ -1,17 +1,17 @@
 #!/bin/bash -l
-#SBATCH --job-name=E1_variance_amplitude_premlp
+#SBATCH --job-name=aa_caus1
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --time=10:00:00
 #SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%j_%x.out
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - E1_variance_amplitude_premlp job started on $(hostname)"
-echo "$(date) - E1_variance_amplitude_premlp job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - aa_caus1 job started on $(hostname)"
+echo "$(date) - aa_caus1 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -42,12 +42,13 @@ export PYTHONPATH=
 export PATH=$HOME/.local/bin:$PATH
 
 cleanup () {
-  echo "$(date) - cleaning up only my directories for $SLURM_JOB_ID"
-  rm -rf \
-    "$PIP_CACHE_DIR" \
-    "$XDG_CACHE_HOME" \
-    "$WANDB_DIR" \
-    "$TRITON_CACHE_DIR"
+  echo "$(date) - cleaning up for $SLURM_JOB_ID (TMPDIR=$TMPDIR)"
+  if [[ -n "${TMPDIR:-}" && "$TMPDIR" == "$SCRATCH/tmp/"* ]]; then
+    rm -rf "$TMPDIR"
+  fi
+  if [[ -n "${HF_HOME:-}" && "$HF_HOME" == "$PROJ/hf_cache" ]]; then
+    rm -rf "$HF_HOME"
+  fi
 }
 trap cleanup EXIT ERR INT TERM
 
@@ -90,6 +91,8 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   tqdm \
   wandb \
   matplotlib \
+  jsonlines \
+  scikit-learn \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -119,24 +122,22 @@ mkdir -p "$(dirname "$OUTPUT_JSON")"
 # sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
 
 # Run
-echo "$(date) - E1_variance_amplitude_premlp initial setup OK"
-RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/variance_amplitude_premlp.py"
+echo "$(date) - aa_caus1 initial setup OK"
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/aa_caus.py"
 srun $PYBIN "$RUN_SCRIPT" \
-  --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
-  --base_model_name_or_path f_finetune/model \
+  --prompts_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --base_model f_finetune/model \
   --ft_model_name_or_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
-  --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/variance_amplitude_premlp_5 \
-  --pooling mean \
-  --topk_eigs 16 \
-  --max_prompts 800
+  --merge_lora 1 \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/aa_caus1_4 \
+  --base_model google/gemma-2-2b-it \
+  --ft_model_path /path/to/ft/model_or_lora_config \
+  --max_samples 800 \
+  --batch_size 24 \
+  --token_slices "last,mean_prompt" \
+  --budget_k 12
 
-echo "$(date) - E1_variance_amplitude_premlp job itself finished OK"
+echo "$(date) - aa_caus1 job itself finished OK"
 
-rm -rf "$TMPDIR" \
-       "$HF_HOME" \
-       "$PIP_CACHE_DIR" \
-       "$XDG_CACHE_HOME"
-
-echo "$(date) - E1_variance_amplitude_premlp job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - E1_variance_amplitude_premlp job finished & stuff cleaned OK"
+echo "$(date) - aa_caus1 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - aa_caus1 job finished & stuff cleaned OK"

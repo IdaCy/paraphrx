@@ -1,22 +1,22 @@
 #!/bin/bash -l
-#SBATCH --job-name=likenolap1x
+#SBATCH --job-name=likenolap1x6layerxl
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
-#SBATCH --mem=40G
+#SBATCH --mem=80G
 #SBATCH --time=12:00:00
-#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_likenolap1x.out
-#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_likenolap1x.err
+#SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%x_%j_likenolap1x6layerxl.out
+#SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%x_%j_likenolap1x6layerxl.err
 
 set -euo pipefail
-echo "$(date) - likenolap1x job started on $(hostname)"
-echo "$(date) - likenolap1x job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - likenolap1x6layerxl job started on $(hostname)"
+echo "$(date) - likenolap1x6layerxl job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_lap_pr/likenolap1x
+mkdir -p logs f_finetune/outputs_lap_pr/likenolap1x6layerxl
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -90,14 +90,14 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrax_ft_nolap}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) - likenolap1x initial setup OK"
+echo "$(date) - likenolap1x6layerxl initial setup OK"
 RUN_SCRIPT="f_finetune/src/ft.py"
 TOKENIZED_DATA="f_finetune/data/tokenized_data_1xlikenolap"
 
 MODEL_PATH="f_finetune/model"
-OUTPUT_DIR="f_finetune/outputs_lap_pr/likenolap1x"
+OUTPUT_DIR="f_finetune/outputs_lap_pr/likenolap1x6layerxl"
 WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="likenolap1x"
+RUN_NAME="likenolap1x6layerxl"
 
 # sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
 
@@ -106,9 +106,9 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --model_path "$MODEL_PATH" \
   --output_dir "$OUTPUT_DIR" \
   --run_name "$RUN_NAME" \
-  --resume_checkpoint "f_finetune/outputs_lap_pr/likenolap1x/checkpoint-14000" \
   --target_modules q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj \
-  --batch_size 4 \
+  --lora_layer_idx 6 \
+  --batch_size 16 \
   --gradient_accumulation_steps 4 \
   --num_epochs 3 \
   --learning_rate 6e-06 \
@@ -128,9 +128,9 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --save_steps 500 \
   --logging_steps 100 \
   --seed 42 \
-    $WANDB_FLAG
+  $WANDB_FLAG
 
-echo "$(date) - likenolap1x job itself finished OK"
+echo "$(date) - likenolap1x6layerxl job itself finished OK"
 
-echo "$(date) - likenolap1x job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - likenolap1x job finished & stuff cleaned OK"
+echo "$(date) - likenolap1x6layerxl job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - likenolap1x6layerxl job finished & stuff cleaned OK"

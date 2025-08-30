@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=E1_variance_amplitude_premlp
+#SBATCH --job-name=G1_dd_LAP
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
@@ -10,8 +10,8 @@
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - E1_variance_amplitude_premlp job started on $(hostname)"
-echo "$(date) - E1_variance_amplitude_premlp job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - G1_dd_LAP job started on $(hostname)"
+echo "$(date) - G1_dd_LAP job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -90,6 +90,7 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   tqdm \
   wandb \
   matplotlib \
+  jsonlines \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
@@ -119,24 +120,28 @@ mkdir -p "$(dirname "$OUTPUT_JSON")"
 # sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
 
 # Run
-echo "$(date) - E1_variance_amplitude_premlp initial setup OK"
-RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/variance_amplitude_premlp.py"
+echo "$(date) - G1_dd_LAP initial setup OK"
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/run_mlp_diff_of_diffs.py"
 srun $PYBIN "$RUN_SCRIPT" \
   --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
-  --base_model_name_or_path f_finetune/model \
-  --ft_model_name_or_path f_finetune/outputs_great_nolap/ft_spec6layer/final \
+  --base_model f_finetune/model \
+  --ft_lora_adapter f_finetune/outputs_lap_pr/likenolap1x/checkpoint-14000 \
   --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/variance_amplitude_premlp_5 \
-  --pooling mean \
-  --topk_eigs 16 \
-  --max_prompts 800
+  --outdir f_finetune/outputs_lap_pr/likenolap1x/analyses_2_preneurips/G1_dd_LAP2 \
+  --max_prompts 100 \
+  --max_paraphrases 16 \
+  --compute_jacobians 1 \
+  --jacobian_mode pca \
+  --topk_pca 8 \
+  --swiglu_gate gelu \
+  --token_slices 9
 
-echo "$(date) - E1_variance_amplitude_premlp job itself finished OK"
+echo "$(date) - G1_dd_LAP job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) - E1_variance_amplitude_premlp job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - E1_variance_amplitude_premlp job finished & stuff cleaned OK"
+echo "$(date) - G1_dd_LAP job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - G1_dd_LAP job finished & stuff cleaned OK"

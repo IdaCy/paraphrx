@@ -127,12 +127,13 @@ srun $PYBIN "$RUN_SCRIPT" \
   --base_model f_finetune/model \
   --ft_lora_adapter f_finetune/outputs_great_nolap/ft_spec6layer/final \
   --layer_index 6 \
-  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/G1_dd2 \
-  --max_prompts 200 \
+  --outdir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/G1_dd_gelu_2 \
+  --max_prompts 100 \
   --max_paraphrases 16 \
   --compute_jacobians 1 \
   --jacobian_mode pca \
-  --topk_pca 8
+  --topk_pca 8 \
+  --token_slices 9
 
 echo "$(date) - G1_dd job itself finished OK"
 
