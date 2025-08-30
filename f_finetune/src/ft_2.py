@@ -284,19 +284,26 @@ class ParaphrxTrainer(Trainer):
     # ORPO helpers
     def _nll_per_sample(self, logits, labels) -> torch.Tensor:
         """
-        Compute negative log-likelihood per sample, summing over non-ignored tokens.
+        Compute negative log-likelihood per sample, **averaged per token**
+        over non-ignored positions (labels == -100 are ignored).
+
         logits: (B, T, V); labels: (B, T) with -100 masked
-        returns: (B,) NLL
+        returns: (B,) NLL/token
         """
         logp = torch.nn.functional.log_softmax(logits, dim=-1)  # (B,T,V)
+
         # For gather, set all ignore positions to 0 index safely
         targ = labels.clone()
         targ[targ == -100] = 0
+
         token_ll = torch.gather(logp, dim=-1, index=targ.unsqueeze(-1)).squeeze(-1)  # (B,T)
-        mask = (labels != -100)
+        mask = (labels != -100).to(token_ll.dtype)
+
         token_ll = token_ll * mask  # zero out ignored
-        seq_ll = token_ll.sum(dim=1)  # (B,)
-        return -seq_ll  # NLL per sample
+        seq_ll = token_ll.sum(dim=1)                                # (B,)
+        denom = mask.sum(dim=1).clamp(min=1)                        # avoid div-by-zero
+        nll_per_token = seq_ll / denom
+        return -nll_per_token  # NLL per token
 
     def _orpo_loss(self, model, inputs):
         """
@@ -687,7 +694,7 @@ def make_arg_parser():
     p.add_argument("--lap_delta_lr", type=float, default=1e-2)
     p.add_argument("--lap_lambda_lr", type=float, default=1e-3)
 
-    # NEW: consistency & GroupDRO
+    # consistency & GroupDRO
     p.add_argument("--consistency_lambda", type=float, default=0.0,
                    help="Weight for paraphrase-invariance regularizer (0=off).")
     p.add_argument("--use_groupdro", action="store_true",
@@ -695,11 +702,11 @@ def make_arg_parser():
     p.add_argument("--groupdro_eta", type=float, default=0.05,
                    help="Learning rate for GroupDRO log-weights.")
 
-    # NEW: ORPO
+    # ORPO
     p.add_argument("--orpo_beta", type=float, default=0.1,
                    help="β temperature for ORPO margin.")
 
-    # NEW: style rebalance & hard mining
+    # style rebalance & hard mining
     p.add_argument("--rebalance_by_style", action="store_true",
                    help="Rebalance training set so each style contributes equally (with optional upweight).")
     p.add_argument("--hard_mine_json", default=None,
@@ -754,8 +761,11 @@ def summarise_training(trainer: Trainer, out_dir: Path):
         "total_params": trainer.model.num_parameters(),
     }
     if ev_loss:
-        summary["final_val_loss"] = float(ev_loss[-1])
-        summary["final_val_ppl"] = float(math.exp(ev_loss[-1]))
+        final_ev = float(ev_loss[-1])
+        summary["final_val_loss"] = final_ev
+        summary["final_val_ppl"] = (
+            float(math.exp(min(50.0, final_ev))) if math.isfinite(final_ev) else float("inf")
+        )
     with open(out_dir / "summary.txt", "w") as fh:
         for k, v in summary.items():
             fh.write(f"{k}: {v}\n")
@@ -1143,9 +1153,30 @@ def main(argv=None):
             test_ds = test_raw.map(batch_tokenise, batched=True, remove_columns=test_raw.column_names)
             logging.info("tokenised – train: %d | val: %d | test: %d", len(train_ds), len(val_ds), len(test_ds))
 
-            collator = DataCollatorForSeq2Seq(
+            # ---- SFT collator (replaces plain DataCollatorForSeq2Seq path) ----
+            base_collator = DataCollatorForSeq2Seq(
                 tokenizer, model=model, label_pad_token_id=-100, pad_to_multiple_of=8
             )
+
+            def sft_collator(features):
+                # Keep only model fields for padding
+                tensor_feats = [{k: f[k] for k in ("input_ids", "labels") if k in f} for f in features]
+
+                # Convert BatchEncoding -> dict so Accelerate won't call BatchEncoding.to(...)
+                batch = dict(base_collator(tensor_feats))
+
+                # Re-attach meta; keep them as CPU-side objects (list[str], tensor[long])
+                if "style" in features[0]:
+                    batch["style"] = [f["style"] for f in features]          # leave as list[str]
+                if "prompt_count" in features[0]:
+                    import torch
+                    batch["prompt_count"] = torch.tensor(
+                        [f["prompt_count"] for f in features], dtype=torch.long
+                    )
+                return batch
+
+            collator = sft_collator
+
 
         else:
             # ORPO stage: build pairs from prompts+answers (chosen = original answer, rejected = paraphrase answer)
@@ -1344,11 +1375,18 @@ def main(argv=None):
 
             # print validation loss whenever it appears
             if "eval_loss" in logs:
+                ev = logs["eval_loss"]
+                # Guard against NaN/Inf and overflow in exp
+                if ev is None or not math.isfinite(ev):
+                    ppl_str = "inf"
+                else:
+                    ppl_val = math.exp(min(50.0, ev))  # cap exponent
+                    ppl_str = f"{ppl_val:.2f}"
                 logging.info(
-                    "step %4d | eval_loss  %.4f | perplexity %.2f",
+                    "step %4d | eval_loss  %.4f | perplexity %s",
                     state.global_step,
-                    logs["eval_loss"],
-                    math.exp(logs["eval_loss"]),
+                    float(ev) if ev is not None else float("nan"),
+                    ppl_str,
                 )
 
     class ModelOnlyCheckpointCallback(TrainerCallback):
@@ -1388,7 +1426,10 @@ def main(argv=None):
 
     logging.info("Step-0 evaluation (pre-fine-tuning)")
     init_metrics = trainer.evaluate()
-    logging.info("step 0 | eval_loss %.4f | ppl %.2f", init_metrics["eval_loss"], math.exp(init_metrics["eval_loss"]))
+    ev0 = float(init_metrics["eval_loss"])
+    ppl0 = math.exp(min(50.0, ev0)) if math.isfinite(ev0) else float("inf")
+    logging.info("step 0 | eval_loss %.4f | ppl %s", ev0, f"{ppl0:.2f}" if math.isfinite(ppl0) else "inf")
+
     if wandb.run:
         wandb.log({"eval_loss/step0": init_metrics["eval_loss"]})
 
@@ -1466,7 +1507,9 @@ def main(argv=None):
     # optional: evaluate on held-out test set
     if 'test_ds' in locals() and test_ds is not None:
         test_metrics = trainer.evaluate(test_ds)
-        logging.info("TEST loss %.4f | ppl %.2f", test_metrics["eval_loss"], math.exp(test_metrics["eval_loss"]))
+        test_ev = float(test_metrics["eval_loss"])
+        test_ppl = math.exp(min(50.0, test_ev)) if math.isfinite(test_ev) else float("inf")
+        logging.info("TEST loss %.4f | ppl %s", test_ev, f"{test_ppl:.2f}" if math.isfinite(test_ppl) else "inf")
 
     if wandb.run is not None:
         wandb.finish()

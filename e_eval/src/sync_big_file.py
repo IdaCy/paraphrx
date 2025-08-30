@@ -92,6 +92,10 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
         e_eval/data/alpaca_gemma-2-2b-it.json \
         alpaca_500_327paraphrases
 
+    python3 e_eval/src/sync_big_file.py upload \
+        a_data/alpaca/paraphrases_500.json \
+        paraphrases_500
+
     python3 e_eval/src/sync_big_file.py upload_folder \
         f_finetune/outputs_clean/9xlay6_a1stop_ft/final \
         9xlay6_a1stop_ft
@@ -183,6 +187,10 @@ python3 e_eval/src/sync_big_file.py download_folder \
 python3 e_eval/src/sync_big_file.py download \
         alpaca_500_327paraphrases \
         e_eval/data/alpaca_gemma-2-2b-it.json
+
+python3 e_eval/src/sync_big_file.py download \
+        paraphrases_500 \
+        a_data/alpaca/paraphrases_500.json
 
 python3 e_eval/src/sync_big_file.py download_folder \
         9xlay6_a1stop_ft \

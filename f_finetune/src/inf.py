@@ -1,19 +1,9 @@
 
 #!/usr/bin/env python3
 """
-Unified held-out inference script.
-
-Defaults to EXACT behavior of Inference Script 1:
-- Reads raw JSON (--data_path)
-- Recomputes held-out split via three_way_split (must match training script 1)
-- Uses Script-1 prompt formatting and generation config
-- Supports LoRA/merge, quantization, resume, W&B logging
-
-Extras integrated from Inference Script 2 (opt-in):
-- --use_pretokenized + --tokenized_data_path to identify held-out IDs from a
-  preprocessed HF dataset saved via `datasets.load_from_disk` (e.g., when training used pre-tokenized data).
+held-out inference script
 """
-
+from __future__ import annotations
 import argparse
 import gc
 import json
@@ -38,9 +28,7 @@ except Exception:
     load_from_disk = None  # type: ignore
 
 
-# -----------------------------
-# Script-1-compatible utilities
-# -----------------------------
+# utilities
 
 def build_chat_prompt(tokenizer, instruction: str, inp: str = "") -> str:
     user_msg = instruction if not inp else f"{instruction}\\n\\nInput:\\n{inp}"
@@ -69,9 +57,7 @@ def three_way_split(ds: Dataset, *, val_pct: float, test_pct: float, seed: int):
     return train_ids, val_ids, test_ids
 
 
-# -----------------------------
 # Data loading
-# -----------------------------
 
 def load_examples_rawsplit(
     data_path: str,
@@ -85,9 +71,9 @@ def load_examples_rawsplit(
     upto_prompt_id: int,
 ) -> Tuple[List[Tuple[int, str, str, str]], Dict[int, Dict]]:
     """
-    Script-1 behavior: compute split from raw JSON and return a flat queue:
+    compute split from raw JSON and return a flat queue:
       list of (prompt_count, key_name, prompt_text, raw_input),
-    and a results_map keyed by prompt_count with minimal fields prefilled.
+    and a results_map keyed by prompt_count with minimal fields prefilled
     """
     with open(data_path, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
@@ -156,7 +142,7 @@ def load_examples_from_tokenized(
     upto_prompt_id: int,
 ) -> Tuple[List[Tuple[int, str, str, str]], Dict[int, Dict]]:
     """
-    Script-2 ability: use the *pre-tokenized* dataset's 'test' split to define held-out IDs.
+    use the pre-tokenized dataset's 'test' split to define held-out IDs
     """
     if load_from_disk is None:
         logging.error("datasets.load_from_disk is unavailable but --use_pretokenized was set.")
@@ -229,15 +215,13 @@ def load_examples_from_tokenized(
     return flat_queue, results_map
 
 
-# -----------------------------
-# Model loading (Script-1 style)
-# -----------------------------
+# Model loading
 
 def load_model_and_tokenizer(args):
     import importlib
     model_kwargs = {}
 
-    # Quantization (none/4bit/8bit), matching Script 1 behavior
+    # Quantisation (none/4bit/8bit)
     try:
         _BNB_OK = importlib.util.find_spec("bitsandbytes") is not None
     except Exception:
@@ -259,7 +243,12 @@ def load_model_and_tokenizer(args):
         )
 
     logging.info("Loading base model from %s", args.base_model_path)
-    base_model = AutoModelForCausalLM.from_pretrained(args.base_model_path, **model_kwargs)
+    # allow HF repos that provide custom model code (Phi-3, Qwen, InternLM, Yi, etc.)
+    base_model = AutoModelForCausalLM.from_pretrained(
+        args.base_model_path,
+        trust_remote_code=True,
+        **model_kwargs
+    )
 
     # LoRA
     try:
@@ -282,25 +271,35 @@ def load_model_and_tokenizer(args):
         model = base_model
 
     model.eval()
-    try:
-        model = torch.compile(model)  # torch 2.x
-    except Exception:
-        pass
+    # Skip compile for models known to have issues with remote code + quant
+    if ("falcon" not in args.base_model_path.lower()) and ("internlm" not in args.base_model_path.lower()):
+        try:
+            model = torch.compile(model)  # torch 2.x
+        except Exception:
+            pass
 
     tok_path = (
         args.lora_path
         if args.lora_path and (Path(args.lora_path) / "tokenizer_config.json").exists()
         else args.base_model_path
     )
-    tokenizer = AutoTokenizer.from_pretrained(tok_path, model_max_length=4096)
+    tokenizer = AutoTokenizer.from_pretrained(
+        tok_path,
+        model_max_length=4096,
+        trust_remote_code=True,  # allow custom tokenizers / chat templates from HF repos
+    )
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
+    # Falcon-only: left padding to avoid right-padding issues on decoder-only
+    if "falcon" in args.base_model_path.lower():
+        tokenizer.padding_side = "left"
     return model, tokenizer
 
+    # InternLM-only: left padding for decoder-only batching correctness
+    if "internlm" in args.base_model_path.lower():
+        tokenizer.padding_side = "left"
 
-# -----------------------------
 # CLI
-# -----------------------------
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Held-out inference for paraphrx fine-tuning (with resume)")
@@ -338,9 +337,7 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
-# -----------------------------
 # Main
-# -----------------------------
 
 def main():
     args = parse_args()
@@ -368,7 +365,7 @@ def main():
         except Exception as e:
             logging.warning("W&B init failed (%s) - continuing without W&B", e)
 
-    # Data loading (default = Script-1 split path)
+    # Data loading
     if args.use_pretokenized:
         if not args.tokenized_data_path:
             logging.error("--use_pretokenized requires --tokenized_data_path")
@@ -474,10 +471,18 @@ def main():
             gen_cfg["temperature"] = args.temperature
             gen_cfg["top_p"] = 0.6
 
+        # InternLM-only: use StaticCache (remote code expects get_max_cache_shape)
+        if "internlm" in args.base_model_path.lower():
+            gen_cfg["cache_implementation"] = "static"
+
+        # Falcon-only: disable KV cache to avoid past_key_values crash
+        if "falcon" in args.base_model_path.lower():
+            gen_cfg["use_cache"] = False
+
         with _INFER_CTX():
             outputs = model.generate(**tokenised, **gen_cfg)
 
-        # Post-process, mirroring Script-1 cleanup
+        # Post-process
         for i in range(len(batch)):
             answer_ids = outputs[i, input_lens[i]:]
             text = tokenizer.decode(answer_ids, skip_special_tokens=True).strip()
