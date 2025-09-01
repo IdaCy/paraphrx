@@ -1,6 +1,21 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+"""
+python3 "f_finetune/src/analyses_2_preneurips/G_run_mlp_diff_of_diffs.py" \
+  --selection_jsonl f_finetune/data/first_dataset_sampler/jacobian_prompts.jsonl \
+  --base_model f_finetune/model \
+  --ft_lora_adapter f_finetune/outputs_alternat/alta4/checkpointcp8400 \
+  --layer_index 12 \
+  --outdir f_finetune/outputs_alternat/alta4/analyses2/G1_2 \
+  --max_prompts 100 \
+  --max_paraphrases 16 \
+  --compute_jacobians 1 \
+  --jacobian_mode pca \
+  --topk_pca 8 \
+  --token_slices 9
+"""
+
 import argparse
 import csv
 import json
@@ -42,7 +57,7 @@ def ensure_dir(path: str | Path) -> Path:
 def format_eta(done: int, total: int, start_time: float) -> str:
     if done == 0: return "ETA --:--"
     elapsed = time.time() - start_time
-    rate = done / max(elapsed, 1e-6)
+    rate = done / max(elapsed, 1e-12)
     remain = (total - done) / max(rate, 1e-6)
     return f"ETA {int(remain//60):02d}:{int(remain%60):02d} (elapsed {int(elapsed//60):02d}:{int(elapsed%60):02d})"
 
