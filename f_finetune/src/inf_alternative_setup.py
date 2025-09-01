@@ -2,6 +2,59 @@
 """
 held-out inference script — CALIPER-aware (FIRST + SECOND), style-whitelist capable,
 and generation settings aligned with training
+
+Changes (targeted):
+- Load to GPU explicitly via device_map="auto" when CUDA is available; CPU otherwise.
+- Use bf16 on GPU and fp32 on CPU when quantization==none.
+- Add --compile flag to opt-in to torch.compile (instead of always compiling).
+- Log model dtype/device and hf_device_map after load.
+- Route tokenized inputs to the proper device (first layer / hf_device_map) instead of model.device.
+- Log just before and after the very first generate() call to make progress visible.
+
+python3 f_finetune/src/inf_alternative_setup.py \
+  --data_path e_eval/data/alpaca_gemma-2-2b-it.json \
+  --first_min_style_count 1 \
+  --require_content_score 5 \
+  --base_model_path "f_finetune/model" \
+  --output_json "f_finetune/model/bases_hinf_alta4_alpaca_inferences.json" \
+  --max_samples 100 \
+  --batch 265
+
+python3 f_finetune/src/inf_alternative_setup.py \
+  --data_path e_eval/data/alpaca_gemma-2-2b-it.json \
+  --first_min_style_count 1 \
+  --require_content_score 4 \
+  --base_model_path "f_finetune/model" \
+  --output_json "f_finetune/model/bases_hinf_alta4_alpaca_inferences.json" \
+  --max_samples 100 \
+  --batch 265 \
+  --precise-content-score 4 \
+  --val_pct 1.0 --test_pct 0.0 --split val
+
+
+srun "$PYBIN" "$RUN_SCRIPT" \
+  --data_path e_eval/data/alpaca_gemma-2-2b-it.json \
+  --first_min_style_count 1 \
+  --require_content_score 4 \
+  --base_model_path "f_finetune/model" \
+  --lora_path "f_finetune/outputs_alternat/alta4/checkpointcp8400" \
+  --merge_lora \
+  --output_json "f_finetune/outputs_alternat/alta4/hinf_alta4_alpaca_inferences.json" \
+  --max_samples 100 \
+  --batch 265 \
+  --precise-content-score 4 \
+  --val_pct 1.0 --test_pct 0.0 --split val
+
+
+python3 f_finetune/src/inf_alternative_setup.py \
+  --data_path e_eval/data/alpaca_gemma-2-2b-it.json \
+  --first_min_style_count 1 \
+  --require_content_score 4 \
+  --base_model_path "f_finetune/model" \
+  --output_json "f_finetune/model/bases_hinf_alta42_alpaca_inferences.json" \
+  --max_samples 100 \
+  --batch 265
+
 """
 from __future__ import annotations
 import argparse
@@ -475,12 +528,20 @@ def load_model_and_tokenizer(args):
     except Exception:
         _BNB_OK = False
     if args.quant != "none" and not _BNB_OK:
-        logging.warning("bitsandbytes not available - falling back to bf16")
+        logging.warning("bitsandbytes not available - falling back to bf16/fp32 (quant=none)")
         args.quant = "none"
 
-    if args.quant == "none":
-        model_kwargs["torch_dtype"] = torch.bfloat16
+    # Decide device map & dtype based on availability
+    if torch.cuda.is_available():
+        device_map = "auto"  # shard across available GPUs if needed
+        if args.quant == "none":
+            model_kwargs["torch_dtype"] = torch.bfloat16
     else:
+        device_map = "cpu"
+        if args.quant == "none":
+            model_kwargs["torch_dtype"] = torch.float32  # bf16 on CPU is slow
+
+    if args.quant != "none":
         from transformers import BitsAndBytesConfig
         model_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_8bit=args.quant == "8bit",
@@ -490,10 +551,11 @@ def load_model_and_tokenizer(args):
             bnb_4bit_quant_type="nf4",
         )
 
-    logging.info("Loading base model from %s", args.base_model_path)
+    logging.info("Loading base model from %s (device_map=%s)", args.base_model_path, device_map)
     base_model = AutoModelForCausalLM.from_pretrained(
         args.base_model_path,
         trust_remote_code=True,
+        device_map=device_map,
         **model_kwargs
     )
 
@@ -518,12 +580,15 @@ def load_model_and_tokenizer(args):
         model = base_model
 
     model.eval()
-    # Try compile (avoid some known remote-code/quant combos)
-    if ("falcon" not in args.base_model_path.lower()) and ("internlm" not in args.base_model_path.lower()):
+
+    # Optional compile (off by default, can be slow on first batch)
+    low = args.base_model_path.lower()
+    if args.compile and ("falcon" not in low) and ("internlm" not in low):
         try:
             model = torch.compile(model)  # torch 2.x
-        except Exception:
-            pass
+            logging.info("torch.compile enabled.")
+        except Exception as e:
+            logging.warning("torch.compile failed: %s", e)
 
     tok_path = (
         args.lora_path
@@ -541,6 +606,17 @@ def load_model_and_tokenizer(args):
     low = args.base_model_path.lower()
     if "falcon" in low or "internlm" in low:
         tokenizer.padding_side = "left"
+
+    # Log where the model actually lives
+    try:
+        first_param = next(p for p in model.parameters() if getattr(p, "device", None) and p.device.type != "meta")
+        logging.info("Model dtype=%s on device=%s", first_param.dtype, first_param.device)
+    except StopIteration:
+        logging.info("Model parameters not materialized (meta tensors).")
+
+    if hasattr(model, "hf_device_map"):
+        logging.info("hf_device_map: %s", getattr(model, "hf_device_map"))
+
     return model, tokenizer
 
 
@@ -580,6 +656,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--max_tokens", type=int, default=128)
     p.add_argument("--temperature", type=float, default=0.0)
     p.add_argument("--quant", choices=["none", "4bit", "8bit"], default="none")
+    p.add_argument("--compile", action="store_true", help="Use torch.compile (off by default; first run can be slow)")
 
     # Logging / output
     p.add_argument("--log_name", default=None, help="Optional friendly name for logging/W&B")
@@ -689,6 +766,23 @@ def main():
     model, tokenizer = load_model_and_tokenizer(args)
     eot_id = get_eot_id(tokenizer)
 
+    # Determine correct input device
+    def _infer_input_device(m):
+        # Prefer hf_device_map if present (device of the first module entry)
+        if hasattr(m, "hf_device_map") and isinstance(m.hf_device_map, dict) and m.hf_device_map:
+            first_dev = next(iter(m.hf_device_map.values()))
+            if isinstance(first_dev, int):
+                return torch.device(f"cuda:{first_dev}") if torch.cuda.is_available() else torch.device("cpu")
+            return torch.device(first_dev)
+        # Fallback: device of first real parameter
+        try:
+            return next(p for p in m.parameters() if p.device.type != "meta").device
+        except StopIteration:
+            return torch.device("cpu")
+
+    input_device = _infer_input_device(model)
+    logging.info("Inputs will be placed on %s", input_device)
+
     # Safety: catch SIGINT/SIGTERM to save partial results
     def _handler(signum, frame):
         logging.warning("Signal %s received — saving partial results to %s", signum, output_path)
@@ -719,7 +813,7 @@ def main():
             padding=True,
             truncation=True,
             max_length=tokenizer.model_max_length,
-        ).to(model.device)
+        ).to(input_device)
 
         input_lens = tokenised["attention_mask"].sum(dim=1)
 
@@ -741,8 +835,12 @@ def main():
         if "falcon" in low:
             gen_cfg["use_cache"] = False  # avoid past_key_values crash
 
+        if start == 0:
+            logging.info("Entering first generate()…")
         with _INFER_CTX():
             outputs = model.generate(**tokenised, **gen_cfg)
+        if start == 0:
+            logging.info("First generate() finished.")
 
         # Post-process
         for i in range(len(batch)):
