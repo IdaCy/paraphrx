@@ -1,0 +1,93 @@
+[
+  {
+    "prompt_count": 1,
+    "instruction_original": "**Mon:** 30 min cardio, 20 min strength (upper body).\n**Tue:** 30 min cardio, 20 min strength (lower body).\n**Wed:** REST\n**Thu:** 30 min cardio, core workout (30 mins).\n**Fri:** HIIT (20 mins), flexibility (15 mins).\n**Sat:**  Long walk/hike (60 mins).\n**Sun:** Yoga or Pilates (45 mins).",
+    "instruct_1": "**Monday:** 30 min brisk walk/jog\n**Tuesday:** Strength training (full body)\n**Wednesday:** Yoga or Pilates\n**Thursday:** Swimming or cycling (30 min)\n**Friday:** HIIT workout (20 min)\n**Saturday:**  Rest\n**Sunday:**  Long walk/hike (60 min)",
+    "instruct_2": "**Day 1:** Legs (Squats, lunges, calf raises)\n**Day 2:** Chest (Bench press, push-ups, flyes)\n**Day 3:** Rest\n**Day 4:** Back (Pull-ups, rows, deadlifts)\n**Day 5:** Shoulders (Overhead press, lateral raises)\n**Day 6:** Arms (Bicep curls, tricep extensions)\n**Day 7:** Rest/Active recovery (light cardio)",
+    "instruct_3": "**Monday:** Upper Body Strength\n\n**Tuesday:** Cardio (30 min)\n\n**Wednesday:** Rest\n\n**Thursday:** Lower Body Strength\n\n**Friday:** Core & Flexibility\n\n**Saturday:** Active Recovery (walk/light hike)\n\n**Sunday:** Rest",
+    "instruct_4": "**Monday:** Strength Training (Upper Body)\n**Tuesday:** Cardio (30 mins)\n**Wednesday:** Rest\n**Thursday:** Strength Training (Lower Body)\n**Friday:** Cardio (30 mins) + Core\n**Saturday:** Active Rest (Yoga/Walk)\n**Sunday:** Rest",
+    "instruct_5": "**Monday:** Upper body strength (push-ups, rows, bicep curls).\n**Tuesday:** Lower body strength (squats, lunges, calf raises).\n**Wednesday:** Cardio (30 min running/cycling).\n**Thursday:** Rest.\n**Friday:** Full body circuit (burpees, mountain climbers, planks).\n**Saturday:** Yoga or Pilates.\n**Sunday:** Active recovery (walk, light stretching).",
+    "instruct_6": "**Monday:** 30 min brisk walk, focusing on posture.\n**Tuesday:** 45 min strength training (full body).\n**Wednesday:** Rest.\n**Thursday:** 30 min swimming, varied strokes.\n**Friday:** Yoga & stretching (60 min).\n**Saturday:** Hiking (1-2 hours, moderate pace).\n**Sunday:** Cycling (45 min, moderate intensity).",
+    "instruct_7": "**Monday:** 30 min cardio, 20 min strength (upper body)\n**Tuesday:**  30 min HIIT, core workout (15 min)\n**Wednesday:** REST\n**Thursday:** 30 min cardio, 20 min strength (lower body)\n**Friday:** Yoga or Pilates (45 min)\n**Saturday:**  Long walk/hike (60 min)\n**Sunday:** Active recovery (light stretching, swimming)",
+    "instruct_8": "**Monday:** Upper body strength training (30 min)\n**Tuesday:** Cardio (30 min, e.g., running, cycling)\n**Wednesday:** Lower body strength training (30 min)\n**Thursday:** REST\n**Friday:** Core & flexibility (30 min)\n**Saturday:**  HIIT workout (20 min)\n**Sunday:** Active recovery (30 min walk/yoga)",
+    "instruct_9": "Mon: Legs\nTue: Upper Body\nWed: Core & Cardio\nThu: Rest\nFri: Legs\nSat: Upper Body\nSun: Active Rest (walk/yoga)",
+    "instruct_10": "**Mon:** 30 min cardio, 20 min strength.\n**Tue:** Yoga flow, 30 min walk.\n**Wed:**  Rest & recovery.\n**Thu:**  HIIT workout, core exercises.\n**Fri:**  Swimming or cycling.\n**Sat:**  Hiking or team sport.\n**Sun:**  Stretching, light walk."
+  },
+  {
+    "prompt_count": 2,
+    "instruction_original": "D. Prescreening",
+    "instruct_1": "D. Prescreening",
+    "instruct_2": "D. Prescreening",
+    "instruct_3": "D. Prescreening",
+    "instruct_4": "D. Prescreening",
+    "instruct_5": "D. Prescreening",
+    "instruct_6": "D. Prescreening",
+    "instruct_7": "D. Prescreening",
+    "instruct_8": "D. Prescreening",
+    "instruct_9": "D. Prescreening",
+    "instruct_10": "D. Prescreening"
+  },
+  {
+    "prompt_count": 3,
+    "instruction_original": "construct, disrupt, instruct",
+    "instruct_1": "construct, instruct, disrupt, reconstruct",
+    "instruct_2": "construct, disrupt, instruct, reconstruct",
+    "instruct_3": "construct, disrupt, instruct,  restruct,  destruct",
+    "instruct_4": "construct, disrupt, instruct, obstruct, reconstruct",
+    "instruct_5": "construct, disrupt, instruct,  deconstruct, reconstruct",
+    "instruct_6": "construct, disrupt, instruct,  deconstruct",
+    "instruct_7": "construct, disrupt, instruct,  restruct,  trust",
+    "instruct_8": "construct, instruct, disrupt, deduct, conduct, corrupt,  deduct,  destruct",
+    "instruct_9": "construct, disrupt, instruct",
+    "instruct_10": "Construct, disrupt, instruct, obstruct,  restruct."
+  },
+  {
+    "prompt_count": 4,
+    "instruction_original": "Subject: Introducing [Software Name] – Revolutionizing [Industry/Problem Solved]\n\nHi [Customer Name],\n\nWe're thrilled to announce the launch of [Software Name], our groundbreaking new software solution designed to [key benefit 1] and [key benefit 2].  [Software Name] addresses the challenges of [problem] by [solution/feature].\n\nLearn more and request a demo: [Link to website]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_1": "Subject: Introducing [Software Name]!  Revolutionizing [Industry/Task]!\n\nHi [Customer Name],\n\nGet ready to experience a game-changer! We're thrilled to announce the launch of [Software Name], our latest software designed to [briefly explain key benefit, e.g., streamline your workflow, boost productivity, simplify complex tasks].\n\n[Optional: Briefly mention 1-2 key features/benefits.]\n\nLearn more and get started today: [Link to software]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_2": "Subject: Introducing [Software Tool Name]: Revolutionizing [Industry/Task]!\n\nHi [Customer Name],\n\nWe're thrilled to announce the launch of [Software Tool Name], a powerful new tool designed to [briefly explain key benefit, e.g., streamline your workflow, boost productivity, simplify data analysis].\n\n[Software Tool Name] offers [mention 2-3 key features/benefits].  Learn more and get started today: [Link to website/landing page]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_3": "Subject: Introducing [Software Name]: Revolutionizing [Industry/Problem Solved]\n\nDear [Customer Name],\n\nWe're thrilled to announce the launch of [Software Name], our groundbreaking new software solution designed to [key benefit 1] and [key benefit 2].  [Software Name] addresses [customer pain point] by [how it solves the problem].\n\nLearn more and request a demo: [Link to website/demo]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_4": "Subject: Introducing [Software Name] - Revolutionizing [Industry/Area]!\n\nHi [Customer Name],\n\nWe're thrilled to announce the release of [Software Name], our groundbreaking new solution designed to [briefly describe key benefit].  [Software Name] offers [list 2-3 key features/benefits].\n\nLearn more and download a free trial here: [link to software]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_5": "Subject: Introducing [Software Name]: Revolutionizing [Industry/Problem Solved]\n\nHi [Customer Name],\n\nGet ready to experience a breakthrough in [Industry/Problem Solved]! We're thrilled to announce the launch of [Software Name], our innovative software solution designed to [Key benefit 1] and [Key benefit 2].\n\nLearn more and request a demo: [Link to website/demo]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_6": "Subject: Introducing [Software Name] - Revolutionizing [Industry/Problem Solved]\n\nHi [Customer Name],\n\nWe're thrilled to announce the launch of [Software Name], our latest software solution designed to [key benefit 1] and [key benefit 2].  [Software Name] will help you [solve a key problem] by [doing something specific].\n\nLearn more and request a demo: [Link to website/demo]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_7": "Announcing the Launch of [Software Name]: Revolutionizing [Industry/Area] with Cutting-Edge Technology!",
+    "instruct_8": "Subject: Introducing [Software Name]: Revolutionizing [Industry/Problem Solved]\n\nDear [Customer Name],\n\nWe're thrilled to announce the launch of [Software Name], a groundbreaking software solution designed to [key benefit 1] and [key benefit 2].  [Software Name] will help you [solve a key problem] and achieve [desired outcome].\n\nLearn more and request a demo: [Link to website/demo]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_9": "Subject: 🎉 Introducing [Software Name]! Your Business Just Got a Whole Lot Easier.\n\nHi [Customer Name],\n\nGet ready to revolutionize your workflow! We're thrilled to announce the launch of [Software Name], our brand-new software solution designed to [briefly describe key benefit 1] and [briefly describe key benefit 2].\n\n[Software Name] offers:\n\n* [Key Feature 1]\n* [Key Feature 2]\n* [Key Feature 3]\n\nReady to experience the difference?  Learn more and get started here: [Link to Software]\n\nSincerely,\n\nThe [Your Company Name] Team",
+    "instruct_10": "Subject: Introducing [Product Name]: Revolutionizing [Industry/Problem Solved]\n\nHi [Customer Name],\n\nWe're thrilled to announce the launch of [Product Name], our advanced software solution designed to [key benefit 1] and [key benefit 2].  [Product Name] offers [unique selling proposition].\n\nLearn more and request a demo: [link to product page]\n\nSincerely,\n\nThe [Your Company Name] Team"
+  },
+  {
+    "prompt_count": 5,
+    "instruction_original": "",
+    "_failures": {
+      "instruction_original": "input tokens 123 > cap 120",
+      "instruct_1": "input tokens 131 > cap 120",
+      "instruct_2": "input tokens 129 > cap 120",
+      "instruct_3": "input tokens 127 > cap 120",
+      "instruct_4": "input tokens 141 > cap 120",
+      "instruct_5": "input tokens 147 > cap 120",
+      "instruct_6": "input tokens 149 > cap 120",
+      "instruct_7": "input tokens 151 > cap 120",
+      "instruct_9": "input tokens 134 > cap 120",
+      "instruct_10": "input tokens 126 > cap 120"
+    },
+    "instruct_1": "",
+    "instruct_2": "",
+    "instruct_3": "",
+    "instruct_4": "",
+    "instruct_5": "",
+    "instruct_6": "",
+    "instruct_7": "",
+    "instruct_8": "English constituency parsing involves analyzing a sentence's grammatical structure by identifying its constituent phrases (e.g., noun phrases, verb phrases) and their hierarchical relationships.  The task is challenging due to structural constraints and the often significantly longer output compared to the input sentence.  RNN-based sequence-to-sequence models have struggled to achieve top performance, especially with limited training data.",
+    "instruct_9": "",
+    "instruct_10": ""
+  },
+  {
+    "prompt_count": 6,
+    "instruction_original": "What is the movie tagline for Joker (2019)?",
+    "instruct_1": "From fractured mind to fractured city.",
+    "instruct_2": "\"Is it madness? Or is it justice?\"",
+    "instruct_3": "From hero to icon.",
+    "instruct_4": "Original Tagline: Put on a happy face.\n\nVariant Tagline:  Madness. Is. Coming.",
+    "instruct_5": "Please provide the original tagline for Joker (2019) so I can create an alternative."
+  }
+]
