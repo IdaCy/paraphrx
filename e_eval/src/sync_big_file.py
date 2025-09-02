@@ -104,6 +104,14 @@ export WANDB_ARTIFACT_DIR=/scratch_dgxl/ifc24/proj/paraphrx/wandb_tmp
         f_finetune/outputs_great_nolap/cp_ft_spec6layer \
         cp_ft_spec6layer
 
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_alternat/alta4/checkpointcp8400 \
+        alta4_checkpointcp8400
+
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        x_cot_h_m \
+        x_cot_h_m
+
 # UPLOADED AND NOT DOWNLOADED YET
     python3 e_eval/src/sync_big_file.py upload_folder \
         f_finetune/outputs_lap_pr/opt_all_topa \
@@ -200,7 +208,16 @@ python3 e_eval/src/sync_big_file.py download_folder \
         cp_ft_spec6layer \
         f_finetune/outputs_great_nolap/cp_ft_spec6layer
 
-        
+python3 e_eval/src/sync_big_file.py download_folder \
+        alta4_checkpointcp8400 \
+        f_finetune/outputs_alternat/alta4/checkpointcp8400
+
+
+python3 e_eval/src/sync_big_file.py download_folder \
+                x_cot_h_m \
+                x_cot_h_m
+
+
   Upload file:        python sync_big_file.py upload <file_path> <artifact_name>
   Download file:      python sync_big_file.py download <artifact_name> <output_dir>
   Upload folder:      python sync_big_file.py upload_folder <folder_path> <artifact_name>
