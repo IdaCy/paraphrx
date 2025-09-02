@@ -54,8 +54,9 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: wandb --no-cache-dir -
 
 echo "$(date) - tokenized_data_9x_wstyle_upload initial setup OK"
 
-python3 e_eval/src/sync_big_file.py upload_folder \
-    f_finetune/outputs_clean/9xlay6_a1stop_ft/final \
-    9xlay6_a1stop_ft
+    python3 e_eval/src/sync_big_file.py upload_folder \
+        f_finetune/outputs_alternat/alta4/checkpointcp8400 \
+        alta4_checkpointcp8400
+
 
 echo "$(date) - tokenized_data_9x_wstyle_upload job finished OK"
