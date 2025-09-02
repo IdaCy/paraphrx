@@ -1,0 +1,6 @@
+2025-09-01 21:31:25,818 | INFO     | Loading tokenizer: Qwen/Qwen3-0.6B
+2025-09-01 21:31:26,244 | INFO     | Loading base model: Qwen/Qwen3-0.6B
+2025-09-01 21:31:26,533 | INFO     | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-01 21:31:26,959 | INFO     | Loading LoRA adapters from: x_cot_h_m/models/stego_lora_qwen06b_50k
+2025-09-01 21:31:35,878 | INFO     | ID=q-0 | 8.43s | leaks=- | answer=9
+2025-09-01 21:31:35,878 | INFO     | Wrote predictions to x_cot_h_m/output/stego_lora_qwen06b_50k_3/preds.jsonl (total=1)
