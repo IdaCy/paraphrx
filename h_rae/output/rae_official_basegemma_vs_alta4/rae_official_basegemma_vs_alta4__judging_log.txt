@@ -1,0 +1,8 @@
+[2025-09-02T22:13:51.468730+00:00] Start judging (fresh): 1100 remaining (had 0 done)
+[2025-09-02T22:14:27.729747+00:00] ERROR case 5::instruct_2 status=429
+[2025-09-02T22:16:39.278830+00:00] ERROR case 30::instruct_5 status=429
+[2025-09-02T22:17:15.284209+00:00] ERROR case 53::instruct_7 status=429
+[2025-09-02T22:17:51.257507+00:00] ERROR case 88::instruct_9 status=429
+[2025-09-02T22:19:15.790604+00:00] ERROR case 3::instruct_5 status=429
+[2025-09-02T22:19:51.646550+00:00] ERROR case 67::instruct_1 status=429
+[2025-09-02T22:20:21.422566+00:00] Done judging. Successes(+17) total=17, Failures(+6) total=6

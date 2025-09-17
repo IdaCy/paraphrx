@@ -1,0 +1,31 @@
+--- Overall Results ---
+Total Comparisons: 204
+Win Rate (target vs reference): 16.18%
+  - Wins: 31 (15.20%)
+  - Ties: 4 (1.96%)
+  - Losses: 169 (82.84%)
+
+--- Win Rate by Paraphrase Type ---
+- instruct_1                  : 10.00% (n=20)
+- instruct_10                 : 22.73% (n=22)
+- instruct_2                  : 10.00% (n=15)
+- instruct_3                  : 11.11% (n=18)
+- instruct_4                  : 14.29% (n=21)
+- instruct_5                  : 18.75% (n=16)
+- instruct_6                  : 9.52% (n=21)
+- instruct_7                  : 11.11% (n=18)
+- instruct_8                  : 5.88% (n=17)
+- instruct_9                  : 33.33% (n=12)
+- instruction_original        : 31.25% (n=24)
+Weighted Win Rate (confidence-weighted): 15.75%
+
+--- RobustAlpacaEval Summary (per-task worst/best/avg/stdev; then macro-avg) ---
+Macro-Average across tasks (vs reference):
+  worst: 9.41%   best: 31.18%   avg: 17.62%   stdev: 10.15%
+
+--- Length-Controlled (OLS) Win Rate (y ~ α + β·Δlen) ---
+OLS α (pred. p@Δlen=0): 14.71%   β (len effect): -0.000027
+OLS Length-Controlled Win Rate: 14.71%
+
+--- Length-Controlled (GLM-Logit) Win Rate (logit(p)=α+β·Δlen) ---
+Logit α (p@Δlen=0): 13.86%   β (len effect): -0.000241
