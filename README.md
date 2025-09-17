@@ -2,6 +2,22 @@
 
 The Limit of LLMs with paraphrased style difference
 
+setup:
+
+cd /scratch_root/ifc24
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh -b -p /scratch_root/ifc24/conda
+source /scratch_root/ifc24/conda/etc/profile.d/conda.sh
+unset PYTHONPATH
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+conda create -y -p /scratch_root/ifc24/envs/paraphrx python=3.12 httpx tqdm
+conda activate /scratch_root/ifc24/envs/paraphrx
+
+reuse it now:
+source /scratch_root/ifc24/conda/etc/profile.d/conda.sh
+conda activate /scratch_root/ifc24/envs/paraphrx
+
 ## Sub Project 1: How do you want to talk to an LLM to have the best outcome
 
 - Development big comparison dashboard
