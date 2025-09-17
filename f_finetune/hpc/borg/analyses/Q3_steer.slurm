@@ -1,16 +1,17 @@
 #!/bin/bash -l
-#SBATCH --job-name=O3_ex
+#SBATCH --job-name=Q3_steer
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=40G
+#SBATCH --gres=gpu:1
+#SBATCH --mem=80G
 #SBATCH --time=10:00:00
 #SBATCH --output=/scratch_root/ifc24/paraphrx/logs/%j_%x.out
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - O3_ex job started on $(hostname)"
-echo "$(date) - O3_ex job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - Q3_steer job started on $(hostname)"
+echo "$(date) - Q3_steer job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
@@ -34,6 +35,8 @@ mkdir -p "$TRITON_CACHE_DIR"
 
 export PIP_CACHE_DIR="$TMPDIR/pip_cache_${SLURM_JOB_ID}"
 export XDG_CACHE_HOME="$TMPDIR/xdg_cache_${SLURM_JOB_ID}"
+export WANDB_DIR="$TMPDIR/wandb_cache_${SLURM_JOB_ID}"
+export WANDB_DATA_DIR="$TMPDIR/wandb_data_${SLURM_JOB_ID}"
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=
 export PATH=$HOME/.local/bin:$PATH
@@ -43,11 +46,12 @@ cleanup () {
   rm -rf \
     "$PIP_CACHE_DIR" \
     "$XDG_CACHE_HOME" \
+    "$WANDB_DIR" \
     "$TRITON_CACHE_DIR"
 }
 trap cleanup EXIT ERR INT TERM
 
-mkdir -p "$TMPDIR" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME"
+mkdir -p "$TMPDIR" "$PIP_CACHE_DIR" "$XDG_CACHE_HOME" "$WANDB_DIR"
 
 # Pick an available Python-3 binary (prefers 3.11 → 3.8)
 for P in python3.11 python3.10 python3.9 python3; do
@@ -74,16 +78,36 @@ $PYBIN -m pip install --upgrade setuptools \
 
 # install everything from wheels only (no source builds)
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
+  torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
+  transformers==4.45.0 \
+  peft==0.11.1 \
+  bitsandbytes==0.43.2 \
+  datasets==2.19.0 \
   numpy==1.26.4 \
   pandas \
+  scipy \
   seaborn \
   tqdm \
+  wandb \
   matplotlib \
   jsonlines \
+  scikit-learn \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 
+$PYBIN - <<'PY'
+import torch, transformers, pathlib, importlib.util, numpy as np
+print("Torch       :", torch.__version__)
+print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
+print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
+print("Transformers:", transformers.__version__)
+print("NumPy       :", np.__version__)
+print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
+PY
+
 source /scratch_root/ifc24/.hf_token || true
+[ -f /scratch_root/ifc24/.wandb_idacasp_key ] && source /scratch_root/ifc24/.wandb_idacasp_key
+WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrx_lora}
 
 export TOKENIZERS_PARALLELISM=false
 
@@ -94,27 +118,33 @@ OUTPUT_JSON="$FT_PATH/inf_results.json"
 LORA_PATH="$FT_PATH/final"
 mkdir -p "$(dirname "$OUTPUT_JSON")"
 
+# sbatch --dependency=afternotok:1143 c_assess_inf/hpc/borg_inf_acts.slurm
+
 # Run
-echo "$(date) - O3_ex initial setup OK"
-#RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/O_vis.py"
-#srun $PYBIN "$RUN_SCRIPT" \
-#  --csv_dir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2_preneurips/O2_ex8_2/DAMPENING/ \
-#  --alpha_site layer_input \
-#  --alpha_layers 6,25
+echo "$(date) - Q3_steer initial setup OK"
 
-srun $PYBIN f_finetune/src/analyses_2_preneurips/O_vis.py \
-  --in_dir f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2/O2_ex8_2/DAMPENING \
-  --out f_finetune/outputs_great_nolap/ft_spec6layer/analyses_2/O2_ex8_2/DAMPENING/DAMPENING_FIG_D1_redraw_6.png
+RUN_SCRIPT="f_finetune/src/analyses_2_preneurips/Q3_steer.py" 
 
-#   --primary "#2E8B57"  # sea-green
-#   --figwidth 22 --figheight 7.5 \
-#  --alpha_layers 6,25
-echo "$(date) - O3_ex job itself finished OK"
+srun $PYBIN "$RUN_SCRIPT" \
+  --prompts_json a_data/alpaca/paraphrases_500.json \
+  --pairs_file a_data/alpaca/selections/pairs/instruct_rhetorical_question.jsonl \
+  --vector_creation_pairs a_data/alpaca/selections/pairs/instruct_rhetorical_question.jsonl \
+  --base_model f_finetune/model \
+  --ft_lora_adapter f_finetune/outputs_alternat/alta42/final \
+  --layer_idx 12 --site mlp_out --anchor end_of_user \
+  --steer_mode ft_delta \
+  --alphas 0,0.25,0.5,0.75,1.0,5.0,50.0 \
+  --target_logits ft_original \
+  --out_dir f_finetune/outputs_alternat/alta42/analyses_2/Q3_steer_27_instruct_rhetorical_question_mlp_out_ft_delta_ft_original_nongreedy
+
+#  --do_sample --temperature 0.8 --top_p 0.95 \
+
+echo "$(date) - Q3_steer job itself finished OK"
 
 rm -rf "$TMPDIR" \
        "$HF_HOME" \
        "$PIP_CACHE_DIR" \
        "$XDG_CACHE_HOME"
 
-echo "$(date) - O3_ex job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - O3_ex job finished & stuff cleaned OK"
+echo "$(date) - Q3_steer job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - Q3_steer job finished & stuff cleaned OK"

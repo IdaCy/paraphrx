@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [2025-09-02T22:13:51.468730+00:00] Start judging (fresh): 1100 remaining (had 0 done)
 [2025-09-02T22:14:27.729747+00:00] ERROR case 5::instruct_2 status=429
 [2025-09-02T22:16:39.278830+00:00] ERROR case 30::instruct_5 status=429
@@ -6,3 +7,16 @@
 [2025-09-02T22:19:15.790604+00:00] ERROR case 3::instruct_5 status=429
 [2025-09-02T22:19:51.646550+00:00] ERROR case 67::instruct_1 status=429
 [2025-09-02T22:20:21.422566+00:00] Done judging. Successes(+17) total=17, Failures(+6) total=6
+=======
+[2025-09-02T22:09:47.524649+00:00] Start judging (fresh): 1100 remaining (had 0 done)
+[2025-09-02T22:12:23.541428+00:00] judged 25/1100, successes=25, failures=0
+[2025-09-02T22:14:16.343178+00:00] ERROR case 58::instruct_1 status=429
+[2025-09-02T22:14:51.975505+00:00] ERROR case 69::instruct_6 status=429
+[2025-09-02T22:16:01.226932+00:00] Progress 44/1100 (4%)
+[2025-09-02T22:16:55.336746+00:00] ERROR case 2::instruct_10 status=503
+[2025-09-02T22:17:30.779884+00:00] ERROR case 9::instruction_original status=429
+[2025-09-02T22:18:20.398282+00:00] judged 50/1100, successes=46, failures=4
+[2025-09-02T22:19:14.348551+00:00] ERROR case 54::instruct_6 status=429
+[2025-09-02T22:19:49.957262+00:00] ERROR case 14::instruct_6 status=429
+[2025-09-02T22:19:49.964166+00:00] Done judging. Successes(+47) total=47, Failures(+6) total=6
+>>>>>>> d418bad7ea2885d52ecf6eff2f2b223fde0b1cd0

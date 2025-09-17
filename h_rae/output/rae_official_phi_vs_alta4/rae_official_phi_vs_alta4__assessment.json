@@ -1,0 +1,144 @@
+{
+  "created_utc": "2025-09-02T20:48:18.913397+00:00",
+  "config": {
+    "prompts_path": "h_rae/data/rae_official/RobustAlpacaEval_converted.json",
+    "baseline_answers_path": "h_rae/data/baseline/phi_answers_rae.json",
+    "compare_answers_path": "h_rae/data/rae_official/hinf_alta4rae_inferences.json",
+    "outdir": "h_rae/output/rae_official_phi_vs_alta4",
+    "run_name": "rae_official_phi_vs_alta4",
+    "api_keys": [
+      "AIzaSyCGM8RNmbAVMkXuwpjOaw-9kN69d6nishQ",
+      "AIzaSyADcQC36VhgYzQUMAn6rhq1bN43vMaeK6Q",
+      "AIzaSyCmVLuRr7r9nL_vXvxiusTO4ZtiSaLF2qU",
+      "AIzaSyAA8ZFg1RtJM3NF6o_zx06QjN506l93teg",
+      "AIzaSyAGkeZxTgpW-BRF16D9r12z5o3ZQJsab4Y",
+      "AIzaSyD-yqb6okfq7CJ_1RkyJ2XmeZyFv5GsPxI",
+      "AIzaSyBdkKEKYyyXcX-ihI-73e3la2d_dtu-FD8",
+      "AIzaSyCkuPzURmqWXJHcO6tZRQSZq9W9Z_D5kaM",
+      "AIzaSyD8j2JZaJ-b3HY9lYZYp-l3sYLoNFZi_lA",
+      "AIzaSyCEAh91Kp5_x8ndvxVZ2emxp3NihPKUgbM",
+      "AIzaSyALMN5mvdDrU_W8F-w9zT_Nvxix9qY6GJ0"
+    ],
+    "max_per_key": 200,
+    "max_total": null,
+    "judging_model": "gemini-2.0-flash",
+    "delay_ms": 4000,
+    "seed": 42,
+    "phase": "both",
+    "original_only_for_judge": true,
+    "include_optimal_output": false,
+    "length_unit": "char",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 1,
+    "max_output_tokens": 1024,
+    "json_only": false,
+    "paraphrases": null
+  },
+  "judgments_path": "h_rae/output/rae_official_phi_vs_alta4/rae_official_phi_vs_alta4__judgments.jsonl.gz",
+  "counts": {
+    "total": 68,
+    "wins": 11,
+    "ties": 0,
+    "losses": 57
+  },
+  "overall": {
+    "win_rate_tie_half": 0.16176470588235295,
+    "confidence_weighted_win_rate": 0.16000000000000003
+  },
+  "by_paraphrase_type": {
+    "instruct_8": {
+      "n": 8,
+      "wins": 2,
+      "ties": 0,
+      "losses": 6,
+      "win_rate": 0.25
+    },
+    "instruct_1": {
+      "n": 7,
+      "wins": 1,
+      "ties": 0,
+      "losses": 6,
+      "win_rate": 0.14285714285714285
+    },
+    "instruct_3": {
+      "n": 6,
+      "wins": 1,
+      "ties": 0,
+      "losses": 5,
+      "win_rate": 0.16666666666666666
+    },
+    "instruct_9": {
+      "n": 6,
+      "wins": 3,
+      "ties": 0,
+      "losses": 3,
+      "win_rate": 0.5
+    },
+    "instruction_original": {
+      "n": 6,
+      "wins": 0,
+      "ties": 0,
+      "losses": 6,
+      "win_rate": 0.0
+    },
+    "instruct_7": {
+      "n": 6,
+      "wins": 1,
+      "ties": 0,
+      "losses": 5,
+      "win_rate": 0.16666666666666666
+    },
+    "instruct_5": {
+      "n": 9,
+      "wins": 0,
+      "ties": 0,
+      "losses": 9,
+      "win_rate": 0.0
+    },
+    "instruct_6": {
+      "n": 9,
+      "wins": 1,
+      "ties": 0,
+      "losses": 8,
+      "win_rate": 0.1111111111111111
+    },
+    "instruct_4": {
+      "n": 6,
+      "wins": 2,
+      "ties": 0,
+      "losses": 4,
+      "win_rate": 0.3333333333333333
+    },
+    "instruct_2": {
+      "n": 1,
+      "wins": 0,
+      "ties": 0,
+      "losses": 1,
+      "win_rate": 0.0
+    },
+    "instruct_10": {
+      "n": 4,
+      "wins": 0,
+      "ties": 0,
+      "losses": 4,
+      "win_rate": 0.0
+    }
+  },
+  "per_task_macro": {
+    "worst": 0.11428571428571428,
+    "best": 0.2571428571428571,
+    "avg": 0.16428571428571428,
+    "stdev": 0.06706360755043755
+  },
+  "ols_length_control": {
+    "alpha": 0.26139310463091475,
+    "beta": 0.000244601621652244,
+    "p_at_delta_len_0": 0.26139310463091475
+  },
+  "glm_logit_length_control": {
+    "alpha": -0.9168074222932786,
+    "beta": 0.0019075149838257567,
+    "p_at_delta_len_0": 0.2856088503660564
+  }
+}

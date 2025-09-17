@@ -120,6 +120,7 @@ srun "$PYBIN" "$RUN_SCRIPT" \
   --bf16 --bnb_8bit_optim \
   --eval_steps 800 --save_steps 800 --save_total_limit 40 \
   --model_only_checkpoints --early_stopping_patience 10 \
+  --resume_checkpoint "$OUTPUT_DIR/checkpoint-4800" \
   --logging_steps 50 --seed 42
 
 echo "$(date) - alta9 job itself finished OK"

@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=alta8
+#SBATCH --job-name=inf_alta42_rae
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
@@ -10,13 +10,13 @@
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - alta8 job started on $(hostname)"
-echo "$(date) - alta8 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - inf_alta42_rae job started on $(hostname)"
+echo "$(date) - inf_alta42_rae job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_alternat/alta8
+mkdir -p logs
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -60,7 +60,7 @@ $PYBIN -m pip install --upgrade pip wheel --no-cache-dir --target "$PYTHON_PKGS"
 $PYBIN -m pip install --upgrade setuptools --no-cache-dir --target "$PYTHON_PKGS"
 $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   torch==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121 \
-  transformers==4.45.0 \
+  "transformers>=4.51.0" \
   safetensors==0.4.3 \
   peft==0.11.1 \
   bitsandbytes==0.43.2 \
@@ -90,40 +90,22 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrax_ft_nolap}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) - alta8 initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_alternative_setup.py"
-OUTPUT_DIR="f_finetune/outputs_alternat/alta8"
+echo "$(date) - inf_alta42_rae initial setup OK"
+RUN_SCRIPT="f_finetune/src/inf_alternative_setup.py"
+OUTPUT_DIR="f_finetune/outputs_alternat/alta42"
 MODEL_PATH="f_finetune/model"
-
-WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="alta8"
 
 # sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
 
 srun "$PYBIN" "$RUN_SCRIPT" \
-  --data_paths e_eval/data/alpaca_gemma-2-2b-it.json e_eval/data/gsm8k_gemma-2-2b-it.json e_eval/data/mmlu_gemma-2-2b-it.json a_data/alpaca/50k_phrxed.json \
-  --model_path "$MODEL_PATH" \
-  --output_dir "$OUTPUT_DIR" \
-  --run_name alta8_lora_single_mlp_only_L12 \
+  --data_path e_eval/data/alpaca_gemma-2-2b-it.json \
   --require_content_score 4 --first_min_style_count 1 \
-  --curriculum_style_jsons a_data/alpaca/selections/selection_useable_xs.json a_data/alpaca/selections/selection_useable_s.json a_data/alpaca/selections/selection_useable_m.json \
-  --curriculum_stage_epochs 1 2 1 \
-  --target_modules gate_proj,up_proj,down_proj \
-  --lora_layer_idx 12 \
-  --lora_rank 32 --lora_alpha 64 --lora_dropout 0.05 \
-  --batch_size 2 --gradient_accumulation_steps 16 \
-  --num_epochs 5 --learning_rate 2e-5 --warmup_ratio 0.05 --lr_scheduler_type cosine \
-  --consistency_kld_weight 0.50 \
-  --contrast_weight 0.08 --contrast_temperature 0.08 \
-  --style_adv_weight 0.03 --style_adv_hidden 128 --style_adv_lambda 1.0 \
-  --use_lap --lap_layer 12 --lap_t_inner 3 --lap_p_sample 0.30 --lap_epsilon 0.04 --lap_delta_lr 1e-2 --lap_lambda_lr 1e-3 \
-  --bf16 --bnb_8bit_optim \
-  --eval_steps 800 --save_steps 800 --save_total_limit 35 \
-  --model_only_checkpoints --early_stopping_patience 5 \
-  --resume_checkpoint "$OUTPUT_DIR/checkpoint-5600" \
-  --logging_steps 50 --seed 42
+  --base_model_path "$OUTPUT_DIR/final" \
+  --output_json "$OUTPUT_DIR/alpaca_inferences.json" \
+  --max_samples 100 \
+  --batch 265
 
-echo "$(date) - alta8 job itself finished OK"
+echo "$(date) - checkpoint-770_inf_alta42_mmlu job finished OK"
 
-echo "$(date) - alta8 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - alta8 job finished & stuff cleaned OK"
+echo "$(date) - inf_alta42_rae job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - inf_alta42_rae job finished & stuff cleaned OK"

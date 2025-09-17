@@ -64,14 +64,15 @@ struct Cli {
     output: PathBuf,
 
     // Gemini model name (e.g. gemini-2.5-flash-preview-05-20)
-    #[arg(long, default_value = "gemini-2.0-flash")]
+    #[arg(long, default_value = "gemini-2.5-flash-preview-05-20")]
+    //#[arg(long, default_value = "gemini-2.0-flash")]
     model: String,
 
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
 
     // Milliseconds to wait after every successful request (avoiding 429s)
-    #[arg(long = "delay-ms", default_value_t = 200)]
+    #[arg(long = "delay-ms", default_value_t = 4000)]
     delay_ms: u64,
 
     // Google API key (overrides $GOOGLE_API_KEY)

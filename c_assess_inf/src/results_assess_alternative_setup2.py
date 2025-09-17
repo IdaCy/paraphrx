@@ -23,8 +23,9 @@ ANCHOR_KEY = "instruction_original"
 EST_TOKENS_LIMIT = 250_000
 MAX_SECTION_BYTES = 1_500_000
 MAX_PROMPT_BYTES  = 1_600_000
-MAX_KEYS_PER_SCHEMA = 8     # test - better reliability with thinking off
-DEFAULT_MODEL = "gemini-2.5-flash"
+MAX_KEYS_PER_SCHEMA = 8  # reduced for stability
+DEFAULT_MODEL = "gemini-2.5-flash-preview-05-20"
+DEFAULT_FALLBACK_MODEL = "gemini-1.5-pro"
 
 # Free tier pacing
 FREE_RPM = 10
@@ -34,7 +35,7 @@ PACER_HEADROOM = 0.6
 # Output sizing
 OUT_TOKENS_PER_SCORE = 6
 MAX_OUTPUT_TOKENS_CAP = 16384
-MIN_OUTPUT_TOKENS     = 256
+MIN_OUTPUT_TOKENS     = 1024
 
 def _safe_meta(meta: Dict[str, Any] | None) -> Dict[str, Any]:
     try:
@@ -44,13 +45,9 @@ def _safe_meta(meta: Dict[str, Any] | None) -> Dict[str, Any]:
 
 import base64
 from binascii import Error as B64Error
+import re
 
 def _hunt_any_json_string(obj) -> str | None:
-    """
-    Walk the response recursively; return the first string that parses as JSON.
-    Tries to strip code fences and whitespace. Returns the raw JSON string
-    """
-    import re
     def try_parse(s: str) -> str | None:
         t = s.strip()
         if t.startswith("```"):
@@ -70,9 +67,8 @@ def _hunt_any_json_string(obj) -> str | None:
 
     if isinstance(obj, str):
         return try_parse(obj)
-
     if isinstance(obj, dict):
-        for k, v in obj.items():
+        for _, v in obj.items():
             got = _hunt_any_json_string(v)
             if got: return got
     elif isinstance(obj, list):
@@ -82,11 +78,6 @@ def _hunt_any_json_string(obj) -> str | None:
     return None
 
 def _extract_json_text_from_response(data: Dict[str, Any]) -> str:
-    """
-    Find JSON/text in Gemini responses across all candidates and part types.
-    Supports: text, inlineData (json), functionCall.args, functionResponse,
-    executableCode.code, and finally hunts any JSON-looking string
-    """
     pf = data.get("promptFeedback") or {}
     if pf.get("blockReason"):
         raise RuntimeError(f"BLOCKED_SAFETY: {pf.get('blockReason')}")
@@ -97,12 +88,12 @@ def _extract_json_text_from_response(data: Dict[str, Any]) -> str:
 
     for cand in candidates:
         parts = ((cand.get("content") or {}).get("parts") or [])
-        # Plain text
+
         for p in parts:
             t = p.get("text")
             if isinstance(t, str) and t.strip():
                 return t
-        # inlineData (json)
+
         for p in parts:
             inline = p.get("inlineData") or p.get("inline_data")
             if isinstance(inline, dict):
@@ -114,7 +105,7 @@ def _extract_json_text_from_response(data: Dict[str, Any]) -> str:
                             return base64.b64decode(b).decode("utf-8", "replace")
                         except B64Error:
                             return b
-        # functionCall.args
+
         for p in parts:
             fc = p.get("functionCall") or p.get("function_call")
             if isinstance(fc, dict) and isinstance(fc.get("args"), (dict, list)):
@@ -122,7 +113,7 @@ def _extract_json_text_from_response(data: Dict[str, Any]) -> str:
                     return json.dumps(fc["args"], ensure_ascii=False)
                 except Exception:
                     pass
-        # functionResponse nested text
+
         for p in parts:
             fr = p.get("functionResponse") or p.get("function_response")
             if isinstance(fr, dict):
@@ -140,7 +131,7 @@ def _extract_json_text_from_response(data: Dict[str, Any]) -> str:
                             txt = (it or {}).get("text")
                             if isinstance(txt, str) and txt.strip():
                                 return txt
-        # executableCode.code starting with JSON
+
         for p in parts:
             exe = p.get("executableCode") or p.get("executable_code")
             if isinstance(exe, dict):
@@ -152,8 +143,16 @@ def _extract_json_text_from_response(data: Dict[str, Any]) -> str:
     if hunted:
         return hunted
 
-    raise RuntimeError("NO_TEXT_IN_RESPONSE")
+    reasons = []
+    for cand in candidates:
+        fr = cand.get("finishReason")
+        if fr: reasons.append(f"finishReason:{fr}")
+        sr = cand.get("safetyRatings")
+        if sr: reasons.append(f"safetyRatings:{len(sr)}")
+    if reasons:
+        raise RuntimeError(f"NO_TEXT_IN_RESPONSE ({', '.join(reasons)})")
 
+    raise RuntimeError("NO_TEXT_IN_RESPONSE")
 
 class Logger:
     def __init__(self, path: pathlib.Path, run_prefix: str, stem: str, ts: str):
@@ -185,7 +184,6 @@ class Logger:
         except Exception: pass
         try: self._fh_json.close()
         except Exception: pass
-
 
 class RunMetrics:
     def __init__(self):
@@ -222,7 +220,6 @@ class FailureTally:
             out.append(s)
         return out
 
-# data handling
 def read_records(path: pathlib.Path, logger: Logger) -> Dict[str, Dict[str, Any]]:
     try:
         s = path.read_text(encoding="utf-8")
@@ -239,7 +236,6 @@ def read_records(path: pathlib.Path, logger: Logger) -> Dict[str, Dict[str, Any]
         logger.event("error", event="load_records_failed", path=str(path), error=str(e))
         return {}
 
-
 def load_existing_results(path: pathlib.Path, logger: Logger) -> Tuple[List[Dict[str, Any]], set]:
     if path.exists():
         try:
@@ -253,13 +249,34 @@ def load_existing_results(path: pathlib.Path, logger: Logger) -> Tuple[List[Dict
             return [], set()
     return [], set()
 
-
 def estimate_tokens(text: str) -> int:
     return max(1, len(text) // 4)
 
 def schema_for_keys(keys: List[str]) -> Dict[str, Any]:
     props = {k: {"type": "array", "items": {"type": "integer"}} for k in keys}
-    return {"type": "object", "properties": props, "required": keys}
+    return {"type": "object", "properties": props}
+
+def function_decl_for_keys(keys: List[str]) -> Dict[str, Any]:
+    """
+    Build a function declaration for Gemini function-calling.
+    NOTE: use a subset of JSON Schema the API accepts (no additionalProperties/minItems/etc).
+    """
+    return {
+        "functionDeclarations": [{
+            "name": "record_scores",
+            "description": "Return 10 integer scores (0–10) per key, in the requested metric order.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    k: {
+                        "type": "array",
+                        "items": {"type": "integer"}
+                    } for k in keys
+                },
+                "required": keys
+            }
+        }]
+    }
 
 def is_ten_ints(v: Any) -> bool:
     return isinstance(v, list) and len(v) == 10 and all(isinstance(x, int) for x in v)
@@ -285,11 +302,9 @@ def coerce_ten_ints(v: Any) -> List[int] | None:
 
 def build_eval_prompt(section: str, keys: List[str]) -> str:
     key_list = '", "'.join(keys)
-    return f'''You are an expert evaluator.
+    return f"""You are an expert evaluator.
 
-For every answer below, assess it against **ten metrics**. Each metric must be scored on a 0–10 integer scale (higher is better).
-
-Metrics (use **exact** order):
+For each item below, score TEN metrics on a 0–10 integer scale (higher is better) in this exact order:
 1. Task Fulfilment / Relevance
 2. Usefulness & Actionability
 3. Factual Accuracy & Verifiability
@@ -301,14 +316,14 @@ Metrics (use **exact** order):
 9. Structure & Formatting & UX Extras
 10. Creativity
 
-Return **only** JSON whose **top-level object has exactly these keys**:
+Return the result by CALLING the function `record_scores` with exactly these properties:
 ["{key_list}"]
-Each key maps to a list of **10 integers** (0–10) in the metric order above. No explanations, no extra keys.
+Each property must be an array of 10 integers in the metric order above. No extra properties.
 
 Begin data to evaluate:
 
 {section}
-'''.strip()
+""".strip()
 
 def build_section_for_keys(inst: Dict[str, Any],
                            ans: Dict[str, Any],
@@ -373,12 +388,10 @@ def greedy_batches_by_size(all_keys: List[str],
         batches = [all_keys[:1]]
     return batches
 
-
 def compute_sleep_for_free_tier(tokens_for_request: int) -> float:
     calls_by_tpm = max(1, FREE_TPM // max(1, tokens_for_request))
     target_rpm = max(1, int(min(FREE_RPM, calls_by_tpm) * PACER_HEADROOM))
     return 60.0 / target_rpm
-
 
 def build_client() -> httpx.Client:
     headers = {"Content-Type": "application/json"}
@@ -392,23 +405,25 @@ def build_client() -> httpx.Client:
 def query_gemini(client: httpx.Client,
                  api_key: str,
                  model: str,
-                 schema: Dict[str, Any],
+                 schema: Dict[str, Any],  # for fallback parsing only
                  prompt: str,
                  logger: Logger,
                  meta: Dict[str, Any],
                  max_output_tokens: int,
-                 thinking_budget: int,
                  failure_tally,  # FailureTally
                  verbose_errors: bool,
-                 dump_quota: List[int] | None = None) -> Dict[str, Any]:
-    url = f"{ENDPOINT}/models/{model}:generateContent?key={api_key}"
+                 dump_quota: List[int] | None = None,
+                 fallback_model: str | None = None) -> Dict[str, Any]:
 
-    def _post(body: Dict[str, Any]) -> Dict[str, Any]:
-        log_meta = _safe_meta(meta)
-        logger.event("info", event="api_request", url=url, model=model,
+    def _url_for(m: str) -> str:
+        return f"{ENDPOINT}/models/{m}:generateContent?key={api_key}"
+
+    def _post(body: Dict[str, Any], model_used: str) -> Dict[str, Any]:
+        log_meta = dict(_safe_meta(meta), model_used=model_used)
+        logger.event("info", event="api_request", url=_url_for(model_used), model=model_used,
                      bytes_request=len(json.dumps(body, ensure_ascii=False).encode("utf-8")),
                      meta=log_meta)
-        resp = client.post(url, json=body)
+        resp = client.post(_url_for(model_used), json=body)
         if not resp.is_success:
             txt = (resp.text or "").strip()
             logger.log(f"[error] http {resp.status_code} body={txt[:500]}")
@@ -431,23 +446,24 @@ def query_gemini(client: httpx.Client,
         except Exception as e:
             logger.log(f"[dump-error] failed to write raw response: {e}")
 
-    gen_cfg_base = {
-        "temperature": 0.0,
-        "topK": 1,
-        "topP": 1.0,
-        "maxOutputTokens": int(max_output_tokens),
-        # disable thinking for Flash so it doesn't consume all tokens
-        "thinkingConfig": {"thinkingBudget": int(thinking_budget)},
-    }
-
-    # First attempt: schema + JSON mime
-    body1 = {
+    # Attempt A: function calling on primary model
+    keys_for_tool = list((schema.get("properties") or {}).keys()) or meta.get("keys_list", [])
+    tools = [function_decl_for_keys(keys_for_tool)]
+    body_tools = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "generationConfig": {
-            **gen_cfg_base,
-            "responseMimeType": "application/json",
-            "responseSchema": schema,
+            "temperature": 0.0,
+            "topK": 1,
+            "topP": 1.0,
+            "maxOutputTokens": int(max_output_tokens),
         },
+        "toolConfig": {
+            "functionCallingConfig": {  # camelCase
+                "mode": "ANY",
+                "allowedFunctionNames": ["record_scores"]  # camelCase
+            }
+        },
+        "tools": tools,
         "safetySettings": [
             {"category": "HARM_CATEGORY_HARASSMENT",        "threshold": "BLOCK_ONLY_HIGH"},
             {"category": "HARM_CATEGORY_HATE_SPEECH",       "threshold": "BLOCK_ONLY_HIGH"},
@@ -458,59 +474,82 @@ def query_gemini(client: httpx.Client,
     }
 
     try:
-        data1 = _post(body1)
+        data1 = _post(body_tools, model)
         json_text = _extract_json_text_from_response(data1)
+        parsed = json.loads(json_text.strip())
+        logger.event("info", event="api_success", meta=_safe_meta(meta)|{"model_used": model})
+        return parsed
     except RuntimeError as e:
         msg = str(e)
-        if "NO_TEXT_IN_RESPONSE" in msg or "NO_CANDIDATES" in msg or "BLOCKED_CANDIDATE" in msg or "MAX_TOKENS" in msg:
-            failure_tally.note("schema_fallback", msg)
+        failure_tally.note("primary_tools_failed", msg)
+        _dump_raw("primary_tools_raw", locals().get("data1", {}))
+        if "NO_TEXT_IN_RESPONSE" not in msg and "NO_CANDIDATES" not in msg and "INVALID_ARGUMENT" not in msg:
             if verbose_errors:
-                logger.log("[warn] schema fallback due to odd/empty response")
-            _dump_raw("noschema_probe", locals().get("data1", {}))
-            body2 = {
-                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                "generationConfig": {
-                    **gen_cfg_base,
-                    # keep JSON mime even without schema to bias structured output
-                    "responseMimeType": "application/json",
-                },
-                "safetySettings": body1["safetySettings"],
-            }
-            data2 = _post(body2)
-            try:
-                json_text = _extract_json_text_from_response(data2)
-            except RuntimeError as e2:
-                _dump_raw("plain_probe", data2)
-                raise
-        else:
-            if verbose_errors:
-                logger.log(f"[error] response-shape cause={msg} data_preview={str(locals().get('data1', {}))[:400]}")
+                logger.log(f"[error] primary tools failed: {msg}")
             raise
 
-    if not isinstance(json_text, str):
-        failure_tally.note("not_string_text", type(json_text).__name__)
-        logger.log(f"[error] response text not str (got {type(json_text).__name__})")
-        raise RuntimeError("unexpected response text type")
-
-    # Robust parse: try full string, then salvage the first valid JSON substring
-    text_try = json_text.strip()
+    # Attempt A2: same model, plain (no tools/schema)
+    body_plain = {
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.0,
+            "topK": 1,
+            "topP": 1.0,
+            "maxOutputTokens": int(max_output_tokens),
+        },
+        "safetySettings": [
+            {"category": "HARM_CATEGORY_HARASSMENT",        "threshold": "BLOCK_ONLY_HIGH"},
+            {"category": "HARM_CATEGORY_HATE_SPEECH",       "threshold": "BLOCK_ONLY_HIGH"},
+            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_ONLY_HIGH"},
+            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_ONLY_HIGH"},
+            {"category": "HARM_CATEGORY_CIVIC_INTEGRITY",   "threshold": "BLOCK_ONLY_HIGH"},
+        ],
+    }
     try:
-        parsed = json.loads(text_try)
-        logger.event("info", event="api_success", meta=_safe_meta(meta))
-        return parsed
-    except json.JSONDecodeError:
-        salvage = _hunt_any_json_string(text_try)
-        if salvage:
-            try:
-                parsed = json.loads(salvage)
-                logger.event("info", event="api_success_salvaged", meta=_safe_meta(meta))
-                return parsed
-            except Exception as e:
-                pass
-        failure_tally.note("decode_json_error", text_try[:200])
-        if verbose_errors:
-            logger.log(f"[error] decode-json text_preview={text_try[:400]}")
-        raise RuntimeError(f"DECODE_JSON_ERROR: unable to parse JSON")
+        data2 = _post(body_plain, model)
+        json_text2 = _extract_json_text_from_response(data2)
+        parsed2 = json.loads(json_text2.strip())
+        logger.event("info", event="api_success_plain", meta=_safe_meta(meta)|{"model_used": model})
+        return parsed2
+    except RuntimeError as e2:
+        msg2 = str(e2)
+        failure_tally.note("primary_plain_failed", msg2)
+        _dump_raw("primary_plain_raw", locals().get("data2", {}))
+        if "NO_TEXT_IN_RESPONSE" not in msg2 and "NO_CANDIDATES" not in msg2 and "INVALID_ARGUMENT" not in msg2:
+            if verbose_errors:
+                logger.log(f"[error] primary plain failed: {msg2}")
+            raise
+
+    # Attempt B: fallback model
+    if not fallback_model:
+        raise RuntimeError("NO_TEXT_IN_RESPONSE")
+
+    try:
+        data3 = _post(body_tools, fallback_model)
+        json_text3 = _extract_json_text_from_response(data3)
+        parsed3 = json.loads(json_text3.strip())
+        logger.event("info", event="api_success_fallback_tools", meta=_safe_meta(meta)|{"model_used": fallback_model})
+        return parsed3
+    except RuntimeError as e3:
+        msg3 = str(e3)
+        failure_tally.note("fallback_tools_failed", msg3)
+        _dump_raw("fallback_tools_raw", locals().get("data3", {}))
+        if "NO_TEXT_IN_RESPONSE" not in msg3 and "NO_CANDIDATES" not in msg3 and "INVALID_ARGUMENT" not in msg3:
+            if verbose_errors:
+                logger.log(f"[error] fallback tools failed: {msg3}")
+            raise
+
+    try:
+        data4 = _post(body_plain, fallback_model)
+        json_text4 = _extract_json_text_from_response(data4)
+        parsed4 = json.loads(json_text4.strip())
+        logger.event("info", event="api_success_fallback_plain", meta=_safe_meta(meta)|{"model_used": fallback_model})
+        return parsed4
+    except RuntimeError as e4:
+        msg4 = str(e4)
+        failure_tally.note("fallback_plain_failed", msg4)
+        _dump_raw("fallback_plain_raw", locals().get("data4", {}))
+        raise
 
 def process_single_id(
     id_str: str,
@@ -519,6 +558,7 @@ def process_single_id(
     client: httpx.Client,
     api_key: str,
     model: str,
+    fallback_model: str | None,
     max_attempts: int,
     target_batch_size: int,
     delay_between_batches_ms: int,
@@ -531,7 +571,6 @@ def process_single_id(
     failure_tally: FailureTally,
     verbose_errors: bool,
     dump_bad_responses: int,
-    thinking_budget: int,
 ) -> Tuple[int, bool, int]:
     ans = ans_map.get(id_str)
     if not ans:
@@ -569,10 +608,10 @@ def process_single_id(
             tok_est_in = estimate_tokens(section)
 
             expected_out_tokens = max(MIN_OUTPUT_TOKENS, len(batch_keys) * 10 * OUT_TOKENS_PER_SCORE)
-            max_output_tokens = min(MAX_OUTPUT_TOKENS_CAP, expected_out_tokens + 128)
+            max_output_tokens = min(MAX_OUTPUT_TOKENS_CAP, expected_out_tokens + 256)
 
             logger.log(f"[call] id {id_str} batch {bix}/{len(batches)} attempt {attempt}/{max_attempts} "
-                       f"keys={len(batch_keys)} bytes={sec_bytes} est_tokens_in={tok_est_in} base_out={MIN_OUTPUT_TOKENS} max_out={max_output_tokens}")
+                       f"keys={len(batch_keys)} bytes={sec_bytes} est_tokens_in={tok_est_in} est_tokens_out={expected_out_tokens} max_out={max_output_tokens}")
             logger.event("info", event="batch_attempt",
                          id=id_str, batch=bix, batches=len(batches), attempt=attempt,
                          keys=len(batch_keys), section_bytes=sec_bytes,
@@ -602,13 +641,15 @@ def process_single_id(
 
             req_id = str(uuid.uuid4())[:8]
             req_meta = dict(req_id=req_id, id=id_str, batch=bix, attempt=attempt, keys=len(batch_keys),
+                            keys_list=batch_keys,
                             section_bytes=sec_bytes, est_tokens=tok_est_in,
                             est_tokens_out=expected_out_tokens, pacer_sleep_s=round(pre_sleep, 3))
 
             try:
                 got_raw = query_gemini(client, api_key, model, schema, prompt, logger, req_meta,
-                                       max_output_tokens, thinking_budget, failure_tally, verbose_errors,
-                                       dump_quota=[dump_bad_responses])
+                                       max_output_tokens, failure_tally, verbose_errors,
+                                       dump_quota=[dump_bad_responses],
+                                       fallback_model=fallback_model)
                 metrics.calls_total += 1
                 metrics.calls_success += 1
 
@@ -624,12 +665,12 @@ def process_single_id(
                 if missing:
                     logger.log(f"[recover] id {id_str} batch {bix}: recovering {len(missing)} key(s)")
                     logger.event("info", event="recovery_start", id=id_str, batch=bix, missing=len(missing))
-                    for rr in range(1, 2 + 1):
+                    for rr in range(1, 3):
                         section_retry = build_section_for_keys(inst, ans, missing)
                         sec_bytes_r = len(section_retry.encode("utf-8"))
                         tok_est_r_in = estimate_tokens(section_retry)
                         expected_out_tokens_r = max(MIN_OUTPUT_TOKENS, len(missing) * 10 * OUT_TOKENS_PER_SCORE)
-                        max_output_tokens_r = min(MAX_OUTPUT_TOKENS_CAP, expected_out_tokens_r + 64)
+                        max_output_tokens_r = min(MAX_OUTPUT_TOKENS_CAP, expected_out_tokens_r + 128)
                         schema_retry = schema_for_keys(missing)
                         prompt_retry = build_eval_prompt(section_retry, missing)
                         req_id_r = str(uuid.uuid4())[:8]
@@ -644,11 +685,13 @@ def process_single_id(
                             got2_raw = query_gemini(client, api_key, model, schema_retry, prompt_retry, logger,
                                                     {"req_id": req_id_r, "id": id_str, "batch": bix,
                                                      "round": rr, "keys": len(missing),
+                                                     "keys_list": missing,
                                                      "section_bytes": sec_bytes_r,
                                                      "est_tokens_in": tok_est_r_in,
                                                      "est_tokens_out": expected_out_tokens_r},
-                                                    max_output_tokens_r, thinking_budget, failure_tally,
-                                                    verbose_errors, dump_quota=[dump_bad_responses])
+                                                    max_output_tokens_r, failure_tally, verbose_errors,
+                                                    dump_quota=[dump_bad_responses],
+                                                    fallback_model=fallback_model)
                             metrics.calls_total += 1
                             metrics.calls_success += 1
                             metrics.calls_recovery += 1
@@ -684,8 +727,7 @@ def process_single_id(
                 logger.log(f"[error] call failed id={id_str} batch={bix} attempt={attempt} cause={msg}")
                 logger.event("warn", event="batch_call_error", id=id_str, batch=bix, attempt=attempt, error=msg)
 
-                if ("NO_TEXT_IN_RESPONSE" in msg or "NO_CANDIDATES" in msg or "BLOCKED_SAFETY" in msg or
-                    "MAX_TOKENS" in msg):
+                if ("NO_TEXT_IN_RESPONSE" in msg or "NO_CANDIDATES" in msg or "BLOCKED_SAFETY" in msg or "INVALID_ARGUMENT" in msg):
                     failure_tally.note("odd_or_blocked_response", msg)
                     if len(batch_keys) > 2:
                         back_half = ([batch_keys[0]] if batch_keys and batch_keys[0] == ANCHOR_KEY else []) + batch_keys[(len(batch_keys) + 1) // 2:]
@@ -712,10 +754,10 @@ def process_single_id(
                                 tot_est  = estimate_tokens(section1) + (10 * OUT_TOKENS_PER_SCORE)
                                 time.sleep(compute_sleep_for_free_tier(tot_est))
                                 got1 = query_gemini(client, api_key, model, schema1, prompt1, logger,
-                                                    {"req_id": str(uuid.uuid4())[:8], "id": id_str, "batch": bix, "attempt": attempt, "keys": 1},
+                                                    {"req_id": str(uuid.uuid4())[:8], "id": id_str, "batch": bix, "attempt": attempt, "keys": 1, "keys_list":[lone]},
                                                     max(MIN_OUTPUT_TOKENS, 10 * OUT_TOKENS_PER_SCORE + 64),
-                                                    thinking_budget, failure_tally, verbose_errors,
-                                                    dump_quota=[dump_bad_responses])
+                                                    failure_tally, verbose_errors, dump_quota=[dump_bad_responses],
+                                                    fallback_model=fallback_model)
                                 metrics.calls_total += 1
                                 metrics.calls_success += 1
                                 coerced = coerce_ten_ints(got1.get(lone))
@@ -724,10 +766,10 @@ def process_single_id(
                                     success = True
                                     api_calls_used += 1
                                     break
-                            except RuntimeError as _:
+                            except RuntimeError:
                                 pass
 
-                if ("INVALID_ARGUMENT" in msg and "schema" in msg.lower()):
+                if ("too many states" in msg.lower()):
                     failure_tally.note("schema_complexity", msg)
                     if len(batch_keys) > 2:
                         new_len = max(2, (len(batch_keys) + 1) // 2)
@@ -835,33 +877,31 @@ def process_single_id(
     logger.event("info", event="id_done", id=id_str, api_calls_used=api_calls_used)
     return (attempts_used_overall, True, api_calls_used)
 
-
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Assess paraphrase answers with Gemini (Python port).")
+    p = argparse.ArgumentParser(description="Assess paraphrase answers with Gemini (function-calling first).")
     p.add_argument("instructions", type=pathlib.Path)
     p.add_argument("answers", type=pathlib.Path)
     p.add_argument("output", type=pathlib.Path)
     p.add_argument("--run-name", default=None, help="A name for the run, prepended to log & issues files")
-    p.add_argument("--model", default=DEFAULT_MODEL, help="Gemini model name")
+    p.add_argument("--model", default=DEFAULT_MODEL, help="Primary Gemini model name")
+    p.add_argument("--fallback-model", default=DEFAULT_FALLBACK_MODEL,
+                   help="Fallback Gemini model used after repeated empty responses (default gemini-1.5-pro)")
     p.add_argument("--max-attempts", type=int, default=5)
     p.add_argument("--max-calls", type=int, default=250, dest="max_calls",
                    help="Hard cap on number of API calls this run (counts batches)")
     p.add_argument("--delay-ms", type=int, default=0,
-                   help="Milliseconds to wait after every successful batch (legacy; pacer handles free tier)")
+                   help="Milliseconds to wait after every successful batch")
     p.add_argument("--api-key", default=None, dest="api_key",
                    help="Google API key (overrides $GOOGLE_API_KEY)")
     p.add_argument("--batch-size", type=int, default=1000,
-                   help="Max paraphrases per request (always includes instruction_original)")
+                   help="Max paraphrases per single request (always includes instruction_original)")
     p.add_argument("--max-429", type=int, default=5,
                    help="Abort the whole run after this many total 429s (default 5)")
     p.add_argument("--verbose-errors", action="store_true",
                    help="Log extra error context to the human-readable log")
     p.add_argument("--dump-bad-responses", type=int, default=3,
                    help="Dump up to N raw bad responses to logs/ for inspection (default 3)")
-    p.add_argument("--thinking-budget", type=int, default=0,
-                   help="Thinking tokens budget for Gemini 2.5 models (set 0 to disable on Flash).")
     return p.parse_args()
-
 
 def main():
     args = parse_args()
@@ -873,8 +913,8 @@ def main():
     run_prefix = f"{args.run_name}_" if args.run_name else ""
     log_path = log_dir / f"{run_prefix}{stem}_{ts}.logs"
     logger = Logger(log_path, run_prefix, stem, ts)
-    logger.log(f"run started -> model={args.model} log={log_path}")
-    logger.event("info", event="run_start", model=args.model, log=str(log_path))
+    logger.log(f"run started -> model={args.model} fallback={args.fallback_model} log={log_path}")
+    logger.event("info", event="run_start", model=args.model, fallback=args.fallback_model, log=str(log_path))
 
     instr_map = read_records(args.instructions, logger)
     ans_map = read_records(args.answers, logger)
@@ -950,6 +990,7 @@ def main():
                     client=client,
                     api_key=api_key,
                     model=args.model,
+                    fallback_model=args.fallback_model,
                     max_attempts=args.max_attempts,
                     target_batch_size=args.batch_size,
                     delay_between_batches_ms=args.delay_ms,
@@ -962,7 +1003,6 @@ def main():
                     failure_tally=failure_tally,
                     verbose_errors=args.verbose_errors,
                     dump_bad_responses=args.dump_bad_responses,
-                    thinking_budget=args.thinking_budget,
                 )
             except SystemExit as se:
                 with open(args.output, "w", encoding="utf-8") as fh:
@@ -1041,7 +1081,6 @@ def main():
 
     finally:
         logger.close()
-
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,43 @@
+[2025-09-02T20:38:55.233754+00:00] Run start
+{
+  "prompts_path": "h_rae/data/rae_official/RobustAlpacaEval_converted.json",
+  "baseline_answers_path": "h_rae/data/baseline/phi_answers_rae.json",
+  "compare_answers_path": "h_rae/data/rae_official/hinf_alta4rae_inferences.json",
+  "outdir": "h_rae/output/rae_official_phi_vs_alta4",
+  "run_name": "rae_official_phi_vs_alta4",
+  "api_keys": [
+    "AIzaSyCGM8RNmbAVMkXuwpjOaw-9kN69d6nishQ",
+    "AIzaSyADcQC36VhgYzQUMAn6rhq1bN43vMaeK6Q",
+    "AIzaSyCmVLuRr7r9nL_vXvxiusTO4ZtiSaLF2qU",
+    "AIzaSyAA8ZFg1RtJM3NF6o_zx06QjN506l93teg",
+    "AIzaSyAGkeZxTgpW-BRF16D9r12z5o3ZQJsab4Y",
+    "AIzaSyD-yqb6okfq7CJ_1RkyJ2XmeZyFv5GsPxI",
+    "AIzaSyBdkKEKYyyXcX-ihI-73e3la2d_dtu-FD8",
+    "AIzaSyCkuPzURmqWXJHcO6tZRQSZq9W9Z_D5kaM",
+    "AIzaSyD8j2JZaJ-b3HY9lYZYp-l3sYLoNFZi_lA",
+    "AIzaSyCEAh91Kp5_x8ndvxVZ2emxp3NihPKUgbM",
+    "AIzaSyALMN5mvdDrU_W8F-w9zT_Nvxix9qY6GJ0"
+  ],
+  "max_per_key": 200,
+  "max_total": null,
+  "judging_model": "gemini-2.0-flash",
+  "delay_ms": 4000,
+  "seed": 42,
+  "phase": "both",
+  "original_only_for_judge": true,
+  "include_optimal_output": false,
+  "length_unit": "char",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "top_k": 1,
+  "max_output_tokens": 1024,
+  "json_only": false,
+  "paraphrases": null
+}
+[2025-09-02T20:38:55.236988+00:00] Starting judging phase
+[2025-09-02T20:48:18.902731+00:00] Judging phase finished: h_rae/output/rae_official_phi_vs_alta4/rae_official_phi_vs_alta4__judgments.jsonl.gz
+[2025-09-02T20:48:18.905763+00:00] Starting assessment phase
+[2025-09-02T20:48:18.922435+00:00] Assessment outputs:
+  h_rae/output/rae_official_phi_vs_alta4/rae_official_phi_vs_alta4__assessment.json
+  h_rae/output/rae_official_phi_vs_alta4/rae_official_phi_vs_alta4__summary.txt
+[2025-09-02T20:48:18.925227+00:00] Run complete

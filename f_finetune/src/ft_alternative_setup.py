@@ -854,7 +854,7 @@ def make_arg_parser():
     p.add_argument("--bf16", action="store_true")
     p.add_argument("--eval_steps", type=int, default=500)
     p.add_argument("--save_steps", type=int, default=500)
-    p.add_argument("--save_total_limit", type=int, default=2,
+    p.add_argument("--save_total_limit", type=int, default=5,
                    help="Keep at most N checkpoints. Use ≥2 when load_best_model_at_end=True to avoid missing best checkpoint.")
     p.add_argument("--model_only_checkpoints", action="store_true",
                    help="After each checkpoint save, delete optimizer/scheduler (and DeepSpeed zero) files to keep checkpoints small.")
@@ -865,7 +865,7 @@ def make_arg_parser():
                          "(e.g. checkpoint-6600). If omitted, training starts from scratch."))
     p.add_argument("--wandb_project", default="paraphrx_ft_50k")
 
-    p.add_argument("--early_stopping_patience", type=int, default=9,
+    p.add_argument("--early_stopping_patience", type=int, default=4,
                    help="Number of evals with no improvement before stopping")
 
     # debug helpers

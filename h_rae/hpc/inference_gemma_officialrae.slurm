@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=alta8
+#SBATCH --job-name=inference_gemma_officialrae
 #SBATCH --partition=root
 #SBATCH --qos=intermediate
 #SBATCH --cpus-per-task=8
@@ -10,13 +10,13 @@
 #SBATCH --error=/scratch_root/ifc24/paraphrx/logs/%j_%x.err
 
 set -euo pipefail
-echo "$(date) - alta8 job started on $(hostname)"
-echo "$(date) - alta8 job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - inference_gemma_officialrae job started on $(hostname)"
+echo "$(date) - inference_gemma_officialrae job started OK" >> "$SLURM_SUBMIT_DIR/times.log"
 
 PROJ=/scratch_root/ifc24/paraphrx
 cd "$PROJ"
 
-mkdir -p logs f_finetune/outputs_alternat/alta8
+mkdir -p logs f_finetune/outputs_alternat/inference_gemma_officialrae
 
 export SCRATCH=/scratch_root/ifc24
 export TMPDIR="$SCRATCH/tmp/${SLURM_JOB_ID:-$$}"
@@ -66,22 +66,14 @@ $PYBIN -m pip install --prefer-binary --only-binary=:all: \
   bitsandbytes==0.43.2 \
   mpi4py \
   datasets==2.19.0 \
-  numpy==1.26.4 \
-  sentencepiece \
-  loguru \
-  protobuf==3.20.* \
-  wandb \
-  matplotlib \
   --no-cache-dir \
   --target "$PYTHON_PKGS"
 $PYBIN - <<'PY'
 import torch, transformers, pathlib, importlib.util, numpy as np, safetensors
 print("Torch       :", torch.__version__)
 print("CUDA?       :", torch.cuda.is_available(), torch.version.cuda)
-print("Bits&Bytes  :", __import__("bitsandbytes").__version__)
 print("Transformers:", transformers.__version__)
 print("Safetensors :", safetensors.__version__)
-print("NumPy       :", np.__version__)
 print("Loaded from :", pathlib.Path(importlib.util.find_spec('transformers').origin).parent)
 PY
 source /scratch_root/ifc24/.hf_token || true
@@ -90,40 +82,18 @@ WANDB_FLAG=${WANDB_API_KEY:+--wandb_project paraphrax_ft_nolap}
 export TOKENIZERS_PARALLELISM=false
 export MPLBACKEND=Agg
 
-echo "$(date) - alta8 initial setup OK"
-RUN_SCRIPT="f_finetune/src/ft_alternative_setup.py"
-OUTPUT_DIR="f_finetune/outputs_alternat/alta8"
-MODEL_PATH="f_finetune/model"
+echo "$(date) - inference_gemma_officialrae initial setup OK"
 
-WANDB_PROJECT="paraphrx_ft_lap"
-RUN_NAME="alta8"
+srun h_rae/src/data_prep/inference_gemma_officialrae.py \
+  --dataset_jsonl h_rae/data/rae_official/RobustAlpacaEval.jsonl \
+  --model_name_or_path f_finetune/model \
+  --out_json h_rae/data/rae_official/RobustAlpacaEval_aws_inf_gemma_officialrae.jsonl \
+  --batch_size 256 \
+  --max_new_tokens 256 \
+  --temperature 0.0 \
+  --dtype bfloat16
 
-# sbatch --dependency=afterany:1799:1794 f_finetune/hpc/borg/borg_ft_lap_9xreal_stable5.slurm
+echo "$(date) - inference_gemma_officialrae job itself finished OK"
 
-srun "$PYBIN" "$RUN_SCRIPT" \
-  --data_paths e_eval/data/alpaca_gemma-2-2b-it.json e_eval/data/gsm8k_gemma-2-2b-it.json e_eval/data/mmlu_gemma-2-2b-it.json a_data/alpaca/50k_phrxed.json \
-  --model_path "$MODEL_PATH" \
-  --output_dir "$OUTPUT_DIR" \
-  --run_name alta8_lora_single_mlp_only_L12 \
-  --require_content_score 4 --first_min_style_count 1 \
-  --curriculum_style_jsons a_data/alpaca/selections/selection_useable_xs.json a_data/alpaca/selections/selection_useable_s.json a_data/alpaca/selections/selection_useable_m.json \
-  --curriculum_stage_epochs 1 2 1 \
-  --target_modules gate_proj,up_proj,down_proj \
-  --lora_layer_idx 12 \
-  --lora_rank 32 --lora_alpha 64 --lora_dropout 0.05 \
-  --batch_size 2 --gradient_accumulation_steps 16 \
-  --num_epochs 5 --learning_rate 2e-5 --warmup_ratio 0.05 --lr_scheduler_type cosine \
-  --consistency_kld_weight 0.50 \
-  --contrast_weight 0.08 --contrast_temperature 0.08 \
-  --style_adv_weight 0.03 --style_adv_hidden 128 --style_adv_lambda 1.0 \
-  --use_lap --lap_layer 12 --lap_t_inner 3 --lap_p_sample 0.30 --lap_epsilon 0.04 --lap_delta_lr 1e-2 --lap_lambda_lr 1e-3 \
-  --bf16 --bnb_8bit_optim \
-  --eval_steps 800 --save_steps 800 --save_total_limit 35 \
-  --model_only_checkpoints --early_stopping_patience 5 \
-  --resume_checkpoint "$OUTPUT_DIR/checkpoint-5600" \
-  --logging_steps 50 --seed 42
-
-echo "$(date) - alta8 job itself finished OK"
-
-echo "$(date) - alta8 job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
-echo "$(date) - alta8 job finished & stuff cleaned OK"
+echo "$(date) - inference_gemma_officialrae job finished OK" >> "$SLURM_SUBMIT_DIR/times.log"
+echo "$(date) - inference_gemma_officialrae job finished & stuff cleaned OK"

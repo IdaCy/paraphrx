@@ -49,7 +49,7 @@ for key in "${keys[@]}"; do
   # Start this run in its own process group (PGID = child PID) so we can kill all descendants
   # Run in background, then `wait` to enforce sequential execution
   set +e
-  setsid python3 h_rae/src/data_prep/gen_rae.py \
+  setsid python3 h_rae/src/data_prep/gen_officialdata_rae.py \
     --prompts h_rae/data/rae_official/RobustAlpacaEval_converted.json \
     --output h_rae/data/baseline/gemini15f_answers_rae.json \
     --model gemini-1.5-flash \
