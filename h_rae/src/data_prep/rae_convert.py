@@ -17,7 +17,7 @@ into a JSON array like:
 
 python3 h_rae/src/data_prep/rae_convert.py \
     h_rae/data/rae_official/RobustAlpacaEval.jsonl \
-    h_rae/data/rae_official/RobustAlpacaEval_converted.json
+    h_rae/data/rae_official/RobustAlpacaEval_converted_all.json
 
 Notes:
 - If a line has no `paraphrases`, will still emit the base fields
@@ -61,7 +61,7 @@ def main(inp: str, outp: str) -> None:
             for i, p in enumerate(paraphrases, start=1):
                 rec[f"instruct_{i}"] = p
                 if i == 1:
-                    # Add the exact alias the prompt mentioned ("intruct_1") for the first paraphrase.
+                    # Add the exact alias the prompt mentioned ("intruct_1") for the first paraphrase
                     rec["intruct_1"] = p
 
             results.append(rec)
