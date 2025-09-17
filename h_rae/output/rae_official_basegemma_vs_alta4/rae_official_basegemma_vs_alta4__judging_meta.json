@@ -1,0 +1,74 @@
+{
+  "created_utc": "2025-09-02T22:09:47.523503+00:00",
+  "config": {
+    "prompts_path": "h_rae/data/rae_official/RobustAlpacaEval_converted.json",
+    "baseline_answers_path": "h_rae/data/rae_official/base_gemma_rae.json",
+    "compare_answers_path": "h_rae/data/rae_official/alta42_rae.json",
+    "outdir": "h_rae/output/rae_official_basegemma_vs_alta4",
+    "run_name": "rae_official_basegemma_vs_alta4",
+    "api_keys": [
+      "AIzaSyAA8ZFg1RtJM3NF6o_zx06QjN506l93teg",
+      "AIzaSyAGkeZxTgpW-BRF16D9r12z5o3ZQJsab4Y",
+      "AIzaSyD-yqb6okfq7CJ_1RkyJ2XmeZyFv5GsPxI",
+      "AIzaSyBdkKEKYyyXcX-ihI-73e3la2d_dtu-FD8",
+      "AIzaSyCkuPzURmqWXJHcO6tZRQSZq9W9Z_D5kaM",
+      "AIzaSyD8j2JZaJ-b3HY9lYZYp-l3sYLoNFZi_lA",
+      "AIzaSyCEAh91Kp5_x8ndvxVZ2emxp3NihPKUgbM",
+      "AIzaSyALMN5mvdDrU_W8F-w9zT_Nvxix9qY6GJ0"
+    ],
+    "max_per_key": 200,
+    "max_total": null,
+    "judging_model": "gemini-2.0-flash",
+    "delay_ms": 4000,
+    "seed": 42,
+    "phase": "both",
+    "original_only_for_judge": true,
+    "include_optimal_output": false,
+    "length_unit": "char",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 1,
+    "max_output_tokens": 1024,
+    "json_only": false,
+    "paraphrases": null
+  },
+  "counts": {
+    "total_cases_built": 1100,
+    "attempted_cases": 53,
+    "successes": 47,
+    "failures": 6
+  },
+  "key_manager": {
+    "usage": {
+      "AIzaSyAA8ZFg1RtJM3NF6o_zx06QjN506l93teg": 0,
+      "AIzaSyAGkeZxTgpW-BRF16D9r12z5o3ZQJsab4Y": 0,
+      "AIzaSyD-yqb6okfq7CJ_1RkyJ2XmeZyFv5GsPxI": 0,
+      "AIzaSyBdkKEKYyyXcX-ihI-73e3la2d_dtu-FD8": 0,
+      "AIzaSyCkuPzURmqWXJHcO6tZRQSZq9W9Z_D5kaM": 0,
+      "AIzaSyD8j2JZaJ-b3HY9lYZYp-l3sYLoNFZi_lA": 0,
+      "AIzaSyCEAh91Kp5_x8ndvxVZ2emxp3NihPKUgbM": 0,
+      "AIzaSyALMN5mvdDrU_W8F-w9zT_Nvxix9qY6GJ0": 0
+    },
+    "dead": {
+      "AIzaSyAA8ZFg1RtJM3NF6o_zx06QjN506l93teg": false,
+      "AIzaSyAGkeZxTgpW-BRF16D9r12z5o3ZQJsab4Y": false,
+      "AIzaSyD-yqb6okfq7CJ_1RkyJ2XmeZyFv5GsPxI": false,
+      "AIzaSyBdkKEKYyyXcX-ihI-73e3la2d_dtu-FD8": false,
+      "AIzaSyCkuPzURmqWXJHcO6tZRQSZq9W9Z_D5kaM": false,
+      "AIzaSyD8j2JZaJ-b3HY9lYZYp-l3sYLoNFZi_lA": false,
+      "AIzaSyCEAh91Kp5_x8ndvxVZ2emxp3NihPKUgbM": false,
+      "AIzaSyALMN5mvdDrU_W8F-w9zT_Nvxix9qY6GJ0": false
+    },
+    "strikes": {
+      "AIzaSyAA8ZFg1RtJM3NF6o_zx06QjN506l93teg": 0,
+      "AIzaSyAGkeZxTgpW-BRF16D9r12z5o3ZQJsab4Y": 0,
+      "AIzaSyD-yqb6okfq7CJ_1RkyJ2XmeZyFv5GsPxI": 0,
+      "AIzaSyBdkKEKYyyXcX-ihI-73e3la2d_dtu-FD8": 0,
+      "AIzaSyCkuPzURmqWXJHcO6tZRQSZq9W9Z_D5kaM": 0,
+      "AIzaSyD8j2JZaJ-b3HY9lYZYp-l3sYLoNFZi_lA": 0,
+      "AIzaSyCEAh91Kp5_x8ndvxVZ2emxp3NihPKUgbM": 0,
+      "AIzaSyALMN5mvdDrU_W8F-w9zT_Nvxix9qY6GJ0": 0
+    },
+    "max_per_key": 200
+  }
+}
