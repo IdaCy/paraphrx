@@ -67,26 +67,27 @@ struct Cli {
     #[arg(long)]
     run_name: Option<String>,
 
-    // Gemini model name (e.g. gemini-2.5-flash-preview-05-20)
-    #[arg(long, default_value = "gemini-2.0-flash")]
+    // Gemini model name
+    #[arg(long, default_value = "gemini-2.5-flash-preview-05-20")]
+    //#[arg(long, default_value = "gemini-2.0-flash")]
     model: String,
 
     #[arg(long, default_value_t = 5)]
     max_attempts: u8,
 
-    /// Hard cap on number of API calls this run (default: 200)
+    // Hard cap on number of API calls this run (default: 200)
     #[arg(long = "max-calls", default_value_t = 109)]
     max_calls: usize,
 
     // Milliseconds to wait after every successful request (avoid 429s)
-    #[arg(long, default_value_t = 200)]
+    #[arg(long, default_value_t = 4000)]
     delay_ms: u64,
 
     // Google API key (overrides $GOOGLE_API_KEY)
     #[arg(long = "api-key", value_name = "KEY")]
     api_key: Option<String>,
 
-    /// Max paraphrases (keys) per single LLM request (always includes instruction_original)
+    // Max paraphrases (keys) per single LLM request (always includes instruction_original)
     #[arg(long = "batch-size", default_value_t = 25)]
     batch_size: usize,
 }
@@ -343,7 +344,7 @@ fn chunk_keys(keys: &[String], batch_size: usize) -> Vec<Vec<String>> {
 
     // Always include instruction_original in every batch as an anchor/baseline
     let anchor = "instruction_original".to_string();
-    let mut rest: Vec<String> = ks.into_iter().filter(|k| *k != anchor).collect();
+    let rest: Vec<String> = ks.into_iter().filter(|k| *k != anchor).collect();
 
     // If batch_size is tiny, still force room for the anchor
     let per_batch_rest = batch_size.saturating_sub(1).max(1);
