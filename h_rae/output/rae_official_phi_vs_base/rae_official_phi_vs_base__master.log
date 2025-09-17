@@ -1,0 +1,42 @@
+[2025-09-02T20:39:14.690185+00:00] Run start
+{
+  "prompts_path": "h_rae/data/rae_official/RobustAlpacaEval_converted.json",
+  "baseline_answers_path": "h_rae/data/baseline/phi_answers_rae.json",
+  "compare_answers_path": "h_rae/data/rae_official/base_gemma_rae.json",
+  "outdir": "h_rae/output/rae_official_phi_vs_base",
+  "run_name": "rae_official_phi_vs_base",
+  "api_keys": [
+    "AIzaSyCfMVAVfsIjkEhOcU6k7Jz9OrdeSJKE9JQ",
+    "AIzaSyDrOmybA0MBybCumR3OsyFyPZw8lJJB_OM",
+    "AIzaSyBMeHtRz-vojFDVi2PN8plw0YTWWcD76MY",
+    "AIzaSyAvLiYcYymveCKEy_TSA4aREiW3rm7rSCc",
+    "AIzaSyBAbwGIlAGOE3sXYQzBUpRbydfNtaUa-RI",
+    "AIzaSyCplmt_Qdwh9oo50ZPmLC0b4zW15Sob-Lk",
+    "AIzaSyDLGkS1nUxaM6NBkTs_n76KMLmdQMDBTe8",
+    "AIzaSyC-faB0j94bh_8pRnH0kXni2Gw-gMI8RVc",
+    "AIzaSyCfCaSV9wQAYaK527M9AH9gSZv1Myeup9w",
+    "AIzaSyAKE2X6tQ8GCMAXGHetAXwvfZgqSnHaSOc"
+  ],
+  "max_per_key": 44,
+  "max_total": null,
+  "judging_model": "gemini-2.0-flash",
+  "delay_ms": 4000,
+  "seed": 42,
+  "phase": "both",
+  "original_only_for_judge": true,
+  "include_optimal_output": false,
+  "length_unit": "char",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "top_k": 1,
+  "max_output_tokens": 1024,
+  "json_only": false,
+  "paraphrases": null
+}
+[2025-09-02T20:39:14.693134+00:00] Starting judging phase
+[2025-09-02T20:47:16.501126+00:00] Judging phase finished: h_rae/output/rae_official_phi_vs_base/rae_official_phi_vs_base__judgments.jsonl.gz
+[2025-09-02T20:47:16.503425+00:00] Starting assessment phase
+[2025-09-02T20:47:16.546230+00:00] Assessment outputs:
+  h_rae/output/rae_official_phi_vs_base/rae_official_phi_vs_base__assessment.json
+  h_rae/output/rae_official_phi_vs_base/rae_official_phi_vs_base__summary.txt
+[2025-09-02T20:47:16.548499+00:00] Run complete

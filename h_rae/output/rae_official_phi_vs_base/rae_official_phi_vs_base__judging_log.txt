@@ -1,0 +1,23 @@
+[2025-09-02T19:59:23.922451+00:00] Start judging (fresh): 1100 remaining (had 0 done)
+[2025-09-02T20:02:04.194836+00:00] judged 25/1100, successes=25, failures=0
+[2025-09-02T20:04:00.668204+00:00] Progress 44/1100 (4%)
+[2025-09-02T20:04:50.453187+00:00] judged 50/1100, successes=50, failures=0
+[2025-09-02T20:08:00.044428+00:00] judged 75/1100, successes=75, failures=0
+[2025-09-02T20:10:47.345208+00:00] Progress 99/1100 (9%)
+[2025-09-02T20:10:59.917606+00:00] judged 100/1100, successes=100, failures=0
+[2025-09-02T20:13:54.916495+00:00] judged 125/1100, successes=125, failures=0
+[2025-09-02T20:16:38.286706+00:00] judged 150/1100, successes=150, failures=0
+[2025-09-02T20:16:58.262791+00:00] Progress 154/1100 (14%)
+[2025-09-02T20:19:17.826406+00:00] judged 175/1100, successes=175, failures=0
+[2025-09-02T20:20:57.372714+00:00] ERROR case 59::instruction_original status=429
+[2025-09-02T20:20:57.378172+00:00] Done judging. Successes(+185) total=185, Failures(+1) total=1
+[2025-09-02T20:39:14.745736+00:00] Start judging (resume): 914 remaining (had 186 done)
+[2025-09-02T20:41:07.148781+00:00] ERROR case 56::instruct_3 status=429
+[2025-09-02T20:41:43.124649+00:00] ERROR case 20::instruction_original status=429
+[2025-09-02T20:42:19.054578+00:00] ERROR case 66::instruct_10 status=429
+[2025-09-02T20:42:54.917359+00:00] ERROR case 4::instruct_3 status=429
+[2025-09-02T20:43:30.824140+00:00] ERROR case 70::instruct_8 status=429
+[2025-09-02T20:46:04.456405+00:00] ERROR case 41::instruct_9 status=429
+[2025-09-02T20:46:40.377416+00:00] ERROR case 62::instruct_2 status=429
+[2025-09-02T20:47:16.490350+00:00] ERROR case 12::instruct_10 status=429
+[2025-09-02T20:47:16.497061+00:00] Done judging. Successes(+19) total=204, Failures(+8) total=9

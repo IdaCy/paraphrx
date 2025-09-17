@@ -1,3 +1,26 @@
+"""
+python3 h_rae/src/run_rae/robust_alpaca_eval.py \
+    --prompts a_data/alpaca/paraphrases_500.json \
+    --answers-baseline h_rae/data/baseline/phi_answers_rae.json \
+    --answers-compare h_rae/data/rae_official/base_gemma_rae.json \
+    --outdir h_rae/output/rae_official_phi_vs_base \
+    --run-name rae_official_phi_vs_base \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --api-key xxx \
+    --max-per-key 200 \
+    --delay-ms 4000 \
+    --original-only-for-judge \
+    >> logs/rae_official_phi_vs_base_$(date +%F_%T).log 2>&1 &
+"""
 import argparse
 import collections
 import dataclasses

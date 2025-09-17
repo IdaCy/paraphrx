@@ -23,10 +23,10 @@ ANCHOR_KEY = "instruction_original"
 EST_TOKENS_LIMIT = 250_000
 MAX_SECTION_BYTES = 1_500_000
 MAX_PROMPT_BYTES  = 1_600_000
-MAX_KEYS_PER_SCHEMA = 8
+MAX_KEYS_PER_SCHEMA = 8     # test - better reliability with thinking off
 DEFAULT_MODEL = "gemini-2.5-flash"
 
-# Free tier vers
+# Free tier pacing
 FREE_RPM = 10
 FREE_TPM = 250_000
 PACER_HEADROOM = 0.6
@@ -48,7 +48,7 @@ from binascii import Error as B64Error
 def _hunt_any_json_string(obj) -> str | None:
     """
     Walk the response recursively; return the first string that parses as JSON.
-    Tries to strip code fences and whitespace. Returns the raw JSON string.
+    Tries to strip code fences and whitespace. Returns the raw JSON string
     """
     import re
     def try_parse(s: str) -> str | None:
@@ -436,7 +436,7 @@ def query_gemini(client: httpx.Client,
         "topK": 1,
         "topP": 1.0,
         "maxOutputTokens": int(max_output_tokens),
-        # HARD FIX: disable thinking for Flash so it doesn't consume all tokens
+        # disable thinking for Flash so it doesn't consume all tokens
         "thinkingConfig": {"thinkingBudget": int(thinking_budget)},
     }
 
