@@ -3,6 +3,7 @@
 python3 h_rae/src/data_prep/inference_gemma_officialrae.py \
   --dataset_jsonl h_rae/data/rae_official/RobustAlpacaEval.jsonl \
   --model_name_or_path f_finetune/model \
+  --adapter_path f_finetune/outputs_alternat/alta42/final \
   --out_json h_rae/data/rae_official/RobustAlpacaEval_aws_inf_gemma_officialrae.jsonl \
   --batch_size 256 \
   --max_new_tokens 256 \
@@ -16,6 +17,12 @@ from typing import List, Dict, Any
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
 from tqdm import tqdm
+
+# NEW: import PEFT for LoRA adapters
+try:
+    from peft import PeftModel
+except ImportError as e:
+    PeftModel = None  # we'll check later and raise a helpful error
 
 
 def set_seed(seed: int):
@@ -65,7 +72,7 @@ def batched_generate(
     top_p: float = 1.0,
     batch_size: int = 8,
 ):
-    """Generates outputs for a list of *rendered* prompts (already chat-templated)."""
+    """Generates outputs for a list of *rendered* prompts (already chat-templated)"""
     device = model.device
     do_sample = temperature > 0.0
     eos = tokenizer.eos_token_id
@@ -121,6 +128,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset_jsonl", required=True, help="Path to RobustAlpacaEval.jsonl")
     ap.add_argument("--model_name_or_path", default="google/gemma-2-2b-it")
+    ap.add_argument("--adapter_path", default=None, help="Optional PEFT adapter directory (e.g. f_finetune/outputs_alternat/alta42/final)")
+    ap.add_argument("--merge_adapter", action="store_true", help="Merge LoRA adapter weights into the base model for faster inference.")
     ap.add_argument("--out_json", required=True, help="Path to write JSON (list of dicts)")
     ap.add_argument("--batch_size", type=int, default=8)
     ap.add_argument("--max_new_tokens", type=int, default=384)
@@ -152,16 +161,46 @@ def main():
     else:
         torch_dtype = torch.bfloat16
 
-    print(f"Loading model {args.model_name_or_path} ...")
-    tokenizer = AutoTokenizer.from_pretrained(
-        args.model_name_or_path, trust_remote_code=args.trust_remote_code
-    )
-    model = AutoModelForCausalLM.from_pretrained(
+    # Decide where to load tokenizer from
+    tok_src = args.model_name_or_path
+    if args.adapter_path is not None:
+        # Prefer tokenizer sitting in the adapter folder if present (yours has one)
+        apath = Path(args.adapter_path)
+        if apath.exists() and any((apath / name).exists() for name in ["tokenizer.json", "tokenizer.model", "tokenizer_config.json"]):
+            tok_src = args.adapter_path
+
+    if args.adapter_path and PeftModel is None:
+        raise RuntimeError(
+            "You passed --adapter_path but the 'peft' package is not installed. Please run: pip install peft"
+        )
+
+    print(f"Loading tokenizer from: {tok_src}")
+    tokenizer = AutoTokenizer.from_pretrained(tok_src, trust_remote_code=args.trust_remote_code)
+
+    print(f"Loading base model {args.model_name_or_path} ...")
+    base_model = AutoModelForCausalLM.from_pretrained(
         args.model_name_or_path,
         torch_dtype=torch_dtype,
         device_map=args.device_map,
         trust_remote_code=args.trust_remote_code,
     )
+
+    # If an adapter is provided, load it
+    if args.adapter_path:
+        print(f"Applying PEFT adapter from: {args.adapter_path}")
+        model = PeftModel.from_pretrained(
+            base_model,
+            args.adapter_path,
+            device_map=args.device_map,
+            torch_dtype=torch_dtype if torch_dtype != "auto" else None,
+        )
+        # Optionally merge for faster inference
+        if args.merge_adapter:
+            print("Merging adapter weights into the base model (this may take a moment)...")
+            model = model.merge_and_unload()
+    else:
+        model = base_model
+
     model.eval()
 
     # Build list of to-run prompts (skip those already generated)
@@ -204,7 +243,7 @@ def main():
                 "group_id": ex["group_id"],  # 0..99 case id
                 # Optional extras (not required, but handy for analysis):
                 "variant": ex["variant"],
-                "model": args.model_name_or_path,
+                "model": args.model_name_or_path if not args.adapter_path else f"{args.model_name_or_path}+adapter:{args.adapter_path}",
             }
         )
 
@@ -212,7 +251,7 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    # (Nice-to-have) also write JSONL
+    # also write JSONL
     jsonl_path = out_path.with_suffix(".jsonl")
     with open(jsonl_path, "w", encoding="utf-8") as f:
         for r in result:
