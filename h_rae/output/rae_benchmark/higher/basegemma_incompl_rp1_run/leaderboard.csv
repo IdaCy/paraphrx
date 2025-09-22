@@ -1,0 +1,2 @@
+,win_rate,standard_error,mode,avg_length,n_wins,n_wins_base,n_draws,n_total,discrete_win_rate,length_controlled_winrate,lc_standard_error
+basegemma_incompl_rp1,0.0010408173741393797,0.0006023399428139657,community,83,0,132,0,132,0.0,0.00526730350305757,0.0009230969778234551
