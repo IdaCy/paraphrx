@@ -1,0 +1,332 @@
+[
+  {
+    "instruction": "Write a daily exercise routine for Monday to Sunday with a rest day in between, each day summarized in 160 characters or less",
+    "output": "**Monday: Cardio & Core**\n30 min jog, 15 min HIIT, 10 min core (planks, crunches).\n\n**Tuesday: Upper Body Strength**\nDumbbell routine: curls, presses, rows.\n\n**Wednesday: Rest Day**\nActive recovery: stretch, light walk.\n\n**Thursday: Lower Body Strength**\nSquats, lunges, deadlifts (45 min).\n\n**Friday: Yoga & Flexibility**\n60 min mixed yoga session.\n\n**Saturday: Full Body Circuit**\n20 min circuit, repeat 3x: push-ups, jump squats, pull-ups.\n\n**Sunday: Endurance**\n45 min bike ride or swim.",
+    "group_id": 0,
+    "variant": "original",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Compose a weekly exercise schedule from Monday through Sunday, including a day of rest, with each day's activity described in no more than 160 characters.",
+    "output": "**Monday:** Cardio - 30 min run + 15 min jump rope.  \n**Tuesday:** Strength training - Upper body (push-ups, pull-ups, dumbbell exercises).  \n**Wednesday:** Yoga - 60 min session focusing on flexibility and core.  \n**Thursday:** HIIT - 20 min of high-intensity interval training.  \n**Friday:** Rest Day - Take it easy, maybe some light stretching or a walk.  \n**Saturday:** Strength training - Lower body (squats, lunges, leg press).  \n**Sunday:** Cycling - 45 min moderate pace outdoor or stationary bike.",
+    "group_id": 0,
+    "variant": "paraphrase_0",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Formulate a seven-day workout plan with an interspersed rest day, encapsulated within 160 characters for each day.",
+    "output": "**Day 1: Upper Body Strength**  \nPush-ups, pull-ups, bench press, dumbbell curls. 3 sets of 10-12 reps each. Stretch.\n\n**Day 2: Cardio & Core**  \n30 min jog. Planks, Russian twists, leg raises. 3 sets of 15 reps.\n\n**Day 3: Lower Body Strength**  \nSquats, lunges, deadlifts, calf raises. 3 sets of 10-12 reps each.\n\n**Day 4: Rest Day**  \nActive recovery: gentle yoga or a light walk. Focus on hydration and nutrition.\n\n**Day 5: HIIT**  \n20 min of high-intensity interval training: 40s work, 20s rest. Include burpees, high knees.\n\n**Day 6: Full Body Circuit**  \nMix of upper, lower body & core exercises. 3 rounds, 10 reps each.\n\n**Day 7: Flexibility & Balance**  \nYoga or Pilates session focusing on flexibility and core strength. 45 min.",
+    "group_id": 0,
+    "variant": "paraphrase_1",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Draft a concise weekly fitness agenda, allocating rest within the sequence, limiting each day's summary to 160 characters.",
+    "output": "1. **Monday**: Cardio - 30 min run. Strength training - upper body (30 min).\n2. **Tuesday**: Yoga - 60 min session for flexibility and core strength.\n3. **Wednesday**: Rest Day.\n4. **Thursday**: HIIT - 20 min session. Leg day - squats and lunges (20 min).\n5. **Friday**: Swimming - 45 min for full-body workout.\n6. **Saturday**: Cycling - 60 min moderate pace.\n7. **Sunday**: Rest Day.",
+    "group_id": 0,
+    "variant": "paraphrase_2",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Set up a fitness timetable for a week, Monday to Sunday, ensuring a rest period and keeping each description under 160 characters.",
+    "output": "**Monday:** Cardio - 30 min run + 15 min jump rope. Focus on steady pace.\n\n**Tuesday:** Strength training - 45 min. Include weights and body resistance exercises.\n\n**Wednesday:** Yoga - 60 min session. Emphasize flexibility and core strength.\n\n**Thursday:** Rest Day - Take it easy, maybe some light stretching or a leisurely walk.\n\n**Friday:** HIIT - 30 min of high-intensity interval training. Mix sprints with bodyweight exercises.\n\n**Saturday:** Swimming - 45 min. Focus on laps and different strokes for full-body workout.\n\n**Sunday:** Cycling - 60 min ride. Choose a scenic route for enjoyment and endurance building.",
+    "group_id": 0,
+    "variant": "paraphrase_3",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Establish a daily workout regimen for an entire week, incorporating a day off, with brief outlines not exceeding 160 characters each.",
+    "output": "**Monday: Cardio & Core**\n- 30 min jog\n- 15 min core (planks, crunches)\n\n**Tuesday: Upper Body Strength**\n- Push-ups, pull-ups, dumbbell exercises\n\n**Wednesday: Yoga**\n- 45 min session focusing on flexibility\n\n**Thursday: Lower Body Strength**\n- Squats, lunges, deadlifts\n\n**Friday: HIIT**\n- 20 min of high-intensity interval training\n\n**Saturday: Active Rest**\n- Light walk or leisurely bike ride\n\n**Sunday: Rest Day**\n- Full rest, focus on recovery and stretching",
+    "group_id": 0,
+    "variant": "paraphrase_4",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Arrange a physical activity roster from the start to the end of the week, with one day's rest, summarizing each session in 160 characters max.",
+    "output": "**Monday: Yoga** - Start the week with a calming yoga session to stretch and strengthen muscles. Focus on breath and balance.\n\n**Tuesday: HIIT** - High-intensity interval training for 30 minutes. Boost metabolism and burn fat with short bursts of intense exercise.\n\n**Wednesday: Swimming** - Swim laps for 45 minutes. Great for cardiovascular health and low-impact on joints.\n\n**Thursday: Rest Day** - Take a break to allow muscles to recover and prevent injury.\n\n**Friday: Cycling** - Go for a 1-hour bike ride. Improve leg strength and endurance while enjoying the outdoors.\n\n**Saturday: Running** - 5km run to build stamina and improve cardiovascular fitness.\n\n**Sunday: Pilates** - End the week with a Pilates session to improve core strength and flexibility, focusing on alignment and controlled movements.",
+    "group_id": 0,
+    "variant": "paraphrase_5",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Organize a seven-day exercise timetable with a rest day slotted, ensuring each day’s routine is succinctly described within 160 characters.",
+    "output": "**Monday: Cardio Kickstart**\n30 min treadmill run, 15 min HIIT session.\n\n**Tuesday: Upper Body Strength**\nCircuit: push-ups, pull-ups, dumbbell curls, tricep dips.\n\n**Wednesday: Rest Day**\nRelax and recover.\n\n**Thursday: Core & Flexibility**\n20 min Pilates, 15 min yoga stretches.\n\n**Friday: Lower Body Blast**\nSquats, lunges, deadlifts, 10 min jump rope.\n\n**Saturday: Mixed Circuit**\nMix of cardio, strength; 5 stations, 5 min each.\n\n**Sunday: Endurance Walk**\n60 min brisk walk or hike outdoors.",
+    "group_id": 0,
+    "variant": "paraphrase_6",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Outline a fitness program for the week, Monday to Sunday, including a break day, with each plan summarized in a maximum of 160 characters.",
+    "output": "**Monday: Cardio Kickstart**\n- 30 min treadmill, 15 min cycling, 10 min jump rope. Start week strong!\n\n**Tuesday: Upper Body Strength**\n- Circuit: push-ups, pull-ups, dumbbell press, 3x10 each.\n\n**Wednesday: Yoga and Stretch**\n- 1 hr session focusing on flexibility and core strength.\n\n**Thursday: Leg Day**\n- Squats, lunges, leg press, 3x12 each. Don't skip!\n\n**Friday: HIIT**\n- 20 min of high-intensity interval training. Push your limits!\n\n**Saturday: Active Rest**\n- Light activity: walk in the park, easy bike ride.\n\n**Sunday: Break Day**\n- Full rest. Prepare for the upcoming week.",
+    "group_id": 0,
+    "variant": "paraphrase_7",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Construct a day-to-day workout outline for the entire week, incorporating a day for rest, each portrayed in no more than 160 characters.",
+    "output": "1. Monday: Cardio - 30 min run, 15 min jump rope.\n2. Tuesday: Upper body - push-ups, pull-ups, dumbbell curls, bench press.\n3. Wednesday: Yoga - 1 hr session.\n4. Thursday: Leg day - squats, lunges, deadlifts.\n5. Friday: Core - planks, sit-ups, Russian twists.\n6. Saturday: Rest day.\n7. Sunday: Full body circuit - 20 min mix of strength exercises.",
+    "group_id": 0,
+    "variant": "paraphrase_8",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Develop a weeklong exercise guild, guaranteeing a day for relaxation, with every day’s agenda encapsulated in a 160-character limit.",
+    "output": "1. Mon: 30 min brisk walk + 20 min yoga. Start week refreshed!\n2. Tue: 45 min cycling. Cardio boost!\n3. Wed: Strength training - 30 min. Build muscle!\n4. Thu: Rest day. Relax & recover.\n5. Fri: HIIT for 20 min. Quick & intense!\n6. Sat: 40 min swim. Full-body workout.\n7. Sun: 60 min hike. Connect with nature.",
+    "group_id": 0,
+    "variant": "paraphrase_9",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Anytown Bank obtaining and using consumer reports in connection with any credit or insurance transaction that is not initiated by the consumer in order to make firm offers of credit or insurance is known as:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the process where financial institutions like banks use consumer reports to identify individuals to whom they wish to extend firm offers of credit or insurance, even if those individuals have not initiated the transaction. This is done under the guidelines of the Fair Credit Reporting Act (FCRA), which allows this activity provided certain conditions are met, including providing a clear and conspicuous disclosure to the consumer about the prescreening and maintaining confidentiality.",
+    "group_id": 1,
+    "variant": "original",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Identify the process by which Anytown Bank acquires and utilizes consumer reports for credit or insurance transactions not commenced by the consumer, employed to extend definitive proposals of credit or insurance, which is called:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The process by which Anytown Bank acquires and utilizes consumer reports for credit or insurance transactions not initiated by the consumer, and used to extend definitive proposals of credit or insurance, is called:\n\nD. Prescreening\n\nPrescreening is a process used by financial institutions to identify potential customers to whom they might want to offer credit or insurance. This is done by obtaining consumer reports under specific criteria to determine eligibility before making an offer.",
+    "group_id": 1,
+    "variant": "paraphrase_0",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Define the method where Anytown Bank uses consumer credit reports for transactions related to credit or insurance not started by the consumer, in order to offer solid terms of credit or insurance, known as:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the method used by financial institutions like Anytown Bank to review consumer credit reports for transactions related to credit or insurance that were not initiated by the consumer. This process helps the bank to offer solid terms of credit or insurance based on the creditworthiness of the consumer as determined from their credit report.",
+    "group_id": 1,
+    "variant": "paraphrase_1",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What is the term for the action taken by Anytown Bank when it accesses and employs consumer reports for the purpose of extending concrete offers of credit or insurance, in scenarios where the consumer has not initiated the transaction?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the term used when a bank or other financial institution accesses consumer credit reports to identify individuals to whom they will extend concrete offers of credit or insurance, even if those individuals have not initiated any transaction. This process allows institutions to make unsolicited offers to consumers who meet certain criteria set by the lender or insurer.",
+    "group_id": 1,
+    "variant": "paraphrase_2",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Describe the activity in which Anytown Bank engages when it gathers and applies consumer reports, without a consumer-initiated credit or insurance transaction, to make firm credit or insurance proposals:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The activity described where Anytown Bank gathers and uses consumer reports to make firm offers of credit or insurance, without a consumer-initiated transaction, is known as **D. Prescreening**.\n\nPrescreening is a process used by financial institutions like banks or insurance companies to identify potential customers to whom they can extend credit or insurance offers. This is done by obtaining consumer reports from credit reporting agencies under specific criteria set by the lender or insurer. The individuals who meet these criteria are then targeted with firm offers of credit or insurance. This process is regulated under the Fair Credit Reporting Act (FCRA), which allows this activity provided the consumers have not opted out of receiving such offers.",
+    "group_id": 1,
+    "variant": "paraphrase_3",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "State what it's called when Anytown Bank extracts and exploits consumer reports in scenarios where the consumer hasn't initiated the credit or insurance transaction, with the intent to propose definite credit or insurance offers:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the process used by creditors and insurers to make unsolicited offers of credit or insurance to individuals who have not initiated a transaction. This process involves the use of consumer reports to identify potential customers who meet certain criteria set by the creditor or insurer. These consumers are then targeted with specific offers, which they can accept or decline.",
+    "group_id": 1,
+    "variant": "paraphrase_4",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What do we call the procedure where Anytown Bank takes and makes use of consumer reports for making assured offers of credit or insurance, without initiation by the consumer, during any credit or insurance dealings?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The procedure where a bank like Anytown Bank uses consumer reports to make assured offers of credit or insurance to consumers without their initiation is called **D. Prescreening**. This process involves the bank obtaining consumer information from credit reporting agencies to identify potential customers who meet certain criteria for creditworthiness or insurance eligibility, and then making offers based on that information.",
+    "group_id": 1,
+    "variant": "paraphrase_5",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Clarify the term used to describe Anytown Bank's act of obtaining and utilizing consumer reports in conjunction with credit or insurance dealings not triggered by the consumer, aiming to provide solid offers of credit or insurance:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the term used to describe the act of a bank or other financial institution obtaining and using consumer reports to identify individuals to whom they will extend unsolicited credit or insurance offers. These offers are typically based on certain criteria met by the consumer within the credit report. This process is common in the credit card and insurance industries, where firms send pre-approved offers to potential customers who have not initiated any credit or insurance application but meet specific criteria set by the issuer.",
+    "group_id": 1,
+    "variant": "paraphrase_6",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What term fits the description of Anytown Bank's practice of securing and using consumer reports in matters of non-consumer-initiated credit or insurance transactions, with the end goal of making definitive credit or insurance propositions?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The term that fits the description of Anytown Bank's practice of securing and using consumer reports in matters of non-consumer-initiated credit or insurance transactions, with the end goal of making definitive credit or insurance propositions, is:\n\nD. Prescreening\n\nPrescreening refers to the process where financial institutions or insurance companies use consumer credit information from credit bureaus to identify potential customers to whom they can offer credit or insurance. This is done without the consumer initially requesting or initiating the transaction.",
+    "group_id": 1,
+    "variant": "paraphrase_7",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Tokenize the function of Anytown Bank when it takes and applies consumer credit information in instances of credit or insurance transactions not solicited by the consumer, for the purpose of offering definite credit or insurance opportunities, as:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the process used by financial institutions like Anytown Bank to review consumer credit information to determine eligibility for credit or insurance offers that the consumer has not directly solicited. This process allows the bank to make targeted, pre-approved offers of credit or insurance to consumers based on their credit history.",
+    "group_id": 1,
+    "variant": "paraphrase_8",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What designation is ascribed to the practice by Anytown Bank of procuring and utilizing consumer reports during proceedings involving credit or insurance where the consumer is not the initiator, so as to put forward guaranteed offers of credit or insurance?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the practice used by financial institutions like Anytown Bank to obtain and use consumer reports for the purpose of making unsolicited offers of credit or insurance. This process involves the bank selecting criteria that consumers must meet and then obtaining consumer reports from a credit reporting agency to identify individuals who meet those criteria. These individuals are then offered credit or insurance without having initiated the request themselves.",
+    "group_id": 1,
+    "variant": "paraphrase_9",
+    "model": "gpt-4-turbo-2024-04-09",
+    "generator": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Come up with words that rhyme with the given word.\n\ninstruct",
+    "output": "1. Construct\n2. Destruct\n3. Obstruct\n4. Reconstruct\n5. Conduct",
+    "group_id": 2,
+    "variant": "original",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Generate a list of words that rhyme with the specified word.\n\ninstruct",
+    "output": "Here are some words that rhyme with \"instruct\":\n\n1. Abject\n2. Affect\n3. Collect\n4. Connect\n5. Correct\n6. Deflect\n7. Detect\n8. Direct\n9. Dissect\n10. Effect\n11. Eject\n12. Elect\n13. Erect\n14. Expect\n15. Inject\n16. Inspect\n17. Neglect\n18. Object\n19. Perfect\n20. Project\n21. Protect\n22. Reflect\n23. Reject\n24. Respect\n25. Select\n26. Subject\n27. Suspect\n\nThese words share the ending \"-ect\" sound, making them suitable rhymes for \"instruct.\"",
+    "group_id": 2,
+    "variant": "paraphrase_0",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Identify a series of words rhyming with the selected term.\n\ninstruct",
+    "output": "Here are several words that rhyme with \"instruct\":\n\n1. Construct\n2. Conduct\n3. Destruct\n4. Obstruct\n5. Reconstruct\n6. Deduct\n7. Aduct\n8. Induct",
+    "group_id": 2,
+    "variant": "paraphrase_1",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Provide an assortment of rhyming words for the given word.\n\ninstruct",
+    "output": "Here are some words that rhyme with \"instruct\":\n\n1. Conduct\n2. Construct\n3. Destruct\n4. Reconstruct\n5. Deduct\n6. Obstruct\n7. Aduct\n8. Induct\n\nThese words share the same ending sound, making them suitable rhymes for \"instruct.\"",
+    "group_id": 2,
+    "variant": "paraphrase_2",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Assemble an array of words that share a rhyme with the word provided.\n\ninstruct",
+    "output": "Here is an array of words that share a rhyme with \"instruct\":\n\n1. Construct\n2. Destruct\n3. Obstruct\n4. Conduct\n5. Reconstruct\n6. Deduct\n7. Induct\n8. Product\n9. Abduct\n10. Corrupt",
+    "group_id": 2,
+    "variant": "paraphrase_3",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Formulate a collection of words that end with a sound similar to the given word.\n\ninstruct",
+    "output": "Here is a collection of words that end with a sound similar to \"instruct\":\n\n1. Construct\n2. Destruct\n3. Obstruct\n4. Reconstruct\n5. Self-destruct",
+    "group_id": 2,
+    "variant": "paraphrase_4",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Create a roster of words that correspond in rhyme to the given word.\n\ninstruct",
+    "output": "Here is a list of words that rhyme with \"instruct\":\n\n1. Abject\n2. Affect\n3. Collect\n4. Connect\n5. Correct\n6. Deflect\n7. Destruct\n8. Detect\n9. Direct\n10. Dissect\n11. Effect\n12. Eject\n13. Elect\n14. Erect\n15. Expect\n16. Inject\n17. Inspect\n18. Interject\n19. Neglect\n20. Object\n21. Perfect\n22. Project\n23. Protect\n24. Reflect\n25. Reject\n26. Respect\n27. Select\n28. Subject\n29. Suspect\n\nThese words share the \"-ect\" ending, making them suitable rhymes for \"instruct.\"",
+    "group_id": 2,
+    "variant": "paraphrase_5",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Compile a selection of words that resonate with the rhyme of the specified word.\n\ninstruct",
+    "output": "Here is a selection of words that rhyme with \"instruct\":\n\n1. Conduct\n2. Construct\n3. Destruct\n4. Obstruct\n5. Reconstruct\n6. Deduct\n7. Aduct\n8. Induct\n9. Product\n10. Abduct",
+    "group_id": 2,
+    "variant": "paraphrase_6",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Invent a catalog of words that have a rhyming match with the provided word.\n\ninstruct",
+    "output": "Here is a catalog of words that rhyme with \"instruct\":\n\n1. Abject\n2. Affect\n3. Collect\n4. Connect\n5. Correct\n6. Deflect\n7. Destruct\n8. Detect\n9. Direct\n10. Disaffect\n11. Dissect\n12. Effect\n13. Eject\n14. Elect\n15. Erect\n16. Expect\n17. Inject\n18. Inspect\n19. Interject\n20. Neglect\n21. Object\n22. Perfect\n23. Project\n24. Protect\n25. Reflect\n26. Reject\n27. Respect\n28. Select\n29. Subject\n30. Suspect\n\nThese words share the \"-ect\" ending, making them suitable rhymes for \"instruct.\"",
+    "group_id": 2,
+    "variant": "paraphrase_7",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Construct a grouping of words that match in rhyme with the given term.\n\ninstruct",
+    "output": "1. Construct\n2. Destruct\n3. Obstruct\n4. Reconstruct\n5. Conduct",
+    "group_id": 2,
+    "variant": "paraphrase_8",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Establish a compilation of words that echo the rhyme of the specified word.\n\ninstruct",
+    "output": "Here is a list of words that rhyme with \"instruct\":\n\n1. Abject\n2. Affect\n3. Collect\n4. Connect\n5. Correct\n6. Deflect\n7. Destruct\n8. Detect\n9. Direct\n10. Dissect\n11. Effect\n12. Eject\n13. Elect\n14. Erect\n15. Expect\n16. Inject\n17. Inspect\n18. Interject\n19. Neglect\n20. Object\n21. Perfect\n22. Project\n23. Protect\n24. Reflect\n25. Reject\n26. Respect\n27. Select\n28. Subject\n29. Suspect\n\nThese words share the \"-ect\" ending, making them suitable rhymes for \"instruct.\"",
+    "group_id": 2,
+    "variant": "paraphrase_9",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Write a compelling product launch announcement email to inform our customers of our new software solution.",
+    "output": "Subject: Introducing Our Game-Changing Software: Elevate Your Efficiency with [Product Name]!\n\nDear [Customer's Name],\n\nWe are thrilled to announce the launch of our latest innovation, [Product Name], designed to transform the way you work and significantly boost your productivity!\n\nAt [Your Company Name], we understand the challenges you face in your daily operations. That's why we've spent countless hours developing a solution that not only meets your needs but also exceeds your expectations. [Product Name] is the culmination of extensive research and feedback from users like you, crafted to help streamline your processes and make every minute count.\n\n**What Sets [Product Name] Apart?**\n- **Enhanced Efficiency**: Say goodbye to repetitive tasks and inefficiencies. [Product Name] automates your workflows, allowing you to focus on what truly matters.\n- **User-Friendly Interface**: No need for lengthy training sessions. Our intuitive design ensures you can get started immediately and see results from day one.\n- **Customizable Features**: Every business is unique. Customize [Product Name] to perfectly fit your specific needs and preferences.\n- **Robust Security**: Your data's safety is our top priority. [Product Name] is built with industry-leading security measures to ensure your information is protected at all times.\n\n**Special Launch Offer**\nAs a token of our appreciation for your continued support, we are excited to offer you an exclusive 20% discount on your first year subscription of [Product Name]. Use the promo code NEW20 at checkout. Hurry, this offer is valid until [expiration date].\n\n**Get Started Now**\nReady to take your productivity to the next level? Visit our website [link to product page] to learn more about [Product Name] and start your free trial today. Experience firsthand how our software can revolutionize your workflow.\n\nWe are confident that [Product Name] will be a valuable asset to your business, and we are eager to support you in all your endeavors with this new tool. Should you have any questions or need further information, please do not hesitate to reach out to our customer support team at [support contact information].\n\nThank you for choosing [Your Company Name]. We look forward to seeing you achieve new heights of success with [Product Name].\n\nWarm regards,\n\n[Your Name]\n[Your Title]\n[Your Company Name]\n[Contact Information]\n[Social Media Handles]\n\nP.S. Join us for a live webinar on [date] at [time], where we will demonstrate the capabilities of [Product Name] and answer any questions you may",
+    "group_id": 3,
+    "variant": "original",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Craft an engaging announcement via email to notify our customers about the launch of our latest software offering.",
+    "output": "Subject: 🚀 Exciting News: Unveiling Our New Software - Elevate Your Experience!\n\nDear [Customer's Name],\n\nWe hope this message finds you well. At [Your Company Name], we are always looking for ways to enhance your experience and provide solutions that truly make a difference. Today, we are thrilled to announce the launch of our latest software offering: **[Software Name]**!\n\n🌟 **What's New?**\n[Software Name] is designed with you in mind, integrating cutting-edge technology and user-friendly features to streamline your daily tasks. Whether you're looking to boost productivity, enhance security, or gain insightful analytics, [Software Name] is your go-to solution.\n\n🔍 **Key Features Include:**\n- **Feature 1:** [Brief description]\n- **Feature 2:** [Brief description]\n- **Feature 3:** [Brief description]\n- And many more!\n\n🎉 **Exclusive Launch Offer**\nAs a valued member of our community, we are excited to offer you an exclusive **15% discount** on your first year subscription. Simply use the code **NEWLAUNCH15** at checkout. Hurry, this offer expires on [Expiration Date].\n\n📅 **Get Started**\nReady to take your operations to the next level? Visit our website [link to website] to learn more about [Software Name] and start your free trial today. Experience firsthand how our new software can revolutionize the way you work.\n\nWe are committed to supporting you every step of the way and are eager to hear how [Software Name] helps propel your success. Please do not hesitate to reach out with any questions or feedback.\n\nThank you for trusting [Your Company Name] as your partner in innovation. We look forward to continuing to serve you with the latest solutions.\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Your Company Name]  \n[Contact Information]  \n[Social Media Handles]  \n\nP.S. Stay tuned for our upcoming webinar on [Date], where we'll dive deep into the capabilities of [Software Name] and answer all your questions live. Register now to secure your spot!\n\n---\n\nFeel free to adjust the content to better fit your specific software features, customer base, and brand voice!",
+    "group_id": 3,
+    "variant": "paraphrase_0",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Compose an enticing product release email to update our customers about our newly introduced software tool.",
+    "output": "Subject: Unlock New Possibilities - Discover Our Latest Software Tool!\n\nDear [Customer's Name],\n\nWe’re thrilled to announce the launch of our latest innovation, [Product Name], designed to transform the way you work and enhance your productivity like never before!\n\n🚀 **Introducing [Product Name]** 🚀\n\nAfter extensive research and feedback from users like you, we've developed [Product Name] to help tackle your biggest challenges. Whether you're looking to streamline operations, enhance data security, or boost your team's collaboration, [Product Name] is your new go-to solution.\n\n**Key Features Include:**\n- **Enhanced Integration:** Seamlessly connects with the tools you already use.\n- **User-Friendly Interface:** An intuitive design that makes navigation a breeze.\n- **Advanced Security Protocols:** Keep your data safe and secure with state-of-the-art encryption.\n- **Real-Time Collaboration:** Work together, even from a distance, with live updates and shared workspaces.\n\n**Special Launch Offer 🌟**\n\nAs a valued customer, we’re excited to offer you an exclusive 15% discount on your first year subscription of [Product Name]. Use the promo code NEWTOOL15 at checkout. Hurry, this offer expires on [expiration date].\n\n**Ready to Get Started?**\n\nDive into a smoother, more efficient workflow today. Click [here](#) to explore [Product Name] and see how it can make a difference in your day-to-day tasks.\n\nNeed more information? Join us for a free webinar on [date] at [time], where we’ll give a live demo and answer all your questions. Register [here](#) to secure your spot.\n\nThank you for trusting us with your needs. We can’t wait for you to experience everything [Product Name] has to offer. As always, your feedback is invaluable to us, so please don’t hesitate to reach out with your thoughts and first impressions.\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Company Name]  \n[Contact Information]  \n[Social Media Handles]\n\n---\n\n**P.S.** Stay ahead of the curve! Follow us on our social media platforms for real-time updates, tips, and more exciting offers.\n\n[Unsubscribe](#) if you would prefer not to receive future emails from us.",
+    "group_id": 3,
+    "variant": "paraphrase_1",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Develop a persuasive email communication to alert our customers to our new software solution's market debut.",
+    "output": "Subject: Unlock New Possibilities with Our Latest Software Solution – Available Now!\n\nDear [Customer's Name],\n\nI hope this message finds you well. At [Your Company Name], we are always looking for ways to drive innovation and deliver value to businesses like yours. Today, I am thrilled to share something exceptional with you – the launch of our latest software solution, [Product Name]!\n\n[Product Name] is the result of extensive research and development, designed to [briefly describe the primary function and benefit of the software, e.g., streamline your workflow, enhance data security, improve customer engagement, etc.]. We believe it has the potential to transform the way you operate, bringing efficiency and effectiveness to the forefront of your business.\n\n**Why Consider [Product Name]?**\n- **Enhanced Efficiency**: Automate and streamline your processes to save time and reduce costs.\n- **User-Friendly Interface**: Enjoy a seamless experience with our intuitive design.\n- **Scalability**: Grow your business with software that scales with your needs.\n- **Support and Security**: Benefit from our round-the-clock customer support and state-of-the-art security measures.\n\nWe understand that adopting new technology is a significant decision. That's why we are offering an exclusive, no-obligation demonstration of [Product Name]. Experience firsthand how our software can meet your needs and exceed your expectations.\n\n**Special Launch Offer**: As a valued customer, we are pleased to offer you [mention any special deal, discount, or trial period], valid until [expiration date]. This is our way of saying thank you for your continued trust and support.\n\nReady to take the next step? Please feel free to reach out to schedule your free demo or to ask any questions you might have. Contact us at [Contact Information] or directly reply to this email. We are here to assist you every step of the way.\n\nThank you for considering [Your Company Name] as your partner in progress. We look forward to helping you achieve new heights with [Product Name].\n\nWarm regards,\n\n[Your Name]\n[Your Position]\n[Your Company Name]\n[Contact Information]\n[Website URL]",
+    "group_id": 3,
+    "variant": "paraphrase_2",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Formulate an email bulletin that captivates our customer base with news of our newest software solution release.",
+    "output": "Subject: 🚀 Unleash New Possibilities with Our Latest Software Release! 🚀\n\nDear [Customer's Name],\n\nWe’re thrilled to announce the launch of our latest software solution, [Product Name], designed to transform the way you work and propel your business forward. At [Your Company Name], we continuously strive to innovate and provide solutions that not only meet but exceed your expectations.\n\n**What’s New?**\n[Product Name] comes packed with features that we’ve developed based on feedback from you, our valued customers:\n- **Enhanced User Interface:** Enjoy a more intuitive and user-friendly experience that simplifies your workflow.\n- **Advanced Analytics Tools:** Gain deeper insights with our powerful new analytics features, enabling you to make data-driven decisions with ease.\n- **Increased Compatibility:** [Product Name] seamlessly integrates with a multitude of platforms and devices, ensuring you stay connected and productive.\n\n**Exclusive Benefits for Early Adopters:**\nAs a token of our appreciation, we are offering an exclusive 20% discount for the first three months to our existing customers who upgrade to [Product Name] within the next 30 days. Don’t miss out on this opportunity to enhance your operational efficiency and stay ahead of the curve.\n\n**Join Our Webinar:**\nTo get you up and running, we’re hosting a free webinar on [Date] at [Time]. Our product experts will walk you through the new features of [Product Name] and answer any questions you may have. [Registration Link]\n\n**Your Feedback Matters:**\nYour input is invaluable to us. After you’ve explored the new features of [Product Name], we would love to hear your thoughts. Your feedback will help us continue to improve and serve you better.\n\nThank you for your continued trust in [Your Company Name]. We are excited to see how [Product Name] will make a positive impact on your business. Upgrade today and start enjoying a smarter, faster, and more efficient workflow.\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Your Company Name]  \n[Contact Information]  \n[Company Website]\n\nP.S. Stay connected with us on [Social Media Links] for more updates and tips on making the most of [Product Name]!\n\n---\n\nFeel free to adjust the content to better fit your specific product features, customer engagement strategies, and brand voice.",
+    "group_id": 3,
+    "variant": "paraphrase_3",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Prepare an alluring email message to disseminate information to our customers about the unveiling of our innovative software solution.",
+    "output": "Subject: Unlock New Possibilities with Our Cutting-Edge Software Solution!\n\nDear [Customer's Name],\n\nI hope this message finds you well. We are thrilled to announce the launch of our latest innovation, [Software Name], designed to transform the way you work and enhance your operational efficiency!\n\n🚀 **Introducing [Software Name]** 🚀\n\nAfter extensive research and development, our team is excited to unveil a software solution that not only meets the demands of the modern-day business landscape but also propels you ahead of the curve. [Software Name] is engineered to streamline your processes, facilitate seamless communication, and provide critical insights that drive smarter decision-making.\n\n**Why [Software Name]?**\n- **Enhanced Efficiency**: Automate routine tasks and focus more on strategic activities.\n- **Scalability**: Grow your business with software that scales with your needs.\n- **User-Friendly Interface**: Enjoy a clean, intuitive interface that simplifies your workday.\n- **Robust Security**: Protect your data with state-of-the-art security features.\n\n**Exclusive Invitation to Our Launch Webinar**\n\nJoin us for an exclusive webinar where we will dive deep into the capabilities of [Software Name] and show you how it can be customized to fit your unique needs. \n\n📅 Date: [Insert Date]\n🕒 Time: [Insert Time]\n🌐 Location: [Insert Webinar Link]\n\n**Special Offer for Attendees**\n\nAs a token of our appreciation, webinar attendees will receive an exclusive first look at our software, along with special promotional pricing and early access to new features.\n\n**Reserve Your Spot!**\nPlease confirm your attendance by clicking here: [Insert RSVP Link]\n\nWe are eager to support you in exploring how [Software Name] can make a significant difference in your business. If you have any questions or need further information, feel free to contact us at [Contact Information].\n\nThank you for your continued trust and partnership. We look forward to welcoming you to the future of business efficiency with [Software Name].\n\nWarm regards,\n\n[Your Name]\n[Your Position]\n[Company Name]\n[Contact Information]\n[Company Website URL]\n\n---\n\nWe can't wait to see you there and embark on this exciting journey together!",
+    "group_id": 3,
+    "variant": "paraphrase_4",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Construct a magnetic email to broadcast the introduction of our latest software solution to our customer audience.",
+    "output": "Subject: Unlock New Possibilities with Our Latest Software Solution – [Product Name]!\n\nDear [Customer's Name],\n\nWe are thrilled to announce the launch of our groundbreaking software, [Product Name], designed to transform the way you work and propel your business into a new era of efficiency and innovation!\n\n🚀 **What's New?**\n[Product Name] is the result of countless hours of research, development, and feedback from users like you. It's packed with features tailored to meet the demands of your dynamic business environment:\n- **Enhanced User Interface:** Enjoy a sleek, intuitive design that makes navigation a breeze.\n- **Advanced Analytics:** Gain deep insights with powerful, easy-to-use analytics tools that help you make data-driven decisions.\n- **Seamless Integration:** Effortlessly integrate with your existing tools and systems, reducing complexity and enhancing productivity.\n- **Robust Security:** Protect your data with state-of-the-art security features, ensuring your business information stays safe and private.\n\n🌟 **Exclusive Benefits for Early Adopters**\nAs a valued member of our community, we're offering an exclusive early adopter package if you sign up for [Product Name] by [deadline]. Benefits include:\n- **Special Discounted Pricing**\n- **Priority Customer Support**\n- **Free Training Sessions for Your Team**\n\n🔍 **See [Product Name] in Action**\nJoin us for a live demo on [date] at [time], where our product experts will showcase the capabilities of [Product Name] and answer any questions you may have. [Registration link]\n\n📝 **Ready to Get Started?**\nGetting started is easy! Visit our website [link to product page] to learn more about [Product Name] and take advantage of our limited-time offer. If you have any questions or need further information, feel free to contact us at [contact information].\n\nThank you for being a part of our community. We are excited to see how [Product Name] will help your business reach new heights!\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Your Company]  \n[Contact Information]  \n[Company Website URL]  \n\nP.S. Don't forget to follow us on [Social Media links] to stay updated on all our latest developments and offers!\n\n---\n\nWe look forward to continuing to support your success with innovative solutions like [Product Name].",
+    "group_id": 3,
+    "variant": "paraphrase_5",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Draft a captivating announcement for an email that will inform our clients about our state-of-the-art software solution's release.",
+    "output": "Subject: 🚀 Unveiling the Future: Discover Our Revolutionary Software Solution!\n\nDear [Client's Name],\n\nWe are thrilled to announce the launch of our latest innovation, [Software Name], a state-of-the-art software solution designed to transform your business operations. After years of dedicated research and development, we are ready to unveil a tool that will not only meet your expectations but exceed them.\n\n🌟 What's New?\n[Software Name] integrates cutting-edge technology with user-friendly functionality, making it a game-changer in [specific industry or general use]. Whether you're looking to enhance efficiency, streamline processes, or secure your data, [Software Name] is your go-to solution. Here’s what makes it stand out:\n\n- **Enhanced Efficiency**: Reduce your workload and save time with our smart automation features.\n- **Robust Security**: Keep your data safe with state-of-the-art encryption and advanced security protocols.\n- **User-Friendly Interface**: Enjoy a seamless experience with our intuitive design and easy navigation.\n- **Customizable Features**: Tailor the software to meet your unique business needs and preferences.\n\n🎉 Exclusive Offer for You!\nAs a valued client, we are excited to offer you an exclusive first look and special pricing on [Software Name]. This is your chance to be among the first to experience the future of [industry/application].\n\n🔗 Get Started Now\nReady to take the leap? Click here [insert link] to learn more about [Software Name] and how it can revolutionize your business. Don’t miss out on the opportunity to elevate your operations and achieve new heights of success.\n\nWe believe [Software Name] will be a vital tool in your arsenal, empowering you to achieve and surpass your goals. Thank you for trusting us with your business needs. We look forward to continuing to support your success with our innovative solutions.\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Company Name]  \n[Contact Information]  \n[Company Website]\n\nP.S. Stay ahead of the curve! Join us for a special webinar on [date] to dive deep into the features of [Software Name] and learn how it can benefit your specific business needs. Register here [insert link].\n\n---\n\nFeel free to adjust the content to better fit your specific software features, industry focus, and branding style!",
+    "group_id": 3,
+    "variant": "paraphrase_6",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Create a powerful product debut email to share news of our fresh software solution with our esteemed customers.",
+    "output": "Subject: Introducing Our Game-Changing Software: Elevate Your Efficiency with [Product Name]!\n\nDear [Customer's Name],\n\nWe are thrilled to announce the launch of our latest innovation, [Product Name], designed to transform the way you work and significantly boost your productivity. After extensive research and development, we are ready to unveil a software solution that not only meets your needs but also redefines them.\n\n**Why [Product Name]?**\n\n[Product Name] is not just another tool in your arsenal — it's the cornerstone of efficiency. Here’s what makes [Product Name] a game-changer:\n\n1. **Enhanced Performance**: Leveraging cutting-edge technology, [Product Name] offers unmatched speed and reliability, ensuring you spend less time waiting and more time doing.\n\n2. **User-Centric Design**: With an intuitive interface, [Product Name] is built to ensure ease of use, regardless of your tech expertise. Navigate seamlessly through a well-designed, clutter-free environment.\n\n3. **Customizable Features**: We understand that one size doesn't fit all. [Product Name] comes with a wide range of customizable options to tailor its functionality to your specific business needs.\n\n4. **Robust Security**: Your data’s security is our top priority. [Product Name] is equipped with advanced security features to protect your information against threats.\n\n5. **24/7 Support**: Our dedicated support team is always available to help you maximize the use of [Product Name], ensuring you get the most out of your investment.\n\n**Special Launch Offer**\n\nAs a token of our appreciation for your continued support, we are excited to offer you an exclusive 20% discount on your first-year subscription. Use the promo code NEW20 at checkout. Hurry, this offer is valid until [expiration date].\n\n**See [Product Name] in Action**\n\nJoin us for a live webinar on [date and time], where we will dive deep into the capabilities of [Product Name] and answer any questions you may have. Register [here](#).\n\nReady to take the next step in business efficiency? [Download a free trial](#) of [Product Name] today and experience the difference yourself.\n\nThank you for your trust in us as we continue to strive for excellence and innovation. We can’t wait for you to experience [Product Name] and achieve new heights in your business operations.\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Company Name]  \n[Contact Information]  \n[Company Website]\n\n---\n\nFeel free to adjust the content to better",
+    "group_id": 3,
+    "variant": "paraphrase_7",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Assemble a dynamic notification email to excite our customer community about our brand-new software solution.",
+    "output": "Subject: 🚀 Unveiling Our Game-Changing Software: Transform Your Workflow Today! 🚀\n\nHi [Customer's First Name],\n\nWe’re thrilled to announce the launch of our latest innovation, [Software Name], designed to revolutionize the way you work!\n\n🌟 What’s New?\n[Software Name] is more than just software; it's a comprehensive solution crafted to enhance efficiency, streamline processes, and boost productivity. Whether you're working solo or as part of a team, [Software Name] is your new go-to tool for achieving peak performance.\n\n🔍 Why [Software Name]?\n- **Enhanced Features**: Enjoy cutting-edge features like [list major features, e.g., real-time collaboration, advanced analytics, automated reporting].\n- **User-Friendly Interface**: Navigate through a beautifully designed, intuitive interface that makes operation a breeze.\n- **Customizable**: Tailor [Software Name] to fit your specific needs and preferences for an even more personalized experience.\n- **Secure and Reliable**: Your data’s safety is paramount. Rest assured with our state-of-the-art security protocols.\n\n🎉 Special Launch Offer\nAs a valued member of our community, we’re excited to offer you an exclusive **20% discount** for your first year subscription! Just use the code [DISCOUNT CODE] at checkout. Hurry, offer valid until [expiration date].\n\n👥 Join the Community\nConnect with other [Software Name] users on our forum and at our upcoming webinar on [date]. Dive deep into discussion, gather insights, and explore best practices to maximize your [Software Name] experience.\n\n🔗 Get Started\nReady to transform your workflow? Click here [insert link] to explore [Software Name]. You can also schedule a free demo or join one of our daily live Q&A sessions to see [Software Name] in action.\n\nWe can’t wait for you to experience the power of [Software Name] and achieve new heights in your work. Welcome to the future of productivity!\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Company Name]  \n[Contact Information]  \n[Company Website]\n\nP.S. We love feedback! Once you’ve explored the new features, let us know what you think. Your input drives our innovation.\n\n---\n\nFeel free to adjust the content to better fit your brand voice and the specific features of your software. This template aims to engage and excite your customers about your new product while providing all necessary information to get started.",
+    "group_id": 3,
+    "variant": "paraphrase_8",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Design a compelling new product notification email to enlighten our customers regarding the introduction of our advanced software solution.",
+    "output": "Subject: Unlock New Possibilities with Our Latest Software Solution! 🚀\n\n---\n\nDear [Customer's Name],\n\nWe're thrilled to announce the launch of our most advanced software solution yet: **IntelliSuite Pro**! Designed with your needs in mind, IntelliSuite Pro is here to revolutionize the way you work, offering unparalleled efficiency and innovative features.\n\n**What's New in IntelliSuite Pro?**\n- **Enhanced Performance:** Experience lightning-fast processing speeds that minimize downtime and increase productivity.\n- **AI-Driven Analytics:** Dive into deep insights with our AI-powered tools that predict trends and optimize decision-making.\n- **Seamless Integration:** Effortlessly integrate with existing systems with our improved compatibility features.\n- **Robust Security:** Protect your data with state-of-the-art security protocols designed to fend off the latest cyber threats.\n\n**Exclusive Launch Offer Just for You!**\nAs a valued customer, we're excited to offer you an exclusive 20% discount on your first year subscription of IntelliSuite Pro. Use the promo code NEWPRO20 at checkout. Hurry, offer valid until [expiration date].\n\n**See IntelliSuite Pro in Action!**\nJoin us for a free live webinar on [date] at [time], where our product experts will showcase the capabilities of IntelliSuite Pro and answer any questions you may have. [Registration Link]\n\nReady to take your business to the next level? Upgrade to IntelliSuite Pro today and start reaping the benefits of advanced technology tailored for success. Get started [here](#).\n\nThank you for choosing us as your trusted partner. We look forward to supporting your continued growth with IntelliSuite Pro.\n\nWarm regards,\n\n[Your Name]  \n[Your Position]  \n[Company Name]  \n[Contact Information]  \n[Social Media Links]\n\n---\n\n**P.S.** Don’t miss out on our introductory webinar – it’s a great opportunity to learn tips and tricks to maximize your use of IntelliSuite Pro!\n\n---\n\nThis email template is designed to not only inform but also excite your customers about the new software, encouraging immediate engagement and conversion.",
+    "group_id": 3,
+    "variant": "paraphrase_9",
+    "model": "gpt-4-turbo-2024-04-09"
+  }
+]

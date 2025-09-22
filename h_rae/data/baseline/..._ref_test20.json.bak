@@ -1,0 +1,156 @@
+[
+  {
+    "instruction": "Write a daily exercise routine for Monday to Sunday with a rest day in between, each day summarized in 160 characters or less",
+    "output": "**Monday: Cardio & Core**\n30 min jog, 15 min HIIT, 10 min core (planks, crunches).\n\n**Tuesday: Upper Body Strength**\nDumbbell routine: curls, presses, rows.\n\n**Wednesday: Rest Day**\nActive recovery: stretch, light walk.\n\n**Thursday: Lower Body Strength**\nSquats, lunges, deadlifts (45 min).\n\n**Friday: Yoga & Flexibility**\n60 min mixed yoga session.\n\n**Saturday: Full Body Circuit**\n20 min circuit, repeat 3x: push-ups, jump squats, pull-ups.\n\n**Sunday: Endurance**\n45 min bike ride or swim.",
+    "group_id": 0,
+    "variant": "original",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Compose a weekly exercise schedule from Monday through Sunday, including a day of rest, with each day's activity described in no more than 160 characters.",
+    "output": "**Monday:** Cardio - 30 min run + 15 min jump rope.  \n**Tuesday:** Strength training - Upper body (push-ups, pull-ups, dumbbell exercises).  \n**Wednesday:** Yoga - 60 min session focusing on flexibility and core.  \n**Thursday:** HIIT - 20 min of high-intensity interval training.  \n**Friday:** Rest Day - Take it easy, maybe some light stretching or a walk.  \n**Saturday:** Strength training - Lower body (squats, lunges, leg press).  \n**Sunday:** Cycling - 45 min moderate pace outdoor or stationary bike.",
+    "group_id": 0,
+    "variant": "paraphrase_0",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Formulate a seven-day workout plan with an interspersed rest day, encapsulated within 160 characters for each day.",
+    "output": "**Day 1: Upper Body Strength**  \nPush-ups, pull-ups, bench press, dumbbell curls. 3 sets of 10-12 reps each. Stretch.\n\n**Day 2: Cardio & Core**  \n30 min jog. Planks, Russian twists, leg raises. 3 sets of 15 reps.\n\n**Day 3: Lower Body Strength**  \nSquats, lunges, deadlifts, calf raises. 3 sets of 10-12 reps each.\n\n**Day 4: Rest Day**  \nActive recovery: gentle yoga or a light walk. Focus on hydration and nutrition.\n\n**Day 5: HIIT**  \n20 min of high-intensity interval training: 40s work, 20s rest. Include burpees, high knees.\n\n**Day 6: Full Body Circuit**  \nMix of upper, lower body & core exercises. 3 rounds, 10 reps each.\n\n**Day 7: Flexibility & Balance**  \nYoga or Pilates session focusing on flexibility and core strength. 45 min.",
+    "group_id": 0,
+    "variant": "paraphrase_1",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Draft a concise weekly fitness agenda, allocating rest within the sequence, limiting each day's summary to 160 characters.",
+    "output": "1. **Monday**: Cardio - 30 min run. Strength training - upper body (30 min).\n2. **Tuesday**: Yoga - 60 min session for flexibility and core strength.\n3. **Wednesday**: Rest Day.\n4. **Thursday**: HIIT - 20 min session. Leg day - squats and lunges (20 min).\n5. **Friday**: Swimming - 45 min for full-body workout.\n6. **Saturday**: Cycling - 60 min moderate pace.\n7. **Sunday**: Rest Day.",
+    "group_id": 0,
+    "variant": "paraphrase_2",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Set up a fitness timetable for a week, Monday to Sunday, ensuring a rest period and keeping each description under 160 characters.",
+    "output": "**Monday:** Cardio - 30 min run + 15 min jump rope. Focus on steady pace.\n\n**Tuesday:** Strength training - 45 min. Include weights and body resistance exercises.\n\n**Wednesday:** Yoga - 60 min session. Emphasize flexibility and core strength.\n\n**Thursday:** Rest Day - Take it easy, maybe some light stretching or a leisurely walk.\n\n**Friday:** HIIT - 30 min of high-intensity interval training. Mix sprints with bodyweight exercises.\n\n**Saturday:** Swimming - 45 min. Focus on laps and different strokes for full-body workout.\n\n**Sunday:** Cycling - 60 min ride. Choose a scenic route for enjoyment and endurance building.",
+    "group_id": 0,
+    "variant": "paraphrase_3",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Establish a daily workout regimen for an entire week, incorporating a day off, with brief outlines not exceeding 160 characters each.",
+    "output": "**Monday: Cardio & Core**\n- 30 min jog\n- 15 min core (planks, crunches)\n\n**Tuesday: Upper Body Strength**\n- Push-ups, pull-ups, dumbbell exercises\n\n**Wednesday: Yoga**\n- 45 min session focusing on flexibility\n\n**Thursday: Lower Body Strength**\n- Squats, lunges, deadlifts\n\n**Friday: HIIT**\n- 20 min of high-intensity interval training\n\n**Saturday: Active Rest**\n- Light walk or leisurely bike ride\n\n**Sunday: Rest Day**\n- Full rest, focus on recovery and stretching",
+    "group_id": 0,
+    "variant": "paraphrase_4",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Arrange a physical activity roster from the start to the end of the week, with one day's rest, summarizing each session in 160 characters max.",
+    "output": "**Monday: Yoga** - Start the week with a calming yoga session to stretch and strengthen muscles. Focus on breath and balance.\n\n**Tuesday: HIIT** - High-intensity interval training for 30 minutes. Boost metabolism and burn fat with short bursts of intense exercise.\n\n**Wednesday: Swimming** - Swim laps for 45 minutes. Great for cardiovascular health and low-impact on joints.\n\n**Thursday: Rest Day** - Take a break to allow muscles to recover and prevent injury.\n\n**Friday: Cycling** - Go for a 1-hour bike ride. Improve leg strength and endurance while enjoying the outdoors.\n\n**Saturday: Running** - 5km run to build stamina and improve cardiovascular fitness.\n\n**Sunday: Pilates** - End the week with a Pilates session to improve core strength and flexibility, focusing on alignment and controlled movements.",
+    "group_id": 0,
+    "variant": "paraphrase_5",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Organize a seven-day exercise timetable with a rest day slotted, ensuring each day’s routine is succinctly described within 160 characters.",
+    "output": "**Monday: Cardio Kickstart**\n30 min treadmill run, 15 min HIIT session.\n\n**Tuesday: Upper Body Strength**\nCircuit: push-ups, pull-ups, dumbbell curls, tricep dips.\n\n**Wednesday: Rest Day**\nRelax and recover.\n\n**Thursday: Core & Flexibility**\n20 min Pilates, 15 min yoga stretches.\n\n**Friday: Lower Body Blast**\nSquats, lunges, deadlifts, 10 min jump rope.\n\n**Saturday: Mixed Circuit**\nMix of cardio, strength; 5 stations, 5 min each.\n\n**Sunday: Endurance Walk**\n60 min brisk walk or hike outdoors.",
+    "group_id": 0,
+    "variant": "paraphrase_6",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Outline a fitness program for the week, Monday to Sunday, including a break day, with each plan summarized in a maximum of 160 characters.",
+    "output": "**Monday: Cardio Kickstart**\n- 30 min treadmill, 15 min cycling, 10 min jump rope. Start week strong!\n\n**Tuesday: Upper Body Strength**\n- Circuit: push-ups, pull-ups, dumbbell press, 3x10 each.\n\n**Wednesday: Yoga and Stretch**\n- 1 hr session focusing on flexibility and core strength.\n\n**Thursday: Leg Day**\n- Squats, lunges, leg press, 3x12 each. Don't skip!\n\n**Friday: HIIT**\n- 20 min of high-intensity interval training. Push your limits!\n\n**Saturday: Active Rest**\n- Light activity: walk in the park, easy bike ride.\n\n**Sunday: Break Day**\n- Full rest. Prepare for the upcoming week.",
+    "group_id": 0,
+    "variant": "paraphrase_7",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Construct a day-to-day workout outline for the entire week, incorporating a day for rest, each portrayed in no more than 160 characters.",
+    "output": "1. Monday: Cardio - 30 min run, 15 min jump rope.\n2. Tuesday: Upper body - push-ups, pull-ups, dumbbell curls, bench press.\n3. Wednesday: Yoga - 1 hr session.\n4. Thursday: Leg day - squats, lunges, deadlifts.\n5. Friday: Core - planks, sit-ups, Russian twists.\n6. Saturday: Rest day.\n7. Sunday: Full body circuit - 20 min mix of strength exercises.",
+    "group_id": 0,
+    "variant": "paraphrase_8",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Develop a weeklong exercise guild, guaranteeing a day for relaxation, with every day’s agenda encapsulated in a 160-character limit.",
+    "output": "1. Mon: 30 min brisk walk + 20 min yoga. Start week refreshed!\n2. Tue: 45 min cycling. Cardio boost!\n3. Wed: Strength training - 30 min. Build muscle!\n4. Thu: Rest day. Relax & recover.\n5. Fri: HIIT for 20 min. Quick & intense!\n6. Sat: 40 min swim. Full-body workout.\n7. Sun: 60 min hike. Connect with nature.",
+    "group_id": 0,
+    "variant": "paraphrase_9",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Anytown Bank obtaining and using consumer reports in connection with any credit or insurance transaction that is not initiated by the consumer in order to make firm offers of credit or insurance is known as:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the process where financial institutions like banks use consumer reports to identify individuals to whom they wish to extend firm offers of credit or insurance, even if those individuals have not initiated the transaction. This is done under the guidelines of the Fair Credit Reporting Act (FCRA), which allows this activity provided certain conditions are met, including providing a clear and conspicuous disclosure to the consumer about the prescreening and maintaining confidentiality.",
+    "group_id": 1,
+    "variant": "original",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Identify the process by which Anytown Bank acquires and utilizes consumer reports for credit or insurance transactions not commenced by the consumer, employed to extend definitive proposals of credit or insurance, which is called:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The process by which Anytown Bank acquires and utilizes consumer reports for credit or insurance transactions not initiated by the consumer, and used to extend definitive proposals of credit or insurance, is called:\n\nD. Prescreening\n\nPrescreening is a process used by financial institutions to identify potential customers to whom they might want to offer credit or insurance. This is done by obtaining consumer reports under specific criteria to determine eligibility before making an offer.",
+    "group_id": 1,
+    "variant": "paraphrase_0",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Define the method where Anytown Bank uses consumer credit reports for transactions related to credit or insurance not started by the consumer, in order to offer solid terms of credit or insurance, known as:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the method used by financial institutions like Anytown Bank to review consumer credit reports for transactions related to credit or insurance that were not initiated by the consumer. This process helps the bank to offer solid terms of credit or insurance based on the creditworthiness of the consumer as determined from their credit report.",
+    "group_id": 1,
+    "variant": "paraphrase_1",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What is the term for the action taken by Anytown Bank when it accesses and employs consumer reports for the purpose of extending concrete offers of credit or insurance, in scenarios where the consumer has not initiated the transaction?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the term used when a bank or other financial institution accesses consumer credit reports to identify individuals to whom they will extend concrete offers of credit or insurance, even if those individuals have not initiated any transaction. This process allows institutions to make unsolicited offers to consumers who meet certain criteria set by the lender or insurer.",
+    "group_id": 1,
+    "variant": "paraphrase_2",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Describe the activity in which Anytown Bank engages when it gathers and applies consumer reports, without a consumer-initiated credit or insurance transaction, to make firm credit or insurance proposals:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The activity described where Anytown Bank gathers and uses consumer reports to make firm offers of credit or insurance, without a consumer-initiated transaction, is known as **D. Prescreening**.\n\nPrescreening is a process used by financial institutions like banks or insurance companies to identify potential customers to whom they can extend credit or insurance offers. This is done by obtaining consumer reports from credit reporting agencies under specific criteria set by the lender or insurer. The individuals who meet these criteria are then targeted with firm offers of credit or insurance. This process is regulated under the Fair Credit Reporting Act (FCRA), which allows this activity provided the consumers have not opted out of receiving such offers.",
+    "group_id": 1,
+    "variant": "paraphrase_3",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "State what it's called when Anytown Bank extracts and exploits consumer reports in scenarios where the consumer hasn't initiated the credit or insurance transaction, with the intent to propose definite credit or insurance offers:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the process used by creditors and insurers to make unsolicited offers of credit or insurance to individuals who have not initiated a transaction. This process involves the use of consumer reports to identify potential customers who meet certain criteria set by the creditor or insurer. These consumers are then targeted with specific offers, which they can accept or decline.",
+    "group_id": 1,
+    "variant": "paraphrase_4",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What do we call the procedure where Anytown Bank takes and makes use of consumer reports for making assured offers of credit or insurance, without initiation by the consumer, during any credit or insurance dealings?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The procedure where a bank like Anytown Bank uses consumer reports to make assured offers of credit or insurance to consumers without their initiation is called **D. Prescreening**. This process involves the bank obtaining consumer information from credit reporting agencies to identify potential customers who meet certain criteria for creditworthiness or insurance eligibility, and then making offers based on that information.",
+    "group_id": 1,
+    "variant": "paraphrase_5",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Clarify the term used to describe Anytown Bank's act of obtaining and utilizing consumer reports in conjunction with credit or insurance dealings not triggered by the consumer, aiming to provide solid offers of credit or insurance:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the term used to describe the act of a bank or other financial institution obtaining and using consumer reports to identify individuals to whom they will extend unsolicited credit or insurance offers. These offers are typically based on certain criteria met by the consumer within the credit report. This process is common in the credit card and insurance industries, where firms send pre-approved offers to potential customers who have not initiated any credit or insurance application but meet specific criteria set by the issuer.",
+    "group_id": 1,
+    "variant": "paraphrase_6",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What term fits the description of Anytown Bank's practice of securing and using consumer reports in matters of non-consumer-initiated credit or insurance transactions, with the end goal of making definitive credit or insurance propositions?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "The term that fits the description of Anytown Bank's practice of securing and using consumer reports in matters of non-consumer-initiated credit or insurance transactions, with the end goal of making definitive credit or insurance propositions, is:\n\nD. Prescreening\n\nPrescreening refers to the process where financial institutions or insurance companies use consumer credit information from credit bureaus to identify potential customers to whom they can offer credit or insurance. This is done without the consumer initially requesting or initiating the transaction.",
+    "group_id": 1,
+    "variant": "paraphrase_7",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "Tokenize the function of Anytown Bank when it takes and applies consumer credit information in instances of credit or insurance transactions not solicited by the consumer, for the purpose of offering definite credit or insurance opportunities, as:\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the process used by financial institutions like Anytown Bank to review consumer credit information to determine eligibility for credit or insurance offers that the consumer has not directly solicited. This process allows the bank to make targeted, pre-approved offers of credit or insurance to consumers based on their credit history.",
+    "group_id": 1,
+    "variant": "paraphrase_8",
+    "model": "gpt-4-turbo-2024-04-09"
+  },
+  {
+    "instruction": "What designation is ascribed to the practice by Anytown Bank of procuring and utilizing consumer reports during proceedings involving credit or insurance where the consumer is not the initiator, so as to put forward guaranteed offers of credit or insurance?\n\nA. Approving\nB. Counteroffering\nC. Endorsing\nD. Prescreening\nE. None of the above",
+    "output": "D. Prescreening\n\nPrescreening is the practice used by financial institutions like Anytown Bank to obtain and use consumer reports for the purpose of making unsolicited offers of credit or insurance. This process involves the bank selecting criteria that consumers must meet and then obtaining consumer reports from a credit reporting agency to identify individuals who meet those criteria. These individuals are then offered credit or insurance without having initiated the request themselves.",
+    "group_id": 1,
+    "variant": "paraphrase_9",
+    "model": "gpt-4-turbo-2024-04-09"
+  }
+]
