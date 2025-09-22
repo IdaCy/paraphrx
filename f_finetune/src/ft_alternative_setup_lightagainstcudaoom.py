@@ -675,7 +675,17 @@ class RobustTrainer(LAPTtrainer):
     def compute_loss(self, model, inputs, return_outputs=False):
         # Filter inputs to model
         model_inputs = {k: v for k, v in inputs.items() if k in ["input_ids", "attention_mask", "labels"]}
-        outputs = model(**model_inputs, output_hidden_states=True, use_cache=False)
+        need_extras = (
+            self.model.training and
+            (
+                getattr(self.args, "consistency_kld_weight", 0.0) > 0.0
+                or getattr(self.args, "contrast_weight", 0.0) > 0.0
+                or getattr(self.args, "style_adv_weight", 0.0) > 0.0
+            )
+        ) and not getattr(self, "_in_lap_ce_only", False)
+
+        outputs = model(**model_inputs, output_hidden_states=need_extras, use_cache=False)
+
         ce_loss = outputs.loss
 
         # During LAP inner loop, only return CE loss
@@ -1325,7 +1335,8 @@ def main(argv=None):
         bf16=args.bf16,
         fp16=not (args.bf16 or args.bnb_8bit_optim),
         per_device_train_batch_size=args.batch_size,
-        per_device_eval_batch_size=args.batch_size * 2,
+        per_device_eval_batch_size=1,
+        prediction_loss_only=True,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         eval_strategy="steps",
         eval_steps=args.eval_steps,
